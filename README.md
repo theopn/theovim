@@ -17,3 +17,5 @@ git clone https://github.com/theopn/theovim.git ~/.theovim
 ~/.theovim/install.sh
 ```
 
+After deploying the configuration files, run Neovim once to `curl` [Packer](https://github.com/wbthomason/packer.nvim). Once the packer has been installed, run `:PackerSync` to install plugins.
+
