@@ -8,7 +8,7 @@ Theovim is my personal Neovim configuration. Due to the requests from my classma
 
 - `git` to update Theovim
 - `bash` or a POSIX compliance shell
-- Latest version of Neovim (> 0.8). For those poor souls working on data with 0.4.3 version Neovim on Purdue CS Data server, I included the appimage downloader that automatically adds alias to your `.bashrc`. Run `~/.theovim/nvim_appimage_downloader.sh` periodically to keep the appimage updated.
+- Latest version of Neovim (> 0.8). For those poor souls working with 0.4.3 version Neovim on Purdue CS Data server, I included the appimage downloader that automatically adds alias to your `.bashrc`. Run `~/.theovim/nvim_appimage_downloader.sh` periodically to keep the appimage updated.
 
 ## Installation
 
