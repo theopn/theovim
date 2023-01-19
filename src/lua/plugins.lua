@@ -84,7 +84,7 @@ require("packer").startup(function(use)
     "glepnir/lspsaga.nvim", --> LSP hover menu, code action, rename, etc
     branch = "main",
     config = function()
-        require('lspsaga').setup({})
+      require('lspsaga').setup({})
     end,
   }
   -- }}}

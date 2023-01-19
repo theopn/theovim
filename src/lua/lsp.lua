@@ -20,6 +20,7 @@ if (not status) then return end
 
 local protocol = require("vim.lsp.protocol")
 
+--[[
 local on_attach = function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
     vim.api.nvim_create_autocmd("BufWritePre", {
@@ -29,6 +30,7 @@ local on_attach = function(client, bufnr)
     })
   end
 end
+--]]
 -- }}}
 
 -- {{{ nvim-cmp setup
@@ -77,8 +79,8 @@ cmp.setup({
     end,
   },
   window = {
-    -- completion = cmp.config.window.bordered(),
-    -- documentation = cmp.config.window.bordered(),
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
   },
   mapping = cmp.mapping.preset.insert({
     ["<C-j>"] = cmp.mapping.select_next_item(), --> <C-n>
@@ -173,7 +175,9 @@ nvim_lsp.sumneko_lua.setup {
 -- }}}
 
 -- {{{ Trouble Settings
+--[[
 require("trouble").setup {
   mode = "document_diagnostics",
 }
+--]]
 -- }}}
