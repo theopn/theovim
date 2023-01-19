@@ -7,9 +7,11 @@
 --]]
 
 -- List of LSP server used later
--- MasonInstall bash-language-server, clangd, css-lsp, html-lsp, ltex-ls, lua-language-server, python-lsp-server, remark-language-server, sqlls
+-- MasonInstall bash-language-server, clangd, css-lsp, html-lsp, lua-language-server, python-lsp-server, remark-language-server, sqlls
+-- Always check the memory usage of each language server. Use sudo lsof -p PID to check for associated files
+-- Blacklist: ltex-ls (java process running in the bg for each instance of markdown files)
 local server_list = {
-  "bashls", "clangd", "cssls", "html", "ltex", "pylsp", "sqlls", --"remark_ls",
+  "bashls", "clangd", "cssls", "html", "pylsp", "sqlls",
 }
 
 -- {{{ Basic lspconfig settings
