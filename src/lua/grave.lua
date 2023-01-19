@@ -6,6 +6,36 @@
 
 --]]
 
+-- Add the following template to each entry:
+--[[
+what is it?:
+why was it moved to the grave?:
+why is it saying in the grave?:
+--]]
+
+--[[
+what is it?: on_attach function to execute vim.lsp.buf.format() function before writing to a file
+why was it moved to the grave?: I do not want auto format every time. I sometimes want to appreciate my messy code
+why is it saying in the grave?: It is a very useful piece of code to attach it to an LSP server, do:
+<lsp_server>.setup({ capabilities = capabilities, on_attach = on_attach, ... })
+--]]
+--[[
+local on_attach = function(client, bufnr)
+  if client.server_capabilities.documentFormattingProvider then
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = vim.api.nvim_create_augroup("Format", { clear = true }),
+      buffer = bufnr,
+      callback = function() vim.lsp.buf.format() end
+    })
+  end
+end
+--]]
+
+--[[
+What is it?: Custom Neovim statusline
+Why was it moved to the grave?: It is not enough to display complex LSP information
+Why is it saying in the grave?: Who knows I will want a minimal Neovim setup in the future
+--]]
 --[[
 -- https://nuxsh.is-a.dev/blog/custom-nvim-statusline.html --
 local modes = {
@@ -78,43 +108,19 @@ function Statusline.inactive()
   return " %F"
 end
 -- Deploy statusline --
-vim.api.nvim_exec([[
+vim.api.nvim_exec([
 augroup Statusline
 au!
 au WinEnter,BufEnter * setlocal statusline=%!v:lua.Statusline.active()
 au WinLeave,BufLeave * setlocal statusline=%!v:lua.Statusline.inactive()
-augroup END]],false)
+augroup END],false)
 --]]
 
 --[[
-use { --> Complention program
-  "ms-jpq/coq_nvim",
-  branch = "coq",
-  event = "VimEnter", config = "vim.cmd[[COQnow -s]]", --> Autoexecute COQnow on startup
-}
-use { "ms-jpq/coq.artifacts", branch = "artifacts" } --> Used by COQ
+What is it?: A custom function I tried to make for class note taking
+Why was it moved to the grave?: Just look at it. Plus I do not have vim.pets plugin anymore
+Why is it saying in the grave?: Well it's the first Lua function I wrote
 --]]
-
--- [[
-require("neorg").setup {
-  load = {
-    ["core.defaults"] = {},
-    ["core.norg.dirman"] = {
-      config = {
-        workspaces = {
-          default = "~/Documents/neorg/",
-        }
-      }
-    },
-    ["core.norg.completion"] = {
-      config = {
-        engine = "nvim-cmp",
-      },
-    },
-  }
-}
--- ]]
-
 --[[
 -- {{{ Custom function for quickly opening a file
 local notes_directory = "~/Documents/vim_notes/"
@@ -127,3 +133,4 @@ function new_note(class_name, note_name)
 end
 -- }}}
 --]]
+
