@@ -8,29 +8,15 @@
 
 -- List of LSP server used later
 -- MasonInstall bash-language-server, clangd, css-lsp, html-lsp, lua-language-server, python-lsp-server, remark-language-server, sqlls
--- Always check the memory usage of each language server. Use sudo lsof -p PID to check for associated files
+-- Always check the memory usage of each language server. :LSpInfo to identify LSP server and use "sudo lsof -p PID" to check for associated files
 -- Blacklist: ltex-ls (java process running in the bg for each instance of markdown files)
 local server_list = {
   "bashls", "clangd", "cssls", "html", "pylsp", "sqlls",
 }
 
--- {{{ Basic lspconfig settings
+-- {{{ Call lspconfig settings
 local status, nvim_lsp = pcall(require, "lspconfig")
 if (not status) then return end
-
-local protocol = require("vim.lsp.protocol")
-
---[[
-local on_attach = function(client, bufnr)
-  if client.server_capabilities.documentFormattingProvider then
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      group = vim.api.nvim_create_augroup("Format", { clear = true }),
-      buffer = bufnr,
-      callback = function() vim.lsp.buf.format() end -- vim.lsp.buf.formatting_seq_sync() is deprecated
-    })
-  end
-end
---]]
 -- }}}
 
 -- {{{ nvim-cmp setup
@@ -155,12 +141,12 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protoc
 
 -- {{{ Language Server Settings
 for _, v in ipairs(server_list) do
-  nvim_lsp[v].setup { capabilities = capabilities, on_attach = on_attach, }
+  nvim_lsp[v].setup { capabilities = capabilities, }
 end
 
 nvim_lsp.sumneko_lua.setup {
   capabilities = capabilities,
-  on_attach = on_attach,
+  --on_attach = on_attach,
   settings = {
     Lua = {
       diagnostircs = {
