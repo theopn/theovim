@@ -10,13 +10,37 @@
 --[[
 what is it?:
 why was it moved to the grave?:
-why is it saying in the grave?:
+why is it staying in the grave?:
+--]]
+
+
+--[[
+what is it?: Auto closing mechanism for NvimTree
+why was it moved to the grave?: https://github.com/nvim-tree/nvim-tree.lua/issues/1005
+                                Auto close is not recommended due to Vim only supporting BufEnter vim event
+                                In fact it's related to Theovim's first issue:
+                                https://github.com/theopn/theovim/issues/1
+why is it staying in the grave?: It worked for the most part and I was proud of it, until other people started posting
+                                their own config
+--]]
+--[[
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = vim.api.nvim_create_augroup("NvimTreeClose", { clear = true }),
+  pattern = "NvimTree_*",
+  callback = function()
+    local layout = vim.api.nvim_call_function("winlayout", {})
+    if layout[1] == "leaf" and vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(layout[2]), "filetype") == "NvimTree"
+        and layout[3] == nil then
+      vim.cmd("confirm quit")
+    end
+  end
+})
 --]]
 
 --[[
 what is it?: on_attach function to execute vim.lsp.buf.format() function before writing to a file
 why was it moved to the grave?: I do not want auto format every time. I sometimes want to appreciate my messy code
-why is it saying in the grave?: It is a very useful piece of code to attach it to an LSP server, do:
+why is it staying in the grave?: It is a very useful piece of code to attach it to an LSP server, do:
 <lsp_server>.setup({ capabilities = capabilities, on_attach = on_attach, ... })
 --]]
 --[[
@@ -34,7 +58,7 @@ end
 --[[
 What is it?: Custom Neovim statusline
 Why was it moved to the grave?: It is not enough to display complex LSP information
-Why is it saying in the grave?: Who knows I will want a minimal Neovim setup in the future
+Why is it staying in the grave?: Who knows I will want a minimal Neovim setup in the future
 --]]
 --[[
 -- https://nuxsh.is-a.dev/blog/custom-nvim-statusline.html --
@@ -119,7 +143,7 @@ augroup END],false)
 --[[
 What is it?: A custom function I tried to make for class note taking
 Why was it moved to the grave?: Just look at it. Plus I do not have vim.pets plugin anymore
-Why is it saying in the grave?: Well it's the first Lua function I wrote
+Why is it staying in the grave?: Well it's the first Lua function I wrote
 --]]
 --[[
 -- {{{ Custom function for quickly opening a file
