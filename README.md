@@ -22,3 +22,8 @@ git clone https://github.com/theopn/theovim.git ~/.theovim
 
 After deploying the configuration files, run Neovim once to `curl` [Packer](https://github.com/wbthomason/packer.nvim). Once the packer has been installed, run `:PackerSync` to install plugins.
 
+## Usage
+
+### Theovim Related
+
+- `TheovimUpdate` updates the latest changes to Theovim by pulling the changes in `~/.theovim/` directory and run `:PackerSync`

@@ -1,3 +1,18 @@
+--[[
+" figlet -f weird theovim-cmd
+"  /    /                   /                        |
+" (___ (___  ___  ___         _ _  ___  ___  _ _  ___|
+" |    |   )|___)|   ) \  )| | | )     |    | | )|   )
+" |__  |  / |__  |__/   \/ | |  /      |__  |  / |__/
+--]]
+
 vim.api.nvim_create_user_command("TheovimUpdate", function()
-  vim.lsp.buf.format()
+  vim.api.nvim_command(":! cd ~/.theovim && git pull")
+  require('packer').sync()
+end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("TheovimHelp", function()
+end, { nargs = 0 })
+
+vim.api.nvim_create_user_command("TheovimInfo", function()
 end, { nargs = 0 })
