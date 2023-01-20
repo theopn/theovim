@@ -142,13 +142,20 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protoc
 -- }}}
 
 -- {{{ Language Server Settings
+local on_attach = function(client, bufnr)
+  if client.server_capabilities.documentFormattingProvider then
+    vim.keymap.set({ 'n' }, "<Space>cf", "<CMD> lua vim.lsp.buf.format()<CR>", { noremap = true })
+    vim.api.nvim_create_user_command("Format", function() vim.lsp.buf.format() end, { nargs = 0 })
+  end
+end
+
 for _, v in ipairs(server_list) do
-  nvim_lsp[v].setup { capabilities = capabilities, }
+  nvim_lsp[v].setup { capabilities = capabilities, on_attach = on_attach }
 end
 
 nvim_lsp.sumneko_lua.setup {
   capabilities = capabilities,
-  --on_attach = on_attach,
+  on_attach = on_attach,
   settings = {
     Lua = {
       diagnostircs = {

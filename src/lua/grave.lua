@@ -37,6 +37,34 @@ vim.api.nvim_create_autocmd("BufEnter", {
 })
 --]]
 
+
+--[[
+what is it?: another janky on_attach function that asks for user confirmation on formatting
+why was it moved to the grave?: None of the autocmd event fits the scenario. any writing related is a pain since
+                                you frequently writes to a file, BufLeave asks every time you switch a tab, etc
+why is it staying in the grave?: First prompt I made
+--]]
+--[[
+local on_attach = function(client, bufnr)
+  if client.server_capabilities.documentFormattingProvider then
+    vim.api.nvim_create_autocmd("VimLeavePre", {
+      group = vim.api.nvim_create_augroup("Format", { clear = true }),
+      buffer = bufnr,
+      callback = function()
+        vim.ui.select({ "Format", "No Format" },
+          { prompt = "Would you like to format the code before you leave?" },
+          function(choice)
+            if choice == "Format" then
+              vim.lsp.buf.format()
+              vim.cmd("write")
+            end
+          end)
+      end
+    })
+  end
+end
+-]]
+
 --[[
 what is it?: on_attach function to execute vim.lsp.buf.format() function before writing to a file
 why was it moved to the grave?: I do not want auto format every time. I sometimes want to appreciate my messy code
@@ -56,91 +84,6 @@ end
 --]]
 
 --[[
-What is it?: Custom Neovim statusline
-Why was it moved to the grave?: It is not enough to display complex LSP information
-Why is it staying in the grave?: Who knows I will want a minimal Neovim setup in the future
---]]
---[[
--- https://nuxsh.is-a.dev/blog/custom-nvim-statusline.html --
-local modes = {
-  ["n"] = "NORMAL",
-  ["no"] = "NORMAL",
-  ["v"] = "VISUAL",
-  ["V"] = "VISUAL LINE",
-  [""] = "VISUAL BLOCK",
-  ["s"] = "SELECT",
-  ["S"] = "SELECT LINE",
-  [""] = "SELECT BLOCK",
-  ["i"] = "INSERT",
-  ["ic"] = "INSERT",
-  ["R"] = "REPLACE",
-  ["Rv"] = "VISUAL REPLACE",
-  ["c"] = "COMMAND",
-  ["cv"] = "VIM EX",
-  ["ce"] = "EX",
-  ["r"] = "PROMPT",
-  ["rm"] = "MOAR",
-  ["r?"] = "CONFIRM",
-  ["!"] = "SHELL",
-  ["t"] = "TERMINAL",
-}
--- Func that gets current mode --
-local function get_mode()
-  local current_mode = vim.api.nvim_get_mode().mode
-  return string.format(" %s ", modes[current_mode]):upper()
-end
--- Editor info func --
-local function get_filepath()
-  local filepath = vim.fn.fnamemodify(vim.fn.expand "%", ":~:.:h")
-  if filepath == "" or filepath == "." then
-    return " "
-  end
-  return string.format(" %%<%s/", filepath)
-end
-local function get_filename()
-  local filename = vim.fn.expand "%:t"
-  if filename == "" then
-    return ""
-  end
-  return filename .. " "
-end
-local function get_filetype()
-  return string.format(" %s ", vim.bo.filetype):upper()
-end
-local function get_lineinfo()
-  if vim.bo.filetype == "alpha" then
-    return ""
-  end
-  return " %P %l:%c "
-end
--- Build statusline --
-Statusline = {}
-Statusline.active = function()
-  return table.concat {
-    "%#Statusline#",
-    get_mode(),
-    "%#Normal# ",
-    get_filepath(),
-    get_filename(),
-    "%#Normal#",
-    "%=%#StatusLineExtra#",
-    get_filetype(),
-    get_lineinfo(),
-  }
-end
-function Statusline.inactive()
-  return " %F"
-end
--- Deploy statusline --
-vim.api.nvim_exec([
-augroup Statusline
-au!
-au WinEnter,BufEnter * setlocal statusline=%!v:lua.Statusline.active()
-au WinLeave,BufLeave * setlocal statusline=%!v:lua.Statusline.inactive()
-augroup END],false)
---]]
-
---[[
 What is it?: A custom function I tried to make for class note taking
 Why was it moved to the grave?: Just look at it. Plus I do not have vim.pets plugin anymore
 Why is it staying in the grave?: Well it's the first Lua function I wrote
@@ -157,4 +100,3 @@ function new_note(class_name, note_name)
 end
 -- }}}
 --]]
-
