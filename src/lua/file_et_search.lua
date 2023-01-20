@@ -30,9 +30,9 @@ require("nvim-treesitter.configs").setup {
 require("nvim-tree").setup {
   auto_reload_on_write = true,
   -- auto_close = true, --> Auto close has been deprecated
-  open_on_setup = true, --> Auto open when no files opened
-  open_on_setup_file = true, --> Auto open when files opened
-  open_on_tab = true,
+  open_on_setup = false, --> Auto open when no files opened
+  open_on_setup_file = false, --> Auto open when files opened
+  open_on_tab = false,
   sort_by = "name",
   view = {
     width = 30,
@@ -45,17 +45,6 @@ require("nvim-tree").setup {
     signcolumn = "yes",
   }
 }
-vim.api.nvim_create_autocmd("BufEnter", {
-  group = vim.api.nvim_create_augroup("NvimTreeClose", { clear = true }),
-  pattern = "NvimTree_*",
-  callback = function()
-    local layout = vim.api.nvim_call_function("winlayout", {})
-    if layout[1] == "leaf" and vim.api.nvim_buf_get_option(vim.api.nvim_win_get_buf(layout[2]), "filetype") == "NvimTree"
-        and layout[3] == nil then
-      vim.cmd("confirm quit")
-    end
-  end
-})
 --[[ Disabling NvimTree icons for no nerd fonts
 vim.g.nvim_tree_show_icons = {
   git = 0,
