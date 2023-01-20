@@ -8,7 +8,10 @@ Theovim is my personal Neovim configuration. Due to the requests from my classma
 
 - `git` to update Theovim
 - `bash` or a POSIX compliance shell
-- Latest version of Neovim (> 0.8). For those poor souls working with 0.4.3 version Neovim on Purdue CS Data server, I included the appimage downloader that automatically adds alias to your `.bashrc`. Run `~/.theovim/nvim_appimage_downloader.sh` periodically to keep the appimage updated.
+- A terminal emulator capable of rendering 256 xterm colors
+- Latest version of Neovim (> 0.8).
+  - For those poor souls working with 0.4.3 version Neovim on Purdue CS Data server, I included the appimage downloader that automatically adds alias to your `.bashrc`. Run `~/.theovim/nvim_appimage_downloader.sh` periodically to keep the appimage updated.
+- [NerdFonts](https://www.nerdfonts.com/font-downloads) to render glyphs
 
 ## Installation
 
