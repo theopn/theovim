@@ -1,6 +1,6 @@
 # Theovim
 
-![theovim-demo.gif](./static/theovim-demo.gif)
+![theovim-demo.gif](./assets/theovim-demo.gif)
 
 Theovim is my personal Neovim configuration. It strives to be a simple and maintainable full-Lua Neovim configuration with fill-IDE feature.
 Due to the requests from my classmates in CS252: Systems Programming who wanted IDE features while working on the infamous "shell project," I decided to take the Neovim configuration out of my [dotfiles repository](https://github.com/theopn/dotfiles). I also like the name Theovim it's cute.
