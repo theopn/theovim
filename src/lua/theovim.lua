@@ -12,9 +12,9 @@ vim.api.nvim_create_user_command("TheovimUpdate", function()
 end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("TheovimHelp", function()
-  print("Coming soon!")
+  print("Coming soon! Look for GitHub update and use :TheovimUpdate often!")
 end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("TheovimInfo", function()
-  print("Coming soon!")
+  print("Coming soon! Look for GitHub update and use :TheovimUpdate often!")
 end, { nargs = 0 })

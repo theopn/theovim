@@ -31,5 +31,7 @@ require("look")
 require("lsp")
 
 require("theovim")
+
+require("../user-config/config")
 --]]
 
