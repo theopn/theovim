@@ -16,14 +16,18 @@ Due to the requests from my classmates in CS252: Systems Programming who wanted 
 
 ## Installation
 
-Install the latest version of Neovim. Use `nvim_appimage_downloader` if your system does not permit a binary installation.
+- Install the latest version of Neovim. Use `nvim_appimage_downloader` if your system does not permit a binary installation
+
+Execute the following commands:
 
 ```bash
 git clone https://github.com/theopn/theovim.git ~/.theovim
 ~/.theovim/install.sh
 ```
 
-After deploying the configuration files, run Neovim once to `curl` [Packer](https://github.com/wbthomason/packer.nvim). Once the packer has been installed, run `:TheovimUpdate` to install plugins.
+- Run Neovim once to `curl` [Packer](https://github.com/wbthomason/packer.nvim)
+- Once the packer has been installed, run `:TheovimUpdate` to install plugins
+- I will compile the list of LSP server, but run `:MasonInstall clangd` for C/C++ LSP server
 
 ## Usage
 
