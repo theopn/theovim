@@ -32,6 +32,6 @@ require("lsp")
 
 require("theovim")
 
-require("../user-config/config")
+require("user-config/config")
 --]]
 

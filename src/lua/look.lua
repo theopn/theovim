@@ -315,7 +315,7 @@ db.custom_center = {
   {
     icon = "  ",
     desc = "Configure Theovim         ",
-    action = "edit ~/.theovim/user-config/config.lua",
+    action = "edit ~/.theovim/src/lua/user-config/config.lua",
   },
   {
     icon = "  ",
