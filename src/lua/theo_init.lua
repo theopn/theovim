@@ -109,6 +109,8 @@ do
     { 'n', "<leader>/", "<CMD>let @/=''<CR>" }, --> Clear search highlighting
     { 'n', "<leader>a", "gg<S-v>G" }, --> Select all
     -- Split pane navigation and resizing --
+    { 'n', "<leader>|", "<CMD>vsplit<CR><C-w>l" },
+    { 'n', "<leader>-", "<CMD>split<CR><C-w>j" },
     { 'n', "<leader>h", "<C-w>h" },
     { 'n', "<leader>j", "<C-w>j" },
     { 'n', "<leader>k", "<C-w>k" },
