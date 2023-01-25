@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Function for backing up existing config and copying the new configuration
 # $1 = File to create a symlink for, $2 = target directory, $3 backup directory
 safe_symlink() {
   if [[ -e "$2" ]]; then
@@ -15,9 +16,13 @@ safe_symlink() {
   fi
 }
 
+# Copying the files
 current_files=("init.lua" "lua")
 mkdir -p ~/.config/nvim/
 for v in ${current_files[@]}; do
 safe_symlink ~/.theovim/src/"$v" ~/.config/nvim/"$v" ~/theovim-install-backup
 done
+
+# Copying the template user configuration file
+mv ~/.theovim/src/lua/user-config/config.lua ~/.config/nvim/lua/
 
