@@ -273,56 +273,62 @@ end)
 
 -- {{{ Dashboard Settings
 local db = require("dashboard")
-db.custom_header = {
-  "",
-  "                                                                    ",
-  "                             .---....___                            ",
-  "                    __..--''``          `` _..._    __              ",
-  "          /// //_.-'    .-/';  `         `<._  ``.''_ `. / // /     ",
-  "         ///_.-' _..--.'_    ;                    `( ) ) // //      ",
-  "         / (_..-' // (< _     ;_..__               ; `' / ///       ",
-  "          / // // //  `-._,_)' // / ``--...____..-' /// / //        ",
-  "                                                                    ",
-  " ------------------------- Hi I'm Oliver -------------------------- ",
-  "                                                                    ",
-  "    ,--------.,--.                            ,--.                  ",
-  "    '--.  .--'|  ,---.  ,---.  ,---.,--.  ,--.`--',--,--,--.        ",
-  "       |  |   |  .-.  || .-. :| .-. |\\  `'  / ,--.|        |        ", --> Quote out of place bc of escape sequence
-  "       |  |   |  | |  |\\   --.' '-' ' \\    /  |  ||  |  |  |        ",
-  "       `--'   `--' `--' `----' `---'   `--'   `--'`--`--`--'        ",
-  "                                                                    ",
-  "",
-}
-db.custom_center = {
-  {
-    icon = "  ",
-    desc = "Find File           ",
-    action = "Telescope find_files",
-    shortcut = "SPC ff",
-  },
-  {
-    icon = "  ",
-    desc = "Browse Files        ",
-    action = "Telescope file_browser",
-    shortcut = "SPC fb",
-  },
-  {
-    icon = "  ",
-    desc = "New File             ",
-    action = "DashboardNewFile",
-    shortcut = "SPC t",
-  },
-  {
-    icon = "  ",
-    desc = "Configure Theovim         ",
-    action = "edit ~/.theovim/src/lua/user-config/config.lua",
-  },
-  {
-    icon = "  ",
-    desc = "Exit Theovim              ",
-    action = "quit",
-  },
-}
+db.setup({
+  theme = 'doom',
+  config = {
+    header = {
+      "",
+      "                                                                    ",
+      "                             .---....___                            ",
+      "                    __..--''``          `` _..._    __              ",
+      "          /// //_.-'    .-/';  `         `<._  ``.''_ `. / // /     ",
+      "         ///_.-' _..--.'_    ;                    `( ) ) // //      ",
+      "         / (_..-' // (< _     ;_..__               ; `' / ///       ",
+      "          / // // //  `-._,_)' // / ``--...____..-' /// / //        ",
+      "                                                                    ",
+      " ------------------------- Hi I'm Oliver -------------------------- ",
+      "                                                                    ",
+      "    ,--------.,--.                            ,--.                  ",
+      "    '--.  .--'|  ,---.  ,---.  ,---.,--.  ,--.`--',--,--,--.        ",
+      "       |  |   |  .-.  || .-. :| .-. |\\  `'  / ,--.|        |        ", --> Quote out of place bc of escape sequence
+      "       |  |   |  | |  |\\   --.' '-' ' \\    /  |  ||  |  |  |        ",
+      "       `--'   `--' `--' `----' `---'   `--'   `--'`--`--`--'        ",
+      "                                                                    ",
+      "",
+    },
+    center = {
+      {
+        icon = "  ",
+        desc = "Find File           ",
+        key = "spc ff",
+        action = "Telescope find_files",
+      },
+      {
+        icon = "  ",
+        desc = "Browse Files        ",
+        key = "spc fb",
+        action = "Telescope file_browser",
+      },
+      {
+        icon = "  ",
+        desc = "New File             ",
+        key = "spc t",
+        action = "enew",
+      },
+      {
+        icon = "  ",
+        desc = "Configure Theovim         ",
+        action = "edit ~/.theovim/src/lua/user-config/config.lua",
+      },
+      {
+        icon = "  ",
+        desc = "Exit Theovim              ",
+        action = "quit",
+      },
+    },
+    footer = { "Theovim 2023" }
+  }
+})
 -- }}}
 
 -- {{{ Notification Settings
