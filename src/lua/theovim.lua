@@ -50,7 +50,7 @@ end
 
 vim.api.nvim_create_user_command("TheovimUpdate", function()
   vim.api.nvim_command(":! cd ~/.theovim && git pull")
-  require('packer').sync()
+  require('lazy').update()
 end, { nargs = 0 })
 
 vim.api.nvim_create_user_command("TheovimHelp", theovimHelpWindowOpen, { nargs = 0 })
