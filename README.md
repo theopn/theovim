@@ -25,9 +25,8 @@ git clone https://github.com/theopn/theovim.git ~/.theovim
 ~/.theovim/install.sh
 ```
 
-- Run Neovim once to `curl` [Packer](https://github.com/wbthomason/packer.nvim)
-- Once the packer has been installed, run `:TheovimUpdate` to install plugins
-- I will compile the list of LSP server, but run `:MasonInstall clangd` for C/C++ LSP server
+- [Lazy.nvim](https://github.com/folke/lazy.nvim) package manager will automatically install all the missing plugins. If any error happens, run `:TheovimUpdate` to manually update the plugins
+- `:Mason` is a language server manager. Use `:MasonInstall` to install language servers of your choice. Currently supported language servers are Bash (`bash-language-server), C, C++ (`clangd`), CSS (`css-lsp`), HTML (`html-lsp`), Python (`python-lsp-server`), and SQL (`sqlls`). In the future, any choice of your language server will work with Theovim.
 
 ## Usage
 
