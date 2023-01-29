@@ -145,7 +145,7 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protoc
 local on_attach = function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
     vim.keymap.set({ 'n' }, "<Space>cf", "<CMD> lua vim.lsp.buf.format()<CR>", { noremap = true })
-    vim.api.nvim_create_user_command("Format", function() vim.lsp.buf.format() end, { nargs = 0 })
+    vim.api.nvim_create_user_command("Format", function() vim.lsp.buf.format() vim.cmd.write() end, { nargs = 0 })
   end
 end
 
