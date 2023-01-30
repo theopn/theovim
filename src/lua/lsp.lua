@@ -13,7 +13,12 @@
 -- Always check the memory usage of each language server. :LSpInfo to identify LSP server and use "sudo lsof -p PID" to check for associated files
 -- Blacklist: ltex-ls (java process running in the bg for each instance of markdown files)
 local server_list = {
-  "bashls", "clangd", "cssls", "html", "pylsp", "sqlls",
+  "bashls", "clangd",
+}
+
+require("mason-lspconfig").setup {
+  ensure_installed = server_list,
+  automatic_installation = true,
 }
 
 -- {{{ Call lspconfig settings
