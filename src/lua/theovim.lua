@@ -43,8 +43,7 @@ local function theovimHelpWindowOpen()
   vim.keymap.set("n", "<ESC>", function() vim.api.nvim_win_close(win, true) end, keymaps_opts)
 
   vim.api.nvim_buf_set_option(0, "modifiable", true)
-  --local file_path = vim.api.nvim_get_runtime_file("help-doc.md", false)[1]
-  local file_path = vim.env.XDG_CONFIG_HOME .. "/.theovim/src/help-doc.md"
+  local file_path = vim.api.nvim_get_runtime_file("theovim-help-doc.md", false)[1]
   vim.api.nvim_command("$read" .. file_path)
   vim.api.nvim_buf_set_option(0, "modifiable", false)
 
