@@ -25,10 +25,6 @@ f a means pressing 'f' and then pressing 'a' in a short time.
 
 - <leader> y: Copy to '+' clipboard (should work for both MacOS and Linux with X11 window server)
 
-## Spell Check
-
-- <C-s>: In insert mode, fix the nearest spelling error and put the cursor back; in normal mode, toggle spelling suggestion on the cursor
-- <leader> + s + t: set sspell!
 
 ## Help
 
@@ -64,4 +60,15 @@ f a means pressing 'f' and then pressing 'a' in a short time.
 ## Git
 
 - :Git diffThis: Git diff on a separate panel
+
+## Spell Check
+
+> Spell check is on in the markdown buffer
+
+- <C-s>: In insert mode, fix the nearest spelling error and put the cursor back; in normal mode, toggle spelling suggestion on the cursor
+- <leader> + s + t: set sspell!
+
+## Markdown
+
+- `:MarkdownPreviewToggle`: Opens the compiled markdown file in the native browser
 

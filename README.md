@@ -30,6 +30,6 @@ git clone https://github.com/theopn/theovim.git ~/.theovim
 
 ## Usage
 
-- `:TheovimHelp` contains all the custom commands and shortcuts - //TODO
+- `:TheovimHelp` contains all the custom commands and shortcuts
 - `:TheovimUpdate` updates the latest changes to Theovim by pulling the changes in `~/.theovim/` directory and run `:PackerSync`
-- `:TheovimInfo` shows the current version and information about the Neovim/Theovim - //TODO
+- `:TheovimInfo` shows the current version and information about the Neovim/Theovim - TODO

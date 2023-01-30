@@ -318,7 +318,7 @@ db.setup({
       {
         icon = "  ",
         desc = "Configure Theovim         ",
-        action = "edit ~/.theovim/src/lua/user-config/config.lua",
+        action = "vim.notify(\"Coming soon!\")",
       },
       {
         icon = "  ",
