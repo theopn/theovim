@@ -10,6 +10,7 @@
 -- {{{ Functions for easier setting
 local GLOBAL = vim.o
 local WINDOW = vim.wo
+local BUFFER = vim.bo
 local function vim_set(opt, scope, val)
   scope[opt] = val
 end
@@ -62,14 +63,21 @@ do
     { "softtabstop", 2 }, --> Tab key width
     { "expandtab", true }, --> Tab as spaces
     { "mouse", 'a' },
-    { "spell", true },
-    { "spelllang", "en" },
-    { "spellsuggest", "best,8" }, --> 8 suggestions for spell check
   }
   for _, v in ipairs(edit_opt) do
     vim_set(v[1], GLOBAL, v[2])
   end
 end
+-- Spell check in markdown buffer only --
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = "markdown",
+  callback = function ()
+    vim.wo.spell = true
+    vim.o.spelllang = "en"
+    vim.o.spellsuggest = "best,8" --> 8 suggestions for spell check
+  end
+}
+)
 -- }}}
 
 -- {{{ Visual Related Settings
