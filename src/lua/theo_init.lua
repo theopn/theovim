@@ -63,6 +63,8 @@ do
     { "softtabstop", 2 }, --> Tab key width
     { "expandtab", true }, --> Tab as spaces
     { "mouse", 'a' },
+    { "spelllang", "en" },
+    { "spellsuggest", "best,8" },
   }
   for _, v in ipairs(edit_opt) do
     vim_set(v[1], GLOBAL, v[2])
@@ -71,10 +73,8 @@ end
 -- Spell check in markdown buffer only --
 vim.api.nvim_create_autocmd('FileType', {
   pattern = "markdown",
-  callback = function ()
+  callback = function()
     vim.wo.spell = true
-    vim.o.spelllang = "en"
-    vim.o.spellsuggest = "best,8" --> 8 suggestions for spell check
   end
 }
 )
@@ -154,9 +154,9 @@ do
     { 'n', "<leader>f/", "<CMD>Telescope current_buffer_fuzzy_find<CR>" }, --> Better search
     -- LSP Related --
     { 'n', "<leader>cf", "<CMD>lua vim.lsp.buf.references()<CR>" },
-    { 'n', "<leader>ca", "<CMD>lua vim.lsp.buf.code_action()<CR>" },
-    { 'n', "<leader>cd", "<CMD>lua vim.lsp.buf.hover()<CR>" }, --> Could use built-in command <CMD>lua vim.lsp.buf.hover()
-    { 'n', "<leader>cr", "<CMD>lua vim.lsp.buf.rename()<CR>" },
+    { 'n', "<leader>ca", "<CMD>Lspsage code_action<CR>" },
+    { 'n', "<leader>cd", "<CMD>Lspsaga hover_doc<CR>" }, --> Could use built-in command <CMD>lua vim.lsp.buf.hover()
+    { 'n', "<leader>cr", "<CMD>Lspsaga rename<CR>" }, --> lua vim.lsp.buf.rename()
     -- }}}
   }
   for _, v in ipairs(key_opt) do
