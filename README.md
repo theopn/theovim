@@ -22,7 +22,7 @@ Execute the following commands:
 
 ```bash
 git clone https://github.com/theopn/theovim.git ~/.theovim
-~/.theovim/install.sh
+~/.theovim/theovim-util.sh install
 ```
 
 - [Lazy.nvim](https://github.com/folke/lazy.nvim) package manager will automatically install all the missing plugins. If any error happens, run `:TheovimUpdate` to manually update the plugins
