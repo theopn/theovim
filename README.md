@@ -26,10 +26,11 @@ git clone https://github.com/theopn/theovim.git ~/.theovim
 ```
 
 - [Lazy.nvim](https://github.com/folke/lazy.nvim) package manager will automatically install all the missing plugins. If any error happens, run `:TheovimUpdate` to manually update the plugins
-- `:Mason` is a language server manager. Use `:MasonInstall` to install language servers of your choice. Currently supported language servers are Bash (`bash-language-server), C, C++ (`clangd`), CSS (`css-lsp`), HTML (`html-lsp`), Python (`python-lsp-server`), and SQL (`sqlls`). In the future, any choice of your language server will work with Theovim.
+- `:Mason` is a language server manager. Use `:MasonInstall` to install language servers of your choice. Currently supported language servers are Bash (`bash-language-server1), C, C++ (`clangd`), CSS (`css-lsp`), HTML (`html-lsp`), Python (`python-lsp-server`), and SQL (`sqlls`). In the future, any choice of your language server will work with Theovim.
 
 ## Usage
 
 - `:TheovimHelp` contains all the custom commands and shortcuts
 - `:TheovimUpdate` updates the latest changes to Theovim by pulling the changes in `~/.theovim/` directory and run `:PackerSync`
 - `:TheovimInfo` shows the current version and information about the Neovim/Theovim - TODO
+
