@@ -49,7 +49,7 @@ f a means pressing 'f' and then pressing 'a' in a short time.
 
 - <C-e>: Close auto completion window
 
-- :Format: Formats the code
+- :CodeFormatToggle: Toggles code formatting on the write for supported file types
 - <leader> c f: Code reference
 - <leader> c a: Code action
 - <leader> c d: Hover documentation
