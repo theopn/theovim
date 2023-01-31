@@ -5,4 +5,5 @@ Changelog:
 - Changelog feature
 - Dashboard date
 - Friendly snippet temporarily moved to original repository while I fix some of the C snippets
+- Autopair plugin
 
