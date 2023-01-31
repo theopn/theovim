@@ -19,6 +19,17 @@ why was it moved to the grave?:
 why is it staying in the grave?:
 --]]
 
+--[[
+what is it?: Auto bracket closers by pure mapping
+why was it moved to the grave?: Using a dedicated plugin
+why is it staying in the grave?: I have been using it for forever and it worked well
+--]]
+--[[
+-- Auto bracket closers --
+{ 'i', "(", "()<LEFT>" },
+{ 'i', "[", "[]<LEFT>" },
+{ 'i', "{<CR>", "{<CR>}<ESC><S-o><ESC><S-i><TAB>" }, --> A little clunky to combat auto indentations
+--]]
 
 --[[
 what is it?: Auto closing mechanism for NvimTree

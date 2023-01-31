@@ -32,6 +32,9 @@ local plugins = {
   { "lukas-reineke/indent-blankline.nvim", --> Indentation guide
     config = function() require("indent_blankline").setup() end
   },
+  { "windwp/nvim-autopairs", --> Autopair
+    config = function() require("nvim-autopairs").setup() end
+  },
   { "nvim-treesitter/nvim-treesitter" }, --> Incremental highlighting
   { "p00f/nvim-ts-rainbow" }, --> Rainbow color matching for parentheses
   { "kyazdani42/nvim-tree.lua" }, --> File tree
@@ -62,7 +65,7 @@ local plugins = {
   { "folke/trouble.nvim" }, --> Pretty list of LSP error list
   { "glepnir/lspsaga.nvim", --> LSP hover menu, code action, rename, etc
     branch = "main",
-    config = function() require('lspsaga').setup({}) end
+    config = function() require('lspsaga').setup() end
   },
 }
 -- }}}
