@@ -49,7 +49,7 @@ local plugins = {
   { "williamboman/mason.nvim", --> LSP Manager
     config = function() require("mason").setup() end
   },
-  { "theopn/friendly-snippets" }, --> VS Code style snippet collection
+  { "rafamadriz/friendly-snippets" }, --> VS Code style snippet collection
   { "L3MON4D3/LuaSnip", --> Snippet engine that accepts VS Code style snippets
     config = function() require("luasnip.loaders.from_vscode").lazy_load() end --> Load snippets from friendly snippets
   },
@@ -84,4 +84,3 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup(plugins)
 --- }}}
-

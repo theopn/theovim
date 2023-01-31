@@ -2,9 +2,9 @@
 
 # Global vars
 THEOVIM_DIR=~/.theovim/src
-THEOVIM_FILES=("/theovim-help-doc.md" "/init.lua" "/lua/theo_init.lua" "/lua/theovim.lua" "/lua/plugins.lua" "/lua/look.lua" "/lua/file_et_search.lua" "/lua/lsp.lua")
+THEOVIM_FILES=("/theovim-help-doc.md" "/theovim-info.txt" "/init.lua" "/lua/theo_init.lua" "/lua/theovim.lua" "/lua/plugins.lua" "/lua/look.lua" "/lua/file_et_search.lua" "/lua/lsp.lua")
 NEOVIM_DIR=~/.config/nvim
-NEOVIM_DESTINATIONS=("/" "/" "/lua/" "/lua/" "/lua/" "/lua/" "/lua/" "/lua/")
+NEOVIM_DESTINATIONS=("/" "/" "/" "/lua/" "/lua/" "/lua/" "/lua/" "/lua/" "/lua/")
 
 
 clean() {
