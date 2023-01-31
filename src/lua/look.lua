@@ -295,6 +295,8 @@ db.setup({
       "       `--'   `--' `--' `----' `---'   `--'   `--'`--`--`--'        ",
       "                                                                    ",
       "",
+      os.date("                 Today is %A, %d %B %Y                 "),
+      "",
     },
     center = {
       {
@@ -326,7 +328,7 @@ db.setup({
         action = "quit",
       },
     },
-    footer = { "Theovim 2023" }
+    footer = { os.date("Theovim %Y") }
   }
 })
 -- }}}
