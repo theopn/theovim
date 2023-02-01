@@ -30,6 +30,7 @@ f a means pressing 'f' and then pressing 'a' in a short time.
 ## Visual Mode
 
 - <leader> y: Copy to '+' clipboard (should work for both MacOS and Linux with X11 window server)
+- :'<,'>CommentToggle: Comment the selected lines
 
 ## Buffer (tab) navigation
 
