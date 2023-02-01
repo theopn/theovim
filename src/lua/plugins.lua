@@ -53,7 +53,6 @@ local plugins = {
     config = function() require("mason").setup() end
   },
   { "williamboman/mason-lspconfig.nvim" }, --> Interfaces mason with nvim-lspconfig
-  { "theopn/friendly-snippets" }, --> VS Code style snippet collection
   { "rafamadriz/friendly-snippets" }, --> VS Code style snippet collection
   { "L3MON4D3/LuaSnip", --> Snippet engine that accepts VS Code style snippets
     config = function() require("luasnip.loaders.from_vscode").lazy_load() end --> Load snippets from friendly snippets
