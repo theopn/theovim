@@ -13,7 +13,11 @@
 -- Always check the memory usage of each language server. :LSpInfo to identify LSP server and use "sudo lsof -p PID" to check for associated files
 -- Blacklist: ltex-ls (java process running in the bg for each instance of markdown files)
 local server_list = {
-  "bashls", "clangd", "cssls", "html", "sumneko_lua", "pylsp", "sqlls",
+  "bashls", "clangd", "sumneko_lua", "pylsp", "sqlls",
+}
+
+local theo_server_recommendations = {
+  "cssls", "html"
 }
 
 -- {{{ Call lspconfig settings
