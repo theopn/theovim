@@ -6,6 +6,12 @@
 "   ~  ~ ~ ~~~  ~  ~   ~ ~  ~     ~  ~ ~ ~ ~ ~   ~~~
 --]]
 
+local plugin_grave = {
+  { "ellisonleao/glow.nvim", --> Markdown file preview. Requires glow installed
+    ft = { "markdown" },
+  },
+}
+
 -- Add the following template to each entry:
 --[[
 what is it?:
@@ -13,6 +19,17 @@ why was it moved to the grave?:
 why is it staying in the grave?:
 --]]
 
+--[[
+what is it?: Auto bracket closers by pure mapping
+why was it moved to the grave?: Using a dedicated plugin
+why is it staying in the grave?: I have been using it for forever and it worked well
+--]]
+--[[
+-- Auto bracket closers --
+{ 'i', "(", "()<LEFT>" },
+{ 'i', "[", "[]<LEFT>" },
+{ 'i', "{<CR>", "{<CR>}<ESC><S-o><ESC><S-i><TAB>" }, --> A little clunky to combat auto indentations
+--]]
 
 --[[
 what is it?: Auto closing mechanism for NvimTree
@@ -35,52 +52,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
     end
   end
 })
---]]
-
-
---[[
-what is it?: another janky on_attach function that asks for user confirmation on formatting
-why was it moved to the grave?: None of the autocmd event fits the scenario. any writing related is a pain since
-                                you frequently writes to a file, BufLeave asks every time you switch a tab, etc
-why is it staying in the grave?: First prompt I made
---]]
---[[
-local on_attach = function(client, bufnr)
-  if client.server_capabilities.documentFormattingProvider then
-    vim.api.nvim_create_autocmd("VimLeavePre", {
-      group = vim.api.nvim_create_augroup("Format", { clear = true }),
-      buffer = bufnr,
-      callback = function()
-        vim.ui.select({ "Format", "No Format" },
-          { prompt = "Would you like to format the code before you leave?" },
-          function(choice)
-            if choice == "Format" then
-              vim.lsp.buf.format()
-              vim.cmd("write")
-            end
-          end)
-      end
-    })
-  end
-end
--]]
-
---[[
-what is it?: on_attach function to execute vim.lsp.buf.format() function before writing to a file
-why was it moved to the grave?: I do not want auto format every time. I sometimes want to appreciate my messy code
-why is it staying in the grave?: It is a very useful piece of code to attach it to an LSP server, do:
-<lsp_server>.setup({ capabilities = capabilities, on_attach = on_attach, ... })
---]]
---[[
-local on_attach = function(client, bufnr)
-  if client.server_capabilities.documentFormattingProvider then
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      group = vim.api.nvim_create_augroup("Format", { clear = true }),
-      buffer = bufnr,
-      callback = function() vim.lsp.buf.format() end
-    })
-  end
-end
 --]]
 
 --[[

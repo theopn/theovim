@@ -147,10 +147,26 @@ local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protoc
 -- }}}
 
 -- {{{ Language Server Settings
+local code_format_status = true
 local on_attach = function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
-    vim.keymap.set({ 'n' }, "<Space>cf", "<CMD> lua vim.lsp.buf.format()<CR>", { noremap = true })
-    vim.api.nvim_create_user_command("Format", function() vim.lsp.buf.format() vim.cmd.write() end, { nargs = 0 })
+    -- Making a toggle for automatic formatting
+    vim.api.nvim_create_user_command("CodeFormatToggle",
+      function()
+        code_format_status = not code_format_status
+        if code_format_status then vim.notify("Code Auto Formatting On") else vim.notify("Code Auto Formatting Off") end
+      end,
+      { nargs = 0 })
+
+    -- Autocmd for code formatting on the write
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = vim.api.nvim_create_augroup("Format", { clear = true }),
+      buffer = bufnr,
+      callback = function()
+        if code_format_status then vim.lsp.buf.format() end
+      end
+    })
+
   end
 end
 

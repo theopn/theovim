@@ -3,6 +3,12 @@
 <C-a> means pressing 'a' while holding 'Ctrl'.
 f a means pressing 'f' and then pressing 'a' in a short time.
 
+## Help
+
+- <leader> ? Bring up key binding help pop-up
+  - You can hit a key, pause for 2 seconds to bring up the key binding help pop-up
+- :TheovimHelp: Open this help document
+
 ## Insert Mode
 
 - j k: ESC + :update (writes to a file if there is a change)
@@ -25,12 +31,6 @@ f a means pressing 'f' and then pressing 'a' in a short time.
 
 - <leader> y: Copy to '+' clipboard (should work for both MacOS and Linux with X11 window server)
 
-
-## Help
-
-- <leader> ? Bring up key binding help pop-up
-- :TheovimHelp: Open this help document
-
 ## Buffer (tab) navigation
 
 - <leader> t: Open a new buffer
@@ -49,7 +49,7 @@ f a means pressing 'f' and then pressing 'a' in a short time.
 
 - <C-e>: Close auto completion window
 
-- :Format: Formats the code
+- :CodeFormatToggle: Toggles code formatting on the write for supported file types
 - <leader> c f: Code reference
 - <leader> c a: Code action
 - <leader> c d: Hover documentation
@@ -70,5 +70,6 @@ f a means pressing 'f' and then pressing 'a' in a short time.
 
 ## Markdown
 
+- `:call mkpd#util#install()` to install binary necessary for the markdown preview
 - `:MarkdownPreviewToggle`: Opens the compiled markdown file in the native browser
 

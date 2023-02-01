@@ -45,13 +45,10 @@ end
 -- Trailing white space --
 vim.opt.listchars = { tab = "!>", trail = "␣", nbsp = "+" }
 -- Highlight on yank --
-local highlight_group = vim.api.nvim_create_augroup('YankHighlight', { clear = true })
 vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-  group = highlight_group,
+  group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }),
   pattern = '*',
+  callback = function() vim.highlight.on_yank() end,
 })
 -- }}}
 
@@ -63,6 +60,8 @@ do
     { "softtabstop", 2 }, --> Tab key width
     { "expandtab", true }, --> Tab as spaces
     { "mouse", 'a' },
+    { "spelllang", "en" },
+    { "spellsuggest", "best,8" },
   }
   for _, v in ipairs(edit_opt) do
     vim_set(v[1], GLOBAL, v[2])
@@ -71,10 +70,8 @@ end
 -- Spell check in markdown buffer only --
 vim.api.nvim_create_autocmd('FileType', {
   pattern = "markdown",
-  callback = function ()
+  callback = function()
     vim.wo.spell = true
-    vim.o.spelllang = "en"
-    vim.o.spellsuggest = "best,8" --> 8 suggestions for spell check
   end
 }
 )
@@ -103,10 +100,6 @@ do
     -- {{{ Text Edit Keybindings
     -- Insert Mode --
     { 'i', "jk", "<ESC><CMD>update<CR>" }, --> "joke", get it? Ha ha
-    -- Auto bracket closers --
-    { 'i', "(", "()<LEFT>" },
-    { 'i', "[", "[]<LEFT>" },
-    { 'i', "{<CR>", "{<CR>}<ESC><S-o><ESC><S-i><TAB>" }, --> A little clunky to combat auto indentations
     -- Navigation in insert mode --
     { 'i', "<C-h>", "<LEFT>" },
     { 'i', "<C-j>", "<DOWN>" },
@@ -155,8 +148,8 @@ do
     -- LSP Related --
     { 'n', "<leader>cf", "<CMD>lua vim.lsp.buf.references()<CR>" },
     { 'n', "<leader>ca", "<CMD>lua vim.lsp.buf.code_action()<CR>" },
-    { 'n', "<leader>cd", "<CMD>lua vim.lsp.buf.hover()<CR>" }, --> Could use built-in command <CMD>lua vim.lsp.buf.hover()
-    { 'n', "<leader>cr", "<CMD>lua vim.lsp.buf.rename()<CR>" },
+    { 'n', "<leader>cd", "<CMD>Lspsaga hover_doc<CR>" }, --> Could use built-in command <CMD>lua vim.lsp.buf.hover()
+    { 'n', "<leader>cr", "<CMD>Lspsaga rename<CR>" }, --> lua vim.lsp.buf.rename()
     -- }}}
   }
   for _, v in ipairs(key_opt) do

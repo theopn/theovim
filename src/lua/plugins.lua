@@ -32,17 +32,18 @@ local plugins = {
   { "lukas-reineke/indent-blankline.nvim", --> Indentation guide
     config = function() require("indent_blankline").setup() end
   },
+  { "windwp/nvim-autopairs", --> Autopair
+    config = function() require("nvim-autopairs").setup() end
+  },
   { "nvim-treesitter/nvim-treesitter" }, --> Incremental highlighting
   { "p00f/nvim-ts-rainbow" }, --> Rainbow color matching for parentheses
   { "kyazdani42/nvim-tree.lua" }, --> File tree
   { "nvim-telescope/telescope.nvim" }, --> Expendable fuzzy finder
   { "nvim-telescope/telescope-file-browser.nvim" }, --> File browser extension for Telescope
   { "folke/which-key.nvim" }, --> Pop-up dictionary for keybindings
-  { "ellisonleao/glow.nvim", --> Markdown file preview. Requires glow installed
-    ft = { "markdown" },
-  },
   { "iamcco/markdown-preview.nvim", --> MarkdownPreview to toggle
     run = function() vim.fn["mkdp#util#install"]() end, --> Binary installation for markdown-preview
+    ft = { "markdown" },
   },
   -- }}}
 
@@ -53,6 +54,7 @@ local plugins = {
   },
   { "williamboman/mason-lspconfig.nvim" }, --> Interfaces mason with nvim-lspconfig
   { "theopn/friendly-snippets" }, --> VS Code style snippet collection
+  { "rafamadriz/friendly-snippets" }, --> VS Code style snippet collection
   { "L3MON4D3/LuaSnip", --> Snippet engine that accepts VS Code style snippets
     config = function() require("luasnip.loaders.from_vscode").lazy_load() end --> Load snippets from friendly snippets
   },
@@ -65,7 +67,7 @@ local plugins = {
   { "folke/trouble.nvim" }, --> Pretty list of LSP error list
   { "glepnir/lspsaga.nvim", --> LSP hover menu, code action, rename, etc
     branch = "main",
-    config = function() require('lspsaga').setup({}) end
+    config = function() require('lspsaga').setup() end
   },
 }
 -- }}}
@@ -87,4 +89,3 @@ vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup(plugins)
 --- }}}
-
