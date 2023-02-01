@@ -154,24 +154,6 @@ local on_attach = function(client, bufnr)
   end
 end
 
-for _, v in ipairs(server_list) do
-  nvim_lsp[v].setup { capabilities = capabilities, on_attach = on_attach }
-end
-
-nvim_lsp.sumneko_lua.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  settings = {
-    Lua = {
-      diagnostircs = {
-        globals = { "vim" }
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file("", true)
-      },
-    },
-  },
-}
 -- }}}
 
 -- {{{ Trouble Settings
