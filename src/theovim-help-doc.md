@@ -55,8 +55,9 @@ f a means pressing 'f' and then pressing 'a' in a short time.
 - <leader> c a: Code action
 - <leader> c d: Hover documentation
 - <leader> c r: Renaming a variable
-- :LSPInfo
-- :Mason
+- :LSPInfo: Information on the current LSP server
+- :LSPStop: Stop the LSP server
+- :Mason: Tool to manage LSP servers
 
 ## Git
 
@@ -64,10 +65,10 @@ f a means pressing 'f' and then pressing 'a' in a short time.
 
 ## Spell Check
 
-> Spell check is on in the markdown buffer
+> Spell check is on by default in the markdown buffer
 
 - <C-s>: In insert mode, fix the nearest spelling error and put the cursor back; in normal mode, toggle spelling suggestion on the cursor
-- <leader> + s + t: set sspell!
+- <leader> s t: set sspell!
 
 ## Markdown
 

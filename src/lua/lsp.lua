@@ -13,12 +13,68 @@
 -- Always check the memory usage of each language server. :LSpInfo to identify LSP server and use "sudo lsof -p PID" to check for associated files
 -- Blacklist: ltex-ls (java process running in the bg for each instance of markdown files)
 local server_list = {
-  "bashls", "clangd", "cssls", "html", "pylsp", "sqlls",
+  "bashls", "clangd", "cssls", "html", "sumneko_lua", "pylsp", "sqlls",
 }
 
 -- {{{ Call lspconfig settings
-local status, nvim_lsp = pcall(require, "lspconfig")
+local status, lspconfig = pcall(require, "lspconfig")
 if (not status) then return end
+-- }}}
+
+-- {{{ Language Server Settings
+-- Capabilities and on_attach function that will be called for all LSP servers
+local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+
+local code_format_status = true --> boolean var for auto formatting toggle
+local on_attach = function(client, bufnr)
+  if client.server_capabilities.documentFormattingProvider then
+    -- Making a toggle for automatic formatting
+    vim.api.nvim_create_user_command("CodeFormatToggle",
+      function()
+        code_format_status = not code_format_status
+        -- (code_format_status) ? ("On") : ("Off") Lua plz support conditional ternary op
+        vim.notify("Code Auto Format " .. (code_format_status and "On!" or "Off!"))
+      end,
+      { nargs = 0 })
+
+    -- Autocmd for code formatting on the write
+    vim.api.nvim_create_autocmd("BufWritePre", {
+      group = vim.api.nvim_create_augroup("Format", { clear = true }),
+      buffer = bufnr,
+      callback = function()
+        if code_format_status then vim.lsp.buf.format() end
+      end
+    })
+
+  end
+end
+
+-- Let Mason-lspconfig handle LSP setup
+require("mason-lspconfig").setup {
+  ensure_installed = server_list,
+  automatic_installation = true,
+}
+
+require("mason-lspconfig").setup_handlers({
+  -- Default handler
+  function(server_name)
+    require("lspconfig")[server_name].setup({ capabilities = capabilities, on_attach = on_attach })
+  end,
+  -- Lua gets a special treatment just for the vim.all_the_fun_stuff
+  ["sumneko_lua"] = function()
+    lspconfig.sumneko_lua.setup({
+      capabilities = capabilities,
+      on_attach = on_attach,
+      settings = {
+        Lua = {
+          diagnostics = {
+            globals = { "vim" }
+          },
+        },
+      },
+    })
+  end,
+})
 -- }}}
 
 -- {{{ nvim-cmp setup
@@ -51,19 +107,17 @@ local kind_icons = {
   TypeParameter = ""
 }
 
--- Helper function for TAB completion
+-- Helper function for tab completion
 local check_backspace = function()
   local col = vim.fn.col "." - 1
   return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
 end
 
 local cmp = require "cmp"
-
 cmp.setup({
   snippet = {
-    -- REQUIRED - you must specify a snippet engine
     expand = function(args)
-      require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
+      require("luasnip").lsp_expand(args.body)
     end,
   },
   window = {
@@ -137,58 +191,6 @@ cmp.setup.cmdline(':', {
   })
 })
 
--- Setup lspconfig.
-local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
--- }}}
-
--- {{{ Language Server Settings
-local code_format_status = true
-local on_attach = function(client, bufnr)
-  if client.server_capabilities.documentFormattingProvider then
-    -- Making a toggle for automatic formatting
-    vim.api.nvim_create_user_command("CodeFormatToggle",
-      function()
-        code_format_status = not code_format_status
-        if code_format_status then vim.notify("Code Auto Formatting On") else vim.notify("Code Auto Formatting Off") end
-      end,
-      { nargs = 0 })
-
-    -- Autocmd for code formatting on the write
-    vim.api.nvim_create_autocmd("BufWritePre", {
-      group = vim.api.nvim_create_augroup("Format", { clear = true }),
-      buffer = bufnr,
-      callback = function()
-        if code_format_status then vim.lsp.buf.format() end
-      end
-    })
-
-  end
-end
-
-for _, v in ipairs(server_list) do
-  nvim_lsp[v].setup { capabilities = capabilities, on_attach = on_attach }
-end
-
-nvim_lsp.sumneko_lua.setup {
-  capabilities = capabilities,
-  on_attach = on_attach,
-  settings = {
-    Lua = {
-      diagnostircs = {
-        globals = { "vim" }
-      },
-      workspace = {
-        library = vim.api.nvim_get_runtime_file("", true)
-      },
-    },
-  },
+require("mason-lspconfig").setup {
+  ensure_installed = { "clangd", },
 }
--- }}}
-
--- {{{ Trouble Settings
---[[
-require("trouble").setup {
-  mode = "document_diagnostics",
-}
---]]
--- }}}

@@ -1,9 +1,7 @@
-Version: 2023-01-31
+Version: 2023-02-01
 
 Changelog:
 
-- Changelog feature
-- Dashboard date
-- Friendly snippet temporarily moved to original repository while I fix some of the C snippets
-- Autopair plugin
+- Installation script takes pwd output as the installation path
+- Mason-LSP Config - LSP server auto installation
 
