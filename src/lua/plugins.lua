@@ -19,9 +19,6 @@ local plugins = {
   { "nvim-lualine/lualine.nvim" }, --> Status line plugin
   { "romgrk/barbar.nvim" }, --> Tab bar plugin
   { "glepnir/dashboard-nvim" }, --> Startup dashboard
-  { "folke/zen-mode.nvim", --> Centered view for foc{d text editing
-    config = function() require("zen-mode").setup() end
-  },
   { "rcarriga/nvim-notify" }, --> Prettier notification
   -- }}}
 
@@ -34,6 +31,9 @@ local plugins = {
   },
   { "windwp/nvim-autopairs", --> Autopair
     config = function() require("nvim-autopairs").setup() end
+  },
+  { "terrortylor/nvim-comment", --> Comments toggle
+    config = function() require("nvim_comment").setup() end
   },
   { "nvim-treesitter/nvim-treesitter" }, --> Incremental highlighting
   { "p00f/nvim-ts-rainbow" }, --> Rainbow color matching for parentheses
@@ -51,6 +51,8 @@ local plugins = {
   { "neovim/nvim-lspconfig" }, --> Neovim defult LSP engine
   { "williamboman/mason.nvim", --> LSP Manager
     config = function() require("mason").setup() end
+  },
+  { "williamboman/mason-lspconfig.nvim", --> Bridge between Mason and lspconfig
   },
   { "rafamadriz/friendly-snippets" }, --> VS Code style snippet collection
   { "L3MON4D3/LuaSnip", --> Snippet engine that accepts VS Code style snippets
