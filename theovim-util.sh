@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Global vars
-THEOVIM_DIR=~/.theovim/src
+THEOVIM_DIR=$(pwd)"/src"
 THEOVIM_FILES=("/theovim-help-doc.md" "/theovim-info.txt" "/init.lua" "/lua/theo_init.lua" "/lua/theovim.lua" "/lua/plugins.lua" "/lua/look.lua" "/lua/file_et_search.lua" "/lua/lsp.lua")
 NEOVIM_DIR=~/.config/nvim
 NEOVIM_DESTINATIONS=("/" "/" "/" "/lua/" "/lua/" "/lua/" "/lua/" "/lua/" "/lua/")
@@ -23,7 +23,7 @@ install() {
   mkdir -p ~/.config/nvim/
   mkdir -p ~/.config/nvim/lua/
   for i in "${!THEOVIM_FILES[@]}"; do
-    ln -s "$THEOVIM_DIR${THEOVIM_FILES[i]}" "$NEOVIM_DIR${NEOVIM_DESTINATIONS[i]}"
+    ln -sf "$THEOVIM_DIR${THEOVIM_FILES[i]}" "$NEOVIM_DIR${NEOVIM_DESTINATIONS[i]}"
     printf "%s deployed in %s\n" "${THEOVIM_FILES[i]}" "$NEOVIM_DIR${NEOVIM_DESTINATIONS[i]}"
   done
 }
@@ -35,7 +35,7 @@ update() {
   else
     for i in "${!THEOVIM_FILES[@]}"; do
       if [[ ! -e "$NEOVIM_DIR${THEOVIM_FILES[i]}" ]]; then
-        ln -s "$THEOVIM_DIR${THEOVIM_FILES[i]}" "$NEOVIM_DIR${NEOVIM_DESTINATIONS[i]}"
+        ln -sf "$THEOVIM_DIR${THEOVIM_FILES[i]}" "$NEOVIM_DIR${NEOVIM_DESTINATIONS[i]}"
         printf "%s deployed in %s\n" "${THEOVIM_FILES[i]}" "$NEOVIM_DIR${NEOVIM_DESTINATIONS[i]}"
       fi
     done
