@@ -194,7 +194,3 @@ cmp.setup.cmdline(':', {
     { name = 'cmdline' }
   })
 })
-
-require("mason-lspconfig").setup {
-  ensure_installed = { "clangd", },
-}
