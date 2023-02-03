@@ -142,13 +142,14 @@ do
     { 'n', "<leader>.", "<CMD>BufferNext<CR>" }, --> Barbar plugin overrides "gt"
     { 'n', "<leader>k", "<CMD>BufferClose<CR>" }, --> Kill a tab
     -- Telescope --
+    { 'n', "<leader>fa", function() THEOVIM_TELESCOPE_MENU() end },
     { 'n', "<leader>ff", "<CMD>Telescope find_files<CR>" },
     { 'n', "<leader>fb", "<CMD>Telescope file_browser<CR>" },
     { 'n', "<leader>f/", "<CMD>Telescope current_buffer_fuzzy_find<CR>" }, --> Better search
     -- LSP Related --
     { 'n', "<leader>ca", function() THEOVIM_LSP_MENU() end },
-    { 'n', "<leader>cd", "<CMD>Lspsaga hover_doc<CR>" }, --> Could use built-in command <CMD>lua vim.lsp.buf.hover()
-    { 'n', "<leader>cr", "<CMD>Lspsaga rename<CR>" }, --> lua vim.lsp.buf.rename()
+    { 'n', "<leader>cd", function() require("lspsaga.hover"):render_hover_doc() end }, --> vim.lsp.buf.hover()
+    { 'n', "<leader>cr", function() require("lspsaga.rename"):lsp_rename() end }, --> vim.lsp.buf.rename()
     -- }}}
   }
   for _, v in ipairs(key_opt) do

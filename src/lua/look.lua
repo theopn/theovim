@@ -21,6 +21,23 @@ require("onedark").setup({
   },
 })
 require("onedark").load()
+-- require("nightfox").setup({
+--   options = {
+--     -- Compiled file's destination location
+--     transparent = true, -- Disable setting background
+--     terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
+--     dim_inactive = false, -- Non focused panes set to alternative background
+--     colorblind = {
+--       enable = false, -- Enable colorblind support
+--       severity = {
+--         protan = 0.5, -- Severity [0,1] for protan (red)
+--         deutan = 0.5, -- Severity [0,1] for deutan (green)
+--         tritan = 0.3, -- Severity [0,1] for tritan (blue)
+--       },
+--     },
+--   }
+-- })
+-- vim.cmd("colorscheme duskfox")
 -- }}}
 
 -- {{{ Lualine (Status bar) Settings

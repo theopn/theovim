@@ -16,6 +16,7 @@ local plugins = {
 
   -- {{{ Appearance
   { "navarasu/onedark.nvim" }, --> Pretty theme
+  { "EdenEast/nightfox.nvim" }, --> I am colorblind. This theme supports colorblind correction mode. Thank you.
   { "nvim-lualine/lualine.nvim" }, --> Status line plugin
   { "romgrk/barbar.nvim" }, --> Tab bar plugin
   { "glepnir/dashboard-nvim" }, --> Startup dashboard
@@ -64,7 +65,6 @@ local plugins = {
   { "hrsh7th/nvim-cmp" }, --> Completion Engine
   { "folke/trouble.nvim" }, --> Pretty list of LSP error list
   { "glepnir/lspsaga.nvim", --> LSP hover menu, code action, rename, etc
-    branch = "main",
     config = function() require('lspsaga').setup() end
   },
 

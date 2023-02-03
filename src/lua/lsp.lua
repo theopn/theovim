@@ -217,7 +217,7 @@ function THEOVIM_LSP_MENU()
   },
     function(choice)
       local action_func = lsp_options[choice]
-      if action_func ~= nil and action_func ~= '' then
+      if action_func ~= nil then
         action_func()
       end
     end)
