@@ -33,8 +33,8 @@ local function theovim_floating_win_util(file_path)
   local win = vim.api.nvim_open_win(buf, true, win_opts)
 
   -- options
-  vim.api.nvim_win_set_option(win, "winblend", 0)
-  vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
+  vim.api.nvim_win_set_option(win, "winblend", 0) --> How much does the background color blends in (80 will be blac)
+  vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe") --> Kill the buffer when hidden
   vim.api.nvim_buf_set_option(buf, "filetype", "theovimFloatingWin")
 
   -- keymaps
@@ -62,4 +62,39 @@ vim.api.nvim_create_user_command("TheovimHelp", function() theovim_floating_win_
 
 local info_path = vim.api.nvim_get_runtime_file("theovim-info.txt", false)[1]
 vim.api.nvim_create_user_command("TheovimInfo", function() theovim_floating_win_util(info_path) end,
+  { nargs = 0 })
+
+
+-- Simplified version of https://github.com/ellisonleao/weather.nvim
+local function weather_popup()
+  -- window size and pos
+  local win_height = math.ceil(vim.o.lines * 0.6 - 20)
+  local win_width = math.ceil(vim.o.columns * 0.3 - 15)
+  local x_pos = 1
+  local y_pos = vim.o.columns - win_width
+
+  local win_opts = {
+    style = "minimal",
+    relative = "editor",
+    width = win_width,
+    height = win_height,
+    row = x_pos,
+    col = y_pos,
+    border = "single",
+  }
+
+  local buf = vim.api.nvim_create_buf(false, true)
+  local win = vim.api.nvim_open_win(buf, true, win_opts)
+
+  vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
+  vim.api.nvim_win_set_option(win, "winblend", 0)
+
+  vim.keymap.set('n', 'q', function() vim.api.nvim_win_close(win, true) end, { noremap = true, silent = true })
+  vim.keymap.set('n', '<ESC>', function() vim.api.nvim_win_close(win, true) end, { noremap = true, silent = true })
+
+  local command = "curl 'https://wttr.in/?0T'"
+  vim.fn.termopen(command)
+end
+
+vim.api.nvim_create_user_command("Weather", function() weather_popup() end,
   { nargs = 0 })
