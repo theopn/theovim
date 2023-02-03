@@ -85,3 +85,8 @@ function THEOVIM_TELESCOPE_MENU()
 end
 
 -- }}}
+
+
+-- {{{ Vimtex Settings
+vim.g.vimtex_view_method = "skim"
+--}}}
