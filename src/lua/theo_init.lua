@@ -146,8 +146,7 @@ do
     { 'n', "<leader>fb", "<CMD>Telescope file_browser<CR>" },
     { 'n', "<leader>f/", "<CMD>Telescope current_buffer_fuzzy_find<CR>" }, --> Better search
     -- LSP Related --
-    { 'n', "<leader>cf", "<CMD>lua vim.lsp.buf.references()<CR>" },
-    { 'n', "<leader>ca", "<CMD>lua vim.lsp.buf.code_action()<CR>" },
+    { 'n', "<leader>ca", function() THEOVIM_LSP_MENU() end },
     { 'n', "<leader>cd", "<CMD>Lspsaga hover_doc<CR>" }, --> Could use built-in command <CMD>lua vim.lsp.buf.hover()
     { 'n', "<leader>cr", "<CMD>Lspsaga rename<CR>" }, --> lua vim.lsp.buf.rename()
     -- }}}

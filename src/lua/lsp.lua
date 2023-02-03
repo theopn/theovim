@@ -194,3 +194,31 @@ cmp.setup.cmdline(':', {
     { name = 'cmdline' }
   })
 })
+
+--- Comprehensive list menu for LSP functionalities
+local lsp_options = {
+  ["Code Action"] = function() require("lspsaga.codeaction"):code_action() end,
+  ["Current Buffer Diagonostics"] = function() require("lspsaga.diagnostic"):show_buf_diagnsotic("buffer") end,
+  ["Definition and References"] = function() require("lspsaga.finder"):lsp_finder() end,
+  ["Hover Doc"] = function() require("lspsaga.hover"):render_hover_doc() end,
+  ["Outline"] = function() require("lspsaga.outline"):outline() end,
+  ["Rename Variable"] = function() require("lspsaga.rename"):lsp_rename() end
+}
+local lsp_option_names = {}
+local n = 0
+for i, _ in pairs(lsp_options) do
+  n = n + 1
+  lsp_option_names[n] = i
+end
+table.sort(lsp_option_names)
+function THEOVIM_LSP_MENU()
+  vim.ui.select(lsp_option_names, {
+    prompt = "Code action to perform at the current cursor:",
+  },
+    function(choice)
+      local action_func = lsp_options[choice]
+      if action_func ~= nil and action_func ~= '' then
+        action_func()
+      end
+    end)
+end

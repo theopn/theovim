@@ -20,6 +20,9 @@ local plugins = {
   { "romgrk/barbar.nvim" }, --> Tab bar plugin
   { "glepnir/dashboard-nvim" }, --> Startup dashboard
   { "rcarriga/nvim-notify" }, --> Prettier notification
+  { "doums/suit.nvim", --> Prettier vim.ui.select() and input()
+    config = function() require("suit").setup() end
+  },
   -- }}}
 
   -- {{{ File et Search
@@ -32,19 +35,15 @@ local plugins = {
   { "windwp/nvim-autopairs", --> Autopair
     config = function() require("nvim-autopairs").setup() end
   },
+  { "p00f/nvim-ts-rainbow" }, --> Rainbow color matching for parentheses
   { "terrortylor/nvim-comment", --> Comments toggle
     config = function() require("nvim_comment").setup() end
   },
   { "nvim-treesitter/nvim-treesitter" }, --> Incremental highlighting
-  { "p00f/nvim-ts-rainbow" }, --> Rainbow color matching for parentheses
   { "kyazdani42/nvim-tree.lua" }, --> File tree
   { "nvim-telescope/telescope.nvim" }, --> Expendable fuzzy finder
   { "nvim-telescope/telescope-file-browser.nvim" }, --> File browser extension for Telescope
   { "folke/which-key.nvim" }, --> Pop-up dictionary for keybindings
-  { "iamcco/markdown-preview.nvim", --> MarkdownPreview to toggle
-    run = function() vim.fn["mkdp#util#install"]() end, --> Binary installation for markdown-preview
-    ft = { "markdown" },
-  },
   -- }}}
 
   -- {{{ LSP
@@ -68,6 +67,13 @@ local plugins = {
     branch = "main",
     config = function() require('lspsaga').setup() end
   },
+
+  -- {{{ Language specific
+  { "iamcco/markdown-preview.nvim", --> MarkdownPreview to toggle
+    run = function() vim.fn["mkdp#util#install"]() end, --> Binary installation for markdown-preview
+    ft = { "markdown" },
+  },
+  -- }}}
 }
 -- }}}
 
