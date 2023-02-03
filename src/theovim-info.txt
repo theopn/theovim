@@ -1,7 +1,8 @@
-Version: 2023-02-01
+Version: 2023-02-02
 
 Changelog:
 
-- Installation script takes pwd output as the installation path
-- Mason-LSP Config - LSP server auto installation
+- <leader>ca : Selectable menu for LSP functions
+- <leader>fa : Selectable menu for Telescope functions
+- Help doc revision
 

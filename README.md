@@ -1,6 +1,10 @@
 # Theovim
 
-![theovim-demo.gif](./assets/theovim-banner.jpg)
+![theovim-banner](./assets/theovim-banner.jpg)
+
+Theovim is:
+
+- My personal Neovim configuration. I use it everyday for almost every text editing
 
 Theovim is my personal Neovim configuration. It strives to be a simple and maintainable full-Lua Neovim configuration with full-IDE feature.
 Due to the requests from my classmates in CS252: Systems Programming who wanted IDE features while working on the infamous "shell project," I decided to take the Neovim configuration out of my [dotfiles repository](https://github.com/theopn/dotfiles). I also like the name Theovim it's cute.
@@ -25,12 +29,12 @@ git clone https://github.com/theopn/theovim.git ~/.theovim
 ~/.theovim/theovim-util.sh install
 ```
 
-- [Lazy.nvim](https://github.com/folke/lazy.nvim) package manager will automatically install all the missing plugins. If any error happens, run `:TheovimUpdate` to manually update the plugins
-- `:Mason` is a language server manager. Use `:MasonInstall` to install language servers of your choice. Currently supported language servers are Bash (`bash-language-server`), C, C++ (`clangd`), CSS (`css-lsp`), HTML (`html-lsp`), Python (`python-lsp-server`), and SQL (`sqlls`). In the future, any choice of your language server will work with Theovim.
-
 ## Usage
 
 - `:TheovimHelp` contains all the custom commands and shortcuts
 - `:TheovimUpdate` updates the latest changes to Theovim by pulling the changes and running update utilities
-- `:TheovimInfo` shows the current version and information about the Neovim/Theovim - TODO
+- `:TheovimInfo` shows the current version and information about the Neovim/Theovim
+
+## Highlights
+
 
