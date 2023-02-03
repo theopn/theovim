@@ -4,5 +4,5 @@ Changelog:
 
 - <leader>ca : Selectable menu for LSP functions
 - <leader>fa : Selectable menu for Telescope functions
-- Help doc revision
+- :Weather : Weather popup
 
