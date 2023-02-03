@@ -63,6 +63,7 @@ local plugins = {
   { "hrsh7th/cmp-buffer" }, --> nvim-cmp source for buffer words
   { "hrsh7th/cmp-path" }, --> nvim-cmp source for file path
   { "hrsh7th/cmp-cmdline" }, --> nvim-cmp source for :commands
+  --{ "hrsh7th/cmp-omni" }, --> Maninly to support auto completion for vimtex
   { "hrsh7th/nvim-cmp" }, --> Completion Engine
   { "folke/trouble.nvim" }, --> Pretty list of LSP error list
   { "glepnir/lspsaga.nvim", --> LSP hover menu, code action, rename, etc
@@ -71,9 +72,12 @@ local plugins = {
 
   -- {{{ Language specific
   { "iamcco/markdown-preview.nvim", --> MarkdownPreview to toggle
-    run = function() vim.fn["mkdp#util#install"]() end, --> Binary installation for markdown-preview
+    build = function() vim.fn["mkdp#util#install"]() end, --> Binary installation for markdown-preview
     ft = { "markdown" },
   },
+  { "lervag/vimtex",
+    ft = { "plaintex", "tex" }
+  }
   -- }}}
 }
 -- }}}
