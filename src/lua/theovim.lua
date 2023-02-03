@@ -92,7 +92,7 @@ local function weather_popup(location)
 
   local weather_command = "curl 'https://wttr.in/?0T'"
   if location ~= nil then
-    weather_command = string.format("curl https://wttr.in/%s'?'0", location)
+    weather_command = string.format("curl https://wttr.in/%s'?'0T", location.args)
   end
   vim.fn.termopen(weather_command)
 end

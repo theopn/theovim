@@ -74,3 +74,7 @@
 - `:call mkpd#util#install()` to install binary necessary for the markdown preview
 - `:MarkdownPreviewToggle`: Opens the compiled markdown file in the native browser
 
+## Others
+
+- `:Weather <optional-city>   : Prints out the pop-up weather report. Optional city argument (separate spaces by underscore e.g. Weather new_york) can be supplied
+
