@@ -37,6 +37,7 @@ do
     { "list", true }, --> Needed for listchars
     { "splitright", false }, --> Vertical split default to left
     { "splitbelow", false },
+    { "termguicolors", true },
   }
   for _, v in ipairs(syntax_opt) do
     vim_set(v[1], GLOBAL, v[2])

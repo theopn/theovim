@@ -29,16 +29,18 @@ if (not status) then return end
 -- Capabilities and on_attach function that will be called for all LSP servers
 local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
-local code_format_status = true --> boolean var for auto formatting toggle
+-- FUnction and global var for auto formatting toggle
+CODE_FORMAT_STATUS = true
+local function code_format_toggle()
+  CODE_FORMAT_STATUS = not CODE_FORMAT_STATUS
+  -- (code_format_status) ? ("On") : ("Off") Lua plz support conditional ternary op
+  vim.notify("Code Auto Format " .. (CODE_FORMAT_STATUS and "On!" or "Off!"))
+end
+
 local on_attach = function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
-    -- Making a toggle for automatic formatting
-    vim.api.nvim_create_user_command("CodeFormatToggle",
-      function()
-        code_format_status = not code_format_status
-        -- (code_format_status) ? ("On") : ("Off") Lua plz support conditional ternary op
-        vim.notify("Code Auto Format " .. (code_format_status and "On!" or "Off!"))
-      end,
+    -- User command to toggle code format only available when LSP is detected
+    vim.api.nvim_create_user_command("CodeFormatToggle", function() code_format_toggle() end,
       { nargs = 0 })
 
     -- Autocmd for code formatting on the write
@@ -46,7 +48,7 @@ local on_attach = function(client, bufnr)
       group = vim.api.nvim_create_augroup("Format", { clear = true }),
       buffer = bufnr,
       callback = function()
-        if code_format_status then vim.lsp.buf.format() end
+        if CODE_FORMAT_STATUS then vim.lsp.buf.format() end
       end
     })
 
@@ -202,7 +204,8 @@ local lsp_options = {
   ["Definition and References"] = function() require("lspsaga.finder"):lsp_finder() end,
   ["Hover Doc"] = function() require("lspsaga.hover"):render_hover_doc() end,
   ["Outline"] = function() require("lspsaga.outline"):outline() end,
-  ["Rename Variable"] = function() require("lspsaga.rename"):lsp_rename() end
+  ["Rename Variable"] = function() require("lspsaga.rename"):lsp_rename() end,
+  ["Auto Format Toggle"] = function() code_format_toggle() end
 }
 local lsp_option_names = {}
 local n = 0
