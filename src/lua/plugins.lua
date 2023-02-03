@@ -36,15 +36,16 @@ local plugins = {
   { "windwp/nvim-autopairs", --> Autopair
     config = function() require("nvim-autopairs").setup() end
   },
-  { "p00f/nvim-ts-rainbow" }, --> Rainbow color matching for parentheses
-  { "terrortylor/nvim-comment", --> Comments toggle
+  { "terrortylor/nvim-comment", --> Commenting region
     config = function() require("nvim_comment").setup() end
   },
   { "nvim-treesitter/nvim-treesitter" }, --> Incremental highlighting
   { "kyazdani42/nvim-tree.lua" }, --> File tree
   { "nvim-telescope/telescope.nvim" }, --> Expendable fuzzy finder
   { "nvim-telescope/telescope-file-browser.nvim" }, --> File browser extension for Telescope
-  { "folke/which-key.nvim" }, --> Pop-up dictionary for keybindings
+  { "folke/which-key.nvim", --> Pop-up dictionary for keybindings
+    config = function() require("which-key").setup() end
+  },
   -- }}}
 
   -- {{{ LSP
@@ -58,10 +59,10 @@ local plugins = {
     config = function() require("luasnip.loaders.from_vscode").lazy_load() end --> Load snippets from friendly snippets
   },
   { "saadparwaiz1/cmp_luasnip" }, --> nvim_cmp and LuaSnip bridge
-  { "hrsh7th/cmp-nvim-lsp" }, --> nvim-cmp and lspconfig bridge
+  { "hrsh7th/cmp-nvim-lsp" }, --> Bridge betwee nvim-cmp and lspconfig
   { "hrsh7th/cmp-buffer" }, --> nvim-cmp source for buffer words
   { "hrsh7th/cmp-path" }, --> nvim-cmp source for file path
-  { "hrsh7th/cmp-cmdline" }, --> nvim-cmp source for vim commands
+  { "hrsh7th/cmp-cmdline" }, --> nvim-cmp source for :commands
   { "hrsh7th/nvim-cmp" }, --> Completion Engine
   { "folke/trouble.nvim" }, --> Pretty list of LSP error list
   { "glepnir/lspsaga.nvim", --> LSP hover menu, code action, rename, etc

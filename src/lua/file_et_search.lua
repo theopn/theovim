@@ -44,14 +44,6 @@ require("nvim-tree").setup {
     signcolumn = "yes",
   }
 }
---[[ Disabling NvimTree icons for no nerd fonts
-vim.g.nvim_tree_show_icons = {
-  git = 0,
-  folders = 0,
-  files = 0,
-  folder_arrows = 0,
-}
---]]
 -- }}}
 
 -- {{{ Telescope Settings
@@ -92,18 +84,4 @@ function THEOVIM_TELESCOPE_MENU()
     end)
 end
 
--- }}}
-
--- {{{ Which-Key Settings
-local wk = require("which-key")
-wk.setup()
-wk.register({
-  ["<leader>"] = {
-    f = {
-      name = "+file",
-      f = { "<CMD>Telescope find_files<CR>", "Find File" },
-      b = { "<CMD>Telescope file_browser<CR>", "Browse File" },
-    },
-  },
-})
 -- }}}
