@@ -66,7 +66,7 @@ local plugins = {
   --{ "hrsh7th/cmp-omni" }, --> Maninly to support auto completion for vimtex
   { "hrsh7th/nvim-cmp" }, --> Completion Engine
   { "folke/trouble.nvim" }, --> Pretty list of LSP error list
-  { "glepnir/lspsaga.nvim", --> LSP hover menu, code action, rename, etc
+  { "glepnir/lspsaga.nvim", --> LSP hover doc, code action, outline, statusbar LSP context, etc
     config = function() require('lspsaga').setup() end
   },
 
@@ -81,7 +81,6 @@ local plugins = {
   -- }}}
 }
 -- }}}
-
 
 --- {{{ Lazy.nvim installation
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
