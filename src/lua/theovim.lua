@@ -90,13 +90,13 @@ local function weather_popup(location)
   vim.keymap.set('n', "q", "<C-w>q", keymaps_opts)
   vim.keymap.set('n', "<ESC>", function() vim.api.nvim_win_close(win, true) end, keymaps_opts)
 
-  local weather_command = "curl 'https://wttr.in/?0T'"
+  local weather_command = "curl 'https://wttr.in/?0T' > /dev/null"
   if location ~= nil then
     weather_command = string.format("curl https://wttr.in/%s'?'0T", location.args)
   end
   vim.fn.termopen(weather_command)
 end
 
--- In the above user command creation, I passed the return values of function() my_func() end as the command
--- In here I am passing the function as whole, so it can take arguments from the user command
+-- function() my_func() end: inline function calling my_func(); my_func(): return val; my_func: function itself
+-- You need to pass function itself to use the usercommand arguments
 vim.api.nvim_create_user_command("Weather", weather_popup, { nargs = '?' }) --> ?: 0 or 1, *: > 0, +: > 1

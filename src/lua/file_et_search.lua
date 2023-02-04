@@ -86,7 +86,14 @@ end
 
 -- }}}
 
-
 -- {{{ Vimtex Settings
 vim.g.vimtex_view_method = "skim"
+-- Add LaTeX template automatically
+
+vim.api.nvim_create_autocmd("BufNewFile", {
+group = vim.api.nvim_create_augroup("Template", { clear = true }),
+callback = function()
+  vim.api.nvim_command("$read" .. "~/Downloads/test_template.tex")
+end
+})
 --}}}
