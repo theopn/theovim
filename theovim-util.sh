@@ -7,6 +7,14 @@ NEOVIM_DIR=$HOME/.config/nvim
 NEOVIM_DESTINATIONS=("/" "/" "/" "/lua/" "/lua/" "/lua/" "/lua/" "/lua/" "/lua/")
 
 
+function verify_theovim_dir() {
+  script_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+  if [[ "$script_dir" != "$HOME/.theovim" || ! -d $HOME/.theovim ]]; then
+    red_echo "$HOME/.theovim is not found. Please follow the Git Clone direction in the README.md"
+    exit 1
+  fi
+}
+
 # From https://github.com/vsbuffalo/dotfiles/blob/master/setup.sh
 # For regular messages
 function green_echo() {
@@ -27,19 +35,14 @@ function clean() {
   if [[ -d $HOME/.config/nvim ]]; then
     mkdir -p $HOME/.theovim.bu/
     mv $HOME/.config/nvim/ $HOME/.theovim.bu/nvim-bu/
-    yellow_echo "Previous Theovim installation has been moved to $HOME/.theovim.bu"
+    yellow_echo "Previous Neovim configuration has been moved to $HOME/.theovim.bu"
   else
-    red_echo "No previous Neovim installation found!"
-    exit 1
+    green_echo "No previous Neovim installation found!"
   fi
 }
 
-
 function install() {
-  if [[ $(pwd) != "$HOME/.theovim" ]]; then
-    red_echo "You are not in $HOME/.theovim directory. Please follow the Git Clone direction in the README.md"
-    exit 1
-  fi
+  verify_theovim_dir
   clean
   mkdir -p $HOME/.config/nvim/
   mkdir -p $HOME/.config/nvim/lua/
@@ -49,12 +52,8 @@ function install() {
   done
 }
 
-
 function update() {
-  if [[ $(pwd) != "$HOME/.theovim" ]]; then
-    red_echo "You are not in $HOME/.theovim directory. Please follow the Git Clone direction in the README.md"
-    exit 1
-  fi
+  verify_theovim_dir
   if [[ ! -d $HOME/.config/nvim ]]; then
     red_echo "Neovim configuration folder is not found. Please run ./theovim.sh/install"
     exit 1
@@ -68,15 +67,14 @@ function update() {
   fi
 }
 
-
 function help() {
   green_echo "
                     Theovim Utility Script Usage
 
-  ==================================================================
+  ===================================================================
 
   Syntax: ./theovim-util.sh <arg>
-  ------------------------------------------------------------------
+  -------------------------------------------------------------------
 
   args:
     insall: Install Theovim at $HOME/.config/nvim
@@ -84,7 +82,6 @@ function help() {
     clean: Move the current Neovim configuration to $HOME/.theovim.bu
   "
 }
-
 
 function main() {
   case $1 in
@@ -99,13 +96,6 @@ function main() {
     ;;
     help)
       help
-    ;;
-    test)
-      if [ $(pwd) = $HOME/.theovim ]; then
-        green_echo "Hello $(pwd)"
-        yellow_echo "Hi $NEOVIM_DIR"
-        red_echo "Hi $NEOVIM_DESTINATIONS{@}"
-      fi
     ;;
     *) # Invalid option
      red_echo "Invalid option"
