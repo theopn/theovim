@@ -88,12 +88,13 @@ end
 
 -- {{{ Vimtex Settings
 vim.g.vimtex_view_method = "skim"
--- Add LaTeX template automatically
 
+-- Add LaTeX template automatically
 vim.api.nvim_create_autocmd("BufNewFile", {
-group = vim.api.nvim_create_augroup("Template", { clear = true }),
-callback = function()
-  vim.api.nvim_command("$read" .. "~/Downloads/test_template.tex")
-end
+  group = vim.api.nvim_create_augroup("Template", { clear = true }),
+  pattern = "*.tex",
+  callback = function()
+    vim.cmd("0r ~/.theovim/templates/latex-hw-template.tex")
+  end
 })
 --}}}
