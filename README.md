@@ -25,8 +25,8 @@ Due to the requests from my classmates in CS252: Systems Programming who wanted 
 Execute the following commands:
 
 ```bash
-git clone https://github.com/theopn/theovim.git ~/.theovim
-~/.theovim/theovim-util.sh install
+git clone https://github.com/theopn/theovim.git $HOME.theovim
+$HOME/.theovim/theovim-util.sh install
 ```
 
 ## Usage
