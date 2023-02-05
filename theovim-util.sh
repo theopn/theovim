@@ -23,12 +23,16 @@ function green_echo() {
 
 # For prompts requiring user attention
 function yellow_echo() {
+  echo
   echo -e "\033[0;33m[Attention] $1\033[0m"
+  echo
 }
 
-# For prompts requiring user attention
+# For error prompts
 function red_echo() {
+  echo
   echo -e "\033[0;31m[Fatal] $1\033[0m"
+  echo
 }
 
 function clean() {
