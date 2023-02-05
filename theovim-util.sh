@@ -34,7 +34,9 @@ function red_echo() {
 function clean() {
   if [[ -d $HOME/.config/nvim ]]; then
     mkdir -p $HOME/.theovim.bu/
-    mv $HOME/.config/nvim/ $HOME/.theovim.bu/nvim-bu/
+    mv $HOME/.config/nvim/ $HOME/.theovim.bu/config/
+    mv $HOME/.local/share/nvim/ $HOME/.theovim.bu/share/
+    mv $HOME/.local/state/nvim/ $HOME/.theovim.bu/state
     yellow_echo "Previous Neovim configuration has been moved to $HOME/.theovim.bu"
   else
     green_echo "No previous Neovim installation found!"
