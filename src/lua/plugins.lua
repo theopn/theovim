@@ -15,7 +15,7 @@ local plugins = {
   -- }}}
 
   -- {{{ Appearance
-  { "navarasu/onedark.nvim" }, --> Best theme plugin I found that does not break with indent-blankline
+  { "theopn/pastelcula.nvim" },
   { "nvim-lualine/lualine.nvim" }, --> Status line plugin
   { "romgrk/barbar.nvim" }, --> Tab bar plugin
   { "glepnir/dashboard-nvim" }, --> Startup dashboard
