@@ -15,8 +15,7 @@ local plugins = {
   -- }}}
 
   -- {{{ Appearance
-  { "navarasu/onedark.nvim" }, --> Pretty theme
-  { "EdenEast/nightfox.nvim" }, --> I am colorblind. This theme supports colorblind correction mode. Thank you.
+  { "navarasu/onedark.nvim" }, --> Best theme plugin I found that does not break with indent-blankline
   { "nvim-lualine/lualine.nvim" }, --> Status line plugin
   { "romgrk/barbar.nvim" }, --> Tab bar plugin
   { "glepnir/dashboard-nvim" }, --> Startup dashboard
@@ -45,6 +44,9 @@ local plugins = {
   { "nvim-telescope/telescope-file-browser.nvim" }, --> File browser extension for Telescope
   { "folke/which-key.nvim", --> Pop-up dictionary for keybindings
     config = function() require("which-key").setup() end
+  },
+  { "norcalli/nvim-colorizer.lua", --> Color highlighter
+    config = function() require("colorizer").setup() end
   },
   -- }}}
 
