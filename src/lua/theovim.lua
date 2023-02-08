@@ -19,13 +19,13 @@ local function theovim_floating_win_util(file_path)
   local col = math.ceil((width - win_width) / 2)
 
   local win_opts = {
-    style = "minimal",
-    relative = "editor",
-    width = win_width,
-    height = win_height,
-    row = row,
-    col = col,
-    border = "shadow",
+      style = "minimal",
+      relative = "editor",
+      width = win_width,
+      height = win_height,
+      row = row,
+      col = col,
+      border = "shadow",
   }
 
   -- create preview buffer and set local options
@@ -71,13 +71,13 @@ local function weather_popup(location)
   local y_pos = vim.o.columns - win_width
 
   local win_opts = {
-    style = "minimal",
-    relative = "editor",
-    width = win_width,
-    height = win_height,
-    row = x_pos,
-    col = y_pos,
-    border = "single",
+      style = "minimal",
+      relative = "editor",
+      width = win_width,
+      height = win_height,
+      row = x_pos,
+      col = y_pos,
+      border = "single",
   }
 
   local buf = vim.api.nvim_create_buf(false, true)
@@ -99,4 +99,48 @@ end
 
 -- function() my_func() end: inline function calling my_func(); my_func(): return val; my_func: function itself
 -- You need to pass function itself to use the usercommand arguments
-vim.api.nvim_create_user_command("Weather", weather_popup, { nargs = '?' }) --> ?: 0 or 1, *: > 0, +: > 1
+vim.api.nvim_create_user_command("Weather", weather_popup, { nargs = '?' }) --> ?: 0 or 1, *: > 0, +: > 1 args
+
+-- Register selector command
+-- https://www.reddit.com/r/neovim/comments/toke93/how_get_output_of_vim_command_as_lua_table/
+local function get_register_table()
+  local contents_str = vim.api.nvim_exec("register", true) -- vim.api.nvim_command_output() works too
+  local contents_table = {}
+  for line in contents_str:gmatch("[^\n]+") do
+    table.insert(contents_table, line)
+  end
+  table.remove(contents_table, 1) -- remove the table header
+  return contents_table
+end
+
+-- @arg inputstr in a format <char> "<char> <str>
+--      e.g. c "0 I yanked this string before
+-- @return table index 1 = clipboard name ("<char>)
+--         table index 2 = clipboard content
+local function format_register_table(inputstr)
+  local contents = {}
+  -- %a = all letters
+  -- . = all characters
+  -- () = captures the matched parts
+  -- I got register name to work... I don't know how to get the rest of the string
+  for line in inputstr:gmatch("%a. .(.)   (.+)") do
+    table.insert(contents, line)
+  end
+  print(contents[1])
+  return contents
+end
+
+function THEOVIM_REGISTER_MENU()
+  vim.ui.select(get_register_table(), {
+      prompt = "Register content to paste at the current cursor:",
+  },
+      function(choice)
+        if choice == nil then return end
+        -- Regex: . ". .*
+        -- l "" <content-of-the-register>
+        local content = format_register_table(choice)
+        vim.cmd("put "..content[1])
+      end)
+end
+
+
