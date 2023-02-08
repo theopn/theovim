@@ -15,8 +15,7 @@ local plugins = {
   -- }}}
 
   -- {{{ Appearance
-  { "navarasu/onedark.nvim" }, --> Pretty theme
-  { "EdenEast/nightfox.nvim" }, --> I am colorblind. This theme supports colorblind correction mode. Thank you.
+  { "navarasu/onedark.nvim" }, --> Best theme plugin I found that does not break with indent-blankline
   { "nvim-lualine/lualine.nvim" }, --> Status line plugin
   { "romgrk/barbar.nvim" }, --> Tab bar plugin
   { "glepnir/dashboard-nvim" }, --> Startup dashboard
@@ -46,6 +45,9 @@ local plugins = {
   { "folke/which-key.nvim", --> Pop-up dictionary for keybindings
     config = function() require("which-key").setup() end
   },
+  { "norcalli/nvim-colorizer.lua", --> Color highlighter
+    config = function() require("colorizer").setup() end
+  },
   -- }}}
 
   -- {{{ LSP
@@ -67,7 +69,7 @@ local plugins = {
   { "hrsh7th/nvim-cmp" }, --> Completion Engine
   { "folke/trouble.nvim" }, --> Pretty list of LSP error list
   { "glepnir/lspsaga.nvim", --> LSP hover doc, code action, outline, statusbar LSP context, etc
-    config = function() require('lspsaga').setup() end
+    --config = function() require('lspsaga').setup() end
   },
 
   -- {{{ Language specific
