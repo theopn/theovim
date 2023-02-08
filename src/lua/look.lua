@@ -9,7 +9,7 @@
 -- {{{ Theme Settings
 require("onedark").setup({
   style = "cool",
-  transparent = false,
+  transparent = true,
   toggle_style_key = "<leader>od",
   toggle_style_list = { "dark", "darker", "cool", "deep", "warm", "warmer" },
   code_style = {
@@ -19,37 +19,8 @@ require("onedark").setup({
     strings = 'none',
     variables = 'none'
   },
-  -- My Version
-  -- colors = {
-  --   black       = "#151820",
-  --   bg0         = "#282A35", -- Previously #242b38, bg from Dracula
-  --   bg1         = "#2d3343",
-  --   bg2         = "#343e4f",
-  --   bg3         = "#363c51",
-  --   bg_d        = "#1e242e",
-  --   bg_blue     = "#6db9f7", -- #7AA6DA br_blue from Monokai
-  --   bg_yellow   = "#E6DB74", -- #F0D197 yellow from Monokai
-  --   fg          = "#DBDBD3", -- #A5B0C5 white2 from Monokai
-  --   purple      = "#B77EE0", -- #CA72E4 br_purple from Monokai
-  --   green       = "#9EC400", -- #97CA72 br_green from Monokai
-  --   orange      = "#FD9720", -- #D99A5E orange from Monokai
-  --   blue        = "#5ab0f6",
-  --   yellow      = "#E6DB74", -- #EBC275 yellow from Monokai
-  --   cyan        = "#54CED6", -- #4DBDCB br_cyan from Monokai
-  --   red         = "#ef5f6b",
-  --   grey        = "#575b61",
-  --   light_grey  = "#7d899f", -- #7D899F grey from Monokai
-  --   dark_cyan   = "#25747d",
-  --   dark_red    = "#a13131",
-  --   dark_yellow = "#9a6b16",
-  --   dark_purple = "#8f36a9",
-  --   diff_add    = "#303d27",
-  --   diff_delete = "#3c2729",
-  --   diff_change = "#18344c",
-  --   diff_text   = "#265478",
-  -- },
-  -- Jonathan's version
-  colors = {
+  -- Modify colors here. Rename the table name to "colors" to apply the change
+  rename_this_table_to_colors = {
     black       = "#151820",
     bg0         = "#282A35",
     bg1         = "#2d3343",
