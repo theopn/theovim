@@ -69,7 +69,7 @@ local plugins = {
   { "hrsh7th/nvim-cmp" }, --> Completion Engine
   { "folke/trouble.nvim" }, --> Pretty list of LSP error list
   { "glepnir/lspsaga.nvim", --> LSP hover doc, code action, outline, statusbar LSP context, etc
-    --config = function() require('lspsaga').setup() end
+    config = function() require('lspsaga').setup() end
   },
 
   -- {{{ Language specific
