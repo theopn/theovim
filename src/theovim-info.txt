@@ -1,9 +1,8 @@
-Version: 2023-02-04
+Version: 2023-02-07
 
 Changelog:
 
-- <leader>ca : Selectable menu for LSP functions
-- <leader>fa : Selectable menu for Telescope functions
-- :Weather : Weather popup
-- Installation script got a major change with color coded descriptions and double check for the installation directory
+- Color palette on the default colorscheme has changed
+- README revision
+- LaTeX support through Vimtex
 
