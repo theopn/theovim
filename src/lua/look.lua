@@ -9,7 +9,7 @@
 -- {{{ Theme Settings
 require("onedark").setup({
   style = "cool",
-  transparent = true,
+  transparent = false,
   toggle_style_key = "<leader>od",
   toggle_style_list = { "dark", "darker", "cool", "deep", "warm", "warmer" },
   code_style = {
@@ -19,32 +19,73 @@ require("onedark").setup({
     strings = 'none',
     variables = 'none'
   },
+  -- My Version
+  -- colors = {
+  --   black       = "#151820",
+  --   bg0         = "#282A35", -- Previously #242b38, bg from Dracula
+  --   bg1         = "#2d3343",
+  --   bg2         = "#343e4f",
+  --   bg3         = "#363c51",
+  --   bg_d        = "#1e242e",
+  --   bg_blue     = "#6db9f7", -- #7AA6DA br_blue from Monokai
+  --   bg_yellow   = "#E6DB74", -- #F0D197 yellow from Monokai
+  --   fg          = "#DBDBD3", -- #A5B0C5 white2 from Monokai
+  --   purple      = "#B77EE0", -- #CA72E4 br_purple from Monokai
+  --   green       = "#9EC400", -- #97CA72 br_green from Monokai
+  --   orange      = "#FD9720", -- #D99A5E orange from Monokai
+  --   blue        = "#5ab0f6",
+  --   yellow      = "#E6DB74", -- #EBC275 yellow from Monokai
+  --   cyan        = "#54CED6", -- #4DBDCB br_cyan from Monokai
+  --   red         = "#ef5f6b",
+  --   grey        = "#575b61",
+  --   light_grey  = "#7d899f", -- #7D899F grey from Monokai
+  --   dark_cyan   = "#25747d",
+  --   dark_red    = "#a13131",
+  --   dark_yellow = "#9a6b16",
+  --   dark_purple = "#8f36a9",
+  --   diff_add    = "#303d27",
+  --   diff_delete = "#3c2729",
+  --   diff_change = "#18344c",
+  --   diff_text   = "#265478",
+  -- },
+  -- Jonathan's version
+  colors = {
+    black       = "#151820",
+    bg0         = "#282A35",
+    bg1         = "#2d3343",
+    bg2         = "#343e4f",
+    bg3         = "#363c51",
+    bg_d        = "#1e242e",
+    bg_blue     = "#4982de",
+    bg_yellow   = "#e3e2a3",
+    fg          = "#d0eff5",
+    purple      = "#d3b3f5",
+    green       = "#ade3a3",
+    orange      = "#e8ba82",
+    blue        = "#5ab0f6",
+    yellow      = "#f5ee8c",
+    cyan        = "#87e0c2",
+    red         = "#ed7979",
+    grey        = "#828b8f",
+    light_grey  = "#b7c2c7",
+    dark_cyan   = "#68ad96",
+    dark_red    = "#a83434",
+    dark_yellow = "#c7bd34",
+    dark_purple = "#9a51e8",
+    diff_add    = "#303d27",
+    diff_delete = "#3c2729",
+    diff_change = "#18344c",
+    diff_text   = "#265478",
+  }
 })
 require("onedark").load()
--- require("nightfox").setup({
---   options = {
---     -- Compiled file's destination location
---     transparent = false, -- Disable setting background
---     terminal_colors = true, -- Set terminal colors (vim.g.terminal_color_*) used in `:terminal`
---     dim_inactive = false, -- Non focused panes set to alternative background
---     colorblind = {
---       enable = false, -- Enable colorblind support
---       severity = {
---         protan = 0.5, -- Severity [0,1] for protan (red)
---         deutan = 0.5, -- Severity [0,1] for deutan (green)
---         tritan = 0.3, -- Severity [0,1] for tritan (blue)
---       },
---     },
---   }
--- })
--- vim.cmd.colorscheme "duskfox"
 -- }}}
 
 -- {{{ Lualine (Status bar) Settings
 -- Inspired by examples/evil_lualine.lua in the plug-in repository, but utilizing position B and Y
 -- Position A and Z (far right and left, used for mode and pos by default), actively changes color,
 -- which is not fitting for this status line theme
-local lualine = require('lualine')
+local lualine = require("lualine")
 
 local colors = {
   bg           = "#282a36",
