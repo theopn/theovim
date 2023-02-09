@@ -1,8 +1,12 @@
-Version: 2023-02-07
+Version: 2023.02.09
 
-Changelog:
+Changelog - Version 2023.02.09:
 
-- Color palette on the default colorscheme has changed
-- README revision
+- Default colorscheme changed from OneDark to Pastelcula
+- 
+
+Changelog - Version 2023.02.07:
+
 - LaTeX support through Vimtex
+- LaTeX templates
 
