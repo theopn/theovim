@@ -34,7 +34,7 @@ $HOME/.theovim/theovim-util.sh install
 
 - Theovim is my personal Neovim configuration that is used, updated, and tested frequently
 - Instead of trying to make keybindings for every feature, Theovim groups some of the often but not frequently used LSP/plugin features and put them in selectable menus (try `<leader>ca` for LSP features and `<leader>fa` for fuzzy finder). Of course, there are keybindings for very frequently used features
-- THeovim has a fuzzy finder (Telescope) for almost everything - file browser, file search, buffer search, Git commits, Git status, Git diff, etc.
+- Theovim has a fuzzy finder (Telescope) for almost everything - file browser, file search, buffer search, Git commits, Git status, Git diff, etc.
 - Theovim has built-in help documentation (`:TheovimHelp`)
 - There are fun touches like `:Weather <optional-city-arg>` and ASCII arts
 - Configurations are well-commented; you are more than welcome to fork or reference the configuration and make it on your own
@@ -51,4 +51,8 @@ $HOME/.theovim/theovim-util.sh install
 - You can use the `:Mason` and `:MasonInstall` commands to install LSP servers and Theovim will automatically set it up for you
 - If the LSP supports it, codes will be automatically formatted on save. This can be turned off temporarily using the `:CodeFormatToggle` command
 - For more features, try `<leader>ca` keybindings
+
+## Cetera
+
+- Join (informal) Theovim user group [Discord server](https://discord.gg/er5EqNdkhH)
 
