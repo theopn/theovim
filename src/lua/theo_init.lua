@@ -9,7 +9,6 @@
 -- {{{ Functions for easier setting
 local GLOBAL = vim.o
 local WINDOW = vim.wo
-local BUFFER = vim.bo
 local function vim_set(opt, scope, val)
   scope[opt] = val
 end
@@ -21,82 +20,79 @@ end
 
 -- }}}
 
---- {{{ Global basic settings
-
---}}}
-
--- {{{ Syntax Related Settings
+--- {{{ Global base settings
 do
-  local syntax_opt = {
+  local base_opt = {
       { "filetype",      'on' },
       { "scrolloff",     7 }, --> Keep at least 7 lines visible above and below the cursor
       { "hlsearch",      true }, --> Highlight search result
       { "incsearch",     true }, --> Should be enabled by default
       { "ignorecase",    true }, --> Needed for smartcase
       { "smartcase",     true }, --> Ignore case iff search input was all lowercase
-      { "foldmethod",    "marker" },
-      { "foldlevel",     1 },
-      { "foldenable",    true }, --> Fold enabled w/o hitting zc.
-      { "list",          true }, --> Needed for listchars
       { "splitright",    false }, --> Vertical split default to left
       { "splitbelow",    false },
       { "termguicolors", true },
+      { "mouse",         'a' },
+      { "list",          true }, --> Needed for listchars
+      { "foldmethod",    "expr" }, --> Leave the fold up to treesitter
+      { "foldlevel",     1 }, --> Useless with expr, but when folding by "marker", it only folds folds w/in a fold only
+      { "foldenable",    false }, --> True for "marker" + level = 1, false for TS folding
   }
-  for _, v in ipairs(syntax_opt) do
+  -- Trailing white space --
+  vim.opt.listchars = { tab = "t>", trail = "␣", nbsp = "⍽" }
+  -- Folding using TreeSitter --
+  vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+  for _, v in ipairs(base_opt) do
     vim_set(v[1], GLOBAL, v[2])
   end
+  -- Highlight on yank --
+  vim.api.nvim_create_autocmd('TextYankPost', {
+      group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }),
+      pattern = '*',
+      callback = function() vim.highlight.on_yank() end,
+  })
 end
--- Trailing white space --
-vim.opt.listchars = { tab = "t>", trail = "␣", nbsp = "⍽" }
--- Highlight on yank --
-vim.api.nvim_create_autocmd('TextYankPost', {
-    group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }),
-    pattern = '*',
-    callback = function() vim.highlight.on_yank() end,
-})
--- }}}
+--}}}
 
--- {{{ Text Edit Related Settings
+-- {{{ Opinionated text editing settings
 do
   local edit_opt = {
       { "shiftwidth",   2 }, --> Indentation width
       { "tabstop",      2 }, --> Backslash t width
       { "softtabstop",  2 }, --> Tab key width
       { "expandtab",    true }, --> Tab as spaces
-      { "mouse",        'a' },
       { "spelllang",    "en" },
       { "spellsuggest", "best,8" },
   }
   for _, v in ipairs(edit_opt) do
     vim_set(v[1], GLOBAL, v[2])
   end
+  -- Spell check in markdown buffer only --
+  vim.api.nvim_create_autocmd('FileType', {
+      pattern = "markdown",
+      callback = function()
+        vim.wo.spell = true
+      end
+  })
 end
--- Spell check in markdown buffer only --
-vim.api.nvim_create_autocmd('FileType', {
-    pattern = "markdown",
-    callback = function()
-      vim.wo.spell = true
-    end
-}
-)
 -- }}}
 
--- {{{ Visual Related Settings
+-- {{{ Window options
 do
-  local vis_opt = {
+  local win_opt = {
       { opt = "number",         val = true },
       { opt = "relativenumber", val = true },
       { opt = "colorcolumn",    val = '120' },
       { opt = "cursorline",     val = true },
       { opt = "cursorcolumn",   val = true },
   }
-  for _, v in pairs(vis_opt) do
+  for _, v in pairs(win_opt) do
     vim_set(v.opt, WINDOW, v.val)
   end
 end
 -- }}}
 
--- {{{ Key Binding Related Settings
+-- {{{ Key Bindings
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { noremap = true }) --> Unbind space
 vim.g.mapleader = " " --> Space as the leader key
 do
@@ -132,7 +128,7 @@ do
       -- Terminal Mode --
       { 't', "<ESC>",           "<C-\\><C-n>" }, --> ESC for term
       -- Spell check --
-      { 'i', "<C-s>",           "<C-g>u<ESC>[s1z=`]a<C-g>u" }, --> Fix the nearest spelling error and put the cursor back
+      { 'i', "<C-s>",           "<C-g>u<ESC>[s1z=`]a<C-g>u" }, --> Fix nearest spelling error and put the cursor back
       { 'n', "<C-s>",           "z=" }, --> Toggle spelling suggestions
       { 'n', "<leader>st",      "<CMD>set spell!<CR>" }, --> Toggle spellcheck
       -- }}}
