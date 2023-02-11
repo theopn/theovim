@@ -125,6 +125,7 @@ do
       { 'n', "N",               "Nzz" },
       -- Visual Mode --
       { 'v', "<leader>y",       '"+y' }, --> Copy to the system clipboard
+      { 'n', "<leader>p",       function() THEOVIM_REGISTER_MENU() end }, --> Custom menu for pasting
       -- Terminal Mode --
       { 't', "<ESC>",           "<C-\\><C-n>" }, --> ESC for term
       -- Spell check --

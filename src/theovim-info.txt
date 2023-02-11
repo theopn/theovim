@@ -1,9 +1,9 @@
-Version: 2023.02.09
+Version: 2023.02.10
 
-Changelog - Version 2023.02.09:
+Changelog - Version 2023.02.10:
 
 - Default colorscheme changed from OneDark to Pastelcula
-- 
+- Base settings code base organization
 
 Changelog - Version 2023.02.07:
 
