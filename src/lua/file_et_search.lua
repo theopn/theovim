@@ -59,7 +59,7 @@ require("telescope").setup {
 }
 require("telescope").load_extension("file_browser")
 
---- Comprehensive list menu for Telescope functionalities
+-- Comprehensive list menu for Telescope functionalities
 local telescope_options = {
     ["Git Commits"] = function() vim.cmd("Telescope git_commits") end,
     ["Git Status"] = function() vim.cmd("Telescope git_status") end
@@ -86,14 +86,23 @@ end
 -- }}}
 
 -- {{{ Vimtex Settings
+vim.g.tex_flavor = "latex"
 vim.g.vimtex_view_method = "skim"
+--}}}
 
--- Add LaTeX template automatically
+-- {{{ Templates
 vim.api.nvim_create_autocmd("BufNewFile", {
     group = vim.api.nvim_create_augroup("Template", { clear = true }),
     pattern = "*.tex",
     callback = function()
       vim.cmd("0r ~/.theovim/templates/latex-hw-template.tex")
+    end
+})
+vim.api.nvim_create_autocmd("BufNewFile", {
+    group = vim.api.nvim_create_augroup("Template", { clear = true }),
+    pattern = "*.h",
+    callback = function()
+      vim.cmd("0r ~/.theovim/templates/c-header-template.h")
     end
 })
 --}}}
