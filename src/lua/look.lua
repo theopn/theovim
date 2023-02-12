@@ -200,10 +200,9 @@ ins_left({
 -- Making middle section
 ins_left({
     function()
-      return "%="
+      return "%=" -- Big empty room so that ins_left inserts to the middle
     end,
 })
-
 
 ins_left({
     function()
@@ -222,7 +221,7 @@ ins_left({
       return no_msg
     end,
     icon = " LSP:",
-    color = { fg = colors.fg, gui = "bold" },
+    color = { fg = colors.cyan, gui = "bold" },
 })
 
 ins_left({ "filetype", color = { fg = colors.pink, gui = "bold" } })
@@ -248,7 +247,7 @@ ins_right({
 ins_right({
     "fileformat",
     fmt = string.upper,
-    icons_enabled = false, -- I think icons are cool but Eviline doesn't have them. sigh
+    icons_enabled = true, -- Prints out UNIX or penguin icon
     color = { fg = colors.green, gui = "bold" },
 })
 
@@ -268,7 +267,6 @@ lualine.setup(config)
 -- }}}
 
 -- {{{ Barbar (Tab bar) Settings
-vim.api.nvim_set_keymap('n', "<C-,>", ":BufferPrevious<CR>", { noremap = true, silent = true })
 vim.g.bufferline = {
     icons = true,
     maximum_padding = 1,
@@ -365,8 +363,7 @@ db.setup({
 
 -- {{{ Notification Settings
 require("notify").setup({
-    -- The variable is needed if theme is transparent
-    background_colour = "#282a36",
+    background_colour = "#282a36", -- The variable is needed if theme is transparent
 })
 vim.notify = require("notify")
 -- }}}
