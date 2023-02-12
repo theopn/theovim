@@ -1,7 +1,7 @@
 #!/bin/bash
 
 mkdir -p ~/apps/
-cd ~/apps/ & { curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage ; chmod u+x nvim.appimage ; cd -; }
+cd ~/apps/ && { curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage ; chmod u+x nvim.appimage ; cd -; }
 
 echo "theovim) Would you like to add nvim alias to your bashrc (Please don't do it if you have done it already)? -> Type y/Y."
 read -n1 alias_input
