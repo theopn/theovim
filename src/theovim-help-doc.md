@@ -5,13 +5,16 @@
 ## Help
 
 - <leader> ?                  : Bring up key binding help pop-up
-  - You can hit a key, pause for 2 seconds to bring up the key binding help pop-up
+                                You can hit a key, pause for 2 seconds to bring up the key binding help pop-up
 - :TheovimHelp                : Open this help document
 
 ## Insert Mode
 
 - j k                         : ESC + :update (writes to a file if there is a change)
 - <C-hjkl>                    : Navigate in insert mode
+- Tab character               : Renders as "t>"
+- Trailing space              : Renders as "␣"
+- Non-breaking space          : Renders as "⍽"
 
 ## Normal Mode
 
@@ -29,6 +32,7 @@
 ## Visual Mode
 
 - <leader> y                  : Copy to '+' clipboard (should work for both MacOS and Linux with X11 window server)
+- <leader> p                  : Open up selection menu from available registers
 - :'<,'>CommentToggle         : Comment the selected lines
 
 ## Buffer (tab) navigation
@@ -66,15 +70,17 @@
 
 > Spell check is on by default in the markdown buffer
 
-- <C-s>: In insert mode, fix the nearest spelling error and put the cursor back; in normal mode, toggle spelling suggestion on the cursor
-- <leader> s t: set sspell!
+- <C-s>:                      : In insert mode, fix the nearest spelling error and put the cursor back
+                                In normal mode, toggle spelling suggestion on the cursor
+- <leader> s t                : Toggle spell checker
 
-## Markdown
+## Markdown and LaTeX
 
-- `:call mkpd#util#install()` to install binary necessary for the markdown preview
-- `:MarkdownPreviewToggle`: Opens the compiled markdown file in the native browser
+- `:MarkdownPreviewToggle`    : Opens the compiled markdown file in the native browser
+- `:VimtexCompile`            : Start a real-time compile in Skim PDF viewer
 
 ## Others
 
-- `:Weather <optional-city>   : Prints out the pop-up weather report. Optional city argument (separate spaces by underscore e.g. Weather new_york) can be supplied
+- `:Weather <optional-city>   : Prints out the pop-up weather report
+                                Optional city argument (separate spaces by underscore e.g. Weather new_york) can be supplied
 
