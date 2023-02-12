@@ -1,8 +1,20 @@
-Version: 2023-02-07
+Current Version: 2023.02.12
 
-Changelog:
+* Changelog
 
-- Color palette on the default colorscheme has changed
-- README revision
+** Version 2023.02.12
+
+- Default colorscheme changed from OneDark to Pastelcula
+- C header file (*.h) template
+
+** Version 2023.02.07
+
 - LaTeX support through Vimtex
+- LaTeX templates
+
+** Version 2023.02.03
+
+- Weather command
+- Installation script major revision
+- LSP/Telescope feature selection menu (<leader>ca, <leader>fa)
 

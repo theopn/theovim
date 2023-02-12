@@ -19,13 +19,13 @@ local function theovim_floating_win_util(file_path)
   local col = math.ceil((width - win_width) / 2)
 
   local win_opts = {
-    style = "minimal",
-    relative = "editor",
-    width = win_width,
-    height = win_height,
-    row = row,
-    col = col,
-    border = "shadow",
+      style = "minimal",
+      relative = "editor",
+      width = win_width,
+      height = win_height,
+      row = row,
+      col = col,
+      border = "shadow",
   }
 
   -- create preview buffer and set local options
@@ -44,7 +44,7 @@ local function theovim_floating_win_util(file_path)
 
   -- https://www.reddit.com/r/neovim/comments/s97tja/opening_an_existing_file_in_a_floating_window/
   vim.api.nvim_buf_set_option(0, "modifiable", true)
-  vim.api.nvim_command("$read" .. file_path)
+  vim.api.nvim_command("$read" .. file_path) -- Is it same as :read command? I'm not sure
   vim.api.nvim_buf_set_option(0, "modifiable", false)
 end
 
@@ -71,13 +71,13 @@ local function weather_popup(location)
   local y_pos = vim.o.columns - win_width
 
   local win_opts = {
-    style = "minimal",
-    relative = "editor",
-    width = win_width,
-    height = win_height,
-    row = x_pos,
-    col = y_pos,
-    border = "single",
+      style = "minimal",
+      relative = "editor",
+      width = win_width,
+      height = win_height,
+      row = x_pos,
+      col = y_pos,
+      border = "single",
   }
 
   local buf = vim.api.nvim_create_buf(false, true)
@@ -99,4 +99,4 @@ end
 
 -- function() my_func() end: inline function calling my_func(); my_func(): return val; my_func: function itself
 -- You need to pass function itself to use the usercommand arguments
-vim.api.nvim_create_user_command("Weather", weather_popup, { nargs = '?' }) --> ?: 0 or 1, *: > 0, +: > 1
+vim.api.nvim_create_user_command("Weather", weather_popup, { nargs = '?' }) --> ?: 0 or 1, *: > 0, +: > 1 args

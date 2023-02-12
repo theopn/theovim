@@ -7,17 +7,16 @@
 "   |  |  |  7  ||     7|  !  ||     ||  ||  |  |  ||     77     ||  7
 "   !__!  !__!__!!_____!!_____!!_____!!__!!__!__!__!!_____!!_____!!__!
 --]]
-
 -- List of LSP server used later
 -- MasonInstall bash-language-server, clangd, css-lsp, html-lsp, lua-language-server, python-lsp-server, remark-language-server, sqlls
 -- Always check the memory usage of each language server. :LSpInfo to identify LSP server and use "sudo lsof -p PID" to check for associated files
 -- Blacklist: ltex-ls (java process running in the bg for each instance of markdown files)
 local server_list = {
-  "bashls", "clangd", "sumneko_lua", "pylsp",
+  "bashls", "clangd", "lua_ls", "pylsp",
 }
 
 local theo_server_recommendations = {
-  "cssls", "html", "sqlls"
+  "cssls", "html", "sqlls", "texlab"
 }
 
 -- {{{ Call lspconfig settings
@@ -41,7 +40,7 @@ local on_attach = function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
     -- User command to toggle code format only available when LSP is detected
     vim.api.nvim_create_user_command("CodeFormatToggle", function() code_format_toggle() end,
-      { nargs = 0 })
+    { nargs = 0 })
 
     -- Autocmd for code formatting on the write
     vim.api.nvim_create_autocmd("BufWritePre", {
@@ -51,7 +50,6 @@ local on_attach = function(client, bufnr)
         if CODE_FORMAT_STATUS then vim.lsp.buf.format() end
       end
     })
-
   end
 end
 
@@ -66,15 +64,26 @@ require("mason-lspconfig").setup_handlers({
   function(server_name)
     require("lspconfig")[server_name].setup({ capabilities = capabilities, on_attach = on_attach })
   end,
-  -- Lua gets a special treatment just for the vim.all_the_fun_stuff
-  ["sumneko_lua"] = function()
-    lspconfig.sumneko_lua.setup({
+  -- Lua gets a special treatment
+  ["lua_ls"] = function()
+    lspconfig.lua_ls.setup({
       capabilities = capabilities,
       on_attach = on_attach,
       settings = {
+        -- https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/lua.template.editorconfig
         Lua = {
+          format = {
+            enable = true,
+            defaultConfig = {
+              indent_style = "space",
+              indent_size = "2",
+            },
+          },
           diagnostics = {
-            globals = { "vim" }
+            globals = { "vim" } --> expose the LSP to vim.all.the.fun.stuff
+          },
+          telemetry = {
+            enable = false,
           },
         },
       },
@@ -134,7 +143,7 @@ cmp.setup({
     ["<C-j>"] = cmp.mapping.select_next_item(), --> <C-n>
     ["<C-k>"] = cmp.mapping.select_prev_item(), --> <C-p>
     ["<C-e>"] = cmp.mapping.abort(), --> Close the completion window
-    ["<C-[>"] = cmp.mapping.scroll_docs(-4), --> Scroll through the information window next to the item
+    ["<C-[>"] = cmp.mapping.scroll_docs( -4), --> Scroll through the information window next to the item
     ["<C-]>"] = cmp.mapping.scroll_docs(4), --> ^
     ["<C-Space>"] = cmp.mapping.complete(), --> Brings up completion window without
     ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
@@ -172,7 +181,6 @@ cmp.setup({
         nvim_lsp = "[LSP]",
         luasnip = "[LuaSnip]",
         nvim_lua = "[Lua]",
-        latex_symbols = "[LaTeX]",
       })[entry.source.name]
       return vim_item
     end
@@ -218,10 +226,10 @@ function THEOVIM_LSP_MENU()
   vim.ui.select(lsp_option_names, {
     prompt = "Code action to perform at the current cursor:",
   },
-    function(choice)
-      local action_func = lsp_options[choice]
-      if action_func ~= nil then
-        action_func()
-      end
-    end)
+  function(choice)
+    local action_func = lsp_options[choice]
+    if action_func ~= nil then
+      action_func()
+    end
+  end)
 end
