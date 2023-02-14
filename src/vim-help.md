@@ -2,12 +2,6 @@
 
 Most of the single character or really basic bindings (hjkl, webr, u/<C-r> etc) are omitted.
 
-## Search and Replace
-
-- :%s/text/replacement/g, :<',>'s/text/replacement: Replace
-- //: Last search
-- *: Searches the cursor word
-
 ## Normal Mode
 
 - <C-d>, <C-u>: Scroll through the file
@@ -17,7 +11,19 @@ Most of the single character or really basic bindings (hjkl, webr, u/<C-r> etc) 
 - dt<char>: "Delete Till <char>"
 - 0/$: Move to front/back of the current line
 - %: Jump to the matching parenthesis, curly braces, brackets, etc
+- gg=G: Indent the whole file
 - ZZ: :x
+
+### Search and Replace
+
+- :%s/text/replacement/g, :<',>'s/text/replacement: Replace
+- //: Last search
+- *: Searches the cursor word
+
+### Folding
+
+- zc/zo/za: Close, open, or toggle one level of folding on the cursor (capital letter for all levels)
+- zr/zm: Close or open one level of folding throughout the buffer (capital letter for all levels)
 
 ## Insert Mode
 
