@@ -2,6 +2,11 @@
 
 <leader> = Space
 
+## Management
+
+- :TheovimUpdate              : Update Theovim
+- :TheovimInfo                : View current version and changelog
+
 ## Help
 
 - <leader> ?                  : Bring up key binding help pop-up
@@ -18,7 +23,7 @@
 
 ## Normal Mode
 
-- z R                         : Open all folds
+- :TrimWhitespace             : Remove trailing whitespace
 
 - <leader> z (Zsh)            : Open a ZSH terminal
 - <leader> /                  : Clear search highlighting
@@ -82,5 +87,5 @@
 ## Others
 
 - `:Weather <optional-city>   : Prints out the pop-up weather report
-                                Optional city argument (separate spaces by underscore e.g. Weather new_york) can be supplied
+                                Optional city argument (replace spaces by underscores e.g. :Weather new_york) can used
 
