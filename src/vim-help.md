@@ -9,6 +9,8 @@ Most of the single character or really basic bindings (hjkl, webr, u/<C-r> etc) 
 - g<C-g>: Current buffer word count, etc.
 - daw: "Delete A Word"
 - dt<char>: "Delete Till <char>"
+- dd: Delete a line
+- .: Repeat last command
 - 0/$: Move to front/back of the current line
 - %: Jump to the matching parenthesis, curly braces, brackets, etc
 - gg=G: Indent the whole file

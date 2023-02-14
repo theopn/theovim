@@ -1,6 +1,10 @@
-Current Version: 2023.02.12
+Current Version: 2023.02.14
 
 * Changelog
+
+** Version 2023.02.13
+
+- :TrimWhitespace command
 
 ** Version 2023.02.12
 
