@@ -45,7 +45,7 @@
 - <leader> t (Tab)            : Open a new buffer
 - <leader> , ("<")            : Navigate to previous buffer (left in the top buffer list)
 - <leader> . (">")            : Navigate to previous buffer (right in the top buffer list)
-- <leader> k (Kill)           : Kill the current buffer
+- <leader> x                  : Kill the current buffer
 
 ## Telescope
 

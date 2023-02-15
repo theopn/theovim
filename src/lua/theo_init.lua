@@ -145,7 +145,7 @@ do
     { 'n', "<leader>t",       "<CMD>tabnew<CR>" }, --> Open a new buffer
     { 'n', "<leader>,",       "<CMD>BufferPrevious<CR>" }, --> Barbar plugin overrides "gT"
     { 'n', "<leader>.",       "<CMD>BufferNext<CR>" }, --> Barbar plugin overrides "gt"
-    { 'n', "<leader>k",       "<CMD>BufferClose<CR>" }, --> Kill a tab
+    { 'n', "<leader>x",       "<CMD>BufferClose<CR>" }, --> Kill a buffer
     -- Telescope --
     { 'n', "<leader>fa",      function() THEOVIM_TELESCOPE_MENU() end },
     { 'n', "<leader>ff",      "<CMD>Telescope find_files<CR>" },
