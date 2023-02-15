@@ -40,7 +40,7 @@ local on_attach = function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
     -- User command to toggle code format only available when LSP is detected
     vim.api.nvim_create_user_command("CodeFormatToggle", function() code_format_toggle() end,
-    { nargs = 0 })
+      { nargs = 0 })
 
     -- Autocmd for code formatting on the write
     vim.api.nvim_create_autocmd("BufWritePre", {
@@ -177,11 +177,11 @@ cmp.setup({
       vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind)
       -- Source
       vim_item.menu = ({
-        buffer = "[Buffer]",
-        nvim_lsp = "[LSP]",
-        luasnip = "[LuaSnip]",
-        nvim_lua = "[Lua]",
-      })[entry.source.name]
+            buffer = "[Buffer]",
+            nvim_lsp = "[LSP]",
+            luasnip = "[LuaSnip]",
+            nvim_lua = "[Lua]",
+          })[entry.source.name]
       return vim_item
     end
   },
@@ -204,8 +204,19 @@ cmp.setup.cmdline(':', {
     { name = 'cmdline' }
   })
 })
+-- }}}
 
---- Comprehensive list menu for LSP functionalities
+-- {{{ LSPSaga Settings
+require('lspsaga').setup({
+  symbol_in_winbar = {
+    enable = true,
+    separator = "  ",
+    color_mode = false, -- I found color to be breaking when colorscheme change
+  },
+})
+-- }}}
+
+-- {{{ Comprehensive list menu for LSP functionalities
 local lsp_options = {
   ["Code Action"] = function() require("lspsaga.codeaction"):code_action() end,
   ["Current Buffer Diagonostics"] = function() require("lspsaga.diagnostic"):show_buf_diagnsotic("buffer") end,
@@ -226,10 +237,12 @@ function THEOVIM_LSP_MENU()
   vim.ui.select(lsp_option_names, {
     prompt = "Code action to perform at the current cursor:",
   },
-  function(choice)
-    local action_func = lsp_options[choice]
-    if action_func ~= nil then
-      action_func()
-    end
-  end)
+    function(choice)
+      local action_func = lsp_options[choice]
+      if action_func ~= nil then
+        action_func()
+      end
+    end)
 end
+
+-- }}}
