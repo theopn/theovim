@@ -108,7 +108,7 @@ local config = {
     lualine_b = {},
     lualine_y = {},
     lualine_z = {},
-    lualine_c = { { "filename", file_status = true, path = 2 } }, --> 0 (default) file name, 1 relative path, 2 abs path
+    lualine_c = { { "filename", file_status = true, path = 0 } }, --> 0 (default) file name, 1 relative path, 2 abs path
     lualine_x = {
       { "diagnostics",
         sources = { 'nvim_diagnostic' },
@@ -299,6 +299,13 @@ nvim_tree_events.subscribe("TreeClose", function()
 end)
 -- }}}
 
+-- {{{ Notification Settings
+require("notify").setup({
+  background_colour = "#282a36", -- The variable is needed if theme is transparent
+})
+vim.notify = require("notify")
+-- }}}
+
 -- {{{ Dashboard Settings
 local db = require("dashboard")
 db.setup({
@@ -359,11 +366,4 @@ db.setup({
     footer = { os.date("Theovim %Y") }
   }
 })
--- }}}
-
--- {{{ Notification Settings
-require("notify").setup({
-  background_colour = "#282a36", -- The variable is needed if theme is transparent
-})
-vim.notify = require("notify")
 -- }}}
