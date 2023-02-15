@@ -42,14 +42,14 @@
 
 ## Buffer (tab) navigation
 
-- <leader> t (Tab)            : Open a new buffer
+- <leader> n (New)            : Open a new buffer
 - <leader> , ("<")            : Navigate to previous buffer (left in the top buffer list)
 - <leader> . (">")            : Navigate to previous buffer (right in the top buffer list)
 - <leader> x                  : Kill the current buffer
 
 ## Telescope
 
-- <leader> n                  : Toggle file tree
+- <leader> t (Tree)           : Toggle file tree
 - <leader> f a (Find Actions) : Selectable menu for commonly used Telescope features
 - <leader> f f (Find File)    : Open up a fuzzy file searcher for the current and nested directories
 - <leader> f b (File Browser) : Open up a fuzzy file finder (is able to navigate to previous directories)
