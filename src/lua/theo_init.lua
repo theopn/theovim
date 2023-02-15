@@ -140,9 +140,9 @@ do
 
     -- {{{ Plugin/Feature Specific Keybindings
     { 'n', "<leader>?",       "<CMD>WhichKey<CR>" }, --> Bring up Which-key pop-up
-    { 'n', "<leader>n",       "<CMD>NvimTreeToggle<CR>" }, --> Tree toggle
+    { 'n', "<leader>t",       "<CMD>NvimTreeToggle<CR>" }, --> Tree toggle
     -- Barbar navigation --
-    { 'n', "<leader>t",       "<CMD>tabnew<CR>" }, --> Open a new buffer
+    { 'n', "<leader>n",       "<CMD>enew<CR>" }, --> Open a new buffer
     { 'n', "<leader>,",       "<CMD>BufferPrevious<CR>" }, --> Barbar plugin overrides "gT"
     { 'n', "<leader>.",       "<CMD>BufferNext<CR>" }, --> Barbar plugin overrides "gt"
     { 'n', "<leader>x",       "<CMD>BufferClose<CR>" }, --> Kill a buffer
