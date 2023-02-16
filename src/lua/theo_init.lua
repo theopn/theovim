@@ -129,7 +129,6 @@ do
     { 'n', "N",               "Nzz" },
     -- Visual Mode --
     { 'v', "<leader>y",       '"+y' }, --> Copy to the system clipboard
-    { 'n', "<leader>p",       function() THEOVIM_REGISTER_MENU() end }, --> Custom menu for pasting
     -- Terminal Mode --
     { 't', "<ESC>",           "<C-\\><C-n>" }, --> ESC for term
     -- Spell check --
@@ -147,13 +146,14 @@ do
     { 'n', "<leader>.",       "<CMD>BufferNext<CR>" }, --> Barbar plugin overrides "gt"
     { 'n', "<leader>x",       "<CMD>BufferClose<CR>" }, --> Kill a buffer
     -- Telescope --
+    { 'n', "<leader>p",       "<CMD>Telescope registers<CR>" }, --> :reg without Telescope
     { 'n', "<leader>fa",      function() THEOVIM_TELESCOPE_MENU() end },
     { 'n', "<leader>ff",      "<CMD>Telescope find_files<CR>" },
     { 'n', "<leader>fb",      "<CMD>Telescope file_browser<CR>" },
     { 'n', "<leader>f/",      "<CMD>Telescope current_buffer_fuzzy_find<CR>" }, --> Better search
     -- LSP Related --
     { 'n', "<leader>ca",      function() THEOVIM_LSP_MENU() end },
-    { 'n', "<leader>cd",      function() require("lspsaga.hover"):render_hover_doc() end }, --> vim.lsp.buf.hover()
+    { 'n', "<leader>cd",      function() vim.lsp.buf.hover() end },
     { 'n', "<leader>cr",      function() require("lspsaga.rename"):lsp_rename() end }, --> vim.lsp.buf.rename()
     -- }}}
   }
