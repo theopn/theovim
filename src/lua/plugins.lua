@@ -64,7 +64,6 @@ local plugins = {
   { "hrsh7th/cmp-buffer" }, --> nvim-cmp source for buffer words
   { "hrsh7th/cmp-path" }, --> nvim-cmp source for file path
   { "hrsh7th/cmp-cmdline" }, --> nvim-cmp source for :commands
-  --{ "hrsh7th/cmp-omni" }, --> Maninly to support auto completion for vimtex
   { "hrsh7th/nvim-cmp" }, --> Completion Engine
   { "folke/trouble.nvim" }, --> Pretty list of LSP error list
   { "glepnir/lspsaga.nvim" }, --> LSP hover doc, code action, outline, statusbar LSP context, etc
