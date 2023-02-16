@@ -6,21 +6,29 @@ Most of the single character or really basic bindings (hjkl, webr, u/<C-r> etc) 
 
 - <C-d>, <C-u>: Scroll through the file
 - <C-f>, <C-b>: Page down/up
-- g<C-g>: Current buffer word count, etc.
+
 - daw: "Delete A Word"
 - dt<char>: "Delete Till <char>"
 - dd: Delete a line
-- .: Repeat last command
+
 - 0/$: Move to front/back of the current line
 - %: Jump to the matching parenthesis, curly braces, brackets, etc
-- gg=G: Indent the whole file
+
+- .: Repeat last command
+- g<C-g>: Current buffer word count, etc.
 - ZZ: :x
+- gg=G: Indent the whole file
+
+- q<letter>: Start recording key strokes in <letter> register
+             @<letter> to repeat marco
+             q to exit
 
 ### Search and Replace
 
 - :%s/text/replacement/g, :<',>'s/text/replacement: Replace
 - //: Last search
 - *: Searches the cursor word
+- R: Continuous replace mode
 
 ### Folding
 
