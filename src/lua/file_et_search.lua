@@ -30,7 +30,7 @@ end
 table.sort(terminal_option_names)
 function THEOVIM_TERMINAL_MENU()
   vim.ui.select(terminal_option_names, {
-    prompt = "How would you like to toggle a terminal?",
+    prompt = "Where would you like to launch a terminal?",
   },
     function(choice)
       local action_func = terminal_options[choice]
@@ -46,10 +46,9 @@ end
 local terminal_augroup = vim.api.nvim_create_augroup("Terminal", { clear = true })
 vim.api.nvim_create_autocmd("TermClose", {
   group = terminal_augroup,
-  callback = function ()
+  callback = function()
     vim.api.nvim_input("<CR>")
   end
-
 })
 -- }}}
 
