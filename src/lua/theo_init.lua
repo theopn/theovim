@@ -110,7 +110,6 @@ do
     { 'i', "<C-k>",           "<UP>" },
     { 'i', "<C-l>",           "<RIGHT>" },
     -- Normal Mode --
-    { 'n', "<leader>z",       "<CMD>vsplit term://zsh<CR>" }, --> Quick terminal launch
     { 'n', "<leader>/",       "<CMD>let @/=''<CR>" }, --> @/ is the macro for the last search
     { 'n', "<leader>a",       "gg<S-v>G" }, --> Select all
     -- Split pane navigation and resizing --
@@ -140,6 +139,7 @@ do
     -- {{{ Plugin/Feature Specific Keybindings
     { 'n', "<leader>?",       "<CMD>WhichKey<CR>" }, --> Bring up Which-key pop-up
     { 'n', "<leader>t",       "<CMD>NvimTreeToggle<CR>" }, --> Tree toggle
+    { 'n', "<leader>z",       function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
     -- Barbar navigation --
     { 'n', "<leader>n",       "<CMD>enew<CR>" }, --> Open a new buffer
     { 'n', "<leader>,",       "<CMD>BufferPrevious<CR>" }, --> Barbar plugin overrides "gT"

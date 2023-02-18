@@ -15,7 +15,7 @@ Theovim is an IDE layer for Neovim equipped with useful tools and plugins for co
 
 ## Installation
 
-- Install the latest version of Neovim. Use `nvim_appimage_downloader` if your system does not permit a binary installation
+Install the latest version of Neovim. Use `nvim_appimage_downloader` if your system does not permit a binary installation.
 
 Execute the following commands:
 
@@ -32,11 +32,11 @@ $HOME/.theovim/theovim-util.sh install
 
 ## Highlights
 
-- Theovim is my personal Neovim configuration that is used, updated, and tested frequently
-- Instead of trying to make keybindings for every feature, Theovim groups some of the often but not frequently used LSP/plugin features and put them in selectable menus (try `<leader>ca` for LSP features and `<leader>fa` for fuzzy finder). Of course, there are keybindings for very frequently used features
+- Instead of having complex bindings, Theovim groups some of the often but not frequently used LSP/plugin features and put them in selectable menus (try `<leader>ca` for LSP features and `<leader>fa` for fuzzy finder). Of course, there are keybindings for very frequently used features
+- You can quickly toggle terminals whenever you want (bottom, left, floating, new tab, etc.) using `<leader>z`
 - Theovim has a fuzzy finder (Telescope) for almost everything - file browser, file search, buffer search, Git commits, Git status, Git diff, etc.
 - Theovim has built-in help documentation (`:TheovimHelp`)
-- There are fun touches like `:Weather <optional-city-arg>` and ASCII arts
+- Theovim ships with fun tools (`:Scratchpad` `:Calculator`, `:Weather`, etc.)
 - Configurations are well-commented; you are more than welcome to fork or reference the configuration and make it on your own
 - There are less than 35 total plugins
 
@@ -52,7 +52,7 @@ $HOME/.theovim/theovim-util.sh install
 - If the LSP supports it, codes will be automatically formatted on save. This can be turned off temporarily using the `:CodeFormatToggle` command
 - For more features, try `<leader>ca` keybindings
 
-## Cetera
+## Other Things
 
 - Join (informal) Theovim user group [Discord server](https://discord.gg/er5EqNdkhH)
 

@@ -6,6 +6,69 @@
 "  \__|_||_\___\___/\_/|_|_|_|_|  |_| |_|_\___( )__/\___\__,_|_| \__|_||_|
 "                                             |/
 --]]
+--
+-- {{{ Terminal menu
+local terminal_options = {
+  -- [[
+  -- https://medium.com/@egzvor/vim-splits-cheat-sheet-2bf84fc99962
+  --           | :top sp |
+  -- |:top vs| |:abo| cu | |:bot vs |
+  -- |       | |:bel| rr | |        |
+  --           | :bot sp |
+  -- ]]
+  ["1. Bottom"] = function() vim.cmd("bot 20sp | term") end,
+  ["2. Left"] = function() vim.cmd("botright 40vs | term") end, -- bot == botright
+  ["3. Floating"] = function() require("lspsaga.floaterm"):open_float_terminal() end,
+  ["4. New Tab"] = function() vim.cmd("term") end,
+}
+local terminal_option_names = {}
+local n = 0
+for i, _ in pairs(terminal_options) do
+  n = n + 1
+  terminal_option_names[n] = i
+end
+table.sort(terminal_option_names)
+function THEOVIM_TERMINAL_MENU()
+  vim.ui.select(terminal_option_names, {
+    prompt = "How would you like to toggle a terminal?",
+  },
+    function(choice)
+      local action_func = terminal_options[choice]
+      if action_func ~= nil then
+        action_func()
+      end
+    end)
+end
+
+-- Automatically close the terminal when exit
+-- TODO: Translate the following to Lua
+-- autocmd TermClose * if !v:event.status | exe 'bdelete! '..expand('<abuf>') | endif
+local terminal_augroup = vim.api.nvim_create_augroup("Terminal", { clear = true })
+vim.api.nvim_create_autocmd("TermClose", {
+  group = terminal_augroup,
+  callback = function ()
+    vim.api.nvim_input("<CR>")
+  end
+
+})
+-- }}}
+
+-- {{{ Templates
+local template_augroup = vim.api.nvim_create_augroup("Template", { clear = true })
+local function create_template_autocmd(pattern, file_path)
+  vim.api.nvim_create_autocmd("BufNewFile", {
+    group = template_augroup,
+    pattern = pattern,
+    callback = function()
+      vim.cmd("0r " .. file_path)
+    end
+  })
+end
+
+create_template_autocmd("*.tex", "~/.theovim/templates/latex-hw-template.tex")
+create_template_autocmd("*.h", "~/.theovim/templates/c-header-template.h")
+--}}}
+
 -- {{{ Tree Sitter Settings
 require("nvim-treesitter.configs").setup {
   ensure_installed = { "c", "latex", "lua", "markdown", "python", "vim", },
@@ -88,20 +151,4 @@ end
 -- {{{ Vimtex Settings
 vim.g.tex_flavor = "latex"
 vim.g.vimtex_view_method = "skim"
---}}}
-
--- {{{ Templates
-local template_augroup = vim.api.nvim_create_augroup("Template", { clear = true })
-local function add_template_autocmd(pattern, file_path)
-  vim.api.nvim_create_autocmd("BufNewFile", {
-    group = template_augroup,
-    pattern = pattern,
-    callback = function()
-      vim.cmd("0r " .. file_path)
-    end
-  })
-end
-
-add_template_autocmd("*.tex", "~/.theovim/templates/latex-hw-template.tex")
-add_template_autocmd("*.h", "~/.theovim/templates/c-header-template.h")
 --}}}

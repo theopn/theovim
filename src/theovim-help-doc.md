@@ -25,7 +25,7 @@
 
 - :TrimWhitespace             : Remove trailing whitespace
 
-- <leader> z (Zsh)            : Open a ZSH terminal
+- <leader> z (Zsh)            : Open a menu for launching terminal
 - <leader> /                  : Clear search highlighting
 - <leader> a (All)            : Select all text
 
