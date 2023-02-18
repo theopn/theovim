@@ -15,9 +15,12 @@ local terminal_options = {
   -- |:top vs| |:abo| cu | |:bot vs |
   -- |       | |:bel| rr | |        |
   --           | :bot sp |
+  -- botright == bot
   -- ]]
-  ["1. Bottom"] = function() vim.cmd("bot 20sp | term") end,
-  ["2. Right"] = function() vim.cmd("botright 40vs | term") end, -- bot == botright
+  ["1. Bottom"] = function()
+                    vim.api.nvim_command("botright " .. math.ceil(vim.fn.winheight(0) * 0.3) .. "sp | term")
+                  end,
+  ["2. Right"] = function() vim.api.nvim_command("bot " ..  math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term") end,
   ["3. Floating"] = function() require("lspsaga.floaterm"):open_float_terminal() end,
   ["4. New Tab"] = function() vim.cmd("term") end,
 }
