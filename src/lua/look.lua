@@ -335,7 +335,7 @@ db.setup({
     },
     center = {
       {
-        icon = "  ",
+        icon = "󰥨  ",
         desc = "Find File           ",
         key = "spc ff",
         action = "Telescope find_files",
