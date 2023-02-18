@@ -17,7 +17,7 @@ local terminal_options = {
   --           | :bot sp |
   -- ]]
   ["1. Bottom"] = function() vim.cmd("bot 20sp | term") end,
-  ["2. Left"] = function() vim.cmd("botright 40vs | term") end, -- bot == botright
+  ["2. Right"] = function() vim.cmd("botright 40vs | term") end, -- bot == botright
   ["3. Floating"] = function() require("lspsaga.floaterm"):open_float_terminal() end,
   ["4. New Tab"] = function() vim.cmd("term") end,
 }
@@ -66,6 +66,11 @@ end
 
 create_template_autocmd("*.tex", "~/.theovim/templates/latex-hw-template.tex")
 create_template_autocmd("*.h", "~/.theovim/templates/c-header-template.h")
+--}}}
+
+-- {{{ Vimtex Settings
+vim.g.tex_flavor = "latex"
+vim.g.vimtex_view_method = "skim"
 --}}}
 
 -- {{{ Tree Sitter Settings
@@ -146,8 +151,3 @@ function THEOVIM_TELESCOPE_MENU()
 end
 
 -- }}}
-
--- {{{ Vimtex Settings
-vim.g.tex_flavor = "latex"
-vim.g.vimtex_view_method = "skim"
---}}}
