@@ -219,14 +219,13 @@ require("lspsaga").setup({
 
 -- {{{ Comprehensive list menu for LSP functionalities
 local lsp_options = {
-  ["8. Auto Format Toggle"] = function() code_format_toggle() end,
-  ["7. Rename Variable"] = function() require("lspsaga.rename"):lsp_rename() end,
-  ["6. Hover Doc"] = function() vim.lsp.buf.hover() end, -- LSPSaga version requires Markdown treesitter
-  ["5. Outline"] = function() require("lspsaga.outline"):outline() end,
-  ["4. Floating Terminal"] = function() require("lspsaga.floaterm"):open_float_terminal() end,
-  ["3. Current Buffer Diagonostics"] = function() require("lspsaga.diagnostic"):show_buf_diagnsotic("buffer") end,
+  ["1. Code Action"] = function() require("lspsaga.codeaction"):code_action() end,
   ["2. Definition and References"] = function() require("lspsaga.finder"):lsp_finder() end,
-  ["1. Code Action"] = function() require("lspsaga.codeaction"):code_action() end
+  ["3. Current Buffer Diagonostics"] = function() require("lspsaga.diagnostic"):show_buf_diagnsotic("buffer") end,
+  ["4. Outline"] = function() require("lspsaga.outline"):outline() end,
+  ["5. Hover Doc"] = function() vim.lsp.buf.hover() end, -- LSPSaga version requires Markdown treesitter
+  ["6. Rename Variable"] = function() require("lspsaga.rename"):lsp_rename() end,
+  ["7. Auto Format Toggle"] = function() code_format_toggle() end,
 }
 local lsp_option_names = {}
 local n = 0
