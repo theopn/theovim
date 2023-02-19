@@ -137,9 +137,10 @@ do
     -- }}}
 
     -- {{{ Plugin/Feature Specific Keybindings
+    { 'n', "<leader>m",       function() THEOVIM_MISC_MENU() end }, --> All the other features
+    { 'n', "<leader>z",       function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
     { 'n', "<leader>?",       "<CMD>WhichKey<CR>" }, --> Bring up Which-key pop-up
     { 'n', "<leader>t",       "<CMD>NvimTreeToggle<CR>" }, --> Tree toggle
-    { 'n', "<leader>z",       function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
     -- Barbar navigation --
     { 'n', "<leader>n",       "<CMD>enew<CR>" }, --> Open a new buffer
     { 'n', "<leader>,",       "<CMD>BufferPrevious<CR>" }, --> Barbar plugin overrides "gT"
