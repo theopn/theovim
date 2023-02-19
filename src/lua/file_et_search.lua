@@ -18,9 +18,9 @@ local terminal_options = {
   -- botright == bot
   -- ]]
   ["1. Bottom"] = function()
-                    vim.api.nvim_command("botright " .. math.ceil(vim.fn.winheight(0) * 0.3) .. "sp | term")
-                  end,
-  ["2. Right"] = function() vim.api.nvim_command("bot " ..  math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term") end,
+    vim.api.nvim_command("botright " .. math.ceil(vim.fn.winheight(0) * 0.3) .. "sp | term")
+  end,
+  ["2. Right"] = function() vim.api.nvim_command("bot " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term") end,
   ["3. Floating"] = function() require("lspsaga.floaterm"):open_float_terminal() end,
   ["4. New Tab"] = function() vim.cmd("term") end,
 }
@@ -77,7 +77,7 @@ vim.g.vimtex_view_method = "skim"
 --}}}
 
 -- {{{ Tree Sitter Settings
-require("nvim-treesitter.configs").setup {
+require("nvim-treesitter.configs").setup({
   ensure_installed = { "c", "latex", "lua", "markdown", "python", "vim", },
   sync_install = false,
   auto_install = true,
@@ -92,11 +92,11 @@ require("nvim-treesitter.configs").setup {
     extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
     max_file_lines = nil, -- Do not enable for files with more than n lines, int
   }
-}
+})
 -- }}}
 
 -- {{{ NvimTree Settings
-require("nvim-tree").setup {
+require("nvim-tree").setup({
   auto_reload_on_write = true,
   open_on_setup = false, --> Auto open when no files opened
   open_on_setup_file = false, --> Auto open when files opened
@@ -112,11 +112,11 @@ require("nvim-tree").setup {
     relativenumber = false,
     signcolumn = "yes",
   }
-}
+})
 -- }}}
 
 -- {{{ Telescope Settings
-require("telescope").setup {
+require("telescope").setup({
   defaults = {
     mappings = {
       i = {
@@ -126,7 +126,7 @@ require("telescope").setup {
     },
   },
   extensions = { file_browser = { hidden = true } },
-}
+})
 require("telescope").load_extension("file_browser")
 
 -- Comprehensive list menu for Telescope functionalities
