@@ -8,7 +8,6 @@
 "   !__!  !__!__!!_____!!_____!!_____!!__!!__!__!__!!_____!!_____!!__!
 --]]
 -- List of LSP server used later
--- MasonInstall bash-language-server, clangd, css-lsp, html-lsp, lua-language-server, python-lsp-server, remark-language-server, sqlls
 -- Always check the memory usage of each language server. :LSpInfo to identify LSP server and use "sudo lsof -p PID" to check for associated files
 -- Blacklist: ltex-ls (java process running in the bg for each instance of markdown files)
 local server_list = {
@@ -40,7 +39,7 @@ local on_attach = function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
     -- User command to toggle code format only available when LSP is detected
     vim.api.nvim_create_user_command("CodeFormatToggle", function() code_format_toggle() end,
-    { nargs = 0 })
+      { nargs = 0 })
 
     -- Autocmd for code formatting on the write
     vim.api.nvim_create_autocmd("BufWritePre", {
@@ -128,7 +127,7 @@ local check_backspace = function()
   return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
 end
 
-local cmp = require "cmp"
+local cmp = require("cmp")
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -145,8 +144,8 @@ cmp.setup({
     ["<C-e>"] = cmp.mapping.abort(), --> Close the completion window
     ["<C-[>"] = cmp.mapping.scroll_docs( -4), --> Scroll through the information window next to the item
     ["<C-]>"] = cmp.mapping.scroll_docs(4), --> ^
-    ["<C-Space>"] = cmp.mapping.complete(), --> Brings up completion window without
-    ["<CR>"] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+    ["<C-n>"] = cmp.mapping.complete(), --> Brings up completion window
+    ["<CR>"] = cmp.mapping.confirm({ select = false }), --> If you want to automatically select the first item without pressing tab, enable this
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item({ behavior = cmp.SelectBehavior.Select }) --> <C-n> if completion window is open
@@ -164,24 +163,26 @@ cmp.setup({
       end
     end, { 'i', 's' }),
   }),
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp' },
-    { name = 'luasnip' },
-  }, {
-    { name = 'buffer' },
-    { name = 'path' },
-  }),
+  sources = cmp.config.sources(
+    {
+      { name = 'nvim_lsp' },
+      { name = 'luasnip' },
+    },
+    {
+      { name = 'buffer' },
+      { name = 'path' },
+    }),
   formatting = {
     format = function(entry, vim_item)
       -- Kind icons
-      vim_item.kind = string.format('%s %s', kind_icons[vim_item.kind], vim_item.kind)
+      vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
       -- Source
       vim_item.menu = ({
-        buffer = "[Buffer]",
-        nvim_lsp = "[LSP]",
-        luasnip = "[LuaSnip]",
-        nvim_lua = "[Lua]",
-      })[entry.source.name]
+            buffer = "[Buffer]",
+            nvim_lsp = "[LSP]",
+            luasnip = "[LuaSnip]",
+            nvim_lua = "[Lua]",
+          })[entry.source.name]
       return vim_item
     end
   },
@@ -204,16 +205,27 @@ cmp.setup.cmdline(':', {
     { name = 'cmdline' }
   })
 })
+-- }}}
 
---- Comprehensive list menu for LSP functionalities
+-- {{{ LSPSaga Settings
+require("lspsaga").setup({
+  symbol_in_winbar = {
+    enable = true,
+    separator = "  ",
+    color_mode = false, -- I found color to be breaking when colorscheme change
+  },
+})
+-- }}}
+
+-- {{{ Comprehensive list menu for LSP functionalities
 local lsp_options = {
-  ["Code Action"] = function() require("lspsaga.codeaction"):code_action() end,
-  ["Current Buffer Diagonostics"] = function() require("lspsaga.diagnostic"):show_buf_diagnsotic("buffer") end,
-  ["Definition and References"] = function() require("lspsaga.finder"):lsp_finder() end,
-  ["Hover Doc"] = function() require("lspsaga.hover"):render_hover_doc() end,
-  ["Outline"] = function() require("lspsaga.outline"):outline() end,
-  ["Rename Variable"] = function() require("lspsaga.rename"):lsp_rename() end,
-  ["Auto Format Toggle"] = function() code_format_toggle() end
+  ["1. Code Action"] = function() require("lspsaga.codeaction"):code_action() end,
+  ["2. Definition and References"] = function() require("lspsaga.finder"):lsp_finder() end,
+  ["3. Current Buffer Diagonostics"] = function() require("lspsaga.diagnostic"):show_buf_diagnsotic("buffer") end,
+  ["4. Outline"] = function() require("lspsaga.outline"):outline() end,
+  ["5. Hover Doc"] = function() vim.lsp.buf.hover() end, -- LSPSaga version requires Markdown treesitter
+  ["6. Rename Variable"] = function() require("lspsaga.rename"):lsp_rename() end,
+  ["7. Auto Format Toggle"] = function() code_format_toggle() end,
 }
 local lsp_option_names = {}
 local n = 0
@@ -226,10 +238,12 @@ function THEOVIM_LSP_MENU()
   vim.ui.select(lsp_option_names, {
     prompt = "Code action to perform at the current cursor:",
   },
-  function(choice)
-    local action_func = lsp_options[choice]
-    if action_func ~= nil then
-      action_func()
-    end
-  end)
+    function(choice)
+      local action_func = lsp_options[choice]
+      if action_func ~= nil then
+        action_func()
+      end
+    end)
 end
+
+-- }}}
