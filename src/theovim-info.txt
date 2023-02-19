@@ -1,6 +1,13 @@
-Current Version: 2023.02.12
+Current Version: 2023.02.18
 
 * Changelog
+
+** Version 2023.02.18
+
+- Terminal selection menu (<leader>z)
+- :TrimWhitespace command
+- :Notepad command
+- Misc feature selection menu (<leader>m)
 
 ** Version 2023.02.12
 
