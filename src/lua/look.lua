@@ -54,6 +54,7 @@ require("onedark").load()
 require("bufferline").setup({
   maximum_padding = 1,
   maximum_length = 30,
+  icon_separator_active = '',
 })
 -- Compitability w/ nvim-tree --
 local nvim_tree_events = require("nvim-tree.events")
@@ -231,7 +232,7 @@ ins_left({
     end
     return no_msg
   end,
-  icon = " LSP:",
+  icon = " ",
   color = { fg = colors.cyan, gui = "bold" },
 })
 
@@ -246,6 +247,8 @@ ins_left {
   },
 }
 
+ins_right({ "filetype", color = { fg = colors.orange, gui = "bold" } })
+
 ins_right({
   "o:encoding",
   fmt = string.upper,
@@ -259,8 +262,6 @@ ins_right({
   icons_enabled = true, -- Prints out UNIX or penguin icon
   color = { fg = colors.green, gui = "bold" },
 })
-
-ins_right({ "filetype", color = { fg = colors.pink, gui = "bold" } })
 
 ins_far_right({ "location" })
 
