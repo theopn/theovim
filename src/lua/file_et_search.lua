@@ -106,8 +106,8 @@ require("telescope").load_extension("file_browser")
 
 -- Comprehensive list menu for Telescope functionalities
 local telescope_options = {
-  ["Git Commits"] = function() vim.cmd("Telescope git_commits") end,
-  ["Git Status"] = function() vim.cmd("Telescope git_status") end
+  ["1. Git Commits"] = function() vim.cmd("Telescope git_commits") end,
+  ["2. Git Status"] = function() vim.cmd("Telescope git_status") end
 }
 local telescope_option_names = {}
 local n = 0
