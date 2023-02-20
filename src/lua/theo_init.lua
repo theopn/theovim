@@ -30,15 +30,15 @@ do
     { "ignorecase",    true }, --> Needed for smartcase
     { "smartcase",     true }, --> Ignore case iff search input was all lowercase
     { "splitright",    false }, --> Vertical split default to left
-    { "splitbelow",    false },
+    { "splitbelow",    true }, --> Horizontal split default to below
     { "termguicolors", true },
-    { "mouse",         'a' },
+    { "mouse",         'a' }, --> Enable mouse
     { "list",          true }, --> Needed for listchars
     { "foldmethod",    "expr" }, --> Leave the fold up to treesitter
     { "foldlevel",     1 }, --> Useless with expr, but when folding by "marker", it only folds folds w/in a fold only
     { "foldenable",    false }, --> True for "marker" + level = 1, false for TS folding
   }
-  -- Trailing white space --
+  -- Listing special characters --
   vim.opt.listchars = { tab = "t>", trail = "␣", nbsp = "⍽" }
   -- Folding using TreeSitter --
   vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
@@ -69,7 +69,7 @@ do
   end
   -- Spell check in markdown buffer only --
   vim.api.nvim_create_autocmd('FileType', {
-    pattern = "markdown",
+    pattern = { "markdown", "text" },
     callback = function()
       vim.wo.spell = true
     end
@@ -147,11 +147,11 @@ do
     { 'n', "<leader>.",       "<CMD>BufferNext<CR>" }, --> Barbar plugin overrides "gt"
     { 'n', "<leader>x",       "<CMD>BufferClose<CR>" }, --> Kill a buffer
     -- Telescope --
-    { 'n', "<leader>p",       "<CMD>Telescope registers<CR>" }, --> :reg without Telescope
+    { 'n', "<leader>p",       "<CMD>Telescope registers<CR>" },
     { 'n', "<leader>fa",      function() THEOVIM_TELESCOPE_MENU() end },
     { 'n', "<leader>ff",      "<CMD>Telescope find_files<CR>" },
     { 'n', "<leader>fb",      "<CMD>Telescope file_browser<CR>" },
-    { 'n', "<leader>f/",      "<CMD>Telescope current_buffer_fuzzy_find<CR>" }, --> Better search
+    { 'n', "<leader>f/",      "<CMD>Telescope current_buffer_fuzzy_find<CR>" },
     -- LSP Related --
     { 'n', "<leader>ca",      function() THEOVIM_LSP_MENU() end },
     { 'n', "<leader>cd",      function() vim.lsp.buf.hover() end },
