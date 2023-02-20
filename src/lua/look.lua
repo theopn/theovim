@@ -18,43 +18,53 @@ require("onedark").setup({
     strings = 'none',
     variables = 'none'
   },
-  -- Modify colors here. Rename the table name to "colors" to apply the change
-  colors_REMOVE = {
+  colors_save = {
     black       = "#151820",
     bg0         = "#282A35",
     bg1         = "#2d3343",
     bg2         = "#343e4f",
     bg3         = "#363c51",
     bg_d        = "#1e242e",
-    bg_blue     = "#4982de",
-    bg_yellow   = "#e3e2a3",
-    fg          = "#d0eff5",
-    purple      = "#d3b3f5",
-    green       = "#ade3a3",
-    orange      = "#e8ba82",
+    bg_blue     = "#6db9f7",
+    bg_yellow   = "#f0d197",
+    fg          = "#dcdede",
+    purple      = "#ae79f2",
+    green       = "#69c273",
+    orange      = "#f29950",
     blue        = "#5ab0f6",
-    yellow      = "#f5ee8c",
-    cyan        = "#87e0c2",
-    red         = "#ed7979",
-    grey        = "#828b8f",
-    light_grey  = "#b7c2c7",
-    dark_cyan   = "#68ad96",
-    dark_red    = "#a83434",
-    dark_yellow = "#c7bd34",
-    dark_purple = "#9a51e8",
+    yellow      = "#faeb89",
+    cyan        = "#4dbdcb",
+    red         = "#f26161",
+    grey        = "#737373",
+    light_grey  = "#7d899f",
+    dark_cyan   = "#25747d",
+    dark_red    = "#a13131",
+    dark_yellow = "#9a6b16",
+    dark_purple = "#8f36a9",
     diff_add    = "#303d27",
     diff_delete = "#3c2729",
     diff_change = "#18344c",
     diff_text   = "#265478",
-  }
+  },
 })
 require("onedark").load()
 -- }}}
 
+
+-- {{{ Notification Settings
+require("notify").setup({
+  background_colour = "#282a36", -- The variable is needed if theme is transparent
+})
+vim.notify = require("notify")
+-- }}}
+
 -- {{{ Lualine (Status bar) Settings
--- Inspired by examples/evil_lualine.lua in the plug-in repository, but utilizing position B and Y
--- Position A and Z (far right and left, used for mode and pos by default), actively changes color,
--- which is not fitting for this status line theme
+--[[
+Inspired by examples/evil_lualine.lua in the plug-in repository, but utilizing position B and Y
++-------------------------------------------------+
+| A | B | C                             X | Y | Z |
++-------------------------------------------------+
+--]]
 local lualine = require("lualine")
 
 local colors = {
@@ -104,17 +114,10 @@ local config = {
     lualine_x = {},
   },
   inactive_sections = {
-    lualine_a = {},
+    lualine_a = { { "filename", file_status = true, path = 0 } }, --> 0 (default) file name, 1 relative path, 2 abs path
     lualine_b = {},
-    lualine_y = {},
-    lualine_z = {},
-    lualine_c = { { "filename", file_status = true, path = 0 } }, --> 0 (default) file name, 1 relative path, 2 abs path
-    lualine_x = {
-      { "diagnostics",
-        sources = { 'nvim_diagnostic' },
-        symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
-      },
-    },
+    lualine_c = {},
+    lualine_x = { "diagnostics" },
   },
 }
 
@@ -224,8 +227,6 @@ ins_left({
   color = { fg = colors.cyan, gui = "bold" },
 })
 
-ins_left({ "filetype", color = { fg = colors.pink, gui = "bold" } })
-
 ins_left {
   "diagnostics",
   sources = { "nvim_diagnostic" },
@@ -250,6 +251,8 @@ ins_right({
   icons_enabled = true, -- Prints out UNIX or penguin icon
   color = { fg = colors.green, gui = "bold" },
 })
+
+ins_right({ "filetype", color = { fg = colors.pink, gui = "bold" } })
 
 ins_far_right({ "location" })
 
@@ -297,13 +300,6 @@ end)
 nvim_tree_events.subscribe("TreeClose", function()
   bufferline_api.set_offset(0)
 end)
--- }}}
-
--- {{{ Notification Settings
-require("notify").setup({
-  background_colour = "#282a36", -- The variable is needed if theme is transparent
-})
-vim.notify = require("notify")
 -- }}}
 
 -- {{{ Dashboard Settings
