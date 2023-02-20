@@ -65,8 +65,8 @@ local plugins = {
   { "hrsh7th/cmp-path" }, --> nvim-cmp source for file path
   { "hrsh7th/cmp-cmdline" }, --> nvim-cmp source for :commands
   { "hrsh7th/nvim-cmp" }, --> Completion Engine
-  { "folke/trouble.nvim" }, --> Pretty list of LSP error list
   { "glepnir/lspsaga.nvim" }, --> LSP hover doc, code action, outline, statusbar LSP context, etc
+
   -- {{{ Language specific
   { "iamcco/markdown-preview.nvim", --> MarkdownPreview to toggle
     build = function() vim.fn["mkdp#util#install"]() end, --> Binary installation for markdown-preview
