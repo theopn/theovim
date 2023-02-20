@@ -71,11 +71,6 @@ add_template("*.tex", "~/.theovim/templates/latex-hw-template.tex")
 add_template("*.h", "~/.theovim/templates/c-header-template.h")
 --}}}
 
--- {{{ Vimtex Settings
-vim.g.tex_flavor = "latex"
-vim.g.vimtex_view_method = "skim"
---}}}
-
 -- {{{ Tree Sitter Settings
 require("nvim-treesitter.configs").setup({
   ensure_installed = { "c", "latex", "lua", "markdown", "python", "vim", },
@@ -84,33 +79,13 @@ require("nvim-treesitter.configs").setup({
   ignore_install = {},
   highlight = {
     enable = true,
-    disable = {},
-    additional_vim_regex_highlighting = false,
-  },
-  rainbow = {
-    enable = true,
-    extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-    max_file_lines = nil, -- Do not enable for files with more than n lines, int
-  }
-})
--- }}}
-
--- {{{ NvimTree Settings
-require("nvim-tree").setup({
-  auto_reload_on_write = true,
-  open_on_setup = false, --> Auto open when no files opened
-  open_on_setup_file = false, --> Auto open when files opened
-  open_on_tab = false,
-  sort_by = "name",
-  view = {
-    width = 30,
-    --height = 30, --> No longer supported
-    hide_root_folder = false,
-    side = "left",
-    preserve_window_proportions = false,
-    number = false,
-    relativenumber = false,
-    signcolumn = "yes",
+    disable = function(lang, buf)
+      local max_filesize = 100 * 1024 -- 100 KB
+      local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+      if ok and stats and stats.size > max_filesize then
+        return true
+      end
+    end,
   }
 })
 -- }}}

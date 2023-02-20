@@ -94,21 +94,7 @@ local colors = {
   blue         = '#51afef',
 }
 
-local conditions = {
-  buffer_not_empty = function()
-    return vim.fn.empty(vim.fn.expand('%:t')) ~= 1
-  end,
-  hide_in_width = function()
-    return vim.fn.winwidth(0) > 80
-  end,
-  check_git_workspace = function()
-    local filepath = vim.fn.expand('%:p:h')
-    local gitdir = vim.fn.finddir('.git', filepath .. ';')
-    return gitdir and #gitdir > 0 and #gitdir < #filepath
-  end,
-}
-
--- Default Lualine config table to remove defaults
+-- Remove defaults
 local config = {
   options = {
     component_separators = '',
@@ -117,21 +103,19 @@ local config = {
   sections = {
     lualine_a = {},
     lualine_b = {},
-    lualine_y = {},
-    lualine_z = {},
     lualine_c = {},
     lualine_x = {},
+    lualine_y = {},
+    lualine_z = {},
   },
   inactive_sections = {
     lualine_a = { { "filename", file_status = true, path = 0 } }, --> 0 (default) file name, 1 relative path, 2 abs path
-    lualine_b = {},
-    lualine_c = {},
     lualine_x = { "diagnostics" },
   },
 }
 
 local function ins_far_left(component)
-  table.insert(config.sections.lualine_b, component)
+  table.insert(config.sections.lualine_b, component) -- Region A should not be used for custom Lualine (highlighting issue)
 end
 
 local function ins_left(component)
@@ -143,8 +127,17 @@ local function ins_right(component)
 end
 
 local function ins_far_right(component)
-  table.insert(config.sections.lualine_y, component)
+  table.insert(config.sections.lualine_y, component) -- Region Z should not be used for custom Lualine, see above
 end
+
+local conditions = {
+  buffer_not_empty = function()
+    return vim.fn.empty(vim.fn.expand('%:t')) ~= 1
+  end,
+  hide_in_width = function()
+    return vim.fn.winwidth(0) > 80
+  end
+}
 
 -- Reminder that you can invoke Lua function without parentheses, but moving forward I prefer having them
 ins_far_left {
@@ -188,24 +181,18 @@ ins_far_left({
 
 ins_left({
   "filename",
-  cond = conditions.buffer_not_empty,
+  icon = '',
   color = { fg = colors.magenta, gui = "bold" },
+  cond = conditions.buffer_not_empty,
 })
 
 ins_left({
   "branch",
-  icon = '',
-  color = { fg = colors.violet, gui = "bold" },
+  color = { fg = colors.pink, gui = "bold" },
 })
 
 ins_left({
   "diff",
-  symbols = { added = ' ', modified = ' ', removed = ' ' },
-  diff_color = {
-    added = { fg = colors.green },
-    modified = { fg = colors.orange },
-    removed = { fg = colors.red },
-  },
   cond = conditions.hide_in_width,
 })
 
@@ -234,17 +221,13 @@ ins_left({
   end,
   icon = " ",
   color = { fg = colors.cyan, gui = "bold" },
+  cond = conditions.hide_in_width,
 })
 
 ins_left {
   "diagnostics",
   sources = { "nvim_diagnostic" },
-  symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
-  diagnostics_color = {
-    color_error = { fg = colors.red },
-    color_warn = { fg = colors.yellow },
-    color_info = { fg = colors.cyan },
-  },
+  cond = conditions.hide_in_width,
 }
 
 ins_right({ "filetype", color = { fg = colors.orange, gui = "bold" } })
@@ -252,8 +235,8 @@ ins_right({ "filetype", color = { fg = colors.orange, gui = "bold" } })
 ins_right({
   "o:encoding",
   fmt = string.upper,
-  cond = conditions.hide_in_width,
   color = { fg = colors.green, gui = "bold" },
+  cond = conditions.hide_in_width,
 })
 
 ins_right({
@@ -261,6 +244,7 @@ ins_right({
   fmt = string.upper,
   icons_enabled = true, -- Prints out UNIX or penguin icon
   color = { fg = colors.green, gui = "bold" },
+  cond = conditions.hide_in_width,
 })
 
 ins_far_right({ "location" })
@@ -279,8 +263,7 @@ lualine.setup(config)
 -- }}}
 
 -- {{{ Dashboard Settings
-local db = require("dashboard")
-db.setup({
+require("dashboard").setup({
   theme = 'doom',
   config = {
     header = {

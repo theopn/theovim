@@ -7,10 +7,10 @@
 "                                 |_|       |___|
 --]]
 --
--- {{{
+-- {{{ Plugin list
 local plugins = {
   -- {{{ Dependencies
-  { "nvim-lua/plenary.nvim" }, --> Lua function library for Neovim
+  { "nvim-lua/plenary.nvim" }, --> Lua function library for Neovim (used by Telescope)
   { "nvim-tree/nvim-web-devicons" }, --> Icons for barbar, Telescope, and more
   -- }}}
 
@@ -22,7 +22,7 @@ local plugins = {
   {
     "rcarriga/nvim-notify", --> Prettier notification
     config = function()
-      require("notify").setup({ background_colour = "#282a36" }) --> The variable is needed if theme is transparent
+      require("notify").setup({ background_colour = "#282A35" }) --> The variable is needed if theme is transparent
       vim.notify = require("notify")
     end
   },
@@ -33,7 +33,10 @@ local plugins = {
   -- }}}
 
   -- {{{ File and search
-  { "kyazdani42/nvim-tree.lua" }, --> File tree
+  {
+    "kyazdani42/nvim-tree.lua", --> File tree
+    config = function() require("nvim-tree").setup() end
+  },
   {
     "lewis6991/gitsigns.nvim", --> Git information
     config = function() require("gitsigns").setup() end
@@ -74,32 +77,28 @@ local plugins = {
     config = function() require("luasnip.loaders.from_vscode").lazy_load() end --> Load snippets from friendly snippets
   },
   { "saadparwaiz1/cmp_luasnip" }, --> nvim_cmp and LuaSnip bridge
-  { "hrsh7th/cmp-nvim-lsp" }, --> Bridge betwee nvim-cmp and lspconfig
+  { "hrsh7th/cmp-nvim-lsp" }, --> nvim-cmp source for LSP engine
   { "hrsh7th/cmp-buffer" }, --> nvim-cmp source for buffer words
   { "hrsh7th/cmp-path" }, --> nvim-cmp source for file path
   { "hrsh7th/cmp-cmdline" }, --> nvim-cmp source for :commands
   { "hrsh7th/nvim-cmp" }, --> Completion Engine
   {
     "glepnir/lspsaga.nvim",
-    config = function()
-      require("lspsaga").setup({
-        symbol_in_winbar = {
-          enable = true,
-          separator = "  ",
-          color_mode = false, -- I found color to be breaking when colorscheme change
-        },
-      })
-    end
+    config = function() require("lspsaga").setup() end
   }, --> LSP hover doc, code action, outline, statusbar LSP context, etc
 
   -- {{{ Language specific
   {
     "iamcco/markdown-preview.nvim", --> MarkdownPreview to toggle
     build = function() vim.fn["mkdp#util#install"]() end, --> Binary installation for markdown-preview
-    ft = { "markdown" },
+    ft = { "markdown" }
   },
   {
     "lervag/vimtex", --> LaTeX integration
+    config = function()
+      vim.g.tex_flavor = "latex"
+      vim.g.vimtex_view_method = "skim"
+    end,
     ft = { "plaintex", "tex" }
   }
   -- }}}
