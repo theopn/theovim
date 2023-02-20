@@ -50,12 +50,21 @@ require("onedark").setup({
 require("onedark").load()
 -- }}}
 
-
--- {{{ Notification Settings
-require("notify").setup({
-  background_colour = "#282a36", -- The variable is needed if theme is transparent
+-- {{{ Bufferline Settings
+require("bufferline").setup({
+  options = {
+    max_name_length = 15,
+    tab_size = 15,
+    offsets = {
+      {
+        filetype = "NvimTree",
+        text = "File Explorer",
+        text_align = "center",
+        separator = true
+      }
+    },
+  }
 })
-vim.notify = require("notify")
 -- }}}
 
 -- {{{ Lualine (Status bar) Settings
@@ -140,7 +149,7 @@ end
 -- Reminder that you can invoke Lua function without parentheses, but moving forward I prefer having them
 ins_far_left {
   function()
-    return '▊'
+    return ''
   end,
   color = { fg = colors.blue },
   padding = { left = 0, right = 1 },
@@ -260,46 +269,13 @@ ins_far_right({ "progress", color = { fg = colors.fg, gui = "bold" } })
 
 ins_far_right({
   function()
-    return '▊'
+    return ''
   end,
   color = { fg = colors.blue },
   padding = { left = 1 },
 })
 
 lualine.setup(config)
--- }}}
-
--- {{{ Barbar (Tab bar) Settings
-vim.g.bufferline = {
-  icons = true,
-  maximum_padding = 1,
-  maximum_length = 30,
-  icon_separator_active = '▎',
-  icon_separator_inactive = '▎',
-  icon_close_tab = '',
-  icon_close_tab_modified = '●',
-  icon_pinned = '車',
-  no_name_title = "New Buffer"
-}
--- Compitability w/ nvim-tree --
-local nvim_tree_events = require("nvim-tree.events")
-local bufferline_api = require("bufferline.api")
-
-local function get_tree_size()
-  return require "nvim-tree.view".View.width
-end
-
-nvim_tree_events.subscribe("TreeOpen", function()
-  bufferline_api.set_offset(get_tree_size())
-end)
-
-nvim_tree_events.subscribe("Resize", function()
-  bufferline_api.set_offset(get_tree_size())
-end)
-
-nvim_tree_events.subscribe("TreeClose", function()
-  bufferline_api.set_offset(0)
-end)
 -- }}}
 
 -- {{{ Dashboard Settings

@@ -6,6 +6,7 @@
 " |_| |_|_|___|___|\_/|_|_|_|_|   |  _|_|___|_  |_|_|_|
 "                                 |_|       |___|
 --]]
+--
 -- {{{
 local plugins = {
   -- {{{ Dependencies
@@ -14,17 +15,23 @@ local plugins = {
   -- }}}
 
   -- {{{ Appearance
-  { "theopn/pastelcula.nvim" },
+  { "theopn/pastelcula.nvim" }, --> Colorscheme
   { "nvim-lualine/lualine.nvim" }, --> Status line plugin
-  { "romgrk/barbar.nvim" }, --> Tab bar plugin
+  { "akinsho/bufferline.nvim" }, --> Buffer ("tab") bar plugin
   { "glepnir/dashboard-nvim" }, --> Startup dashboard
-  { "rcarriga/nvim-notify" }, --> Prettier notification
+  { "rcarriga/nvim-notify", --> Prettier notification
+    config = function()
+      require("notify").setup({ background_colour = "#282a36" }) --> The variable is needed if theme is transparent
+      vim.notify = require("notify")
+    end
+  },
   { "doums/suit.nvim", --> Prettier vim.ui.select() and input()
     config = function() require("suit").setup() end
   },
   -- }}}
 
-  -- {{{ File et Search
+  -- {{{ File and search
+  { "kyazdani42/nvim-tree.lua" }, --> File tree
   { "lewis6991/gitsigns.nvim", --> Git information
     config = function() require("gitsigns").setup() end
   },
@@ -38,7 +45,6 @@ local plugins = {
     config = function() require("nvim_comment").setup() end
   },
   { "nvim-treesitter/nvim-treesitter" }, --> Incremental highlighting
-  { "kyazdani42/nvim-tree.lua" }, --> File tree
   { "nvim-telescope/telescope.nvim" }, --> Expendable fuzzy finder
   { "nvim-telescope/telescope-file-browser.nvim" }, --> File browser extension for Telescope
   { "folke/which-key.nvim", --> Pop-up dictionary for keybindings

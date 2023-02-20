@@ -6,6 +6,7 @@
 " | |_| | | |  __/ (_) \ V /| | | | | | |_____| | | | | | |_
 "  \__|_| |_|\___|\___/ \_/ |_|_| |_| |_|     |_|_| |_|_|\__|
 --]]
+--
 -- {{{ Functions for easier setting
 local GLOBAL = vim.o
 local WINDOW = vim.wo
@@ -20,7 +21,7 @@ end
 
 -- }}}
 
---- {{{ Global base settings
+-- {{{ Global base settings
 do
   local base_opt = {
     { "filetype",      'on' },
@@ -52,7 +53,7 @@ do
     callback = function() vim.highlight.on_yank() end,
   })
 end
---}}}
+-- }}}
 
 -- {{{ Opinionated text editing settings
 do
@@ -123,6 +124,11 @@ do
     { 'n', "<leader><DOWN>",  "<C-w>5-" },
     { 'n', "<leader><UP>",    "<C-w>5+" },
     { 'n', "<leader><RIGHT>", "<C-w>10>" },
+    -- Buffer naviagation --
+    { 'n', "<leader>n",       "<CMD>enew<CR>" }, --> Open a new buffer
+    { 'n', "<leader>,",       "<CMD>bprevious<CR>" },
+    { 'n', "<leader>.",       "<CMD>bnext<CR>" },
+    { 'n', "<leader>x",       "<CMD>bdelete<CR>" }, --> Kill a buffer
     -- Search auto center --
     { 'n', "n",               "nzz" },
     { 'n', "N",               "Nzz" },
@@ -141,11 +147,6 @@ do
     { 'n', "<leader>z",       function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
     { 'n', "<leader>?",       "<CMD>WhichKey<CR>" }, --> Bring up Which-key pop-up
     { 'n', "<leader>t",       "<CMD>NvimTreeToggle<CR>" }, --> Tree toggle
-    -- Barbar navigation --
-    { 'n', "<leader>n",       "<CMD>enew<CR>" }, --> Open a new buffer
-    { 'n', "<leader>,",       "<CMD>BufferPrevious<CR>" }, --> Barbar plugin overrides "gT"
-    { 'n', "<leader>.",       "<CMD>BufferNext<CR>" }, --> Barbar plugin overrides "gt"
-    { 'n', "<leader>x",       "<CMD>BufferClose<CR>" }, --> Kill a buffer
     -- Telescope --
     { 'n', "<leader>p",       "<CMD>Telescope registers<CR>" },
     { 'n', "<leader>fa",      function() THEOVIM_TELESCOPE_MENU() end },
