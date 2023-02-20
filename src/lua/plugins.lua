@@ -83,9 +83,9 @@ local plugins = {
   { "hrsh7th/cmp-cmdline" }, --> nvim-cmp source for :commands
   { "hrsh7th/nvim-cmp" }, --> Completion Engine
   {
-    "glepnir/lspsaga.nvim",
+    "glepnir/lspsaga.nvim", --> LSP hover doc, code action, outline, statusbar LSP context, etc
     config = function() require("lspsaga").setup() end
-  }, --> LSP hover doc, code action, outline, statusbar LSP context, etc
+  },
 
   -- {{{ Language specific
   {
