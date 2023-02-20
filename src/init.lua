@@ -21,8 +21,8 @@ Logo: figlet -f soft Theovim
 "       `--'   `--' `--' `----' `---'   `--'   `--'`--`--`--'        "
 "                                                                    "
 --]]
-
----[[ Lua configs in ~/.config/nvim/lua
+--
+-- Lua configs in ~/.config/nvim/lua
 require("theo_init")
 require("plugins")
 require("look")
@@ -33,4 +33,3 @@ require("lsp")
 require("theovim")
 
 --require("user-config/config")
---]]
