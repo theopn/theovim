@@ -207,16 +207,6 @@ cmp.setup.cmdline(':', {
 })
 -- }}}
 
--- {{{ LSPSaga Settings
-require("lspsaga").setup({
-  symbol_in_winbar = {
-    enable = true,
-    separator = "  ",
-    color_mode = false, -- I found color to be breaking when colorscheme change
-  },
-})
--- }}}
-
 -- {{{ Comprehensive list menu for LSP functionalities
 local lsp_options = {
   ["1. Code Action"] = function() require("lspsaga.codeaction"):code_action() end,
