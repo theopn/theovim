@@ -9,7 +9,7 @@
 
 -- {{{ Util commands
 -- Reference: https://github.com/ellisonleao/glow.nvim/blob/main/lua/glow/init.lua
-local function theovim_floating_win_util(file_path)
+local function spawn_floating_win(file_path)
   local width = vim.o.columns
   local height = vim.o.lines
   local height_ratio = 0.8
@@ -58,10 +58,10 @@ end, { nargs = 0 })
 
 local helpdoc_path = vim.api.nvim_get_runtime_file("theovim-help-doc.md", false)[1]
 -- nargs ?: 0 or 1, *: > 0, +: > 1 args
-vim.api.nvim_create_user_command("TheovimHelp", function() theovim_floating_win_util(helpdoc_path) end, { nargs = 0 })
+vim.api.nvim_create_user_command("TheovimHelp", function() spawn_floating_win(helpdoc_path) end, { nargs = 0 })
 
 local info_path = vim.api.nvim_get_runtime_file("theovim-info.txt", false)[1]
-vim.api.nvim_create_user_command("TheovimInfo", function() theovim_floating_win_util(info_path) end, { nargs = 0 })
+vim.api.nvim_create_user_command("TheovimInfo", function() spawn_floating_win(info_path) end, { nargs = 0 })
 -- }}}
 
 -- {{{ Notepad

@@ -57,7 +57,7 @@ vim.api.nvim_create_autocmd("TermClose", {
 
 -- {{{ Templates
 local template_augroup = vim.api.nvim_create_augroup("Template", { clear = true })
-local function create_template_autocmd(pattern, file_path)
+local function add_template(pattern, file_path)
   vim.api.nvim_create_autocmd("BufNewFile", {
     group = template_augroup,
     pattern = pattern,
@@ -67,8 +67,8 @@ local function create_template_autocmd(pattern, file_path)
   })
 end
 
-create_template_autocmd("*.tex", "~/.theovim/templates/latex-hw-template.tex")
-create_template_autocmd("*.h", "~/.theovim/templates/c-header-template.h")
+add_template("*.tex", "~/.theovim/templates/latex-hw-template.tex")
+add_template("*.h", "~/.theovim/templates/c-header-template.h")
 --}}}
 
 -- {{{ Vimtex Settings
