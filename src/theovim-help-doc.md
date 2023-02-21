@@ -31,6 +31,7 @@
 
 - <leader> |                  : Open a vertically split window
 - <leader> -                  : Open a horizontally split window
+- <leader> q                  : Close the current split pane
 - <leader> hjkl               : Navigate around split windows
 - <leader> arrow_keys         : Resize split windows
 

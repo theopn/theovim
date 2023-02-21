@@ -113,9 +113,10 @@ do
     -- Normal Mode --
     { 'n', "<leader>/",       "<CMD>let @/=''<CR>" }, --> @/ is the macro for the last search
     { 'n', "<leader>a",       "gg<S-v>G" }, --> Select all
-    -- Split pane navigation and resizing --
+    -- Split pane --
     { 'n', "<leader>|",       "<CMD>vsplit<CR><C-w>l" },
     { 'n', "<leader>-",       "<CMD>split<CR><C-w>j" },
+    { 'n', "<leader>q",       "<C-w>q" },
     { 'n', "<leader>h",       "<C-w>h" },
     { 'n', "<leader>j",       "<C-w>j" },
     { 'n', "<leader>k",       "<C-w>k" },
