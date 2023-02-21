@@ -110,9 +110,8 @@ local config = {
     lualine_z = {},
   },
   inactive_sections = {
-    lualine_a = { { "filename", file_status = true, path = 0 } }, --> 0 (default) file name, 1 relative path, 2 abs path
-    lualine_c = {}, --> Default is file name here
-    lualine_x = { "diagnostics" },
+    -- Default is lualine_c = { { "filename", filestatus = true, path 0 } } (0 for name, 1 for rel path, 2 abs path)
+    lualine_x = { "diagnostics" }, --> Add on diagnostics
   },
 }
 
