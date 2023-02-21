@@ -54,7 +54,6 @@ require("onedark").load()
 require("bufferline").setup({
   maximum_padding = 1,
   maximum_length = 30,
-  icon_separator_active = '',
   -- New buffer inserted at the end (instead of after curr buffer). Compitability w/ built-in bprev bnext command
   insert_at_end = true, --> Or I can use Barbar's BufferPrevious/BufferNext commands in keybinding...
 })
@@ -112,6 +111,7 @@ local config = {
   },
   inactive_sections = {
     lualine_a = { { "filename", file_status = true, path = 0 } }, --> 0 (default) file name, 1 relative path, 2 abs path
+    lualine_c = {}, --> Default is file name here
     lualine_x = { "diagnostics" },
   },
 }
@@ -143,17 +143,13 @@ local conditions = {
 
 -- Reminder that you can invoke Lua function without parentheses, but moving forward I prefer having them
 ins_far_left {
-  function()
-    return ''
-  end,
+  function() return '' end,
   color = { fg = colors.blue },
   padding = { left = 0, right = 1 },
 }
 
 ins_far_left({
-  function()
-    return ' ' .. vim.fn.mode()
-  end,
+  function() return ' ' .. vim.fn.mode() end,
   color = function()
     local mode_color = {
       n = colors.current_line,
@@ -198,7 +194,12 @@ ins_left({
   cond = conditions.hide_in_width,
 })
 
--- Making middle section
+ins_left({
+  function() return "▊" end,
+  color = { fg = colors.comment },
+})
+
+-- Making the middle section
 ins_left({
   function()
     return "%=" -- Big empty room so that ins_left inserts to the middle
@@ -232,6 +233,11 @@ ins_left {
   cond = conditions.hide_in_width,
 }
 
+ins_right({
+  function() return "▊" end,
+  color = { fg = colors.comment },
+})
+
 ins_right({ "filetype", color = { fg = colors.orange, gui = "bold" } })
 
 ins_right({
@@ -254,9 +260,7 @@ ins_far_right({ "location" })
 ins_far_right({ "progress", color = { fg = colors.fg, gui = "bold" } })
 
 ins_far_right({
-  function()
-    return ''
-  end,
+  function() return '' end,
   color = { fg = colors.blue },
   padding = { left = 1 },
 })
