@@ -43,7 +43,7 @@ local on_attach = function(client, bufnr)
 
     -- Autocmd for code formatting on the write
     vim.api.nvim_create_autocmd("BufWritePre", {
-      group = vim.api.nvim_create_augroup("Format", { clear = true }),
+      group = vim.api.nvim_create_augroup("Format", { clear = false }),
       buffer = bufnr,
       callback = function()
         if CODE_FORMAT_STATUS then vim.lsp.buf.format() end
