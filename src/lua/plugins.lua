@@ -33,6 +33,9 @@ local plugins = {
   -- }}}
 
   -- {{{ File and search
+  { "nvim-treesitter/nvim-treesitter" }, --> Incremental highlighting
+  { "nvim-telescope/telescope.nvim" }, --> Expendable fuzzy finder
+  { "nvim-telescope/telescope-file-browser.nvim" }, --> File browser extension for Telescope
   {
     "kyazdani42/nvim-tree.lua", --> File tree
     config = function() require("nvim-tree").setup() end
@@ -51,9 +54,6 @@ local plugins = {
     "terrortylor/nvim-comment", --> Commenting region
     config = function() require("nvim_comment").setup() end
   },
-  { "nvim-treesitter/nvim-treesitter" }, --> Incremental highlighting
-  { "nvim-telescope/telescope.nvim" }, --> Expendable fuzzy finder
-  { "nvim-telescope/telescope-file-browser.nvim" }, --> File browser extension for Telescope
   {
     "folke/which-key.nvim", --> Pop-up dictionary for keybindings
     config = function() require("which-key").setup() end
