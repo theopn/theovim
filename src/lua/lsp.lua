@@ -121,13 +121,8 @@ local kind_icons = {
   TypeParameter = ""
 }
 
--- Helper function for tab completion
-local check_backspace = function()
-  local col = vim.fn.col "." - 1
-  return col == 0 or vim.fn.getline("."):sub(col, col):match("%s")
-end
-
 local cmp = require("cmp")
+local luasnip = require("luasnip")
 cmp.setup({
   snippet = {
     expand = function(args)
@@ -145,19 +140,28 @@ cmp.setup({
     ["<C-[>"] = cmp.mapping.scroll_docs( -4), --> Scroll through the information window next to the item
     ["<C-]>"] = cmp.mapping.scroll_docs(4), --> ^
     ["<C-n>"] = cmp.mapping.complete(), --> Brings up completion window
-    ["<CR>"] = cmp.mapping.confirm({ select = false }), --> If you want to automatically select the first item without pressing tab, enable this
-    ["<Tab>"] = cmp.mapping(function(fallback)
+    ["<CR>"] = cmp.mapping.confirm({ select = false }), --> Enable to automatically select the first item without pressing tab
+    ["<TAB>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_next_item({ behavior = cmp.SelectBehavior.Select }) --> <C-n> if completion window is open
-      elseif check_backspace() then
-        fallback() --> Default action (tab char or shiftwidth) if the line is empty
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+
+        --[[
+      -- This gets annoying when you just want to indent. visit
+      -- https://github.com/hrsh7th/nvim-cmp/wiki/Example-mappings to re-enable has_words_before() function
+      elseif has_words_before() then
+        cmp.mapping.complete()
+      --]]
       else
-        cmp.complete() --> Open completion window. Change it to fallback() if you want to insert tab in between lines
+        fallback()
       end
     end, { 'i', 's' }),
-    ["<S-Tab>"] = cmp.mapping(function(fallback)
+    ["<S-TAB>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
-        cmp.select_prev_item({ behavior = cmp.SelectBehavior.Select })
+        cmp.select_prev_item()
+      elseif luasnip.jumpable( -1) then
+        luasnip.jump( -1)
       else
         fallback()
       end
@@ -178,10 +182,10 @@ cmp.setup({
       vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
       -- Source
       vim_item.menu = ({
-            buffer = "[Buffer]",
             nvim_lsp = "[LSP]",
             luasnip = "[LuaSnip]",
-            nvim_lua = "[Lua]",
+            buffer = "[Buffer]",
+            path = "[Path]"
           })[entry.source.name]
       return vim_item
     end
