@@ -25,6 +25,7 @@ end
 do
   local base_opt = {
     { "filetype",      'on' },
+    { "syntax",        'on' },
     { "scrolloff",     7 }, --> Keep at least 7 lines visible above and below the cursor
     { "hlsearch",      true }, --> Highlight search result
     { "incsearch",     true }, --> Should be enabled by default
