@@ -52,7 +52,7 @@ function install() {
   clean
   green_echo "Installing Theovim..."
   ln -s $THEOVIM_DIR $NEOVIM_DIR
-  cp ~/.theovim/config_template.lua ~/.config/nvim/lua/config.lua
+  cp ~/.theovim/config_template.lua ~/.config/nvim/lua/user_config.lua
   green_echo "Installation completed!"
 }
 

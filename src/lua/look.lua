@@ -315,7 +315,7 @@ require("dashboard").setup({
       {
         icon = "  ",
         desc = "Configure Theovim         ",
-        action = "e ~/.config/nvim/lua/config.lua",
+        action = "e ~/.config/nvim/lua/user_config.lua",
       },
       {
         icon = "  ",
