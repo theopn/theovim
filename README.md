@@ -8,6 +8,7 @@ Theovim is an IDE layer for Neovim equipped with useful tools and plugins for co
 
 - `git` to update Theovim
 - `bash` or a POSIX compliance shell
+- `npm` and `g++` (`gcc-c++`) compiler for `bashls` and `clangd` language server
 - A terminal emulator capable of rendering 256 xterm colors
 - Latest version of Neovim (> 0.8).
   - For those poor souls working with 0.4.3 version Neovim on the Purdue CS Data server, I included the appimage downloader that automatically adds an alias to your `.bashrc`. Run `~/.theovim/nvim_appimage_downloader.sh` periodically to keep the appimage updated.
@@ -20,8 +21,8 @@ Install the latest version of Neovim. Use `nvim_appimage_downloader` if your sys
 Execute the following commands:
 
 ```bash
-git clone https://github.com/theopn/theovim.git $HOME/.theovim
-$HOME/.theovim/theovim-util.sh install
+git clone https://github.com/theopn/theovim.git ~/.theovim
+~/.theovim/theovim-util.sh install
 ```
 
 ## Usage
