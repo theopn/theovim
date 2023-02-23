@@ -50,7 +50,7 @@ local function spawn_floating_win(file_path)
 end
 
 vim.api.nvim_create_user_command("TheovimUpdate", function()
-  vim.api.nvim_command(":! cd ~/.theovim && git pull && ./theovim-util.sh update")
+  vim.api.nvim_command(":! cd ~/.theovim && ./theovim-util.sh update")
   vim.notify("Update complete. Use :TheovimInfo command to see the latest changelog")
   require('lazy').sync()
 end, { nargs = 0 })
