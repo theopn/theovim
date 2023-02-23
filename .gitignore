@@ -1,4 +1,4 @@
 lazy-lock.json
 .luarc.json
 
-src/lua/config.lua
+src/lua/user_config.lua
