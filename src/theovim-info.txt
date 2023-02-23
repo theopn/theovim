@@ -6,8 +6,8 @@ Current Version: 2023.02.23
 
 *Installation method has changed. Please run =:TheovimUpdate= after restarting Neovim*
 
-- Weather command removal
 - Source code diet
+- User configuration support
 - You can now move to a next selected region in auto-completed snippet using <TAB>
 
 ** Version 2023.02.18
@@ -29,7 +29,7 @@ Current Version: 2023.02.23
 
 ** Version 2023.02.03
 
-- Weather command
+- Weather command - removed in 2023.02.23
 - Installation script major revision
 - LSP/Telescope feature selection menu (<leader>ca, <leader>fa)
 
