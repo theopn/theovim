@@ -6,6 +6,7 @@
 " | |_| | | |  __/ (_) \ V /| | | | | | |_____| | | | | | |_
 "  \__|_| |_|\___|\___/ \_/ |_|_| |_| |_|     |_|_| |_|_|\__|
 --]]
+--
 -- {{{ Functions for easier setting
 local GLOBAL = vim.o
 local WINDOW = vim.wo
@@ -20,25 +21,26 @@ end
 
 -- }}}
 
---- {{{ Global base settings
+-- {{{ Global base settings
 do
   local base_opt = {
     { "filetype",      'on' },
+    { "syntax",        'on' },
     { "scrolloff",     7 }, --> Keep at least 7 lines visible above and below the cursor
     { "hlsearch",      true }, --> Highlight search result
     { "incsearch",     true }, --> Should be enabled by default
     { "ignorecase",    true }, --> Needed for smartcase
     { "smartcase",     true }, --> Ignore case iff search input was all lowercase
     { "splitright",    false }, --> Vertical split default to left
-    { "splitbelow",    false },
+    { "splitbelow",    true }, --> Horizontal split default to below
     { "termguicolors", true },
-    { "mouse",         'a' },
+    { "mouse",         'a' }, --> Enable mouse
     { "list",          true }, --> Needed for listchars
     { "foldmethod",    "expr" }, --> Leave the fold up to treesitter
     { "foldlevel",     1 }, --> Useless with expr, but when folding by "marker", it only folds folds w/in a fold only
     { "foldenable",    false }, --> True for "marker" + level = 1, false for TS folding
   }
-  -- Trailing white space --
+  -- Listing special characters --
   vim.opt.listchars = { tab = "t>", trail = "␣", nbsp = "⍽" }
   -- Folding using TreeSitter --
   vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
@@ -52,7 +54,7 @@ do
     callback = function() vim.highlight.on_yank() end,
   })
 end
---}}}
+-- }}}
 
 -- {{{ Opinionated text editing settings
 do
@@ -69,7 +71,7 @@ do
   end
   -- Spell check in markdown buffer only --
   vim.api.nvim_create_autocmd('FileType', {
-    pattern = "markdown",
+    pattern = { "markdown", "text" },
     callback = function()
       vim.wo.spell = true
     end
@@ -112,9 +114,10 @@ do
     -- Normal Mode --
     { 'n', "<leader>/",       "<CMD>let @/=''<CR>" }, --> @/ is the macro for the last search
     { 'n', "<leader>a",       "gg<S-v>G" }, --> Select all
-    -- Split pane navigation and resizing --
+    -- Split pane --
     { 'n', "<leader>|",       "<CMD>vsplit<CR><C-w>l" },
     { 'n', "<leader>-",       "<CMD>split<CR><C-w>j" },
+    { 'n', "<leader>q",       "<C-w>q" },
     { 'n', "<leader>h",       "<C-w>h" },
     { 'n', "<leader>j",       "<C-w>j" },
     { 'n', "<leader>k",       "<C-w>k" },
@@ -123,6 +126,11 @@ do
     { 'n', "<leader><DOWN>",  "<C-w>5-" },
     { 'n', "<leader><UP>",    "<C-w>5+" },
     { 'n', "<leader><RIGHT>", "<C-w>10>" },
+    -- Buffer naviagation --
+    { 'n', "<leader>n",       "<CMD>enew<CR>" }, --> Open a new buffer
+    { 'n', "<leader>,",       "<CMD>bprevious<CR>" },
+    { 'n', "<leader>.",       "<CMD>bnext<CR>" },
+    { 'n', "<leader>x",       "<CMD>bdelete<CR>" }, --> Kill a buffer
     -- Search auto center --
     { 'n', "n",               "nzz" },
     { 'n', "N",               "Nzz" },
@@ -141,17 +149,12 @@ do
     { 'n', "<leader>z",       function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
     { 'n', "<leader>?",       "<CMD>WhichKey<CR>" }, --> Bring up Which-key pop-up
     { 'n', "<leader>t",       "<CMD>NvimTreeToggle<CR>" }, --> Tree toggle
-    -- Barbar navigation --
-    { 'n', "<leader>n",       "<CMD>enew<CR>" }, --> Open a new buffer
-    { 'n', "<leader>,",       "<CMD>BufferPrevious<CR>" }, --> Barbar plugin overrides "gT"
-    { 'n', "<leader>.",       "<CMD>BufferNext<CR>" }, --> Barbar plugin overrides "gt"
-    { 'n', "<leader>x",       "<CMD>BufferClose<CR>" }, --> Kill a buffer
     -- Telescope --
-    { 'n', "<leader>p",       "<CMD>Telescope registers<CR>" }, --> :reg without Telescope
+    { 'n', "<leader>p",       "<CMD>Telescope registers<CR>" },
     { 'n', "<leader>fa",      function() THEOVIM_TELESCOPE_MENU() end },
     { 'n', "<leader>ff",      "<CMD>Telescope find_files<CR>" },
     { 'n', "<leader>fb",      "<CMD>Telescope file_browser<CR>" },
-    { 'n', "<leader>f/",      "<CMD>Telescope current_buffer_fuzzy_find<CR>" }, --> Better search
+    { 'n', "<leader>f/",      "<CMD>Telescope current_buffer_fuzzy_find<CR>" },
     -- LSP Related --
     { 'n', "<leader>ca",      function() THEOVIM_LSP_MENU() end },
     { 'n', "<leader>cd",      function() vim.lsp.buf.hover() end },

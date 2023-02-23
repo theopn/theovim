@@ -18,43 +18,63 @@ require("onedark").setup({
     strings = 'none',
     variables = 'none'
   },
-  -- Modify colors here. Rename the table name to "colors" to apply the change
-  colors_REMOVE = {
+  colors_save = {
     black       = "#151820",
     bg0         = "#282A35",
     bg1         = "#2d3343",
     bg2         = "#343e4f",
     bg3         = "#363c51",
     bg_d        = "#1e242e",
-    bg_blue     = "#4982de",
-    bg_yellow   = "#e3e2a3",
-    fg          = "#d0eff5",
-    purple      = "#d3b3f5",
-    green       = "#ade3a3",
-    orange      = "#e8ba82",
+    bg_blue     = "#6db9f7",
+    bg_yellow   = "#f0d197",
+    fg          = "#dcdede",
+    purple      = "#ae79f2",
+    green       = "#69c273",
+    orange      = "#f29950",
     blue        = "#5ab0f6",
-    yellow      = "#f5ee8c",
-    cyan        = "#87e0c2",
-    red         = "#ed7979",
-    grey        = "#828b8f",
-    light_grey  = "#b7c2c7",
-    dark_cyan   = "#68ad96",
-    dark_red    = "#a83434",
-    dark_yellow = "#c7bd34",
-    dark_purple = "#9a51e8",
+    yellow      = "#faeb89",
+    cyan        = "#4dbdcb",
+    red         = "#f26161",
+    grey        = "#737373",
+    light_grey  = "#7d899f",
+    dark_cyan   = "#25747d",
+    dark_red    = "#a13131",
+    dark_yellow = "#9a6b16",
+    dark_purple = "#8f36a9",
     diff_add    = "#303d27",
     diff_delete = "#3c2729",
     diff_change = "#18344c",
     diff_text   = "#265478",
-  }
+  },
 })
 require("onedark").load()
 -- }}}
 
+-- {{{ Bufferline Settings
+require("bufferline").setup({
+  maximum_padding = 1,
+  maximum_length = 30,
+  -- New buffer inserted at the end (instead of after curr buffer). Compitability w/ built-in bprev bnext command
+  insert_at_end = true, --> Or I can use Barbar's BufferPrevious/BufferNext commands in keybinding...
+})
+-- Compitability w/ nvim-tree --
+local nvim_tree_events = require("nvim-tree.events")
+local bufferline_api = require("bufferline.api")
+local function get_tree_size()
+  return require("nvim-tree.view").View.width
+end
+nvim_tree_events.subscribe("TreeOpen", function() bufferline_api.set_offset(get_tree_size()) end)
+nvim_tree_events.subscribe("Resize", function() bufferline_api.set_offset(get_tree_size()) end)
+nvim_tree_events.subscribe("TreeClose", function() bufferline_api.set_offset(0) end)
+-- }}}
+
 -- {{{ Lualine (Status bar) Settings
--- Inspired by examples/evil_lualine.lua in the plug-in repository, but utilizing position B and Y
--- Position A and Z (far right and left, used for mode and pos by default), actively changes color,
--- which is not fitting for this status line theme
+--[[
+Inspired by examples/evil_lualine.lua in the plug-in repository, but utilizing position B and Y
++-------------------------------------------------+
+| A | B | C                             X | Y | Z |
++-------------------------------------------------+
+--]]
 local lualine = require("lualine")
 
 local colors = {
@@ -75,21 +95,7 @@ local colors = {
   blue         = '#51afef',
 }
 
-local conditions = {
-  buffer_not_empty = function()
-    return vim.fn.empty(vim.fn.expand('%:t')) ~= 1
-  end,
-  hide_in_width = function()
-    return vim.fn.winwidth(0) > 80
-  end,
-  check_git_workspace = function()
-    local filepath = vim.fn.expand('%:p:h')
-    local gitdir = vim.fn.finddir('.git', filepath .. ';')
-    return gitdir and #gitdir > 0 and #gitdir < #filepath
-  end,
-}
-
--- Default Lualine config table to remove defaults
+-- Remove defaults
 local config = {
   options = {
     component_separators = '',
@@ -98,28 +104,19 @@ local config = {
   sections = {
     lualine_a = {},
     lualine_b = {},
-    lualine_y = {},
-    lualine_z = {},
     lualine_c = {},
     lualine_x = {},
-  },
-  inactive_sections = {
-    lualine_a = {},
-    lualine_b = {},
     lualine_y = {},
     lualine_z = {},
-    lualine_c = { { "filename", file_status = true, path = 0 } }, --> 0 (default) file name, 1 relative path, 2 abs path
-    lualine_x = {
-      { "diagnostics",
-        sources = { 'nvim_diagnostic' },
-        symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
-      },
-    },
+  },
+  inactive_sections = {
+    -- Default is lualine_c = { { "filename", filestatus = true, path 0 } } (0 for name, 1 for rel path, 2 abs path)
+    lualine_x = { "diagnostics" }, --> Add on diagnostics
   },
 }
 
 local function ins_far_left(component)
-  table.insert(config.sections.lualine_b, component)
+  table.insert(config.sections.lualine_b, component) -- Region A should not be used for custom Lualine (highlighting issue)
 end
 
 local function ins_left(component)
@@ -131,22 +128,27 @@ local function ins_right(component)
 end
 
 local function ins_far_right(component)
-  table.insert(config.sections.lualine_y, component)
+  table.insert(config.sections.lualine_y, component) -- Region Z should not be used for custom Lualine, see above
 end
+
+local conditions = {
+  buffer_not_empty = function()
+    return vim.fn.empty(vim.fn.expand('%:t')) ~= 1
+  end,
+  hide_in_width = function()
+    return vim.fn.winwidth(0) > 80
+  end
+}
 
 -- Reminder that you can invoke Lua function without parentheses, but moving forward I prefer having them
 ins_far_left {
-  function()
-    return '▊'
-  end,
+  function() return '' end,
   color = { fg = colors.blue },
   padding = { left = 0, right = 1 },
 }
 
 ins_far_left({
-  function()
-    return ' ' .. vim.fn.mode()
-  end,
+  function() return ' ' .. vim.fn.mode() end,
   color = function()
     local mode_color = {
       n = colors.current_line,
@@ -176,28 +178,27 @@ ins_far_left({
 
 ins_left({
   "filename",
-  cond = conditions.buffer_not_empty,
+  icon = '',
   color = { fg = colors.magenta, gui = "bold" },
+  cond = conditions.buffer_not_empty,
 })
 
 ins_left({
   "branch",
-  icon = '',
-  color = { fg = colors.violet, gui = "bold" },
+  color = { fg = colors.pink, gui = "bold" },
 })
 
 ins_left({
   "diff",
-  symbols = { added = ' ', modified = ' ', removed = ' ' },
-  diff_color = {
-    added = { fg = colors.green },
-    modified = { fg = colors.orange },
-    removed = { fg = colors.red },
-  },
   cond = conditions.hide_in_width,
 })
 
--- Making middle section
+ins_left({
+  function() return "▊" end,
+  color = { fg = colors.comment },
+})
+
+-- Making the middle section
 ins_left({
   function()
     return "%=" -- Big empty room so that ins_left inserts to the middle
@@ -220,28 +221,29 @@ ins_left({
     end
     return no_msg
   end,
-  icon = " LSP:",
+  icon = " ",
   color = { fg = colors.cyan, gui = "bold" },
+  cond = conditions.hide_in_width,
 })
-
-ins_left({ "filetype", color = { fg = colors.pink, gui = "bold" } })
 
 ins_left {
   "diagnostics",
   sources = { "nvim_diagnostic" },
-  symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
-  diagnostics_color = {
-    color_error = { fg = colors.red },
-    color_warn = { fg = colors.yellow },
-    color_info = { fg = colors.cyan },
-  },
+  cond = conditions.hide_in_width,
 }
+
+ins_right({
+  function() return "▊" end,
+  color = { fg = colors.comment },
+})
+
+ins_right({ "filetype", color = { fg = colors.orange, gui = "bold" } })
 
 ins_right({
   "o:encoding",
   fmt = string.upper,
-  cond = conditions.hide_in_width,
   color = { fg = colors.green, gui = "bold" },
+  cond = conditions.hide_in_width,
 })
 
 ins_right({
@@ -249,6 +251,7 @@ ins_right({
   fmt = string.upper,
   icons_enabled = true, -- Prints out UNIX or penguin icon
   color = { fg = colors.green, gui = "bold" },
+  cond = conditions.hide_in_width,
 })
 
 ins_far_right({ "location" })
@@ -256,9 +259,7 @@ ins_far_right({ "location" })
 ins_far_right({ "progress", color = { fg = colors.fg, gui = "bold" } })
 
 ins_far_right({
-  function()
-    return '▊'
-  end,
+  function() return '' end,
   color = { fg = colors.blue },
   padding = { left = 1 },
 })
@@ -266,49 +267,8 @@ ins_far_right({
 lualine.setup(config)
 -- }}}
 
--- {{{ Barbar (Tab bar) Settings
-vim.g.bufferline = {
-  icons = true,
-  maximum_padding = 1,
-  maximum_length = 30,
-  icon_separator_active = '▎',
-  icon_separator_inactive = '▎',
-  icon_close_tab = '',
-  icon_close_tab_modified = '●',
-  icon_pinned = '車',
-  no_name_title = "New Buffer"
-}
--- Compitability w/ nvim-tree --
-local nvim_tree_events = require("nvim-tree.events")
-local bufferline_api = require("bufferline.api")
-
-local function get_tree_size()
-  return require "nvim-tree.view".View.width
-end
-
-nvim_tree_events.subscribe("TreeOpen", function()
-  bufferline_api.set_offset(get_tree_size())
-end)
-
-nvim_tree_events.subscribe("Resize", function()
-  bufferline_api.set_offset(get_tree_size())
-end)
-
-nvim_tree_events.subscribe("TreeClose", function()
-  bufferline_api.set_offset(0)
-end)
--- }}}
-
--- {{{ Notification Settings
-require("notify").setup({
-  background_colour = "#282a36", -- The variable is needed if theme is transparent
-})
-vim.notify = require("notify")
--- }}}
-
 -- {{{ Dashboard Settings
-local db = require("dashboard")
-db.setup({
+require("dashboard").setup({
   theme = 'doom',
   config = {
     header = {
@@ -355,7 +315,7 @@ db.setup({
       {
         icon = "  ",
         desc = "Configure Theovim         ",
-        action = "vim.notify(\"Coming soon!\")",
+        action = "e ~/.config/nvim/lua/user_config.lua",
       },
       {
         icon = "  ",
