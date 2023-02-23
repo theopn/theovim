@@ -9,7 +9,7 @@
 
 -- {{{ Util commands
 -- Reference: https://github.com/ellisonleao/glow.nvim/blob/main/lua/glow/init.lua
-local function theovim_floating_win_util(file_path)
+local function spawn_floating_win(file_path)
   local width = vim.o.columns
   local height = vim.o.lines
   local height_ratio = 0.8
@@ -50,59 +50,18 @@ local function theovim_floating_win_util(file_path)
 end
 
 vim.api.nvim_create_user_command("TheovimUpdate", function()
-  vim.api.nvim_command(":! cd ~/.theovim && git pull && ./theovim-util.sh update")
+  vim.api.nvim_command(":! cd ~/.theovim && ./theovim-util.sh update")
   vim.notify("Update complete. Use :TheovimInfo command to see the latest changelog")
   require('lazy').sync()
 end, { nargs = 0 })
 
 
 local helpdoc_path = vim.api.nvim_get_runtime_file("theovim-help-doc.md", false)[1]
-vim.api.nvim_create_user_command("TheovimHelp", function() theovim_floating_win_util(helpdoc_path) end, { nargs = 0 })
+-- nargs ?: 0 or 1, *: > 0, +: > 1 args
+vim.api.nvim_create_user_command("TheovimHelp", function() spawn_floating_win(helpdoc_path) end, { nargs = 0 })
 
 local info_path = vim.api.nvim_get_runtime_file("theovim-info.txt", false)[1]
-vim.api.nvim_create_user_command("TheovimInfo", function() theovim_floating_win_util(info_path) end, { nargs = 0 })
--- }}}
-
-
--- {{{ Weather Command
--- Simplified version of https://github.com/ellisonleao/weather.nvim
-local function weather_popup(location)
-  -- window size and pos
-  local win_height = math.ceil(vim.o.lines * 0.6 - 20)
-  local win_width = math.ceil(vim.o.columns * 0.3 - 15)
-  local x_pos = 1
-  local y_pos = vim.o.columns - win_width
-
-  local win_opts = {
-    style = "minimal",
-    relative = "editor",
-    width = win_width,
-    height = win_height,
-    row = x_pos,
-    col = y_pos,
-    border = "single",
-  }
-
-  local buf = vim.api.nvim_create_buf(false, true)
-  local win = vim.api.nvim_open_win(buf, true, win_opts)
-
-  vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
-  vim.api.nvim_win_set_option(win, "winblend", 0)
-
-  local keymaps_opts = { silent = true, buffer = buf }
-  vim.keymap.set('n', "q", "<C-w>q", keymaps_opts)
-  vim.keymap.set('n', "<ESC>", function() vim.api.nvim_win_close(win, true) end, keymaps_opts)
-
-  local weather_command = "curl 'https://wttr.in/?0T' > /dev/null"
-  if location ~= nil then
-    weather_command = string.format("curl https://wttr.in/%s'?'0T", location.args)
-  end
-  vim.fn.termopen(weather_command)
-end
-
--- function() my_func() end: inline function calling my_func(); my_func(): return val; my_func: function itself
--- You need to pass function itself to use the usercommand arguments
-vim.api.nvim_create_user_command("Weather", weather_popup, { nargs = '?' }) --> ?: 0 or 1, *: > 0, +: > 1 args
+vim.api.nvim_create_user_command("TheovimInfo", function() spawn_floating_win(info_path) end, { nargs = 0 })
 -- }}}
 
 -- {{{ Notepad
@@ -144,10 +103,9 @@ local misc_options = {
   ["1. :Notepad"] = function() launch_notepad() end,
   -- Passing weather_popup func only shows the "curl" command window? Why
   ["2. :TrimWhitespace"] = function() vim.cmd("TrimWhitespace") end,
-  ["3. :Weather <optional_city>"] = function() vim.cmd("Weather") end,
-  ["4. :TheovimHelp"] = function() vim.cmd("TheovimHelp") end,
-  ["5. :TheovimInfo"] = function() vim.cmd("TheovimInfo") end,
-  ["6. :TheovimUpdate"] = function() vim.cmd("TheovimUpdate") end,
+  ["3. :TheovimHelp"] = function() vim.cmd("TheovimHelp") end,
+  ["4. :TheovimInfo"] = function() vim.cmd("TheovimInfo") end,
+  ["5. :TheovimUpdate"] = function() vim.cmd("TheovimUpdate") end,
 }
 local misc_option_names = {}
 local n = 0

@@ -21,8 +21,8 @@ Logo: figlet -f soft Theovim
 "       `--'   `--' `--' `----' `---'   `--'   `--'`--`--`--'        "
 "                                                                    "
 --]]
-
----[[ Lua configs in ~/.config/nvim/lua
+--
+-- Lua configs in ~/.config/nvim/lua
 require("theo_init")
 require("plugins")
 require("look")
@@ -32,5 +32,5 @@ require("lsp")
 
 require("theovim")
 
---require("user-config/config")
---]]
+local status, user_config_call = pcall(require, "user_config")
+if (not status) then return end

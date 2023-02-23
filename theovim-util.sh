@@ -1,15 +1,13 @@
 #!/bin/bash
 
 # Global vars
-THEOVIM_DIR=$HOME/.theovim/src
-THEOVIM_FILES=("/theovim-help-doc.md" "/theovim-info.txt" "/init.lua" "/lua/theo_init.lua" "/lua/theovim.lua" "/lua/plugins.lua" "/lua/look.lua" "/lua/file_et_search.lua" "/lua/lsp.lua")
-NEOVIM_DIR=$HOME/.config/nvim
-NEOVIM_DESTINATIONS=("/" "/" "/" "/lua/" "/lua/" "/lua/" "/lua/" "/lua/" "/lua/")
+THEOVIM_DIR=~/.theovim/src
+NEOVIM_DIR=~/.config/nvim
 
 
 function verify_theovim_dir() {
   script_dir=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-  if [[ "$script_dir" != "$HOME/.theovim" || ! -d $HOME/.theovim ]]; then
+  if [[ "$script_dir" != ~/.theovim || ! -d ~/.theovim ]]; then
     red_echo "$HOME/.theovim is not found. Please follow the Git Clone direction in the README.md"
     exit 1
   fi
@@ -36,40 +34,42 @@ function red_echo() {
 }
 
 function clean() {
-  if [[ -d $HOME/.config/nvim ]]; then
-    mkdir -p $HOME/.theovim.bu/
-    mv $HOME/.config/nvim/ $HOME/.theovim.bu/config/
-    mv $HOME/.local/share/nvim/ $HOME/.theovim.bu/share/
-    mv $HOME/.local/state/nvim/ $HOME/.theovim.bu/state
-    yellow_echo "Previous Neovim configuration has been moved to $HOME/.theovim.bu"
+  if [[ -d ~/.theovim.bu  ]]; then
+    yellow_echo "Removing previous Neovim configuration backup"
+    rm -rf ~/.theovim.bu
+  fi
+  if [[ -d ~/.config/nvim ]]; then
+    mkdir -p ~/.theovim.bu/
+    mv ~/.config/nvim $HOME/.theovim.bu/config
+    yellow_echo "Previous Neovim configuration has been moved to ~/.theovim.bu"
   else
-    green_echo "No previous Neovim installation found!"
+    green_echo "No previous Neovim installation found! Skipping backup..."
   fi
 }
 
 function install() {
   verify_theovim_dir
   clean
-  mkdir -p $HOME/.config/nvim/
-  mkdir -p $HOME/.config/nvim/lua/
-  for i in ${!THEOVIM_FILES[@]}; do
-    ln -sf $THEOVIM_DIR${THEOVIM_FILES[i]} $NEOVIM_DIR${NEOVIM_DESTINATIONS[i]}
-    green_echo "$THEOVIM_DIR${THEOVIM_FILES[i]} deployed at $NEOVIM_DIR${NEOVIM_DESTINATIONS[i]}"
-  done
+  green_echo "Installing Theovim..."
+  ln -s $THEOVIM_DIR $NEOVIM_DIR
+  cp ~/.theovim/config_template.lua ~/.config/nvim/lua/user_config.lua
+  green_echo "Installation completed!"
 }
 
 function update() {
   verify_theovim_dir
-  if [[ ! -d $HOME/.config/nvim ]]; then
-    red_echo "Neovim configuration folder is not found. Please run ./theovim.sh/install"
+  if [[ ! -d ~/.theovim ]]; then
+    red_echo "Theovim folder is not found. Please clone the repository at the home directory again"
     exit 1
+  fi
+
+  if [[ ! -L $HOME/.config/nvim ]]; then
+    red_echo "Neovim configuration folder is not found. Running install..."
+    install
   else
-    for i in ${!THEOVIM_FILES[@]}; do
-      if [[ ! -e "$NEOVIM_DIR${THEOVIM_FILES[i]}" ]]; then
-        ln -sf $THEOVIM_DIR${THEOVIM_FILES[i]} $NEOVIM_DIR${NEOVIM_DESTINATIONS[i]}
-        green_echo "${THEOVIM_FILES[i]} deployed at $NEOVIM_DIR${NEOVIM_DESTINATIONS[i]}"
-      fi
-    done
+    cd ~/.theovim
+    git pull
+    cd - &> /dev/null
   fi
 }
 

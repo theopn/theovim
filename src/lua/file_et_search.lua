@@ -18,9 +18,9 @@ local terminal_options = {
   -- botright == bot
   -- ]]
   ["1. Bottom"] = function()
-                    vim.api.nvim_command("botright " .. math.ceil(vim.fn.winheight(0) * 0.3) .. "sp | term")
-                  end,
-  ["2. Right"] = function() vim.api.nvim_command("bot " ..  math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term") end,
+    vim.api.nvim_command("botright " .. math.ceil(vim.fn.winheight(0) * 0.3) .. "sp | term")
+  end,
+  ["2. Right"] = function() vim.api.nvim_command("bot " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term") end,
   ["3. Floating"] = function() require("lspsaga.floaterm"):open_float_terminal() end,
   ["4. New Tab"] = function() vim.cmd("term") end,
 }
@@ -57,7 +57,7 @@ vim.api.nvim_create_autocmd("TermClose", {
 
 -- {{{ Templates
 local template_augroup = vim.api.nvim_create_augroup("Template", { clear = true })
-local function create_template_autocmd(pattern, file_path)
+local function add_template(pattern, file_path)
   vim.api.nvim_create_autocmd("BufNewFile", {
     group = template_augroup,
     pattern = pattern,
@@ -67,56 +67,31 @@ local function create_template_autocmd(pattern, file_path)
   })
 end
 
-create_template_autocmd("*.tex", "~/.theovim/templates/latex-hw-template.tex")
-create_template_autocmd("*.h", "~/.theovim/templates/c-header-template.h")
---}}}
-
--- {{{ Vimtex Settings
-vim.g.tex_flavor = "latex"
-vim.g.vimtex_view_method = "skim"
+add_template("*.tex", "~/.theovim/templates/latex-hw-template.tex")
+add_template("*.h", "~/.theovim/templates/c-header-template.h")
 --}}}
 
 -- {{{ Tree Sitter Settings
-require("nvim-treesitter.configs").setup {
+require("nvim-treesitter.configs").setup({
   ensure_installed = { "c", "latex", "lua", "markdown", "python", "vim", },
   sync_install = false,
   auto_install = true,
   ignore_install = {},
   highlight = {
     enable = true,
-    disable = {},
-    additional_vim_regex_highlighting = false,
-  },
-  rainbow = {
-    enable = true,
-    extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
-    max_file_lines = nil, -- Do not enable for files with more than n lines, int
+    disable = function(lang, buf)
+      local max_filesize = 100 * 1024 -- 100 KB
+      local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+      if ok and stats and stats.size > max_filesize then
+        return true
+      end
+    end,
   }
-}
--- }}}
-
--- {{{ NvimTree Settings
-require("nvim-tree").setup {
-  auto_reload_on_write = true,
-  open_on_setup = false, --> Auto open when no files opened
-  open_on_setup_file = false, --> Auto open when files opened
-  open_on_tab = false,
-  sort_by = "name",
-  view = {
-    width = 30,
-    --height = 30, --> No longer supported
-    hide_root_folder = false,
-    side = "left",
-    preserve_window_proportions = false,
-    number = false,
-    relativenumber = false,
-    signcolumn = "yes",
-  }
-}
+})
 -- }}}
 
 -- {{{ Telescope Settings
-require("telescope").setup {
+require("telescope").setup({
   defaults = {
     mappings = {
       i = {
@@ -126,13 +101,13 @@ require("telescope").setup {
     },
   },
   extensions = { file_browser = { hidden = true } },
-}
+})
 require("telescope").load_extension("file_browser")
 
 -- Comprehensive list menu for Telescope functionalities
 local telescope_options = {
-  ["Git Commits"] = function() vim.cmd("Telescope git_commits") end,
-  ["Git Status"] = function() vim.cmd("Telescope git_status") end
+  ["1. Git Commits"] = function() vim.cmd("Telescope git_commits") end,
+  ["2. Git Status"] = function() vim.cmd("Telescope git_status") end
 }
 local telescope_option_names = {}
 local n = 0
