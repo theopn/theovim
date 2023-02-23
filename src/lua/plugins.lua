@@ -28,7 +28,7 @@ local plugins = {
   },
   {
     "doums/suit.nvim", --> Prettier vim.ui.select() and input()
-    config = function() require("suit").setup() end
+    --config = function() require("suit").setup() end
   },
   -- }}}
 
