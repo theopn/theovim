@@ -7,43 +7,7 @@
 "                                             |/
 --]]
 --
--- {{{ Terminal menu
-local terminal_options = {
-  -- [[
-  -- https://medium.com/@egzvor/vim-splits-cheat-sheet-2bf84fc99962
-  --           | :top sp |
-  -- |:top vs| |:abo| cu | |:bot vs |
-  -- |       | |:bel| rr | |        |
-  --           | :bot sp |
-  -- botright == bot
-  -- ]]
-  ["1. Bottom"] = function()
-    vim.api.nvim_command("botright " .. math.ceil(vim.fn.winheight(0) * 0.3) .. "sp | term")
-  end,
-  ["2. Right"] = function() vim.api.nvim_command("bot " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term") end,
-  ["3. Floating"] = function() require("lspsaga.floaterm"):open_float_terminal() end,
-  ["4. New Tab"] = function() vim.cmd("term") end,
-}
-local terminal_option_names = {}
-local n = 0
-for i, _ in pairs(terminal_options) do
-  n = n + 1
-  terminal_option_names[n] = i
-end
-table.sort(terminal_option_names)
-function THEOVIM_TERMINAL_MENU()
-  vim.ui.select(terminal_option_names, {
-    prompt = "Where would you like to launch a terminal?",
-  },
-    function(choice)
-      local action_func = terminal_options[choice]
-      if action_func ~= nil then
-        action_func()
-      end
-    end)
-end
-
--- Automatically close the terminal when exit
+-- {{{ Automatically close the terminal when exit
 -- TODO: Translate the following to Lua
 -- autocmd TermClose * if !v:event.status | exe 'bdelete! '..expand('<abuf>') | endif
 local terminal_augroup = vim.api.nvim_create_augroup("Terminal", { clear = true })
@@ -103,29 +67,4 @@ require("telescope").setup({
   extensions = { file_browser = { hidden = true } },
 })
 require("telescope").load_extension("file_browser")
-
--- Comprehensive list menu for Telescope functionalities
-local telescope_options = {
-  ["1. Git Commits"] = function() vim.cmd("Telescope git_commits") end,
-  ["2. Git Status"] = function() vim.cmd("Telescope git_status") end
-}
-local telescope_option_names = {}
-local n = 0
-for i, _ in pairs(telescope_options) do
-  n = n + 1
-  telescope_option_names[n] = i
-end
-table.sort(telescope_option_names)
-function THEOVIM_TELESCOPE_MENU()
-  vim.ui.select(telescope_option_names, {
-    prompt = "Telescope option to open",
-  },
-    function(choice)
-      local action_func = telescope_options[choice]
-      if action_func ~= nil then
-        action_func()
-      end
-    end)
-end
-
 -- }}}

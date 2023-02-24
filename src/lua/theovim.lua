@@ -7,6 +7,14 @@
 --]]
 --
 
+-- {{{ Update command
+vim.api.nvim_create_user_command("TheovimUpdate", function()
+  vim.api.nvim_command(":! cd ~/.theovim && ./theovim-util.sh update")
+  --vim.notify("Update complete. Use :TheovimInfo command to see the latest changelog")
+  require('lazy').sync()
+end, { nargs = 0 })
+-- }}}
+
 -- {{{ Util commands
 -- Reference: https://github.com/ellisonleao/glow.nvim/blob/main/lua/glow/init.lua
 local function spawn_floating_win(file_path)
@@ -49,13 +57,6 @@ local function spawn_floating_win(file_path)
   vim.api.nvim_buf_set_option(0, "modifiable", false)
 end
 
-vim.api.nvim_create_user_command("TheovimUpdate", function()
-  vim.api.nvim_command(":! cd ~/.theovim && ./theovim-util.sh update")
-  vim.notify("Update complete. Use :TheovimInfo command to see the latest changelog")
-  require('lazy').sync()
-end, { nargs = 0 })
-
-
 local helpdoc_path = vim.api.nvim_get_runtime_file("theovim-help-doc.md", false)[1]
 -- nargs ?: 0 or 1, *: > 0, +: > 1 args
 vim.api.nvim_create_user_command("TheovimHelp", function() spawn_floating_win(helpdoc_path) end, { nargs = 0 })
@@ -97,33 +98,3 @@ end
 
 vim.api.nvim_create_user_command("Notepad", launch_notepad, { nargs = 0 })
 -- }}}
-
--- {{{ Menu for miscellaneous features
-local misc_options = {
-  ["1. :Notepad"] = function() launch_notepad() end,
-  -- Passing weather_popup func only shows the "curl" command window? Why
-  ["2. :TrimWhitespace"] = function() vim.cmd("TrimWhitespace") end,
-  ["3. :TheovimHelp"] = function() vim.cmd("TheovimHelp") end,
-  ["4. :TheovimInfo"] = function() vim.cmd("TheovimInfo") end,
-  ["5. :TheovimUpdate"] = function() vim.cmd("TheovimUpdate") end,
-}
-local misc_option_names = {}
-local n = 0
-for i, _ in pairs(misc_options) do
-  n = n + 1
-  misc_option_names[n] = i
-end
-table.sort(misc_option_names)
-function THEOVIM_MISC_MENU()
-  vim.ui.select(misc_option_names, {
-    prompt = "What fun feature would you like to use?",
-  },
-    function(choice)
-      local action_func = misc_options[choice]
-      if action_func ~= nil then
-        action_func()
-      end
-    end)
-end
-
---}}}

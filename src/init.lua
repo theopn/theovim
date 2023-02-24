@@ -31,6 +31,7 @@ require("file_et_search")
 require("lsp")
 
 require("theovim")
+require("custom_menus")
 
 local status, user_config_call = pcall(require, "user_config")
 if (not status) then return end

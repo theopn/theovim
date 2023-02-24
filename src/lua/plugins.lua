@@ -26,10 +26,6 @@ local plugins = {
       vim.notify = require("notify")
     end
   },
-  {
-    "doums/suit.nvim", --> Prettier vim.ui.select() and input()
-    --config = function() require("suit").setup() end
-  },
   -- }}}
 
   -- {{{ File and search
