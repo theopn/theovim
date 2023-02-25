@@ -7,6 +7,8 @@
 "   |  |  |  7  ||     7|  !  ||     ||  ||  |  |  ||     77     ||  7
 "   !__!  !__!__!!_____!!_____!!_____!!__!!__!__!__!!_____!!_____!!__!
 --]]
+--
+
 -- List of LSP server used later
 -- Always check the memory usage of each language server. :LSpInfo to identify LSP server and use "sudo lsof -p PID" to check for associated files
 -- Blacklist: ltex-ls (java process running in the bg for each instance of markdown files)
