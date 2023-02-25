@@ -1,3 +1,12 @@
+--[[
+" figlet -f weird theovim-cmd
+"  /    /                   /                        |
+" (___ (___  ___  ___         _ _  ___  ___  _ _  ___|
+" |    |   )|___)|   ) \  )| | | )     |    | | )|   )
+" |__  |  / |__  |__/   \/ | |  /      |__  |  / |__/
+--]]
+--
+
 local function create_selectable_menu(prompt, options_table)
   local option_names = {}
   local n = 0
