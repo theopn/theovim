@@ -1,12 +1,30 @@
 --[[
-" figlet -f small theovim-file,search
-"  _   _                _           __ _ _                           _
-" | |_| |_  ___ _____ _(_)_ __ ___ / _(_) |___   ___ ___ __ _ _ _ __| |_
-" |  _| ' \/ -_) _ \ V / | '  \___|  _| | / -_)_(_-</ -_) _` | '_/ _| ' \
-"  \__|_||_\___\___/\_/|_|_|_|_|  |_| |_|_\___( )__/\___\__,_|_| \__|_||_|
-"                                             |/
+" figlet -f standard theovim-init
+"  _   _                     _                 _       _ _
+" | |_| |__   ___  _____   _(_)_ __ ___       (_)_ __ (_) |_
+" | __| '_ \ / _ \/ _ \ \ / / | '_ ` _ \ _____| | '_ \| | __|
+" | |_| | | |  __/ (_) \ V /| | | | | | |_____| | | | | | |_
+"  \__|_| |_|\___|\___/ \_/ |_|_| |_| |_|     |_|_| |_|_|\__|
 --]]
 --
+
+-- {{{ Spell check in relevant buffer filetypes
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { "markdown", "text" },
+  callback = function()
+    vim.wo.spell = true
+  end
+})
+-- }}}
+
+-- {{{ Highlight on yank
+vim.api.nvim_create_autocmd('TextYankPost', {
+  group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }),
+  pattern = '*',
+  callback = function() vim.highlight.on_yank() end,
+})
+-- }}}
+
 -- {{{ Automatically close the terminal when exit
 -- TODO: Translate the following to Lua
 -- autocmd TermClose * if !v:event.status | exe 'bdelete! '..expand('<abuf>') | endif

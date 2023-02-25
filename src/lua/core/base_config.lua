@@ -42,12 +42,6 @@ do
   for _, v in ipairs(base_opt) do
     vim_set(v[1], GLOBAL, v[2])
   end
-  -- Highlight on yank --
-  vim.api.nvim_create_autocmd('TextYankPost', {
-    group = vim.api.nvim_create_augroup('YankHighlight', { clear = true }),
-    pattern = '*',
-    callback = function() vim.highlight.on_yank() end,
-  })
 end
 -- }}}
 
@@ -60,17 +54,11 @@ do
     { "expandtab",    true }, --> Tab as spaces
     { "spelllang",    "en" },
     { "spellsuggest", "best,8" },
+    { "spell",        "false" }, --> autocmd will enable spellcheck in txt or markdown
   }
   for _, v in ipairs(edit_opt) do
     vim_set(v[1], GLOBAL, v[2])
   end
-  -- Spell check in markdown buffer only --
-  vim.api.nvim_create_autocmd('FileType', {
-    pattern = { "markdown", "text" },
-    callback = function()
-      vim.wo.spell = true
-    end
-  })
   -- Trimming extra whitespaces --
   -- \s: white space char, \+ :one or more, $: end of the line, e: suppresses warning, no need for <CR> for usercmd
   vim.api.nvim_create_user_command("TrimWhitespace", ":let save=@/<BAR>:%s/\\s\\+$//e<BAR>:let @/=save<BAR>",

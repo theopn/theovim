@@ -27,8 +27,9 @@ Logo: figlet -f soft Theovim
 -- Remove a hyphen before brackets to disable a module
 
 ---[[ Core
-require("core/theo_init")
+require("core/base_config")
 require("core/keybindings")
+require("core/autocmds")
 require("core/plugins")
 --]]
 
@@ -41,9 +42,8 @@ require("look/dashboard")
 
 ---[[ Editor
 require("editor/tree_sitter")
-require("editor/lsp")
 require("editor/fuzzy_finder")
-require("editor/file_et_search")
+require("editor/lsp")
 --]]
 
 ---[[ Theovim
