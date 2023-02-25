@@ -33,12 +33,16 @@ require("core/plugins")
 --]]
 
 ---[[ Look
-require("look/look")
+require("look/colorscheme")
 require("look/statusline")
+require("look/bufferline")
+require("look/dashboard")
 --]]
 
 ---[[ Editor
+require("editor/tree_sitter")
 require("editor/lsp")
+require("editor/fuzzy_finder")
 require("editor/file_et_search")
 --]]
 
