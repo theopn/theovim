@@ -44,6 +44,7 @@ require("look/dashboard")
 require("editor/tree_sitter")
 require("editor/fuzzy_finder")
 require("editor/lsp")
+require("editor/completion")
 --]]
 
 ---[[ Theovim
