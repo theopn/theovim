@@ -2,7 +2,14 @@
 
 ![theovim-banner](./assets/theovim-banner.jpg)
 
-Theovim is an IDE layer for Neovim equipped with useful tools and plugins for computer science students. Theovim originated from my personal Neovim configuration, when I and my classmates in Purdue CS started taking CS252: Systems Programming, I got requests to separate my Neovim configuration from my Dotfiles repository. So after generalizing the configuration with helps from my friends, I present you Theovim.
+Theovim is a somewhat minimal, somewhat opinionated, totally stable, and totally functional IDE layer for Neovim. Theovim originated from my personal Neovim configuration, and when my classmates in CS252: Systems Programming wanted my configuration for the projects only available on command-line SSH server, I developed Theovim. Theovim aims to be a configuration geared toward computer science students.
+
+Some Theovim philosophies that might convince you to use Theovim:
+
+1. Theovim does not to take away "vanilla Vim" experience, it improves upon it
+2. Theovim is written 100% in Lua with verbose comments and descriptive code
+3. Only the codes that 
+4. Keybindings you can memorize is the best keybindings. Instead of having complex bindings for every single features, Theovim makes a few 
 
 ## Prerequisite
 
