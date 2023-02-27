@@ -16,7 +16,7 @@ local plugins = {
 
   -- {{{ Look and feel
   { "theopn/pastelcula.nvim" }, --> Colorscheme
-  { "romgrk/barbar.nvim" }, --> Bufferline (tab) plugin
+  { "nanozuki/tabby.nvim" }, --> Improving Vim's built-in tab system
   { "nvim-lualine/lualine.nvim" }, --> Status line plugin
   { "glepnir/dashboard-nvim" }, --> Startup dashboard
   {
@@ -70,6 +70,7 @@ local plugins = {
   { "theopn/friendly-snippets" }, --> VS Code style snippet collection
   {
     "L3MON4D3/LuaSnip", --> Snippet engine that accepts VS Code style snippets
+    build = "make install_jsregexp",
     config = function() require("luasnip.loaders.from_vscode").lazy_load() end --> Load snippets from friendly snippets
   },
   { "saadparwaiz1/cmp_luasnip" }, --> nvim_cmp and LuaSnip bridge
