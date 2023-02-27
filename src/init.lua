@@ -48,7 +48,7 @@ require("editor/completion")
 --]]
 
 ---[[ Theovim
-require("theovim/theovim")
+require("theovim/theovim_cmd")
 require("theovim/custom_menus")
 --]]
 
