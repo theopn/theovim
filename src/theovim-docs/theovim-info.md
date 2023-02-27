@@ -1,11 +1,14 @@
 # Theovim Information
 
-> Current Version: 2023.02.26
+> Current Version: 2023.02.27
 
 # Changelog
 
-## Version 2023.02.26
+## Version 2023.02.27
 
+- Neovim appimage installer removed as Purdue Linux server updated the Neovim package (Thanks Shriansh for submitting the request)
+- Major file structure organization
+- New Dashboard
 - Bufferline plugin (Barbar) replaced by UI wrapper for traditional Vim tab (Tabby)
 - Tab-related keybindings:
   - <leader>1-9

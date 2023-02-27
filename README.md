@@ -6,26 +6,23 @@ Theovim is a somewhat minimal, somewhat opinionated, totally stable, and totally
 
 Some Theovim philosophies that might convince you to use Theovim:
 
-1. Theovim does not to take away "vanilla Vim" experience, it improves upon it
-2. Theovim is written 100% in Lua with verbose comments and descriptive code
-3. Only the codes that 
-4. Keybindings you can memorize is the best keybindings. Instead of having complex bindings for every single features, Theovim makes a few 
+1. Do not to take away the "vanilla Vim" experience, improves it (e.g. Vim tab system over bufferline)
+2. Lua is a great language, even better if it's well-commented
+3. Simplicity is the best aesthetic
+4. Keybindings you can memorize are the best keybindings. Theovim's keybindings use mnemonics, and instead of trying to make keybindings for every single features, some of the often but not frequently used features are bundled in selectable menu (e.g. `<leader>ca/fa/m/z`)
+5. If it can be done in less than 50 lines of code, do it (e.g. `:Notepad`). If a plugin must be used, keep it as close to the default/suggested configuration as possible. Plugin author is more knowledgeable to the code than I am
 
-## Prerequisite
+## Dependencies
 
 - `git` to update Theovim
 - `bash` or a POSIX compliance shell
 - `npm` and `g++` (`gcc-c++`) compiler for `bashls` and `clangd` language server
 - A terminal emulator capable of rendering 256 xterm colors
-- Latest version of Neovim (> 0.8).
-  - For those poor souls working with 0.4.3 version Neovim on the Purdue CS Data server, I included the appimage downloader that automatically adds an alias to your `.bashrc`. Run `~/.theovim/nvim_appimage_downloader.sh` periodically to keep the appimage updated.
+- Latest version of Neovim (> 0.8)
+  - ~~For those poor souls working with 0.4.3 version Neovim on the Purdue CS Data server, I included the appimage downloader that automatically adds an alias to your `.bashrc`. Run `~/.theovim/nvim_appimage_downloader.sh` periodically to keep the appimage updated.~~ Purdue CS finally updated Neovim image!
 - [NerdFonts](https://www.nerdfonts.com/font-downloads) to render glyphs
 
 ## Installation
-
-Install the latest version of Neovim. Use `nvim_appimage_downloader` if your system does not permit a binary installation.
-
-Execute the following commands:
 
 ```bash
 git clone https://github.com/theopn/theovim.git ~/.theovim
@@ -40,25 +37,14 @@ git clone https://github.com/theopn/theovim.git ~/.theovim
 
 ## Highlights
 
-- Instead of having complex bindings, Theovim groups some of the often but not frequently used LSP/plugin features and put them in selectable menus (try `<leader>ca` for LSP features and `<leader>fa` for fuzzy finder). Of course, there are keybindings for very frequently used features
-- You can quickly toggle terminals whenever you want (bottom, left, floating, new tab, etc.) using `<leader>z`
-- Theovim has a fuzzy finder (Telescope) for almost everything - file browser, file search, buffer search, Git commits, Git status, Git diff, etc.
-- Theovim has built-in help documentation (`:TheovimHelp`)
-- Theovim ships with fun tools (`:Scratchpad` `:Calculator`, `:Weather`, etc.)
-- Configurations are well-commented; you are more than welcome to fork or reference the configuration and make it on your own
-- There are less than 35 total plugins
-
-### Text Editing
-
-- has an auto-completion menu for text, date, file path, vim commands, and code snippets
-- helps with LaTeX editing using Vimtex plugin (real-time PDF compile, auto-completion, etc.) and included homework template
-- helps with markdown editing with real-time preview (`:MarkdownPreviewToggle`) and spell checker
-
-### LSP
-
-- You can use the `:Mason` and `:MasonInstall` commands to install LSP servers and Theovim will automatically set it up for you
-- If the LSP supports it, codes will be automatically formatted on save. This can be turned off temporarily using the `:CodeFormatToggle` command
-- For more features, try `<leader>ca` keybindings
+- Fully featured LSP with auto-completion, error detection, auto formatting, etc.
+- Telescope fuzzy finder used for buffer selection, file opening, file browsing, etc.
+- LaTeX and markdown compilation (`:VimtexCompile`/`:MarkdownPreviewToggle`)
+- Templates for LaTeX, C header file, etc.
+- Helpful features like `:Notepad`, `:TheovimVanillaVimHelp`, etc.
+- Informative statusline
+- Better tab/buffer management system using [tabby.nvim](https://github.com/nanozuki/tabby.nvim) and custom keybindings
+- Use of standard (Neo)vim features (floating window, `vim.ui.select`, etc.) for better performance
 
 ## Other Things
 
