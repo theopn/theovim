@@ -81,6 +81,7 @@ local key_opt = {
   -- Telescope --
   { 'n', "<leader>fa",      function() THEOVIM_TELESCOPE_MENU() end },
   { 'n', "<leader>ff",      "<CMD>Telescope find_files<CR>" },
+  { 'n', "<leader>fr",      "<CMD>Telescope oldfiles<CR>" },
   { 'n', "<leader>fb",      "<CMD>Telescope file_browser<CR>" },
   { 'n', "<leader>f/",      "<CMD>Telescope current_buffer_fuzzy_find<CR>" },
   -- LSP --

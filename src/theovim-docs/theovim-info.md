@@ -14,6 +14,7 @@
   - <leader>1-9
   - <leader>n prompts the user with a buffer to create a new tab with
   - <leader>x prompts the user with a buffer to delete
+- New keybinding for recently used files (<leader> f r)
 
 ## Version 2023.02.23
 

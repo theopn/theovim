@@ -60,6 +60,7 @@
 
 - <leader> f a (Find Actions) : Menu for commonly used Telescope features
 - <leader> f f (Find File)    : Open up a fuzzy file searcher for the current and nested directories
+- <leader> f r (Find Recent)  : Open up a fuzzy file searcher for recently used files
 - <leader> f b (File Browser) : Open up a fuzzy file finder (able to navigate to previous directories)
 - <leader> f / (Find /)       : Open up a fuzzy searcher for the current buffer
 
