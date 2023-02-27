@@ -57,7 +57,7 @@ local function spawn_floating_win(file_path)
   vim.api.nvim_buf_set_option(0, "modifiable", false)
 end
 
-local helpdoc_path = vim.api.nvim_get_runtime_file("theovim-docs/theovim-help-doc.md", false)[1]
+local helpdoc_path = vim.api.nvim_get_runtime_file("theovim-docs/theovim-help.md", false)[1]
 -- nargs ?: 0 or 1, *: > 0, +: > 1 args
 vim.api.nvim_create_user_command("TheovimHelp", function() spawn_floating_win(helpdoc_path) end, { nargs = 0 })
 
