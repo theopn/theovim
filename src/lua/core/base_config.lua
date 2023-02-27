@@ -19,16 +19,17 @@ end
 -- {{{ Global base settings
 do
   local base_opt = {
-    { "filetype",      'on' },
-    { "syntax",        'on' },
+    { "filetype",      'on' }, --> Detect what file I'm working on
+    { "syntax",        'on' }, --> Syntax highlighting, usually overriden by Treesitter
     { "scrolloff",     7 }, --> Keep at least 7 lines visible above and below the cursor
+    -- Search --
     { "hlsearch",      true }, --> Highlight search result
-    { "incsearch",     true }, --> Should be enabled by default
+    { "incsearch",     true }, --> As you type, match the currently typed workd w/o pressing enter
     { "ignorecase",    true }, --> Needed for smartcase
     { "smartcase",     true }, --> Ignore case iff search input was all lowercase
     { "splitright",    false }, --> Vertical split default to left
     { "splitbelow",    true }, --> Horizontal split default to below
-    { "termguicolors", true },
+    { "termguicolors", true }, --> Enables 24-bit RGB color in the TUI
     { "mouse",         'a' }, --> Enable mouse
     { "list",          true }, --> Needed for listchars
     { "foldmethod",    "expr" }, --> Leave the fold up to treesitter
@@ -52,8 +53,8 @@ do
     { "tabstop",      2 }, --> Backslash t width
     { "softtabstop",  2 }, --> Tab key width
     { "expandtab",    true }, --> Tab as spaces
-    { "spelllang",    "en" },
-    { "spellsuggest", "best,8" },
+    { "spelllang",    "en" }, --> Engrish
+    { "spellsuggest", "best,8" }, --> Suggest 8 words for spell suggestion
     { "spell",        "false" }, --> autocmd will enable spellcheck in txt or markdown
   }
   for _, v in ipairs(edit_opt) do
@@ -69,7 +70,7 @@ end
 -- {{{ Window options
 do
   local win_opt = {
-    { opt = "number",         val = true },
+    { opt = "number",         val = true }, --> Line number
     { opt = "relativenumber", val = true },
     { opt = "colorcolumn",    val = '120' },
     { opt = "cursorline",     val = true },
