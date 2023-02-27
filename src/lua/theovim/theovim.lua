@@ -44,7 +44,7 @@ local function spawn_floating_win(file_path)
   -- options
   vim.api.nvim_win_set_option(win, "winblend", 0) --> How much does the background color blends in (80 will be black)
   vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe") --> Kill the buffer when hidden
-  vim.api.nvim_buf_set_option(buf, "filetype", "theovimFloatingWin")
+  vim.api.nvim_buf_set_option(buf, "filetype", "markdown")
 
   -- keymaps
   local keymaps_opts = { silent = true, buffer = buf }
@@ -60,6 +60,10 @@ end
 local helpdoc_path = vim.api.nvim_get_runtime_file("theovim-docs/theovim-help-doc.md", false)[1]
 -- nargs ?: 0 or 1, *: > 0, +: > 1 args
 vim.api.nvim_create_user_command("TheovimHelp", function() spawn_floating_win(helpdoc_path) end, { nargs = 0 })
+
+local vimhelp_path = vim.api.nvim_get_runtime_file("theovim-docs/vim-help.md", false)[1]
+-- nargs ?: 0 or 1, *: > 0, +: > 1 args
+vim.api.nvim_create_user_command("TheovimVanillaVimHelp", function() spawn_floating_win(vimhelp_path) end, { nargs = 0 })
 
 local info_path = vim.api.nvim_get_runtime_file("theovim-docs/theovim-info.txt", false)[1]
 vim.api.nvim_create_user_command("TheovimInfo", function() spawn_floating_win(info_path) end, { nargs = 0 })

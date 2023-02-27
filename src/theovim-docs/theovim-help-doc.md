@@ -41,12 +41,17 @@
 - <leader> p                  : Open a list of contents from available registers
 - :'<,'>CommentToggle         : Comment the selected lines
 
-## Buffer (tab) navigation
+## Buffer and Tab Navigation
 
-- <leader> n (New)            : Open a new buffer
-- <leader> , ("<")            : Navigate to a previous buffer (left in the top buffer list)
-- <leader> . (">")            : Navigate to a previous buffer (right in the top buffer list)
-- <leader> x                  : Kill the current buffer
+> I recommend you to read "Tab v.s. Buffer" section in `:TheovimVanillaVimHelp`
+
+- <leader> b (Buffer)         : Open a list of buffers
+- <leader> , ("<")            : Navigate to the previous buffer
+- <leader> . (">")            : Navigate to the next buffer
+- <leader> x                  : Kill the current or selected buffer
+
+- <leader> n (New)            : Open a new tab with current of selected buffer
+- <leader> 1-9                : Select a tab
 
 ## Telescope
 

@@ -1,6 +1,10 @@
-Current Version: 2023.02.23
+Current Version: 2023.02.26
 
 * Changelog
+
+** Version 2023.02.26
+
+- Bufferline plugin (Barbar) replaced by UI wrapper for traditional Vim tab (Tabby)
 
 ** Version 2023.02.23
 
