@@ -48,8 +48,41 @@ Most of the single character or really basic bindings (hjkl, webr, u/<C-r> etc) 
 
 ## Commands
 
-- :enew: New buffer without a name
 - :reg: Open up the register contents
 - "<clipboard-name>p: Paste the content in the particular register
 - :retab: Replace tab character to space (or vice versa depending on the configuration)
+
+## Tab v.s. Buffer
+
+- :buffers: List all opened files
+- :tabs: List opened "workspaces" holding window layout
+
+- :b <number/name>: Select the buffer specified by the ID or (partial) file name
+- <number>gt: Select the tab specified by the number
+
+- :enew: Open a new buffer without a name
+- :tabnew: Open a new tab then execute `:enew`
+- :e <file>: Open a new buffer with the file name
+- :tab sb <number>: Open a new tab with selected buffer (or the current buffer without selection)
+
+- :bprev/bnext: Cycles through the buffers
+- gt/gT or :tabprevious/tabnext: Cycles through the tabs
+
+- :bdelete <number>: Deletes a buffer
+- :tabclose: Closes a tab. Note that tabs will be killed when there is no split pane to display or the current buffer is killed
+
+Suggested workflow is:
+
+- Open files using `:e <file>` command. Change between files using `:b <number>` command
+  - In Theovim, you can use `<leader>ff` to quickly open a file using fuzzy finder
+  - In Theovim, you can either cycle through buffers quickly using `<leader>,/.` or choose from a menu using `<leader>b`
+- If you accumulated buffers that you want to separate, create a tab. Create a window layout, and select buffers for each window using `:b <number>`
+  - In Theovim, you can create a new tab with a selected buffer using `<leader>n`
+  - In Theovim, you can split screen using `<leader>-/|`
+- Navigate between these "workspaces" (tabs) using gt/gT keybindings
+  - In Theovim, you can jump between tabs using `<leader>1-9`
+- When you want to close a buffer, use `:bdelete <number>`
+  - In Theovim, you can use `<leader>x` to close a selected buffer
+- Close a tab using `:tabclose`, or as I recommend, either kill the last buffer standing or use split pane close binding `<C-w>q` until there is no pane left
+  - In Theovim, you can close split panes using `<leader>q`
 

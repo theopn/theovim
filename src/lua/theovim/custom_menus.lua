@@ -56,9 +56,10 @@ THEOVIM_TELESCOPE_MENU = create_selectable_menu("Telescope option to launch:", t
 local misc_options = {
   ["1. :Notepad"] = function() vim.cmd("Notepad") end,
   ["2. :TrimWhitespace"] = function() vim.cmd("TrimWhitespace") end,
-  ["3. :TheovimHelp"] = function() vim.cmd("TheovimHelp") end,
-  ["4. :TheovimInfo"] = function() vim.cmd("TheovimInfo") end,
-  ["5. :TheovimUpdate"] = function() vim.cmd("TheovimUpdate") end,
+  ["3. :TheovimUpdate"] = function() vim.cmd("TheovimUpdate") end,
+  ["4. :TheovimHelp"] = function() vim.cmd("TheovimHelp") end,
+  ["5. :TheovimVanillaVimHelp"] = function() vim.cmd("TheovimVanillaVimHelp") end,
+  ["6. :TheovimInfo"] = function() vim.cmd("TheovimInfo") end,
 }
 THEOVIM_MISC_MENU = create_selectable_menu("What fun feature would you like to use?", misc_options)
 --}}}
