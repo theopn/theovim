@@ -7,12 +7,10 @@
 --]]
 --
 
-vim.o.showtabline = 2
-
-require('tabby.tabline').use_preset('active_wins_at_tail',
+require('tabby.tabline').use_preset("active_wins_at_tail",
   {
     theme = {
-      current_tab = { fg = '#f2E9DE', bg = '#907AA9', style = 'italic' }
+      current_tab = { fg = "#f8f8f2", bg = "#6272a4", style = "italic" }
     },
   })
 

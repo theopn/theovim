@@ -56,7 +56,7 @@ local key_opt = {
   { 'n', "<leader><UP>",    "<C-w>5+" },
   { 'n', "<leader><RIGHT>", "<C-w>10>" },
   -- Tab --
-  { 'n', "<leader>n",       ":ls<CR>:echo '* Enter: New tab w/ curr buf'<CR>:echo '* Buf # + Enter: New tab w/ selected buf'<CR>:tab sb<SPACE>" },
+  { 'n', "<leader>n",       ":ls<CR>:echo '* Enter: New tab w/ curr buf'<CR>:echo '* Buf# + Enter: New tab w/ selected buf'<CR>:tab sb<SPACE>" },
   { 'n', "<leader>1",       "1gt" }, --> Go to 1st tab
   { 'n', "<leader>2",       "2gt" }, --> ^
   { 'n', "<leader>3",       "3gt" }, --> ^
@@ -70,7 +70,7 @@ local key_opt = {
   { 'n', "<leader>b",       "<CMD>Telescope buffers<CR>" }, --> ":ls<CR>:b<SPACE>" W/O PLUGIN
   { 'n', "<leader>,",       "<CMD>bprevious<CR>" }, --> Cycle through the buffer
   { 'n', "<leader>.",       "<CMD>bnext<CR>" }, --> ^
-  { 'n', "<leader>x",       ":ls<CR>:echo '* Enter: Delete curr buf'<CR>:echo '* Buf # + Enter: Delete/ selected buf'<CR>:bdelete<SPACE>" },
+  { 'n', "<leader>x",       ":ls<CR>:echo '* Enter: Delete curr buf'<CR>:echo '* Buf# + Enter: Delete selected buf'<CR>:bdelete<SPACE>" },
   -- }}}
 
   -- {{{ Plugin/Feature Specific Keybindings

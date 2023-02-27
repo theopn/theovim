@@ -22,16 +22,19 @@ do
     { "filetype",      'on' }, --> Detect what file I'm working on
     { "syntax",        'on' }, --> Syntax highlighting, usually overriden by Treesitter
     { "scrolloff",     7 }, --> Keep at least 7 lines visible above and below the cursor
+    { "showtabline",   2 }, --> Always show tabline (default 1 - only if there are two or more tabs)
     -- Search --
     { "hlsearch",      true }, --> Highlight search result
     { "incsearch",     true }, --> As you type, match the currently typed workd w/o pressing enter
     { "ignorecase",    true }, --> Needed for smartcase
     { "smartcase",     true }, --> Ignore case iff search input was all lowercase
+    -- Split pane --
     { "splitright",    false }, --> Vertical split default to left
     { "splitbelow",    true }, --> Horizontal split default to below
     { "termguicolors", true }, --> Enables 24-bit RGB color in the TUI
     { "mouse",         'a' }, --> Enable mouse
     { "list",          true }, --> Needed for listchars
+    -- Fold --
     { "foldmethod",    "expr" }, --> Leave the fold up to treesitter
     { "foldlevel",     1 }, --> Useless with expr, but when folding by "marker", it only folds folds w/in a fold only
     { "foldenable",    false }, --> True for "marker" + level = 1, false for TS folding
