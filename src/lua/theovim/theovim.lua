@@ -65,7 +65,7 @@ local vimhelp_path = vim.api.nvim_get_runtime_file("theovim-docs/vim-help.md", f
 -- nargs ?: 0 or 1, *: > 0, +: > 1 args
 vim.api.nvim_create_user_command("TheovimVanillaVimHelp", function() spawn_floating_win(vimhelp_path) end, { nargs = 0 })
 
-local info_path = vim.api.nvim_get_runtime_file("theovim-docs/theovim-info.txt", false)[1]
+local info_path = vim.api.nvim_get_runtime_file("theovim-docs/theovim-info.md", false)[1]
 vim.api.nvim_create_user_command("TheovimInfo", function() spawn_floating_win(info_path) end, { nargs = 0 })
 -- }}}
 
