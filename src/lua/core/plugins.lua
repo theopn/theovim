@@ -18,7 +18,6 @@ local plugins = {
   { "theopn/pastelcula.nvim" }, --> Colorscheme
   { "nanozuki/tabby.nvim" }, --> Improving Vim's built-in tab system
   { "nvim-lualine/lualine.nvim" }, --> Status line plugin
-  { "glepnir/dashboard-nvim" }, --> Startup dashboard
   {
     "rcarriga/nvim-notify", --> Prettier notification
     config = function()
