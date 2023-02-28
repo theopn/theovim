@@ -51,11 +51,11 @@ local olivers = {
 local header = olivers[math.random(#olivers)]
 
 local buttons = {
-  { "  Find File     ", "SPC f f", "Telescope find_files" },
-  { "  Recent Files  ", "SPC f r", "Telescope oldfiles" },
-  { "  File Browser  ", "SPC f b", "Telescope file_browser" },
-  { "  New File      ", "       ", "enew" },
-  { "  Exit Theovim  ", "ZZ     ", "quit" },
+  { "󰥨  Find File     ", "SPC f f", "Telescope find_files" },
+  { "  Recent Files  ",  "SPC f r", "Telescope oldfiles" },
+  { "  File Browser  ",  "SPC f b", "Telescope file_browser" },
+  { "  New File      ",  "       ", "enew" },
+  { "  Exit Theovim  ",  "ZZ     ", "quit" },
 }
 
 -- figlet -f small theovim

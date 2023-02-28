@@ -48,6 +48,7 @@ Most of the single-characters or basic bindings (hjkl, webr, u/<C-r>, etc.) are 
 
 ## Commands
 
+- :qa: Close all open windows
 - :reg: Open up the register contents
 - "<clipboard-name>p: Paste the content in the particular register
 - :retab: Replace tab character to space (or vice versa depending on the configuration)
