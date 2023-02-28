@@ -2,15 +2,15 @@
 
 ![theovim-banner](./assets/theovim-banner.jpg)
 
-Theovim is a somewhat minimal, somewhat opinionated, totally stable, and totally functional IDE layer for Neovim. Theovim originated from my personal Neovim configuration, and when my classmates in CS252: Systems Programming wanted my configuration for the projects only available on command-line SSH server, I developed Theovim. Theovim aims to be a configuration geared toward computer science students.
+Theovim is a somewhat minimal, somewhat opinionated, totally stable, and totally functional IDE layer for Neovim. Theovim originated from my personal Neovim configuration, and when my classmates in CS252: Systems Programming wanted my configuration for the projects only available on the command-line SSH server, I developed Theovim. Theovim aims to be a configuration geared toward computer science students.
 
 Some Theovim philosophies that might convince you to use Theovim:
 
-1. Do not to take away the "vanilla Vim" experience, improves it (e.g. Vim tab system over bufferline)
+1. Do not take away the "vanilla Vim" experience, improves it (e.g. Vim tab system over bufferline)
 2. Lua is a great language, even better if it's well-commented
 3. Simplicity is the best aesthetic
-4. Keybindings you can memorize are the best keybindings. Theovim's keybindings use mnemonics, and instead of trying to make keybindings for every single features, some of the often but not frequently used features are bundled in selectable menu (e.g. `<leader>ca/fa/m/z`)
-5. If it can be done in less than 50 lines of code, do it (e.g. `:Notepad`). If a plugin must be used, keep it as close to the default/suggested configuration as possible. Plugin author is more knowledgeable to the code than I am
+4. Keybindings you can memorize are the best keybindings. Theovim's keybindings use mnemonics, and instead of trying to make keybindings for every single feature, some of the often but not frequently used features are bundled in a selectable menu (e.g. `<leader>ca/fa/m/z`)
+5. If it can be done in less than 50 lines of code, do it (e.g. `:Notepad`). If a plugin must be used, keep it as close to the default/suggested configuration as possible. The plugin author is more knowledgeable about the code than I am
 
 ## Dependencies
 
@@ -45,6 +45,10 @@ git clone https://github.com/theopn/theovim.git ~/.theovim
 - Informative statusline
 - Better tab/buffer management system using [tabby.nvim](https://github.com/nanozuki/tabby.nvim) and custom keybindings
 - Use of standard (Neo)vim features (floating window, `vim.ui.select`, etc.) for better performance
+
+## Logo
+
+Theovim randomly displays one of [five](https://github.com/theopn/theovim/blob/main/src/lua/look/dashboard.lua#L11) ASCII art for my cat [Oliver](https://theopark.me/writing/2022-08-10_my_linux_journey_so_far/). Most of the art is from [ASCII Art Archive](https://www.asciiart.eu/animals/cats), and because Oliver is chunky and has a short tail, I modified them accordingly. Try collecting screenshots of all five Oliver arts in the dashboard!
 
 ## Other Things
 
