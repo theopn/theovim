@@ -273,7 +273,8 @@ end
 -- }}}
 
 -- {{{ Open the dashboard
-open()
+local status, _ = pcall(open)
+if (not status) then vim.notify("Window size is too small to display the dashboard :(") end
 -- }}}
 
 
