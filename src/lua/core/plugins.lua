@@ -16,19 +16,14 @@ local plugins = {
 
   -- {{{ Look and feel
   { "theopn/pastelcula.nvim" }, --> Colorscheme
-  { "romgrk/barbar.nvim" }, --> Bufferline (tab) plugin
+  { "nanozuki/tabby.nvim" }, --> Improving Vim's built-in tab system
   { "nvim-lualine/lualine.nvim" }, --> Status line plugin
-  { "glepnir/dashboard-nvim" }, --> Startup dashboard
   {
     "rcarriga/nvim-notify", --> Prettier notification
     config = function()
       require("notify").setup({ background_colour = "#282A35" }) --> The variable is needed if theme is transparent
       vim.notify = require("notify")
     end
-  },
-  {
-    "doums/suit.nvim", --> Prettier vim.ui.select() and input()
-    --config = function() require("suit").setup() end
   },
   -- }}}
 
@@ -74,6 +69,7 @@ local plugins = {
   { "theopn/friendly-snippets" }, --> VS Code style snippet collection
   {
     "L3MON4D3/LuaSnip", --> Snippet engine that accepts VS Code style snippets
+    build = "make install_jsregexp",
     config = function() require("luasnip.loaders.from_vscode").lazy_load() end --> Load snippets from friendly snippets
   },
   { "saadparwaiz1/cmp_luasnip" }, --> nvim_cmp and LuaSnip bridge

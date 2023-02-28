@@ -12,6 +12,7 @@
 - <leader> ?                  : Bring up key binding help pop-up
                                 You can hit a key, pause for 2 seconds to bring up the key binding help pop-up
 - :TheovimHelp                : Open this help document
+- :TheovimVanillaVimHelp      : Common Vim keybindings and workflows
 
 ## Insert Mode
 
@@ -23,7 +24,7 @@
 
 ## Normal Mode
 
-- <leader>m                   : Menu for miscellaneous features that Theovim offers
+- <leader> m                  : Menu for miscellaneous features that Theovim offers
 
 - <leader> z (Zsh)            : Open a menu for launching a terminal
 - <leader> /                  : Clear search highlighting
@@ -41,12 +42,17 @@
 - <leader> p                  : Open a list of contents from available registers
 - :'<,'>CommentToggle         : Comment the selected lines
 
-## Buffer (tab) navigation
+## Buffer and Tab Navigation
 
-- <leader> n (New)            : Open a new buffer
-- <leader> , ("<")            : Navigate to a previous buffer (left in the top buffer list)
-- <leader> . (">")            : Navigate to a previous buffer (right in the top buffer list)
-- <leader> x                  : Kill the current buffer
+> I recommend you to read the "Tab v.s. Buffer" section in `:TheovimVanillaVimHelp`
+
+- <leader> b (Buffer)         : Open a list of buffers
+- <leader> , ("<")            : Navigate to the previous buffer
+- <leader> . (">")            : Navigate to the next buffer
+- <leader> x                  : Kill the current or selected buffer
+
+- <leader> n (New)            : Open a new tab with the current of the selected buffer
+- <leader> 1-9                : Select a tab
 
 ## Telescope
 
@@ -54,8 +60,11 @@
 
 - <leader> f a (Find Actions) : Menu for commonly used Telescope features
 - <leader> f f (Find File)    : Open up a fuzzy file searcher for the current and nested directories
+- <leader> f r (Find Recent)  : Open up a fuzzy file searcher for recently used files
 - <leader> f b (File Browser) : Open up a fuzzy file finder (able to navigate to previous directories)
 - <leader> f / (Find /)       : Open up a fuzzy searcher for the current buffer
+
+- <leader> j/k                : Cycle through selection
 
 ## LSP
 
@@ -85,5 +94,5 @@
 ## Markdown and LaTeX
 
 - :MarkdownPreviewToggle      : Opens the compiled markdown file in the native browser
-- :VimtexCompile              : Start a real-time compile in the PDF viewer
+- :VimtexCompile              : Start a real-time compilation in the PDF viewer
 
