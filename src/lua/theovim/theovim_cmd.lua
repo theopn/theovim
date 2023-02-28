@@ -53,7 +53,7 @@ local function spawn_floating_win(file_path)
 
   -- https://www.reddit.com/r/neovim/comments/s97tja/opening_an_existing_file_in_a_floating_window/
   vim.api.nvim_buf_set_option(0, "modifiable", true)
-  vim.api.nvim_command("$read" .. file_path) -- Is it same as :read command? I'm not sure
+  vim.cmd("silent 0r" .. file_path) --vim.api.nvim_command("$read" .. file_path) works too
   vim.api.nvim_buf_set_option(0, "modifiable", false)
 end
 
