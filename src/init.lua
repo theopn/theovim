@@ -22,15 +22,37 @@ Logo: figlet -f soft Theovim
 "                                                                    "
 --]]
 --
+
 -- Lua configs in ~/.config/nvim/lua
-require("theo_init")
-require("plugins")
-require("look")
+-- Remove a hyphen before brackets to disable a module
 
-require("file_et_search")
-require("lsp")
+---[[ Core
+require("core/base_config")
+require("core/keybindings")
+require("core/autocmds")
+require("core/plugins")
+--]]
 
-require("theovim")
+---[[ Look
+require("look/colorscheme")
+require("look/statusline")
+require("look/tabline")
+require("look/dashboard")
+--]]
 
-local status, user_config_call = pcall(require, "user_config")
+---[[ Editor
+require("editor/tree_sitter")
+require("editor/fuzzy_finder")
+require("editor/lsp")
+require("editor/completion")
+--]]
+
+---[[ Theovim
+require("theovim/theovim_cmd")
+require("theovim/custom_menus")
+--]]
+
+---[[ Safeguards around including user configuration file
+local status, _ = pcall(require, "user_config")
 if (not status) then return end
+--]]
