@@ -8,6 +8,7 @@
 --
 
 -- {{{ Variables
+-- Mostly from: https://www.asciiart.eu/animals/cats
 local olivers = {
   {
     "     \\/   \\/          ",
