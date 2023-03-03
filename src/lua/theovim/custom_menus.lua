@@ -73,12 +73,19 @@ local terminal_options = {
     vim.api.nvim_command("botright " .. math.ceil(vim.fn.winheight(0) * 0.3) .. "sp | term")
     vim.api.nvim_input("i")
   end,
-  ["2. Right"] = function()
+  ["2. Left"] = function()
+    vim.api.nvim_command("top " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term")
+    vim.api.nvim_input("i")
+  end,
+  ["3. Right"] = function()
     vim.api.nvim_command("bot " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term")
     vim.api.nvim_input("i")
   end,
-  ["3. Floating"] = function() require("lspsaga.floaterm"):open_float_terminal() end,
-  ["4. New Tab"] = function() vim.cmd("tabnew | term") end,
+  ["4. Floating"] = function() require("lspsaga.floaterm"):open_float_terminal() end,
+  ["5. New Tab"] = function()
+    vim.cmd("tabnew | term")
+    vim.api.nvim_input("i")
+  end,
 }
 THEOVIM_TERMINAL_MENU = create_selectable_menu("Where would you like to launch a terminal?", terminal_options)
 -- }}}
