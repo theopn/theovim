@@ -7,7 +7,13 @@
 --]]
 --
 
+--[[
+-- @arg prompt: prompt to display
+-- @arg options_table: Table of the form { [1. Display name] = lua_function_to_launch, ... }
+--                    The number is used for the sorting purpose and will be removed in the display
+--]]
 local function create_selectable_menu(prompt, options_table)
+  -- Given the tabl of options, populate an array with prmpt names
   local option_names = {}
   local n = 0
   for i, _ in pairs(options_table) do
@@ -15,6 +21,7 @@ local function create_selectable_menu(prompt, options_table)
     option_names[n] = i
   end
   table.sort(option_names)
+  -- Return the prompt function. These global function var will be used when assigning keybindings
   local menu = function()
     vim.ui.select(option_names,
       {
