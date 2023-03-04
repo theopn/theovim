@@ -97,11 +97,11 @@ THEOVIM_TERMINAL_MENU = create_selectable_menu("Where would you like to launch a
 -- {{{ Miscellaneous features
 local misc_options = {
   ["1. :Notepad"] = "Notepad",
-  ["2. :TrimWhitespace"] = function() vim.cmd("TrimWhitespace") end,
-  ["3. :TheovimUpdate"] = function() vim.cmd("TheovimUpdate") end,
-  ["4. :TheovimHelp"] = function() vim.cmd("TheovimHelp") end,
-  ["5. :TheovimVanillaVimHelp"] = function() vim.cmd("TheovimVanillaVimHelp") end,
-  ["6. :TheovimInfo"] = function() vim.cmd("TheovimInfo") end,
+  ["2. :TrimWhitespace"] = "TrimWhitespace",
+  ["3. :TheovimUpdate"] = "TheovimUpdate",
+  ["4. :TheovimHelp"] = "TheovimHelp",
+  ["5. :TheovimVanillaVimHelp"] = "TheovimVanillaVimHelp",
+  ["6. :TheovimInfo"] = "TheovimInfo",
 }
 THEOVIM_MISC_MENU = create_selectable_menu("What fun feature would you like to use?", misc_options)
 --}}}
