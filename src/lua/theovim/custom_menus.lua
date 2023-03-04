@@ -9,7 +9,7 @@
 
 --[[
 -- @arg prompt: prompt to display
--- @arg options_table: Table of the form { [1. Display name] = lua_function_to_launch, ... }
+-- @arg options_table: Table of the form { [1. Display name] = lua_function_or_vim_cmd_to_launch, ... }
 --                    The number is used for the sorting purpose and will be removed in the display
 --]]
 local function create_selectable_menu(prompt, options_table)
@@ -29,9 +29,13 @@ local function create_selectable_menu(prompt, options_table)
         format_item = function(item) return item:gsub("%d. ", "") end
       },
       function(choice)
-        local action_func = options_table[choice]
-        if action_func ~= nil then
-          action_func()
+        local action = options_table[choice]
+        if action ~= nil then
+          if type(action) == "string" then
+            vim.cmd(action)
+          elseif type(action) == "function" then
+            action()
+          end
         end
       end)
   end
@@ -40,21 +44,21 @@ end
 
 -- {{{ LSP menu
 local lsp_options = {
-  ["1. Code Action"] = function() require("lspsaga.codeaction"):code_action() end,
-  ["2. Definition and References"] = function() require("lspsaga.finder"):lsp_finder() end,
-  ["3. Current Buffer Diagonostics"] = function() require("lspsaga.diagnostic"):show_buf_diagnsotic("buffer") end,
-  ["4. Outline"] = function() require("lspsaga.outline"):outline() end,
+  ["1. Code Action"] = "Lspsaga code_action",
+  ["2. Definition and References"] = "Lspsaga lsp_finder",
+  ["3. Current Buffer Diagonostics"] = "Lspsaga show_buf_diagnostics",
+  ["4. Outline"] = "Lspsaga outline",
   ["5. Hover Doc"] = function() vim.lsp.buf.hover() end, -- LSPSaga version requires Markdown treesitter
-  ["6. Rename Variable"] = function() require("lspsaga.rename"):lsp_rename() end,
-  ["7. Auto Format Toggle"] = function() vim.cmd("CodeFormatToggle") end,
+  ["6. Rename Variable"] = "Lspsaga rename",
+  ["7. Auto Format Toggle"] = "CodeFormatToggle",
 }
 THEOVIM_LSP_MENU = create_selectable_menu("Code action to perform at the current cursor", lsp_options)
 -- }}}
 
 -- {{{ Telescope menu
 local telescope_options = {
-  ["1. Git Commits"] = function() vim.cmd("Telescope git_commits") end,
-  ["2. Git Status"] = function() vim.cmd("Telescope git_status") end
+  ["1. Git Commits"] = "Telescope git_commits",
+  ["2. Git Status"] = "Telescope git_status"
 }
 THEOVIM_TELESCOPE_MENU = create_selectable_menu("Telescope option to launch:", telescope_options)
 -- }}}
@@ -70,18 +74,18 @@ local terminal_options = {
   -- botright == bot
   -- ]]
   ["1. Bottom"] = function()
-    vim.api.nvim_command("botright " .. math.ceil(vim.fn.winheight(0) * 0.3) .. "sp | term")
+    vim.cmd("botright " .. math.ceil(vim.fn.winheight(0) * 0.3) .. "sp | term")
     vim.api.nvim_input("i")
   end,
   ["2. Left"] = function()
-    vim.api.nvim_command("top " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term")
+    vim.cmd("top " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term")
     vim.api.nvim_input("i")
   end,
   ["3. Right"] = function()
-    vim.api.nvim_command("bot " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term")
+    vim.cmd("bot " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term")
     vim.api.nvim_input("i")
   end,
-  ["4. Floating"] = function() require("lspsaga.floaterm"):open_float_terminal() end,
+  ["4. Floating"] = "Lspsaga term_toggle",
   ["5. New Tab"] = function()
     vim.cmd("tabnew | term")
     vim.api.nvim_input("i")
@@ -92,7 +96,7 @@ THEOVIM_TERMINAL_MENU = create_selectable_menu("Where would you like to launch a
 
 -- {{{ Miscellaneous features
 local misc_options = {
-  ["1. :Notepad"] = function() vim.cmd("Notepad") end,
+  ["1. :Notepad"] = "Notepad",
   ["2. :TrimWhitespace"] = function() vim.cmd("TrimWhitespace") end,
   ["3. :TheovimUpdate"] = function() vim.cmd("TheovimUpdate") end,
   ["4. :TheovimHelp"] = function() vim.cmd("TheovimHelp") end,

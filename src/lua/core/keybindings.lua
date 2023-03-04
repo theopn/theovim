@@ -23,7 +23,7 @@ vim.g.mapleader = " " --> Space as the leader key
 local function buffer_selector(custom_prompt, action)
   -- Creating a table of buffers
   -- nvim_exec returns output (non-error, non-shell :!) if output (boolean value) is true, else empty string
-  local contents_str = vim.api.nvim_exec("buffers", true) --> vim.api.nvim_command_output() works too
+  local contents_str = vim.api.nvim_exec("buffers", true)
   local contents_table = {}
   for line in contents_str:gmatch("[^\n]+") do --> Add each new line to a table
     table.insert(contents_table, line)
