@@ -18,7 +18,7 @@
 
 - j k                         : ESC + :update (writes to a file if there is a change)
 - <C-hjkl>                    : Navigate in insert mode
-- Tab character               : Renders as "t>"
+- Tab character               : Renders as "▷▷"
 - Trailing space              : Renders as "␣"
 - Non-breaking space          : Renders as "⍽"
 

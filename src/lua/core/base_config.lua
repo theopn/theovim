@@ -40,7 +40,7 @@ do
     { "foldenable",    false }, --> True for "marker" + level = 1, false for TS folding
   }
   -- Listing special characters --
-  vim.opt.listchars = { tab = "t>", trail = "␣", nbsp = "⍽" }
+  vim.opt.listchars = { tab = "▷▷", trail = "␣", nbsp = "⍽" }
   -- Folding using TreeSitter --
   vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
   for _, v in ipairs(base_opt) do
