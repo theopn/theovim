@@ -36,6 +36,8 @@ local colors = {
 -- Remove defaults
 local config = {
   options = {
+    globalstatus = true, --> One statusline for all
+    disabled_filetypes = { statusline = { "TheovimDashboard" } },
     component_separators = '',
     section_separators = '',
   },
