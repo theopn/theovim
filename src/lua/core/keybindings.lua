@@ -93,7 +93,8 @@ local key_opt = {
   { 'n', "<leader>6",       "6gt" }, --> ^
   { 'n', "<leader>7",       "7gt" }, --> ^
   { 'n', "<leader>8",       "8gt" }, --> ^
-  { 'n', "<leader>7",       "9gt" }, --> ^
+  { 'n', "<leader>9",       "9gt" }, --> ^
+  { 'n', "<leader>0",       "10gt" }, --> ^
   -- Buffer --
   { 'n', "<leader>b",       "<CMD>Telescope buffers<CR>" }, --> ":ls<CR>:b<SPACE>" W/O PLUGIN
   { 'n', "<leader>,",       "<CMD>bprevious<CR>" }, --> Cycle through the buffer
