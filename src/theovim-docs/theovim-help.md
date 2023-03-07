@@ -81,7 +81,7 @@
 
 ## Git
 
-- :Git diffThis               : Git diff on a separate panel
+- <leader> g (Git)            : Menu for Git related functionalities
 
 ## Spell Check
 
