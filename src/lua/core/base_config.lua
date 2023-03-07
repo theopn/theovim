@@ -21,6 +21,7 @@ do
   local base_opt = {
     { "filetype",      'on' }, --> Detect what file I'm working on
     { "syntax",        'on' }, --> Syntax highlighting, usually overriden by Treesitter
+    { "confirm",       true },
     { "scrolloff",     7 }, --> Keep at least 7 lines visible above and below the cursor
     { "showtabline",   2 }, --> Always show tabline (default 1 - only if there are two or more tabs)
     -- Search --

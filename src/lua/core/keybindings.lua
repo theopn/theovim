@@ -38,7 +38,6 @@ local function buffer_selector(custom_prompt, action)
         vim.cmd(action)
       else
         local buffer_num = string.match(choice, "%d+") --> get the first number from the buffer list
-        print(buffer_num)
         vim.cmd(action .. buffer_num)
       end
     end)
