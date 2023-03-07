@@ -98,10 +98,11 @@ THEOVIM_TERMINAL_MENU = create_selectable_menu("Where would you like to launch a
 local misc_options = {
   ["1. :Notepad"] = "Notepad",
   ["2. :TrimWhitespace"] = "TrimWhitespace",
-  ["3. :TheovimUpdate"] = "TheovimUpdate",
-  ["4. :TheovimHelp"] = "TheovimHelp",
-  ["5. :TheovimVanillaVimHelp"] = "TheovimVanillaVimHelp",
-  ["6. :TheovimInfo"] = "TheovimInfo",
+  ["3. :ShowChanges"] = "ShowChanges",
+  ["4. :TheovimUpdate"] = "TheovimUpdate",
+  ["5. :TheovimHelp"] = "TheovimHelp",
+  ["6. :TheovimVanillaVimHelp"] = "TheovimVanillaVimHelp",
+  ["7. :TheovimInfo"] = "TheovimInfo",
 }
 THEOVIM_MISC_MENU = create_selectable_menu("What fun feature would you like to use?", misc_options)
 --}}}

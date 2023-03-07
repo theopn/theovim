@@ -1,13 +1,15 @@
 # Theovim Information
 
-> Current Version: 2023.03.03
+> Current Version: 2023.03.07
 
 # Changelog
 
-## Version 2023.03.03
+## Version 2023.03.07
 
 - Improved new tab/kill buffer buffer selector (utilizes vim.ui.select())
 - Terminal on the left option added
+- :ShowChanges command
+- Global statusline, statusline disabled in Dashboard
 
 ## Version 2023.02.27
 

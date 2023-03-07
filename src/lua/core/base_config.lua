@@ -67,6 +67,10 @@ do
   -- \s: white space char, \+ :one or more, $: end of the line, e: suppresses warning, no need for <CR> for usercmd
   vim.api.nvim_create_user_command("TrimWhitespace", ":let save=@/<BAR>:%s/\\s\\+$//e<BAR>:let @/=save<BAR>",
     { nargs = 0 })
+  -- Show the changes made since the last write
+  vim.api.nvim_create_user_command("ShowChanges", ":w !diff % -",
+    { nargs = 0 })
+  --
 end
 -- }}}
 
