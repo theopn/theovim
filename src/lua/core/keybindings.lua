@@ -18,6 +18,33 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { noremap = true }) --> Unbind 
 vim.g.mapleader = " " --> Space as the leader key
 -- }}}
 
+-- {{{ Function for selecting buffer
+-- @arg action: vim command to do with the given buffer name
+local function buffer_selector(custom_prompt, action)
+  -- Creating a table of buffers
+  -- nvim_exec returns output (non-error, non-shell :!) if output (boolean value) is true, else empty string
+  local contents_str = vim.api.nvim_exec("buffers", true)
+  local contents_table = {}
+  for line in contents_str:gmatch("[^\n]+") do --> Add each new line to a table
+    table.insert(contents_table, line)
+  end
+  -- Prompting user
+  vim.ui.select(contents_table,
+    {
+      prompt = custom_prompt .. '\n' .. "Choose a buffer or enter/q to select the current buffer:",
+    },
+    function(choice)
+      if choice == nil then
+        vim.cmd(action)
+      else
+        local buffer_num = string.match(choice, "%d+") --> get the first number from the buffer list
+        vim.cmd(action .. buffer_num)
+      end
+    end)
+end
+
+-- }}}
+
 -- {{{ Keybinding table
 local key_opt = {
   -- {{{ Text Edit Keybindings
@@ -56,7 +83,7 @@ local key_opt = {
   { 'n', "<leader><UP>",    "<C-w>5+" },
   { 'n', "<leader><RIGHT>", "<C-w>10>" },
   -- Tab --
-  { 'n', "<leader>n",       ":ls<CR>:echo '* Enter: New tab w/ curr buf'<CR>:echo '* Buf# + Enter: New tab w/ selected buf'<CR>:tab sb<SPACE>" },
+  { 'n', "<leader>n",       function() buffer_selector("Creating a new tab...", "tab sb ") end }, --> ":ls<CR>:echo ...<CR>:tab sb<SPACE> w/o custom func
   { 'n', "<leader>1",       "1gt" }, --> Go to 1st tab
   { 'n', "<leader>2",       "2gt" }, --> ^
   { 'n', "<leader>3",       "3gt" }, --> ^
@@ -65,19 +92,22 @@ local key_opt = {
   { 'n', "<leader>6",       "6gt" }, --> ^
   { 'n', "<leader>7",       "7gt" }, --> ^
   { 'n', "<leader>8",       "8gt" }, --> ^
-  { 'n', "<leader>7",       "9gt" }, --> ^
+  { 'n', "<leader>9",       "9gt" }, --> ^
+  { 'n', "<leader>0",       "10gt" }, --> ^
   -- Buffer --
   { 'n', "<leader>b",       "<CMD>Telescope buffers<CR>" }, --> ":ls<CR>:b<SPACE>" W/O PLUGIN
   { 'n', "<leader>,",       "<CMD>bprevious<CR>" }, --> Cycle through the buffer
   { 'n', "<leader>.",       "<CMD>bnext<CR>" }, --> ^
-  { 'n', "<leader>x",       ":ls<CR>:echo '* Enter: Delete curr buf'<CR>:echo '* Buf# + Enter: Delete selected buf'<CR>:bdelete<SPACE>" },
+  { 'n', "<leader>x",       function() buffer_selector("Deleting a buffer...", "bdelete ") end }, --> ":ls<CR>:echo ...<CR>:bdelete<SPACE> w/o custom func
   -- }}}
 
   -- {{{ Plugin/Feature Specific Keybindings
-  { 'n', "<leader>m",       function() THEOVIM_MISC_MENU() end }, --> All the other features
-  { 'n', "<leader>z",       function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
   { 'n', "<leader>?",       "<CMD>WhichKey<CR>" }, --> Bring up Which-key pop-up
   { 'n', "<leader>t",       "<CMD>NvimTreeToggle<CR>" }, --> Tree toggle
+  -- Custom menus --
+  { 'n', "<leader>g",       function() THEOVIM_GIT_MENU() end }, --> Git related features
+  { 'n', "<leader>m",       function() THEOVIM_MISC_MENU() end }, --> All the other features
+  { 'n', "<leader>z",       function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
   -- Telescope --
   { 'n', "<leader>fa",      function() THEOVIM_TELESCOPE_MENU() end },
   { 'n', "<leader>ff",      "<CMD>Telescope find_files<CR>" },

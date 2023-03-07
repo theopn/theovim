@@ -7,9 +7,23 @@
 --]]
 --
 
+--[[ Notes on different exec commands
+-- vim.api.nvim_cmd(command):
+--   if type(command) == 'table' then return vim.api.nvim_cmd(command, {})
+--   else return vim.api.nvim_exec(command, false) end
+-- vim.api.nvim_cmd({command}. {opts}): I honestly do not know, it just takes table instead of string
+-- vim.api.nvim_exec(command, output?): Executes a Vimscript command and if the output is true, return the result
+--   -- From keybindings.lua, captures the output of "buffers" and assign returned string to a var
+--   local contents_str = vim.api.nvim_exec("buffers", true)
+--
+-- vim.api.nvim_command(command): Old API that calls C function for Ex command. Use nvim_cmd
+-- vim.api.nvim_command_output(command): Old API, use nvim_exec
+--]]
+--
+
 -- {{{ Update command
 vim.api.nvim_create_user_command("TheovimUpdate", function()
-  vim.api.nvim_command(":! cd ~/.theovim && ./theovim-util.sh update")
+  vim.cmd("! cd ~/.theovim && ./theovim-util.sh update")
   --vim.notify("Update complete. Use :TheovimInfo command to see the latest changelog")
   require('lazy').sync()
 end, { nargs = 0 })
@@ -53,7 +67,7 @@ local function spawn_floating_win(file_path)
 
   -- https://www.reddit.com/r/neovim/comments/s97tja/opening_an_existing_file_in_a_floating_window/
   vim.api.nvim_buf_set_option(0, "modifiable", true)
-  vim.api.nvim_command("$read" .. file_path) -- Is it same as :read command? I'm not sure
+  vim.cmd("silent 0r" .. file_path)
   vim.api.nvim_buf_set_option(0, "modifiable", false)
 end
 
