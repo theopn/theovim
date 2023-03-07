@@ -102,10 +102,12 @@ local key_opt = {
   -- }}}
 
   -- {{{ Plugin/Feature Specific Keybindings
-  { 'n', "<leader>m",       function() THEOVIM_MISC_MENU() end }, --> All the other features
-  { 'n', "<leader>z",       function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
   { 'n', "<leader>?",       "<CMD>WhichKey<CR>" }, --> Bring up Which-key pop-up
   { 'n', "<leader>t",       "<CMD>NvimTreeToggle<CR>" }, --> Tree toggle
+  -- Custom menus --
+  { 'n', "<leader>g",       function() THEOVIM_GIT_MENU() end }, --> Git related features
+  { 'n', "<leader>m",       function() THEOVIM_MISC_MENU() end }, --> All the other features
+  { 'n', "<leader>z",       function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
   -- Telescope --
   { 'n', "<leader>fa",      function() THEOVIM_TELESCOPE_MENU() end },
   { 'n', "<leader>ff",      "<CMD>Telescope find_files<CR>" },

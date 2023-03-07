@@ -10,7 +10,8 @@
 - Terminal on the left option added
 - :ShowChanges command
 - Global statusline, statusline disabled in Dashboard
-- Confirm option on
+- Confirm option (ask for confirmation before closing unwritten buffer)
+- Git menu (<leader>g)
 
 ## Version 2023.02.27
 
