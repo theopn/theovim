@@ -38,6 +38,10 @@ function clean() {
     yellow_echo "Removing previous Neovim configuration backup"
     rm -rf ~/.theovim.bu
   fi
+
+  [[ -d ~/.local/share/nvim ]] && rm -rf ~/.local/share/nvim
+  [[ -d ~/.local/state/nvim ]] && rm -rf ~/.local/state/nvim
+
   if [[ -d ~/.config/nvim ]]; then
     mkdir -p ~/.theovim.bu/
     mv ~/.config/nvim $HOME/.theovim.bu/config

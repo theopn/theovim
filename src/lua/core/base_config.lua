@@ -21,6 +21,7 @@ do
   local base_opt = {
     { "filetype",      'on' }, --> Detect what file I'm working on
     { "syntax",        'on' }, --> Syntax highlighting, usually overriden by Treesitter
+    { "confirm",       true },
     { "scrolloff",     7 }, --> Keep at least 7 lines visible above and below the cursor
     { "showtabline",   2 }, --> Always show tabline (default 1 - only if there are two or more tabs)
     -- Search --
@@ -40,7 +41,7 @@ do
     { "foldenable",    false }, --> True for "marker" + level = 1, false for TS folding
   }
   -- Listing special characters --
-  vim.opt.listchars = { tab = "t>", trail = "␣", nbsp = "⍽" }
+  vim.opt.listchars = { tab = "▷▷", trail = "␣", nbsp = "⍽" }
   -- Folding using TreeSitter --
   vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
   for _, v in ipairs(base_opt) do
@@ -67,6 +68,10 @@ do
   -- \s: white space char, \+ :one or more, $: end of the line, e: suppresses warning, no need for <CR> for usercmd
   vim.api.nvim_create_user_command("TrimWhitespace", ":let save=@/<BAR>:%s/\\s\\+$//e<BAR>:let @/=save<BAR>",
     { nargs = 0 })
+  -- Show the changes made since the last write
+  vim.api.nvim_create_user_command("ShowChanges", ":w !diff % -",
+    { nargs = 0 })
+  --
 end
 -- }}}
 
