@@ -10,6 +10,7 @@
 - Terminal on the left option added
 - :ShowChanges command
 - Global statusline, statusline disabled in Dashboard
+- Confirm option on
 
 ## Version 2023.02.27
 
