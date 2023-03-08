@@ -57,8 +57,11 @@ THEOVIM_LSP_MENU = create_selectable_menu("Code action to perform at the current
 
 -- {{{ Telescope menu
 local telescope_options = {
-  ["1. Git Commits"] = "Telescope git_commits",
-  ["2. Git Status"] = "Telescope git_status"
+  ["1. Search History"] = "Telescope search_history",
+  ["2. Command History"] = "Telescope command_history",
+  ["3. Commands"] = "Telescope commands",
+  ["4. Help Tags"] = "Telescope help_tags",
+  ["5. Colorscheme"] = "Telescope colorscheme"
 }
 THEOVIM_TELESCOPE_MENU = create_selectable_menu("Telescope option to launch:", telescope_options)
 -- }}}
