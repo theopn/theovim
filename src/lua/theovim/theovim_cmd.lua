@@ -52,7 +52,7 @@ local function spawn_floating_win(file_path)
   }
 
   -- create preview buffer and set local options
-  local buf = vim.api.nvim_create_buf(false, true) -- Not add to buffer list (false), scratch buffer (true)
+  local buf = vim.api.nvim_create_buf(false, true) --> Not add to buffer list (false), scratch buffer (true)
   local win = vim.api.nvim_open_win(buf, true, win_opts)
 
   -- options
@@ -76,7 +76,6 @@ local helpdoc_path = vim.api.nvim_get_runtime_file("theovim-docs/theovim-help.md
 vim.api.nvim_create_user_command("TheovimHelp", function() spawn_floating_win(helpdoc_path) end, { nargs = 0 })
 
 local vimhelp_path = vim.api.nvim_get_runtime_file("theovim-docs/vim-help.md", false)[1]
--- nargs ?: 0 or 1, *: > 0, +: > 1 args
 vim.api.nvim_create_user_command("TheovimVanillaVimHelp", function() spawn_floating_win(vimhelp_path) end, { nargs = 0 })
 
 local info_path = vim.api.nvim_get_runtime_file("theovim-docs/theovim-info.md", false)[1]
@@ -90,7 +89,7 @@ local buf, win
 local function launch_notepad()
   if not NOTEPAD_LOADED or not vim.api.nvim_win_is_valid(win) then
     if not buf or not vim.api.nvim_buf_is_valid(buf) then
-      buf = vim.api.nvim_create_buf(false, true)
+      buf = vim.api.nvim_create_buf(false, true) --> Not add to buffer list (false), scratch buffer (true)
       vim.api.nvim_buf_set_option(buf, "filetype", "markdown")
       vim.api.nvim_buf_set_option(buf, "bufhidden", "hide")
       vim.api.nvim_buf_set_lines(buf, 0, 1, false,
@@ -115,4 +114,14 @@ local function launch_notepad()
 end
 
 vim.api.nvim_create_user_command("Notepad", launch_notepad, { nargs = 0 })
+-- }}}
+
+-- {{{ Zenmode-ish
+-- https://vcavallo.github.io/vim/markdown/how_to/2017/02/28/vim-function-to-visually-center-a-plaintext-file.html
+local function center_pane()
+  vim.cmd("lefta vnew")
+  vim.cmd("wincmd w")
+  vim.cmd("exec 'vertical resize'.string(&columns * 0.75)")
+end
+vim.api.nvim_create_user_command("ZenModeIsh", center_pane, { nargs = 0 })
 -- }}}
