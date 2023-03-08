@@ -111,10 +111,11 @@ local misc_options = {
   ["1. :Notepad"] = "Notepad",
   ["2. :TrimWhitespace"] = "TrimWhitespace",
   ["3. :ShowChanges"] = "ShowChanges",
-  ["4. :TheovimUpdate"] = "TheovimUpdate",
-  ["5. :TheovimHelp"] = "TheovimHelp",
-  ["6. :TheovimVanillaVimHelp"] = "TheovimVanillaVimHelp",
-  ["7. :TheovimInfo"] = "TheovimInfo",
+  ["4. :ZenModeIsh"] = "ZenModeIsh",
+  ["5. :TheovimUpdate"] = "TheovimUpdate",
+  ["6. :TheovimHelp"] = "TheovimHelp",
+  ["7. :TheovimVanillaVimHelp"] = "TheovimVanillaVimHelp",
+  ["8. :TheovimInfo"] = "TheovimInfo",
 }
 THEOVIM_MISC_MENU = create_selectable_menu("What fun feature would you like to use?", misc_options)
 --}}}
