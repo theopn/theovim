@@ -118,8 +118,9 @@ vim.api.nvim_create_user_command("Notepad", launch_notepad, { nargs = 0 })
 
 -- {{{ Zenmode-ish
 -- https://vcavallo.github.io/vim/markdown/how_to/2017/02/28/vim-function-to-visually-center-a-plaintext-file.html
+-- But it makes NVimTree bigger instead of empty buffer
 local function center_pane()
-  vim.cmd("lefta vnew")
+  vim.cmd("NvimTreeOpen")
   vim.cmd("wincmd w")
   vim.cmd("exec 'vertical resize'.string(&columns * 0.75)")
 end
