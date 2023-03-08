@@ -80,6 +80,7 @@ do
   local win_opt = {
     { opt = "number",         val = true }, --> Line number
     { opt = "relativenumber", val = true },
+    { opt = "numberwidth",    val = 3 }, --> Width of the number
     { opt = "colorcolumn",    val = '120' },
     { opt = "cursorline",     val = true },
     { opt = "cursorcolumn",   val = true },
