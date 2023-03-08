@@ -69,7 +69,6 @@ local plugins = {
   { "theopn/friendly-snippets" }, --> VS Code style snippet collection
   {
     "L3MON4D3/LuaSnip", --> Snippet engine that accepts VS Code style snippets
-    build = "make install_jsregexp",
     config = function() require("luasnip.loaders.from_vscode").lazy_load() end --> Load snippets from friendly snippets
   },
   { "saadparwaiz1/cmp_luasnip" }, --> nvim_cmp and LuaSnip bridge
