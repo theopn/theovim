@@ -85,23 +85,11 @@ local terminal_options = {
   --           | :bot sp |
   -- botright == bot
   -- ]]
-  ["1. Bottom"] = function()
-    vim.cmd("botright " .. math.ceil(vim.fn.winheight(0) * 0.3) .. "sp | term")
-    vim.api.nvim_input("i")
-  end,
-  ["2. Left"] = function()
-    vim.cmd("top " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term")
-    vim.api.nvim_input("i")
-  end,
-  ["3. Right"] = function()
-    vim.cmd("bot " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term")
-    vim.api.nvim_input("i")
-  end,
+  ["1. Bottom"] = function() vim.cmd("botright " .. math.ceil(vim.fn.winheight(0) * 0.3) .. "sp | term") end,
+  ["2. Left"] = function() vim.cmd("top " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term") end,
+  ["3. Right"] = function() vim.cmd("bot " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term") end,
   ["4. Floating"] = "Lspsaga term_toggle",
-  ["5. New Tab"] = function()
-    vim.cmd("tabnew | term")
-    vim.api.nvim_input("i")
-  end,
+  ["5. New Tab"] = function() vim.cmd("tabnew | term") end,
 }
 THEOVIM_TERMINAL_MENU = create_selectable_menu("Where would you like to launch a terminal?", terminal_options)
 -- }}}
