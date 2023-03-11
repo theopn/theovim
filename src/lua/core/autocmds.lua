@@ -28,7 +28,8 @@ local terminal_augroup = vim.api.nvim_create_augroup("Terminal", { clear = true 
 
 -- Insert mode when terminal is open
 vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
-  pattern = "term://*",
+  -- Some people got this to work with "BufWinEnter" and "WinEnter", but I seem to have no luck
+  pattern = "term://*", --> TermOpen does not take pattern value, but since it's a Lua table, it's ignored
   callback = function() vim.cmd("startinsert") end
 })
 
