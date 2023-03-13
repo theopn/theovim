@@ -8,8 +8,31 @@
 --]]
 --
 
+-- {{{ Colorcolumn based on ft
+local ft_and_column_vals = {
+  ["c"] = "80",
+  ["cpp"] = "80",
+  ["python"] = "80",
+  ["java"] = "120",
+  ["lua"] = "120",
+}
+local ft_names = {}
+local n = 0
+for i, _ in pairs(ft_and_column_vals) do
+  n = n + 1
+  ft_names[n] = i
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("ColorColumn", { clear = true }),
+  pattern = ft_names,
+  callback = function() vim.wo.colorcolumn = ft_and_column_vals[vim.bo.filetype] end
+})
+-- }}}
+
 -- {{{ Spell check in relevant buffer filetypes
 vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("SpellCheck", { clear = true }),
   pattern = { "markdown", "text" },
   callback = function() vim.wo.spell = true end
 })
@@ -18,7 +41,7 @@ vim.api.nvim_create_autocmd("FileType", {
 -- {{{ Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = vim.api.nvim_create_augroup("YankHighlight", { clear = true }),
-  pattern = '*',
+  pattern = "*",
   callback = function() vim.highlight.on_yank() end,
 })
 -- }}}
@@ -28,8 +51,10 @@ local terminal_augroup = vim.api.nvim_create_augroup("Terminal", { clear = true 
 
 -- Insert mode when terminal is open
 vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
-  -- Some people got this to work with "BufWinEnter" and "WinEnter", but I seem to have no luck
-  pattern = "term://*", --> TermOpen does not take pattern value, but since it's a Lua table, it's ignored
+  -- TermOpen for when terminal is opened for the first time
+  -- BufEnter when you navigate to an existing terminal buffer
+  -- Some people use "BufWinEnter" and "WinEnter", but I seem to have no luck
+  pattern = "term://*", --> TermOpen does not take a pattern value, but since it's a Lua table, it's ignored
   callback = function() vim.cmd("startinsert") end
 })
 
