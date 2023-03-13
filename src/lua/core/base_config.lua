@@ -19,26 +19,26 @@ end
 -- {{{ Global base settings
 do
   local base_opt = {
-    { "filetype",      'on' }, --> Detect what file I'm working on
-    { "syntax",        'on' }, --> Syntax highlighting, usually overriden by Treesitter
+    { "filetype",      'on' },   --> Detect what file I'm working on
+    { "syntax",        'on' },   --> Syntax highlighting, usually overriden by Treesitter
     { "confirm",       true },
-    { "scrolloff",     7 }, --> Keep at least 7 lines visible above and below the cursor
-    { "showtabline",   2 }, --> Always show tabline (default 1 - only if there are two or more tabs)
+    { "scrolloff",     7 },      --> Keep at least 7 lines visible above and below the cursor
+    { "showtabline",   2 },      --> Always show tabline (default 1 - only if there are two or more tabs)
     -- Search --
-    { "hlsearch",      true }, --> Highlight search result
-    { "incsearch",     true }, --> As you type, match the currently typed workd w/o pressing enter
-    { "ignorecase",    true }, --> Needed for smartcase
-    { "smartcase",     true }, --> Ignore case iff search input was all lowercase
+    { "hlsearch",      true },   --> Highlight search result
+    { "incsearch",     true },   --> As you type, match the currently typed workd w/o pressing enter
+    { "ignorecase",    true },   --> Needed for smartcase
+    { "smartcase",     true },   --> Ignore case iff search input was all lowercase
     -- Split pane --
-    { "splitright",    false }, --> Vertical split default to left
-    { "splitbelow",    true }, --> Horizontal split default to below
-    { "termguicolors", true }, --> Enables 24-bit RGB color in the TUI
-    { "mouse",         'a' }, --> Enable mouse
-    { "list",          true }, --> Needed for listchars
+    { "splitright",    false },  --> Vertical split default to left
+    { "splitbelow",    true },   --> Horizontal split default to below
+    { "termguicolors", true },   --> Enables 24-bit RGB color in the TUI
+    { "mouse",         'a' },    --> Enable mouse
+    { "list",          true },   --> Needed for listchars
     -- Fold --
     { "foldmethod",    "expr" }, --> Leave the fold up to treesitter
-    { "foldlevel",     1 }, --> Useless with expr, but when folding by "marker", it only folds folds w/in a fold only
-    { "foldenable",    false }, --> True for "marker" + level = 1, false for TS folding
+    { "foldlevel",     1 },      --> Useless with expr, but when folding by "marker", it only folds folds w/in a fold only
+    { "foldenable",    false },  --> True for "marker" + level = 1, false for TS folding
   }
   -- Listing special characters --
   vim.opt.listchars = { tab = "▷▷", trail = "␣", nbsp = "⍽" }
@@ -53,13 +53,13 @@ end
 -- {{{ Opinionated text editing settings
 do
   local edit_opt = {
-    { "shiftwidth",   2 }, --> Indentation width
-    { "tabstop",      2 }, --> Backslash t width
-    { "softtabstop",  2 }, --> Tab key width
-    { "expandtab",    true }, --> Tab as spaces
-    { "spelllang",    "en" }, --> Engrish
+    { "shiftwidth",   2 },        --> Indentation width
+    { "tabstop",      2 },        --> Backslash t width
+    { "softtabstop",  2 },        --> Tab key width
+    { "expandtab",    true },     --> Tab as spaces
+    { "spelllang",    "en" },     --> Engrish
     { "spellsuggest", "best,8" }, --> Suggest 8 words for spell suggestion
-    { "spell",        "false" }, --> autocmd will enable spellcheck in txt or markdown
+    { "spell",        "false" },  --> autocmd will enable spellcheck in txt or markdown
   }
   for _, v in ipairs(edit_opt) do
     vim_set(v[1], GLOBAL, v[2])
@@ -80,8 +80,7 @@ do
   local win_opt = {
     { opt = "number",         val = true }, --> Line number
     { opt = "relativenumber", val = true },
-    { opt = "numberwidth",    val = 3 }, --> Width of the number
-    { opt = "colorcolumn",    val = '120' },
+    { opt = "numberwidth",    val = 3 },    --> Width of the number
     { opt = "cursorline",     val = true },
     { opt = "cursorcolumn",   val = true },
   }
