@@ -163,13 +163,11 @@ ins_left({
   end,
   icon = " ",
   color = { fg = colors.cyan, gui = "bold" },
-  cond = conditions.hide_in_width,
 })
 
 ins_left {
   "diagnostics",
   sources = { "nvim_diagnostic" },
-  cond = conditions.hide_in_width,
 }
 
 ins_right({
