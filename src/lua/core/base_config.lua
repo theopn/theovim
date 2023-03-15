@@ -24,6 +24,7 @@ do
     { "confirm",       true },
     { "scrolloff",     7 },      --> Keep at least 7 lines visible above and below the cursor
     { "showtabline",   2 },      --> Always show tabline (default 1 - only if there are two or more tabs)
+    { "laststatus",    3 },      --> 3 = one statusbar for all win, only available on Neovim 0.7+
     -- Search --
     { "hlsearch",      true },   --> Highlight search result
     { "incsearch",     true },   --> As you type, match the currently typed workd w/o pressing enter
