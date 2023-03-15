@@ -1,16 +1,19 @@
 # Theovim Information
 
-> Current Version: 2023.03.14
+> Current Version: 2023.03.xx
 
 # Changelog
+
+## Version 2023.03.xx
+
+- :TheovimUpdate is now executed in a floating, transparent terminal
+- :Notepad is also semi-transparent
+- Colorcolumn and tab configurations are adjusted based on file types
 
 ## Version 2023.03.14
 
 - Statusline is totally redesigned!! One less plugin...
-- :TheovimUpdate is now executed in a floating, transparent terminal
-- :Notepad is also semi-transparent
-- Colorcolumn and tab configurations are adjusted based on file types
-- :ZenModeIsh - Spawn a large NvimTree to center the text
+- :ZenModeIsh - Spawn a large NvimTree to center the text - Removed in V. 2023.03.15
 
 ## Version 2023.03.07
 

@@ -25,7 +25,7 @@
 -- Inspiration from: https://github.com/ellisonleao/weather.nvim
 local function theovim_update()
   -- window size and pos
-  local win_height = math.ceil(vim.o.lines * 0.5)
+  local win_height = math.ceil(vim.o.lines * 0.3)
   local win_width = math.ceil(vim.o.columns * 0.5)
   local x_pos = 1                                            --> Top
   local y_pos = math.ceil((vim.o.columns - win_width) * 0.5) --> Centering the window
@@ -57,8 +57,10 @@ local function theovim_update()
   local update_command = "cd ~/.theovim && ./theovim-util.sh update"
   vim.fn.termopen(update_command)
 
-  vim.notify("Update complete! :TheovimInfo command for the changelog :)")
   require("lazy").sync()
+  vim.cmd("MasonUpdate")
+  vim.cmd("TSUpdate")
+  vim.notify("Update complete! :TheovimInfo command for the changelog :)")
 end
 
 -- nargs ?: 0 or 1, *: > 0, +: > 1 args
@@ -151,15 +153,4 @@ local function launch_notepad()
 end
 
 vim.api.nvim_create_user_command("Notepad", launch_notepad, { nargs = 0 })
--- }}}
-
--- {{{ Zenmode-ish
--- https://vcavallo.github.io/vim/markdown/how_to/2017/02/28/vim-function-to-visually-center-a-plaintext-file.html
--- But it makes NVimTree bigger instead of empty buffer
-local function center_pane()
-  vim.cmd("NvimTreeOpen")
-  vim.cmd("wincmd w")
-  vim.cmd("exec 'vertical resize'.string(&columns * 0.75)")
-end
-vim.api.nvim_create_user_command("ZenModeIsh", center_pane, { nargs = 0 })
 -- }}}
