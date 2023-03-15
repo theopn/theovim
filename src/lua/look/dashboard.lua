@@ -275,16 +275,61 @@ for group, properties in pairs(highlights) do
 end
 -- }}}
 
+-- {{{ Smaller Dashboard to be launcehd if window size is too small
+local function open_small()
+  local buf = vim.api.nvim_create_buf(false, true)
+  vim.api.nvim_win_set_buf(vim.api.nvim_get_current_win(), buf)
+
+  local dashboard = {}
+
+  -- header
+  for _, val in ipairs(header) do
+    table.insert(dashboard, val .. " ")
+  end
+
+  local result = {}
+  for i = 1, vim.api.nvim_win_get_height(0) do
+    result[i] = ""
+  end
+
+  local headerStart = math.floor((vim.api.nvim_win_get_height(0) / 2) - (#dashboard / 2) - 1)
+
+  -- adding the dashboard
+  for _, val in ipairs(dashboard) do
+    result[headerStart] = val
+    headerStart = headerStart + 1
+  end
+  vim.api.nvim_buf_set_lines(buf, 0, -1, false, result)
+
+  -- Options
+  vim.opt_local.filetype       = "TheovimDashboard"
+  vim.opt_local.buflisted      = false
+  vim.opt_local.modifiable     = false
+  vim.opt_local.number         = false
+  vim.opt_local.relativenumber = false
+  vim.opt_local.list           = false
+  vim.opt_local.cursorline     = false
+  vim.opt_local.cursorcolumn   = false
+  vim.opt_local.colorcolumn    = "0"
+  vim.opt_local.wrap           = false
+end
+-- }}}
+
 -- {{{ Open the dashboard
 local status, _ = pcall(open)
-if (not status) then vim.notify("Window size is too small to display the dashboard :(") end
+if not status then
+  local small_win_status, _ = pcall(open_small)
+  if not small_win_status then
+    vim.notify("Window size is too small to display the dashboard :(")
+  end
+end
 -- }}}
 
 
 -- {{{ Auto-resize the Dashboard
 --[[
 Function adpoted from:
-https://github.com/chadcat5207/nvide/blob/main/lua/themes/hl.lua
+https://github.com/chadcat7/kodo/blob/main/lua/themes/hl.lua
 --]]
 vim.api.nvim_create_autocmd("VimResized", {
   callback = function()
