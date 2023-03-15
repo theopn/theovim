@@ -79,7 +79,7 @@ local function update_mode_colors()
   return mode_color
 end
 
--- This appends to get_filename() if file is in a different directory
+-- This appends to %f if file is in a different directory
 local function get_filepath()
   local filepath = vim.fn.fnamemodify(vim.fn.expand "%", ":~:.:h")
   if filepath == "" or filepath == "." then
@@ -87,12 +87,6 @@ local function get_filepath()
   end
   return string.format(" %%<%s/", filepath)
 end
-
-local function get_filename()
-  local filename = vim.fn.expand "%:t"
-  return filename .. "%m" --> %m for modified flag
-end
-
 
 -- Git info using Gitsigns
 -- Loosely based on: https://github.com/NvChad/ui/blob/main/lua/nvchad_ui/statusline/modules.lua#L65
@@ -183,15 +177,14 @@ Statusline.build = function()
     format_mode(),
     "%#StatusLineOrangeAccent# ",
     "",
-    get_filepath(),
-    get_filename(),
+    get_filepath(), --> Appends to %f iff file is in different directory
+    "%f",           --> Current file
+    "%m",           --> [-] for read only, [+] for modified buffer
     "%#StatusLineRedAccent# ",
     git(),
 
     --"%#Normal#",
     "%=", --> vim statusline separator; inserts equal amount of space per separator
-    (vim.bo.readonly) and ("Warning: Read Only") or (""),
-    "%=",
 
     "%#StatusLineBlueAccent# ",
     lsp_server(),
@@ -201,7 +194,7 @@ Statusline.build = function()
     "  %Y", --> Same as vim.bo.filetype:upper()
     enc_and_ff(),
     "%#StatusLineLightGreyAccent# ",
-    " 󰓾 %l:%c %P "
+    " 󰓾 %l:%c %P " --> Line, column, and page percentage
   })
 end
 
