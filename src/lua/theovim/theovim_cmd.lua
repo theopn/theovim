@@ -27,13 +27,13 @@ local function theovim_update()
   -- window size and pos
   local win_height = math.ceil(vim.o.lines * 0.5)
   local win_width = math.ceil(vim.o.columns * 0.5)
-  local x_pos = math.ceil((vim.o.lines - win_height) * 0.5)  --> Centering the window
+  local x_pos = 1                                            --> Top
   local y_pos = math.ceil((vim.o.columns - win_width) * 0.5) --> Centering the window
 
   local win_opts = {
-    border = "rounded",
+    border = "shadow", --> sigle, double, rounded, solid, shadow
     relative = "editor",
-    style = "minimal",
+    style = "minimal", --> No number, cursorline, etc.
     width = win_width,
     height = win_height,
     row = x_pos,
@@ -45,7 +45,7 @@ local function theovim_update()
   local win = vim.api.nvim_open_win(buf, true, win_opts)
 
   -- options
-  vim.api.nvim_win_set_option(win, "winblend", 0)       --> 0 for solid color, 80 for transparent
+  vim.api.nvim_win_set_option(win, "winblend", 50)      --> 0 for solid color, 80 for transparent
   vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe") --> Kill the buffer when hidden
 
   -- keymaps
@@ -74,9 +74,9 @@ local function spawn_floating_win(file_path)
   local y_pos = math.ceil((vim.o.columns - win_width) * 0.5) --> Centering the window
 
   local win_opts = {
-    border = "shadow",
+    border = "rounded", --> sigle, double, rounded, solid, shadow
     relative = "editor",
-    style = "minimal",
+    style = "minimal",  --> No number, cursorline, etc.
     width = win_width,
     height = win_height,
     row = x_pos,
@@ -136,7 +136,7 @@ local function launch_notepad()
       height = math.ceil(vim.o.lines * 0.5),
       width = math.ceil(vim.o.columns * 0.5),
       row = 1,                                       --> Top of the window
-      col = math.ceil(vim.o.columns * 0.7),          --> Far right; should add up to 1 with win_width
+      col = math.ceil(vim.o.columns * 0.5),          --> Far right; should add up to 1 with win_width
     })
     vim.api.nvim_win_set_option(win, "winblend", 30) --> Semi transparent buffer
 
