@@ -7,8 +7,10 @@
 ## Version 2023.03.14
 
 - Statusline is totally redesigned!! One less plugin...
+- :TheovimUpdate is now executed in a floating, transparent terminal
+- :Notepad is also semi-transparent
+- Colorcolumn and tab configurations are adjusted based on file types
 - :ZenModeIsh - Spawn a large NvimTree to center the text
-- Colorcolumn is now activated based on filetypes
 
 ## Version 2023.03.07
 
