@@ -9,24 +9,30 @@
 --
 
 -- {{{ Colorcolumn based on ft
-local ft_and_column_vals = {
-  ["c"] = "80",
-  ["cpp"] = "80",
-  ["python"] = "80",
-  ["java"] = "120",
-  ["lua"] = "120",
+local ft_style_vals = {
+  -- colorcolumn values has to be string... Why...? I don't know
+  ["c"] = { colorcolumn = "80", tabwidth = 2 },
+  ["cpp"] = { colorcolumn = "80", tabwidth = 2 },
+  ["python"] = { colorcolumn = "80", tabwidth = 4 },
+  ["java"] = { colorcolumn = "120", tabwidth = 4 },
+  ["lua"] = { colorcolumn = "120", tabwidth = 2 },
 }
 local ft_names = {}
 local n = 0
-for i, _ in pairs(ft_and_column_vals) do
+for i, _ in pairs(ft_style_vals) do
   n = n + 1
   ft_names[n] = i
 end
 
 vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("ColorColumn", { clear = true }),
+  group = vim.api.nvim_create_augroup("FileSettings", { clear = true }),
   pattern = ft_names,
-  callback = function() vim.wo.colorcolumn = ft_and_column_vals[vim.bo.filetype] end
+  callback = function()
+    vim.wo.colorcolumn = ft_style_vals[vim.bo.filetype].colorcolumn
+    vim.bo.shiftwidth = ft_style_vals[vim.bo.filetype].tabwidth
+    vim.bo.tabstop = ft_style_vals[vim.bo.filetype].tabwidth
+    vim.bo.softtabstop = ft_style_vals[vim.bo.filetype].tabwidth
+  end
 })
 -- }}}
 
