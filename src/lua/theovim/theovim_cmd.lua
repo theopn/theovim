@@ -22,8 +22,41 @@
 --
 
 -- {{{ Update command
+-- Inspiration from: https://github.com/ellisonleao/weather.nvim
+local function theovim_update()
+  -- window size and pos
+  local win_height = math.ceil(vim.o.lines * 0.5)
+  local win_width = math.ceil(vim.o.columns * 0.3)
+  local x_pos = 1
+  local y_pos = vim.o.columns - win_width
+
+  local win_opts = {
+    style = "minimal",
+    relative = "editor",
+    width = win_width,
+    height = win_height,
+    row = x_pos,
+    col = y_pos,
+    border = "single",
+  }
+
+  local buf = vim.api.nvim_create_buf(false, true)
+  local win = vim.api.nvim_open_win(buf, true, win_opts)
+
+  vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
+  vim.api.nvim_win_set_option(win, "winblend", 0)
+
+  local keymaps_opts = { silent = true, buffer = buf }
+  vim.keymap.set('n', "q", "<C-w>q", keymaps_opts)
+  vim.keymap.set('n', "<ESC>", function() vim.api.nvim_win_close(win, true) end, keymaps_opts)
+
+  local update_command = "cd ~/.theovim && ./theovim-util.sh update"
+  vim.fn.termopen(update_command)
+  --vim.fn.termopen("hi")
+end
 vim.api.nvim_create_user_command("TheovimUpdate", function()
-  vim.cmd("! cd ~/.theovim && ./theovim-util.sh update")
+  theovim_update()
+  --vim.cmd("! cd ~/.theovim && ./theovim-util.sh update")
   --vim.notify("Update complete. Use :TheovimInfo command to see the latest changelog")
   require('lazy').sync()
 end, { nargs = 0 })
@@ -56,7 +89,7 @@ local function spawn_floating_win(file_path)
   local win = vim.api.nvim_open_win(buf, true, win_opts)
 
   -- options
-  vim.api.nvim_win_set_option(win, "winblend", 0) --> How much does the background color blends in (80 will be black)
+  vim.api.nvim_win_set_option(win, "winblend", 0)       --> How much does the background color blends in (80 will be black)
   vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe") --> Kill the buffer when hidden
   vim.api.nvim_buf_set_option(buf, "filetype", "markdown")
 
