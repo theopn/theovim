@@ -151,6 +151,19 @@ local function lsp_status()
     ("%#StatusLineYellowAccent#" .. hints), ("%#StatusLineGreenAccent#" .. info))
 end
 
+-- For Theovim's code auto format toggle functionalities
+local function auto_format_status()
+  if rawget(vim, "lsp") then
+    for _, client in ipairs(vim.lsp.get_active_clients()) do
+      if client.attached_buffers[vim.api.nvim_get_current_buf()] and client.server_capabilities.documentFormattingProvider then
+        return (CODE_FORMAT_STATUS) and (" %#StatusLineYellowAccent#󰃢 Linter:  ") or
+            (" %#StatusLineRedAccent#󰃢 Linter:  ")
+      end
+    end
+  end
+  return " %#StatusLineRedAccent#󰃢 Linter:  " --> Should I make it an empty string?
+end
+
 local function enc_and_ff()
   local ff = vim.bo.fileformat
   if ff == "unix" then
@@ -183,6 +196,7 @@ Statusline.build = function()
     "%#StatusLineBlueAccent# ",
     lsp_server(),
     lsp_status(),
+    auto_format_status(),
     "%#StatusLinePurpleAccent# ",
     "  %Y", --> Same as vim.bo.filetype:upper()
     enc_and_ff(),
