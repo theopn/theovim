@@ -70,7 +70,7 @@
 
 - <C-e>                       : Close the auto-completion window
 
-- :CodeFormatToggle           : Toggles code formatting on the write for supported file types
+- :LinterToggle               : Toggles code formatting on the write for supported file types (see statusline for the current status)
 
 - <leader> c a (Code Actions) : Menu for commonly used LSP features
 - <leader> c d (Code Doc)     : Hover documentation
