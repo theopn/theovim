@@ -2,85 +2,86 @@
 
 <leader> = Space
 
+
 ## Management
 
-- :TheovimUpdate              : Update Theovim
-- :TheovimInfo                : View current version and changelog
+- :TheovimUpdate             : Update Theovim
+- :TheovimInfo               : View current version and changelog
 
 ## Help
 
-- <leader> ?                  : Bring up finder for all the keymaps
-- :TheovimHelp                : Open this help document
-- :TheovimVanillaVimHelp      : Common Vim keybindings and workflows
+- <leader> ?                 : Bring up finder for all the keymaps
+- :TheovimHelp               : Open this help document
+- :TheovimVanillaVimHelp     : Common Vim keybindings and workflows
 
 ## Insert Mode
 
-- j k                         : ESC + :update (writes to a file if there is a change)
-- <C-hjkl>                    : Navigate in insert mode
-- Tab character               : Renders as "▷▷"
-- Trailing space              : Renders as "␣"
-- Non-breaking space          : Renders as "⍽"
+- j k                        : ESC + :update (writes to a file if there is a change)
+- <C-hjkl>                   : Navigate in insert mode
+- Tab character              : Renders as "▷▷"
+- Trailing space             : Renders as "␣"
+- Non-breaking space         : Renders as "⍽"
 
 ## Normal Mode
 
-- <leader> m                  : Menu for miscellaneous features that Theovim offers
+- <leader> m                 : Menu for miscellaneous features that Theovim offers
 
-- <leader> z (Zsh)            : Open a menu for launching a terminal
-- <leader> /                  : Clear search highlighting
-- <leader> a (All)            : Select all text
+- <leader> [z]sh             : Open a menu for launching a terminal
+- <leader> /                 : Clear search highlighting
+- <leader> [a]ll             : Select all text
 
-- <leader> |                  : Open a vertically split window
-- <leader> -                  : Open a horizontally split window
-- <leader> q                  : Close the current split pane
-- <leader> hjkl               : Navigate around split windows
-- <leader> arrow_keys         : Resize split windows
+- <leader> |                 : Open a vertically split window
+- <leader> -                 : Open a horizontally split window
+- <leader> q                 : Close the current split pane
+- <leader> hjkl              : Navigate around split windows
+- <leader> arrow_keys        : Resize split windows
 
 ## Visual Mode
 
-- <leader> y                  : Copy to '+' clipboard (should work for both MacOS and Linux with X11 window server)
-- <leader> p                  : Open a list of contents from available registers
-- :'<,'>CommentToggle         : Comment the selected lines
+- <leader> y                 : Copy to '+' clipboard (should work for both MacOS and Linux with X11 window server)
+- <leader> p                 : Open a list of contents from available registers
+- :'<,'>CommentToggle        : Comment the selected lines
 
 ## Buffer and Tab Navigation
 
 > I recommend you to read the "Tab v.s. Buffer" section in `:TheovimVanillaVimHelp`
 
-- <leader> b (Buffer)         : Open a list of buffers
-- <leader> , ("<")            : Navigate to the previous buffer
-- <leader> . (">")            : Navigate to the next buffer
-- <leader> x                  : Kill the current or selected buffer
+- <leader> [b]uffer          : Open a list of buffers
+- <leader> , ("<")           : Navigate to the previous buffer
+- <leader> . (">")           : Navigate to the next buffer
+- <leader> x                 : Kill the current or selected buffer
 
-- <leader> n (New)            : Open a new tab with the current of the selected buffer
-- <leader> 1-9                : Select a tab
+- <leader> [n]               : Open a new tab with the current of the selected buffer
+- <leader> 1-9               : Select a tab
 
 ## Telescope
 
-- <leader> t (Tree)           : Toggle file tree
+- <leader> [t]ree            : Toggle file tree
 
-- <leader> f a (Find Actions) : Menu for commonly used Telescope features
-- <leader> f f (Find File)    : Open up a fuzzy file searcher for the current and nested directories
-- <leader> f r (Find Recent)  : Open up a fuzzy file searcher for recently used files
-- <leader> f b (File Browser) : Open up a fuzzy file finder (able to navigate to previous directories)
-- <leader> f / (Find /)       : Open up a fuzzy searcher for the current buffer
+- <leader> [f]ind [a]ctions  : Menu for commonly used Telescope features
+- <leader> [f]ind [f]ile     : Open up a fuzzy file searcher for the current and nested directories
+- <leader> [f]ind [r]ecent   : Open up a fuzzy file searcher for recently used files
+- <leader> [f]ile [b]rowser  : Open up a fuzzy file finder (able to navigate to previous directories)
+- <leader> [f]ind [/]        : Open up a fuzzy searcher for the current buffer
 
-- <leader> j/k                : Cycle through selection
+- <leader> j/k               : Cycle through selection
 
 ## LSP
 
-- <C-e>                       : Close the auto-completion window
+- <C-e>                      : Close the auto-completion window
 
-- :LinterToggle               : Toggles code formatting on the write for supported file types (see statusline for the current status)
+- :LinterToggle              : Toggle code formatter (see statusline for the on/off)
 
-- <leader> c a (Code Actions) : Menu for commonly used LSP features
-- <leader> c d (Code Doc)     : Hover documentation
-- <leader> c r (Code Rename)  : Renaming a variable
-- :LSPInfo                    : Information on the current LSP server
-- :LSPStop                    : Stop the LSP server
-- :Mason                      : Tool to manage LSP servers
+- <leader> [c]ode [a]ctions  : Menu for commonly used LSP features
+- <leader> [c]ode [d]oc      : Hover documentation
+- <leader> [c]ode [r]ename   : Renaming a variable
+- :LSPInfo                   : Information on the current LSP server
+- :LSPStop                   : Stop the LSP server
+- :Mason                     : Tool to manage LSP servers
 
 ## Git
 
-- <leader> g (Git)            : Menu for Git related functionalities
+- <leader> [g]it             : Menu for Git related functionalities
 
 ## Spell Check
 
