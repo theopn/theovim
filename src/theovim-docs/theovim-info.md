@@ -1,10 +1,10 @@
 # Theovim Information
 
-> Current Version: 2023.03.13
+> Current Version: 2023.03.14
 
 # Changelog
 
-## Version 2023.03.13
+## Version 2023.03.14
 
 - Statusline is totally redesigned!! One less plugin...
 - :ZenModeIsh - Spawn a large NvimTree to center the text
