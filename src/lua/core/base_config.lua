@@ -54,9 +54,9 @@ end
 -- {{{ Opinionated text editing settings
 do
   local edit_opt = {
-    { "shiftwidth",   2 },        --> Indentation width
-    { "tabstop",      2 },        --> Backslash t width
-    { "softtabstop",  2 },        --> Tab key width
+    { "shiftwidth",   2 },        --> Indentation width, will be overriden in autocmd
+    { "tabstop",      2 },        --> Tab display width, ^
+    { "softtabstop",  2 },        --> Tab key width    , ^
     { "expandtab",    true },     --> Tab as spaces
     { "spelllang",    "en" },     --> Engrish
     { "spellsuggest", "best,8" }, --> Suggest 8 words for spell suggestion
