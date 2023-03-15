@@ -32,7 +32,22 @@ local plugins = {
   { "nvim-telescope/telescope-file-browser.nvim" }, --> File browser extension for Telescope
   {
     "kyazdani42/nvim-tree.lua",                     --> File tree
-    config = function() require("nvim-tree").setup() end
+    config = function()
+      -- Disable netrw
+      vim.g.loaded_netrw = 1
+      vim.g.loaded_netrwPlugin = 1
+
+      require("nvim-tree").setup()
+
+      -- Automatically open Nvimtree if directory is open
+      local open_nvim_tree = function(data)
+        -- buffer is a directory
+        if vim.fn.isdirectory(data.file) ~= 1 then return end
+        vim.cmd.cd(data.file)                --> change to the directory
+        require("nvim-tree.api").tree.open() --> open the tree
+      end
+      vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
+    end
   },
   {
     "lewis6991/gitsigns.nvim", --> Git information
