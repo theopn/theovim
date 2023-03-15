@@ -57,8 +57,11 @@ THEOVIM_LSP_MENU = create_selectable_menu("Code action to perform at the current
 
 -- {{{ Telescope menu
 local telescope_options = {
-  ["1. Git Commits"] = "Telescope git_commits",
-  ["2. Git Status"] = "Telescope git_status"
+  ["1. Search History"] = "Telescope search_history",
+  ["2. Command History"] = "Telescope command_history",
+  ["3. Commands"] = "Telescope commands",
+  ["4. Help Tags"] = "Telescope help_tags",
+  ["5. Colorscheme"] = "Telescope colorscheme"
 }
 THEOVIM_TELESCOPE_MENU = create_selectable_menu("Telescope option to launch:", telescope_options)
 -- }}}
@@ -82,23 +85,11 @@ local terminal_options = {
   --           | :bot sp |
   -- botright == bot
   -- ]]
-  ["1. Bottom"] = function()
-    vim.cmd("botright " .. math.ceil(vim.fn.winheight(0) * 0.3) .. "sp | term")
-    vim.api.nvim_input("i")
-  end,
-  ["2. Left"] = function()
-    vim.cmd("top " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term")
-    vim.api.nvim_input("i")
-  end,
-  ["3. Right"] = function()
-    vim.cmd("bot " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term")
-    vim.api.nvim_input("i")
-  end,
+  ["1. Bottom"] = function() vim.cmd("botright " .. math.ceil(vim.fn.winheight(0) * 0.3) .. "sp | term") end,
+  ["2. Left"] = function() vim.cmd("top " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term") end,
+  ["3. Right"] = function() vim.cmd("bot " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term") end,
   ["4. Floating"] = "Lspsaga term_toggle",
-  ["5. New Tab"] = function()
-    vim.cmd("tabnew | term")
-    vim.api.nvim_input("i")
-  end,
+  ["5. New Tab"] = function() vim.cmd("tabnew | term") end,
 }
 THEOVIM_TERMINAL_MENU = create_selectable_menu("Where would you like to launch a terminal?", terminal_options)
 -- }}}
@@ -108,10 +99,11 @@ local misc_options = {
   ["1. :Notepad"] = "Notepad",
   ["2. :TrimWhitespace"] = "TrimWhitespace",
   ["3. :ShowChanges"] = "ShowChanges",
-  ["4. :TheovimUpdate"] = "TheovimUpdate",
-  ["5. :TheovimHelp"] = "TheovimHelp",
-  ["6. :TheovimVanillaVimHelp"] = "TheovimVanillaVimHelp",
-  ["7. :TheovimInfo"] = "TheovimInfo",
+  ["4. :ZenModeIsh"] = "ZenModeIsh",
+  ["5. :TheovimUpdate"] = "TheovimUpdate",
+  ["6. :TheovimHelp"] = "TheovimHelp",
+  ["7. :TheovimVanillaVimHelp"] = "TheovimVanillaVimHelp",
+  ["8. :TheovimInfo"] = "TheovimInfo",
 }
 THEOVIM_MISC_MENU = create_selectable_menu("What fun feature would you like to use?", misc_options)
 --}}}

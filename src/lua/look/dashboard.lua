@@ -57,6 +57,7 @@ local buttons = {
   { "  Recent Files  ",  "SPC f r", "Telescope oldfiles" },
   { "  File Browser  ",  "SPC f b", "Telescope file_browser" },
   { "  New File      ",  "       ", "enew" },
+  { "  Config Theovim",  "       ", "e ~/.config/nvim/lua/user_config.lua" },
   { "  Exit Theovim  ",  "ZZ     ", "quit" },
 }
 

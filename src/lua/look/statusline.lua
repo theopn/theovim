@@ -7,201 +7,202 @@
 --]]
 --
 
---[[
-Inspired by examples/evil_lualine.lua in the plug-in repository, but utilizing position B and Y
-+-------------------------------------------------+
-| A | B | C                             X | Y | Z |
-+-------------------------------------------------+
---]]
-local lualine = require("lualine")
+-- Creating highlight groups
+local function create_highlight(group, fg, bg)
+  local highlight_cmd = "highlight " .. group
+  highlight_cmd = (fg ~= nil) and (highlight_cmd .. " guifg=" .. fg) or (highlight_cmd)
+  highlight_cmd = (bg ~= nil) and (highlight_cmd .. " guibg=" .. bg) or (highlight_cmd)
+  vim.cmd(highlight_cmd)
+end
 
-local colors = {
-  bg           = "#282a36",
-  current_line = "#6272a4",
-  fg           = "#f8f8f2",
-  comment      = "#6272a4",
-  cyan         = "#8be9fd",
-  green        = "#50fa7b",
-  orange       = "#ffb86c",
-  pink         = "#ff79c6",
-  purple       = "#bd93f9",
-  red          = "#ff5555",
-  yellow       = "#f1fa8c",
-  darkblue     = '#081633',
-  violet       = '#a9a1e1',
-  magenta      = '#c678dd',
-  blue         = '#51afef',
+-- For modes
+create_highlight("StatusLineFGAccent", "#93F5F5", nil)
+create_highlight("StatusLineBlueAccent", "#5AB0F6", nil)
+create_highlight("StatusLineRedAccent", "#FAA5A5", nil)
+create_highlight("StatusLineGreenAccent", "#BDF7AD", nil)
+create_highlight("StatusLineYellowAccent", "#F3FFC2", nil)
+create_highlight("StatusLinePurpleAccent", "#D3B3F5", nil)
+create_highlight("StatusLineGreyAccent", "#828B8F", nil)
+
+-- For other components
+create_highlight("StatusLineOrangeAccent", "#FFCAA1")
+create_highlight("StatusLineLightGreyAccent", "#B7C2C7")
+
+-- Table for mode names
+local modes = {
+  ["n"] = "N",
+  ["no"] = "N Operator Pending",
+  ["v"] = "V",
+  ["V"] = "V LINE",
+  [""] = "V BLOCK",
+  ["s"] = "SELECT",
+  ["S"] = "SELECT LINE",
+  [""] = "SELECT BLOCK",
+  ["i"] = "I",
+  ["ic"] = "I COMPLETION",
+  ["R"] = "R",
+  ["Rv"] = "V REPLACE",
+  ["c"] = "CMD",
+  ["cv"] = "VIM EX",
+  ["ce"] = "EX",
+  ["r"] = "PROMPT",
+  ["rm"] = "MORE",
+  ["r?"] = "CONFIRM",
+  ["!"] = "SH",
+  ["t"] = "TERM",
+  ["nt"] = "N TERM",
 }
 
--- Remove defaults
-local config = {
-  options = {
-    globalstatus = true, --> One statusline for all
-    disabled_filetypes = { statusline = { "TheovimDashboard" } },
-    component_separators = '',
-    section_separators = '',
-  },
-  sections = {
-    lualine_a = {},
-    lualine_b = {},
-    lualine_c = {},
-    lualine_x = {},
-    lualine_y = {},
-    lualine_z = {},
-  },
-  inactive_sections = {
-    -- Default is lualine_c = { { "filename", filestatus = true, path 0 } } (0 for name, 1 for rel path, 2 abs path)
-    lualine_x = { "diagnostics" }, --> Add on diagnostics
-  },
-}
-
-local function ins_far_left(component)
-  table.insert(config.sections.lualine_b, component) -- Region A should not be used for custom Lualine (highlighting issue)
+-- Format the mode
+local function format_mode()
+  local current_mode = vim.api.nvim_get_mode().mode
+  return string.format("%s %s %s %s",
+    "", "󰄛", (modes[current_mode] ~= nil) and (modes[current_mode]) or (current_mode), ""):upper()
 end
 
-local function ins_left(component)
-  table.insert(config.sections.lualine_c, component)
-end
-
-local function ins_right(component)
-  table.insert(config.sections.lualine_x, component)
-end
-
-local function ins_far_right(component)
-  table.insert(config.sections.lualine_y, component) -- Region Z should not be used for custom Lualine, see above
-end
-
-local conditions = {
-  buffer_not_empty = function()
-    return vim.fn.empty(vim.fn.expand('%:t')) ~= 1
-  end,
-  hide_in_width = function()
-    return vim.fn.winwidth(0) > 80
+local function update_mode_colors()
+  local current_mode = vim.api.nvim_get_mode().mode
+  local mode_color = "%#StatusLineFGAccent#"
+  if current_mode == "n" or current_mode == "nt" then
+    mode_color = "%#StatuslineBlueAccent#"
+  elseif current_mode == "i" or current_mode == "ic" then
+    mode_color = "%#StatuslineRedAccent#"
+  elseif current_mode == "v" or current_mode == "V" or current_mode == "" then
+    mode_color = "%#StatuslineGreenAccent#"
+  elseif current_mode == "R" then
+    mode_color = "%#StatuslineYellowAccent#"
+  elseif current_mode == "c" then
+    mode_color = "%#StatuslinePurpleAccent#"
+  elseif current_mode == "t" then
+    mode_color = "%#StatuslineGreyAccent#"
   end
-}
+  return mode_color
+end
 
--- Reminder that you can invoke Lua function without parentheses, but moving forward I prefer having them
-ins_far_left {
-  function() return '' end,
-  color = { fg = colors.blue },
-  padding = { left = 0, right = 1 },
-}
+-- This appends to get_filename() if file is in a different directory
+local function get_filepath()
+  local filepath = vim.fn.fnamemodify(vim.fn.expand "%", ":~:.:h")
+  if filepath == "" or filepath == "." then
+    return " "
+  end
+  return string.format(" %%<%s/", filepath)
+end
 
-ins_far_left({
-  function() return ' ' .. vim.fn.mode() end,
-  color = function()
-    local mode_color = {
-      n = colors.current_line,
-      no = colors.current_line,
-      i = colors.cyan,
-      v = colors.yellow,
-      [''] = colors.yellow,
-      V = colors.yellow,
-      R = colors.orange,
-      rm = colors.orange,
-      ['r?'] = colors.orange,
-      t = colors.purple,
-      ['!'] = colors.purple,
-      c = colors.bg,
-      ic = colors.bg,
-      cv = colors.bg,
-      ce = colors.bg,
-      -- Modes that I'm not interested in are all rendered in comment color
-      s = colors.comment,
-      S = colors.comment,
-      [''] = colors.comment,
-    }
-    return { fg = mode_color[vim.fn.mode()] }
-  end,
-  padding = { right = 1 },
-})
+local function get_filename()
+  local filename = vim.fn.expand "%:t"
+  return filename .. "%m" --> %m for modified flag
+end
 
-ins_left({
-  "filename",
-  icon = '',
-  color = { fg = colors.magenta, gui = "bold" },
-  cond = conditions.buffer_not_empty,
-})
 
-ins_left({
-  "branch",
-  color = { fg = colors.pink, gui = "bold" },
-})
+-- Git info using Gitsigns
+-- Loosely based on: https://github.com/NvChad/ui/blob/main/lua/nvchad_ui/statusline/modules.lua#L65
+local function git()
+  if not vim.b.gitsigns_head or vim.b.gitsigns_git_status then
+    return ""
+  end
 
-ins_left({
-  "diff",
-  cond = conditions.hide_in_width,
-})
+  local git_status = vim.b.gitsigns_status_dict
 
-ins_left({
-  function() return "▊" end,
-  color = { fg = colors.comment },
-})
+  local added = (git_status.added and git_status.added ~= 0) and (" " .. git_status.added) or ("")
+  local changed = (git_status.changed and git_status.changed ~= 0) and (" " .. git_status.changed) or ("")
+  local removed = (git_status.removed and git_status.removed ~= 0) and (" " .. git_status.removed) or ("")
+  local branch_name = " " .. git_status.head
 
--- Making the middle section
-ins_left({
-  function()
-    return "%=" -- Big empty room so that ins_left inserts to the middle
-  end,
-})
+  return string.format(" %s %s %s %s", branch_name, added, changed, removed)
+end
 
-ins_left({
-  function()
-    local no_msg = "No LSP"
-    local buf_ft = vim.api.nvim_buf_get_option(0, "filetype")
-    local clients = vim.lsp.get_active_clients()
-    if next(clients) == nil then
-      return no_msg
-    end
-    for _, client in ipairs(clients) do
-      local filetypes = client.config.filetypes
-      if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-        return client.name
+-- Current LSP server
+local function lsp_server()
+  if rawget(vim, "lsp") then
+    for _, client in ipairs(vim.lsp.get_active_clients()) do
+      if client.attached_buffers[vim.api.nvim_get_current_buf()] then
+        return (vim.o.columns > 100) and ("  LSP: " .. client.name) or ("  LSP ")
       end
     end
-    return no_msg
-  end,
-  icon = " ",
-  color = { fg = colors.cyan, gui = "bold" },
-  cond = conditions.hide_in_width,
-})
+  end
+  return ""
+end
 
-ins_left {
-  "diagnostics",
-  sources = { "nvim_diagnostic" },
-  cond = conditions.hide_in_width,
-}
+-- Inspriation: https://nuxsh.is-a.dev/blog/custom-nvim-statusline.html
+local function lsp_status()
+  if not rawget(vim, "lsp") or #(vim.lsp.get_active_clients()) == 0 then
+    return ""
+  end
 
-ins_right({
-  function() return "▊" end,
-  color = { fg = colors.comment },
-})
+  local count = {}
+  local levels = {
+    errors = "Error",
+    warnings = "Warn",
+    info = "Info",
+    hints = "Hint",
+  }
+  for k, level in pairs(levels) do
+    -- OP used vim.tbl_count, but I think Lua built=in # is better
+    count[k] = #(vim.diagnostic.get(0, { severity = level })) --> 0 for current buf
+  end
 
-ins_right({ "filetype", color = { fg = colors.orange, gui = "bold" } })
+  local errors = (count["errors"] > 0) and ("  " .. count["errors"]) or ("")
+  local warnings = (count["warnings"] > 0) and ("  " .. count["warnings"]) or ("")
+  local hints = (count["hints"] > 0) and ("  " .. count["hints"]) or ("")
+  local info = (count["info"] > 0) and ("  " .. count["info"]) or ("")
 
-ins_right({
-  "o:encoding",
-  fmt = string.upper,
-  color = { fg = colors.green, gui = "bold" },
-  cond = conditions.hide_in_width,
-})
+  return string.format("%s%s%s%s",
+    ("%#StatusLineRedAccent#" .. errors), ("%#StatusLineOrangeAccent#" .. warnings),
+    ("%#StatusLineYellowAccent#" .. hints), ("%#StatusLineGreenAccent#" .. info))
+end
 
-ins_right({
-  "fileformat",
-  fmt = string.upper,
-  icons_enabled = true, -- Prints out UNIX or penguin icon
-  color = { fg = colors.green, gui = "bold" },
-  cond = conditions.hide_in_width,
-})
+-- For Theovim's code auto format toggle functionalities
+local function auto_format_status()
+  if rawget(vim, "lsp") then
+    for _, client in ipairs(vim.lsp.get_active_clients()) do
+      if client.attached_buffers[vim.api.nvim_get_current_buf()] and client.server_capabilities.documentFormattingProvider then
+        return (CODE_FORMAT_STATUS) and (" %#StatusLineYellowAccent#󰃢 Linter:  ") or
+            (" %#StatusLineRedAccent#󰃢 Linter:  ")
+      end
+    end
+  end
+  return " %#StatusLineRedAccent#󰃢 Linter:  " --> Should I make it an empty string?
+end
 
-ins_far_right({ "location" })
+local function enc_and_ff()
+  local ff = vim.bo.fileformat
+  if ff == "unix" then
+    ff = "  "
+  elseif ff == "dos" then
+    ff = "  "
+  end
+  -- If new file does not have encoding, display global encoding
+  local enc = (vim.bo.fileencoding == "") and (vim.o.encoding) or (vim.bo.fileencoding)
+  return string.format("%s:%s", ff, enc):upper()
+end
 
-ins_far_right({ "progress", color = { fg = colors.fg, gui = "bold" } })
+Statusline = {} --> Must be global
+Statusline.build = function()
+  return table.concat({
+    update_mode_colors(), --> Dynamically set the highlight depending on the current mode
+    format_mode(),
+    "%#StatusLineOrangeAccent# ",
+    "",
+    get_filepath(),
+    get_filename(),
+    "%#StatusLineRedAccent# ",
+    git(),
 
-ins_far_right({
-  function() return '' end,
-  color = { fg = colors.blue },
-  padding = { left = 1 },
-})
+    --"%#Normal#",
+    "%=", --> vim statusline separator; inserts equal amount of space per separator
+    (vim.bo.readonly) and ("Warning: Read Only") or (""),
+    "%=",
 
-lualine.setup(config)
+    "%#StatusLineBlueAccent# ",
+    lsp_server(),
+    lsp_status(),
+    auto_format_status(),
+    "%#StatusLinePurpleAccent# ",
+    "  %Y", --> Same as vim.bo.filetype:upper()
+    enc_and_ff(),
+    "%#StatusLineLightGreyAccent# ",
+    " 󰓾 %l:%c %P "
+  })
+end
+
+vim.o.statusline = "%!luaeval('Statusline.build()')" --> vim.wo won't work with term window or floating
