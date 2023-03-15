@@ -66,10 +66,6 @@ local plugins = {
     config = function() require("nvim_comment").setup() end
   },
   {
-    "folke/which-key.nvim", --> Pop-up dictionary for keybindings
-    config = function() require("which-key").setup() end
-  },
-  {
     "norcalli/nvim-colorizer.lua", --> Color highlighter
     config = function() require("colorizer").setup() end
   },
