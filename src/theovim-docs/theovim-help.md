@@ -9,8 +9,7 @@
 
 ## Help
 
-- <leader> ?                  : Bring up key binding help pop-up
-                                You can hit a key, pause for 2 seconds to bring up the key binding help pop-up
+- <leader> ?                  : Bring up finder for all the keymaps
 - :TheovimHelp                : Open this help document
 - :TheovimVanillaVimHelp      : Common Vim keybindings and workflows
 
