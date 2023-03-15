@@ -9,7 +9,7 @@
 --
 
 require("nvim-treesitter.configs").setup({
-  ensure_installed = { "c", "latex", "lua", "markdown", "python", "vim", },
+  ensure_installed = { "bash", "c", "lua", "markdown", "python", "vim" },
   sync_install = false,
   auto_install = true,
   ignore_install = {},
