@@ -50,7 +50,7 @@ local lsp_options = {
   ["4. Outline"] = "Lspsaga outline",
   ["5. Hover Doc"] = function() vim.lsp.buf.hover() end, -- LSPSaga version requires Markdown treesitter
   ["6. Rename Variable"] = "Lspsaga rename",
-  ["7. Auto Format Toggle"] = "CodeFormatToggle",
+  ["7. Linter (Code Auto Format) Toggle"] = "LinterToggle",
 }
 THEOVIM_LSP_MENU = create_selectable_menu("Code action to perform at the current cursor", lsp_options)
 -- }}}

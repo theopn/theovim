@@ -29,18 +29,16 @@ if (not status) then return end
 -- Capabilities and on_attach function that will be called for all LSP servers
 local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
--- FUnction and global var for auto formatting toggle
-CODE_FORMAT_STATUS = true
-local function code_format_toggle()
-  CODE_FORMAT_STATUS = not CODE_FORMAT_STATUS
-  -- (code_format_status) ? ("On") : ("Off") Lua plz support conditional ternary op
-  vim.notify("Code Auto Format " .. (CODE_FORMAT_STATUS and "On!" or "Off!"))
-end
+-- Global var for auto formatting toggle
+LINTER_STATUS = true
 
 local on_attach = function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
     -- User command to toggle code format only available when LSP is detected
-    vim.api.nvim_create_user_command("CodeFormatToggle", function() code_format_toggle() end,
+    vim.api.nvim_create_user_command("LinterToggle", function()
+        LINTER_STATUS = not LINTER_STATUS
+        print(string.format("Linter %s!", (LINTER_STATUS) and ("on!") or ("off!")))
+      end,
       { nargs = 0 })
 
     -- Autocmd for code formatting on the write
@@ -48,7 +46,7 @@ local on_attach = function(client, bufnr)
       group = vim.api.nvim_create_augroup("Format", { clear = false }),
       buffer = bufnr,
       callback = function()
-        if CODE_FORMAT_STATUS then vim.lsp.buf.format() end
+        if LINTER_STATUS then vim.lsp.buf.format() end
       end
     })
   end

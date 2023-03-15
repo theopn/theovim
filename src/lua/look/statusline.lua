@@ -156,7 +156,7 @@ local function auto_format_status()
   if rawget(vim, "lsp") then
     for _, client in ipairs(vim.lsp.get_active_clients()) do
       if client.attached_buffers[vim.api.nvim_get_current_buf()] and client.server_capabilities.documentFormattingProvider then
-        return (CODE_FORMAT_STATUS) and (" %#StatusLineYellowAccent#󰃢 Linter:  ") or
+        return (LINTER_STATUS) and (" %#StatusLineYellowAccent#󰃢 Linter:  ") or
             (" %#StatusLineRedAccent#󰃢 Linter:  ")
       end
     end
