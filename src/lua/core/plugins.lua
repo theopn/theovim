@@ -10,16 +10,15 @@
 -- {{{ Plugin list
 local plugins = {
   -- {{{ Dependencies
-  { "nvim-lua/plenary.nvim" }, --> Lua function library for Neovim (used by Telescope)
+  { "nvim-lua/plenary.nvim" },       --> Lua function library for Neovim (used by Telescope)
   { "nvim-tree/nvim-web-devicons" }, --> Icons for barbar, Telescope, and more
   -- }}}
 
   -- {{{ Look and feel
-  { "theopn/pastelcula.nvim" }, --> Colorscheme
-  { "nanozuki/tabby.nvim" }, --> Improving Vim's built-in tab system
-  { "nvim-lualine/lualine.nvim" }, --> Status line plugin
+  { "theopn/pastelcula.nvim" },                                  --> Colorscheme
+  { "nanozuki/tabby.nvim" },                                     --> Improving Vim's built-in tab system
   {
-    "rcarriga/nvim-notify", --> Prettier notification
+    "rcarriga/nvim-notify",                                      --> Prettier notification
     config = function()
       require("notify").setup({ background_colour = "#282A35" }) --> The variable is needed if theme is transparent
       vim.notify = require("notify")
@@ -28,21 +27,23 @@ local plugins = {
   -- }}}
 
   -- {{{ File and search
-  { "nvim-treesitter/nvim-treesitter" }, --> Incremental highlighting
-  { "nvim-telescope/telescope.nvim" }, --> Expendable fuzzy finder
+  { "nvim-treesitter/nvim-treesitter" },            --> Incremental highlighting
+  { "nvim-telescope/telescope.nvim" },              --> Expendable fuzzy finder
   { "nvim-telescope/telescope-file-browser.nvim" }, --> File browser extension for Telescope
   {
-    "kyazdani42/nvim-tree.lua", --> File tree
+    "kyazdani42/nvim-tree.lua",                     --> File tree
     config = function() require("nvim-tree").setup() end
   },
   {
     "lewis6991/gitsigns.nvim", --> Git information
     config = function() require("gitsigns").setup() end
   },
-  { "lukas-reineke/indent-blankline.nvim", --> Indentation guide
+  {
+    "lukas-reineke/indent-blankline.nvim", --> Indentation guide
     config = function() require("indent_blankline").setup() end
   },
-  { "windwp/nvim-autopairs", --> Autopair
+  {
+    "windwp/nvim-autopairs", --> Autopair
     config = function() require("nvim-autopairs").setup() end
   },
   {
@@ -65,27 +66,26 @@ local plugins = {
     "williamboman/mason.nvim", --> LSP Manager
     config = function() require("mason").setup() end
   },
-  { "williamboman/mason-lspconfig.nvim", }, --> Bridge between Mason and lspconfig
-  { "theopn/friendly-snippets" }, --> VS Code style snippet collection
+  { "williamboman/mason-lspconfig.nvim", },                                    --> Bridge between Mason and lspconfig
+  { "theopn/friendly-snippets" },                                              --> VS Code style snippet collection
   {
-    "L3MON4D3/LuaSnip", --> Snippet engine that accepts VS Code style snippets
-    build = "make install_jsregexp",
+    "L3MON4D3/LuaSnip",                                                        --> Snippet engine that accepts VS Code style snippets
     config = function() require("luasnip.loaders.from_vscode").lazy_load() end --> Load snippets from friendly snippets
   },
-  { "saadparwaiz1/cmp_luasnip" }, --> nvim_cmp and LuaSnip bridge
-  { "hrsh7th/cmp-nvim-lsp" }, --> nvim-cmp source for LSP engine
-  { "hrsh7th/cmp-buffer" }, --> nvim-cmp source for buffer words
-  { "hrsh7th/cmp-path" }, --> nvim-cmp source for file path
-  { "hrsh7th/cmp-cmdline" }, --> nvim-cmp source for :commands
-  { "hrsh7th/nvim-cmp" }, --> Completion Engine
+  { "saadparwaiz1/cmp_luasnip" },                                              --> nvim_cmp and LuaSnip bridge
+  { "hrsh7th/cmp-nvim-lsp" },                                                  --> nvim-cmp source for LSP engine
+  { "hrsh7th/cmp-buffer" },                                                    --> nvim-cmp source for buffer words
+  { "hrsh7th/cmp-path" },                                                      --> nvim-cmp source for file path
+  { "hrsh7th/cmp-cmdline" },                                                   --> nvim-cmp source for :commands
+  { "hrsh7th/nvim-cmp" },                                                      --> Completion Engine
   {
-    "glepnir/lspsaga.nvim", --> LSP hover doc, code action, outline, statusbar LSP context, etc
+    "glepnir/lspsaga.nvim",                                                    --> LSP hover doc, code action, outline, statusbar LSP context, etc
     config = function() require("lspsaga").setup() end
   },
 
   -- {{{ Language specific
   {
-    "iamcco/markdown-preview.nvim", --> MarkdownPreview to toggle
+    "iamcco/markdown-preview.nvim",                       --> MarkdownPreview to toggle
     build = function() vim.fn["mkdp#util#install"]() end, --> Binary installation for markdown-preview
     ft = { "markdown" }
   },
