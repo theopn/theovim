@@ -14,7 +14,7 @@
 ## Version 2023.03.14
 
 - Statusline is totally redesigned!! One less plugin...
-- :ZenModeIsh - Spawn a large NvimTree to center the text - Removed in V. 2023.03.15
+- :ZenModeIsh - Spawn a large NvimTree to center the text - Removed in V. 2023.03.xx
 
 ## Version 2023.03.07
 
@@ -23,7 +23,7 @@
 - :ShowChanges command
 - Global statusline, statusline disabled in Dashboard
 - Confirm option (ask for confirmation before closing unwritten buffer)
-- Git menu (<leader>g)
+- Git menu ([LDR] g)
 
 ## Version 2023.02.27
 
@@ -32,10 +32,10 @@
 - New Dashboard
 - Bufferline plugin (Barbar) replaced by UI wrapper for traditional Vim tab (Tabby)
 - Tab-related keybindings:
-  - <leader>1-9
-  - <leader>n prompts the user with a buffer to create a new tab with
-  - <leader>x prompts the user with a buffer to delete
-- New keybinding for recently used files (<leader> f r)
+  - [LDR] 1-9
+  - [LDR] n prompts the user with a buffer to create a new tab with
+  - [LDR] x prompts the user with a buffer to delete
+- New keybinding for recently used files ([LDR] f r)
 
 ## Version 2023.02.23
 
@@ -43,14 +43,14 @@
 
 - Source code diet
 - User configuration support
-- You can now move to the next selected region in the auto-completed snippet using <TAB>
+- You can now move to the next selected region in the auto-completed snippet using TAB
 
 ## Version 2023.02.18
 
-- Terminal selection menu (<leader>z)
+- Terminal selection menu ([LDR]z)
 - :TrimWhitespace command
 - :Notepad command
-- Misc feature selection menu (<leader>m)
+- Misc feature selection menu ([LDR]m)
 
 ## Version 2023.02.12
 
@@ -66,5 +66,5 @@
 
 - Weather command - removed in 2023.02.23
 - Installation script major revision
-- LSP/Telescope feature selection menu (<leader>ca, <leader>fa)
+- LSP/Telescope feature selection menu ([LDR]ca, [LDR]fa)
 
