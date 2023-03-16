@@ -180,6 +180,7 @@ Statusline.build = function()
     get_filepath(), --> Appends to %f iff file is in different directory
     "%f",           --> Current file
     "%m",           --> [-] for read only, [+] for modified buffer
+    "%r",           --> [RO] for read only, I know it's redundant
     "%#StatusLineRedAccent# ",
     git(),
 
