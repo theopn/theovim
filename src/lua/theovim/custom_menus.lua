@@ -46,9 +46,9 @@ end
 local lsp_options = {
   ["1. Code Action"] = "Lspsaga code_action",
   ["2. Definition and References"] = "Lspsaga lsp_finder",
-  ["3. Current Buffer Diagonostics"] = "Lspsaga show_buf_diagnostics",
+  ["3. Current Buffer Diagonostics"] = function() vim.diagnostic.open_float(0, { scope = "buffer", border = "rounded" }) end,
   ["4. Outline"] = "Lspsaga outline",
-  ["5. Hover Doc"] = function() vim.lsp.buf.hover() end, -- LSPSaga version requires Markdown treesitter
+  ["5. Hover Doc"] = function() vim.lsp.buf.hover() end,  -- LSPSaga version requires Markdown treesitter
   ["6. Rename Variable"] = "Lspsaga rename",
   ["7. Linter (Code Auto Format) Toggle"] = "LinterToggle",
 }
