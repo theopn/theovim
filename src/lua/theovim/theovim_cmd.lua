@@ -58,8 +58,8 @@ local function theovim_update()
   vim.fn.termopen(update_command)
 
   require("lazy").sync()
-  vim.cmd("MasonUpdate")
-  vim.cmd("TSUpdate")
+  --vim.cmd("MasonUpdate")
+  --vim.cmd("TSUpdate")
   vim.notify("Update complete! :TheovimInfo command for the changelog :)")
 end
 
