@@ -79,21 +79,6 @@ local function update_mode_colors()
   return mode_color
 end
 
--- This appends to get_filename() if file is in a different directory
-local function get_filepath()
-  local filepath = vim.fn.fnamemodify(vim.fn.expand "%", ":~:.:h")
-  if filepath == "" or filepath == "." then
-    return " "
-  end
-  return string.format(" %%<%s/", filepath)
-end
-
-local function get_filename()
-  local filename = vim.fn.expand "%:t"
-  return filename .. "%m" --> %m for modified flag
-end
-
-
 -- Git info using Gitsigns
 -- Loosely based on: https://github.com/NvChad/ui/blob/main/lua/nvchad_ui/statusline/modules.lua#L65
 local function git()
@@ -156,7 +141,7 @@ local function auto_format_status()
   if rawget(vim, "lsp") then
     for _, client in ipairs(vim.lsp.get_active_clients()) do
       if client.attached_buffers[vim.api.nvim_get_current_buf()] and client.server_capabilities.documentFormattingProvider then
-        return (CODE_FORMAT_STATUS) and (" %#StatusLineYellowAccent#󰃢 Linter:  ") or
+        return (LINTER_STATUS) and (" %#StatusLineYellowAccent#󰃢 Linter:  ") or
             (" %#StatusLineRedAccent#󰃢 Linter:  ")
       end
     end
@@ -164,7 +149,7 @@ local function auto_format_status()
   return " %#StatusLineRedAccent#󰃢 Linter:  " --> Should I make it an empty string?
 end
 
-local function enc_and_ff()
+local function ff_and_enc()
   local ff = vim.bo.fileformat
   if ff == "unix" then
     ff = "  "
@@ -179,29 +164,34 @@ end
 Statusline = {} --> Must be global
 Statusline.build = function()
   return table.concat({
+    -- Mode
     update_mode_colors(), --> Dynamically set the highlight depending on the current mode
     format_mode(),
+    -- File name and status
     "%#StatusLineOrangeAccent# ",
-    "",
-    get_filepath(),
-    get_filename(),
+    " ",
+    "%f", --> Current file/path relative to the current folder
+    "%m", --> [-] for read only, [+] for modified buffer
+    "%r", --> [RO] for read only, I know it's redundant
+    -- Git
     "%#StatusLineRedAccent# ",
+    "%<", --> Truncation starts here if file is too logn
     git(),
-
-    --"%#Normal#",
-    "%=", --> vim statusline separator; inserts equal amount of space per separator
-    (vim.bo.readonly) and ("Warning: Read Only") or (""),
+    -- Spacer
+    "%#Normal#",
     "%=",
-
+    -- LSP
     "%#StatusLineBlueAccent# ",
     lsp_server(),
     lsp_status(),
     auto_format_status(),
+    -- File information
     "%#StatusLinePurpleAccent# ",
     "  %Y", --> Same as vim.bo.filetype:upper()
-    enc_and_ff(),
+    ff_and_enc(),
+    -- Location in the file
     "%#StatusLineLightGreyAccent# ",
-    " 󰓾 %l:%c %P "
+    " 󰓾 %l:%c %P " --> Line, column, and page percentage
   })
 end
 
