@@ -60,7 +60,7 @@ do
     { "expandtab",    true },     --> Tab as spaces
     { "spelllang",    "en" },     --> Engrish
     { "spellsuggest", "best,8" }, --> Suggest 8 words for spell suggestion
-    { "spell",        "false" },  --> autocmd will enable spellcheck in txt or markdown
+    { "spell",        false },    --> autocmd will enable spellcheck in Tex or markdown
   }
   for _, v in ipairs(edit_opt) do
     vim_set(v[1], GLOBAL, v[2])
