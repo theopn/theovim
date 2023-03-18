@@ -8,6 +8,8 @@
 --]]
 --
 
+-- Note: Use vim.opt_local over vim.bo whenever possible, since opt_local directly corresponds to setlocal cmd and is higher level api
+
 -- {{{ Colorcolumn based on ft
 local ft_style_vals = {
   -- colorcolumn values has to be string... Why...? I don't know
@@ -28,10 +30,10 @@ vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("FileSettings", { clear = true }),
   pattern = ft_names,
   callback = function()
-    vim.wo.colorcolumn = ft_style_vals[vim.bo.filetype].colorcolumn
-    vim.bo.shiftwidth = ft_style_vals[vim.bo.filetype].tabwidth
-    vim.bo.tabstop = ft_style_vals[vim.bo.filetype].tabwidth
-    vim.bo.softtabstop = ft_style_vals[vim.bo.filetype].tabwidth
+    vim.opt_local.colorcolumn = ft_style_vals[vim.bo.filetype].colorcolumn
+    vim.opt_local.shiftwidth = ft_style_vals[vim.bo.filetype].tabwidth
+    vim.opt_local.tabstop = ft_style_vals[vim.bo.filetype].tabwidth
+    vim.opt_local.softtabstop = ft_style_vals[vim.bo.filetype].tabwidth
   end
 })
 -- }}}
