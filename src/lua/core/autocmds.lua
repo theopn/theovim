@@ -39,8 +39,8 @@ vim.api.nvim_create_autocmd("FileType", {
 -- {{{ Spell check in relevant buffer filetypes
 vim.api.nvim_create_autocmd("FileType", {
   group = vim.api.nvim_create_augroup("SpellCheck", { clear = true }),
-  pattern = { "markdown", "text" },
-  callback = function() vim.wo.spell = true end
+  pattern = { "markdown", "tex", "text" },
+  callback = function() vim.opt_local.spell = true end
 })
 -- }}}
 
