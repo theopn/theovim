@@ -60,7 +60,7 @@ local function theovim_update()
   require("lazy").sync()
   --vim.cmd("MasonUpdate")
   --vim.cmd("TSUpdate")
-  vim.notify("Update complete! :TheovimInfo command for the changelog :)")
+  vim.notify("Update complete, please restart Theovim! Use :TheovimInfo command for the changelog :)")
 end
 
 -- nargs ?: 0 or 1, *: > 0, +: > 1 args
