@@ -141,12 +141,13 @@ local function auto_format_status()
   if rawget(vim, "lsp") then
     for _, client in ipairs(vim.lsp.get_active_clients()) do
       if client.attached_buffers[vim.api.nvim_get_current_buf()] and client.server_capabilities.documentFormattingProvider then
-        return (LINTER_STATUS) and (" %#StatusLineYellowAccent#󰃢 Linter:  ") or
-            (" %#StatusLineRedAccent#󰃢 Linter:  ")
+        if LINTER_STATUS then --> Global variable for toggling linter, look at ../editor/lsp.lua
+          return " %#StatusLineYellowAccent#󰃢 Linter:  "
+        end
       end
     end
   end
-  return " %#StatusLineRedAccent#󰃢 Linter:  " --> Should I make it an empty string?
+  return " %#StatusLineRedAccent#󰃢 Linter:  "
 end
 
 local function ff_and_enc()
