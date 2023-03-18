@@ -46,11 +46,11 @@ end
 local lsp_options = {
   ["1. Code Action"] = "Lspsaga code_action",
   ["2. Definition and References"] = "Lspsaga lsp_finder",
-  ["3. Current Buffer Diagonostics"] = "Lspsaga show_buf_diagnostics",
+  ["3. Current Buffer Diagonostics"] = function() vim.diagnostic.open_float(0, { scope = "buffer", border = "rounded" }) end,
   ["4. Outline"] = "Lspsaga outline",
-  ["5. Hover Doc"] = function() vim.lsp.buf.hover() end, -- LSPSaga version requires Markdown treesitter
+  ["5. Hover Doc"] = function() vim.lsp.buf.hover() end,  -- LSPSaga version requires Markdown treesitter
   ["6. Rename Variable"] = "Lspsaga rename",
-  ["7. Auto Format Toggle"] = "CodeFormatToggle",
+  ["7. Linter (Code Auto Format) Toggle"] = "LinterToggle",
 }
 THEOVIM_LSP_MENU = create_selectable_menu("Code action to perform at the current cursor", lsp_options)
 -- }}}
@@ -99,11 +99,10 @@ local misc_options = {
   ["1. :Notepad"] = "Notepad",
   ["2. :TrimWhitespace"] = "TrimWhitespace",
   ["3. :ShowChanges"] = "ShowChanges",
-  ["4. :ZenModeIsh"] = "ZenModeIsh",
-  ["5. :TheovimUpdate"] = "TheovimUpdate",
-  ["6. :TheovimHelp"] = "TheovimHelp",
-  ["7. :TheovimVanillaVimHelp"] = "TheovimVanillaVimHelp",
-  ["8. :TheovimInfo"] = "TheovimInfo",
+  ["4. :TheovimUpdate"] = "TheovimUpdate",
+  ["5. :TheovimHelp"] = "TheovimHelp",
+  ["6. :TheovimVanillaVimHelp"] = "TheovimVanillaVimHelp",
+  ["7. :TheovimInfo"] = "TheovimInfo",
 }
 THEOVIM_MISC_MENU = create_selectable_menu("What fun feature would you like to use?", misc_options)
 --}}}
