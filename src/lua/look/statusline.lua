@@ -168,12 +168,14 @@ Statusline.build = function()
     -- Mode
     update_mode_colors(), --> Dynamically set the highlight depending on the current mode
     format_mode(),
-    -- File name and status
+    -- folder, file name, and status
     "%#StatusLineOrangeAccent# ",
-    " ",
-    "%f", --> Current file/path relative to the current folder
-    "%m", --> [-] for read only, [+] for modified buffer
-    "%r", --> [RO] for read only, I know it's redundant
+    " ",
+    vim.fn.fnamemodify(vim.fn.getcwd(), ":t"), --> current working directory
+    "  ",
+    "%f",                                      --> Current file/path relative to the current folder
+    "%m",                                      --> [-] for read only, [+] for modified buffer
+    "%r",                                      --> [RO] for read only, I know it's redundant
     -- Git
     "%#StatusLineRedAccent# ",
     "%<", --> Truncation starts here if file is too logn
