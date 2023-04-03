@@ -141,7 +141,7 @@ local function auto_format_status()
   if rawget(vim, "lsp") then
     for _, client in ipairs(vim.lsp.get_active_clients()) do
       if client.attached_buffers[vim.api.nvim_get_current_buf()] and client.server_capabilities.documentFormattingProvider then
-        if LINTER_STATUS then --> Global variable for toggling linter, look at ../editor/lsp.lua
+        if vim.g.linter_status then --> Global variable for toggling linter, look at ../editor/lsp.lua
           return " %#StatusLineYellowAccent#󰃢 Linter:  "
         end
       end
