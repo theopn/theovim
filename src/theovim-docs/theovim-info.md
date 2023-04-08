@@ -6,8 +6,8 @@
 
 ## Version 2023.04.08
 
-- Folder information in the StatusLine
-- Dashboard has been simplified, is faster, and does  better job at error handling (code base adopted from NvChad)
+- Current working directory in the StatusLine
+- Dashboard revision (code base inspired by NvChad): Better error handling and faster startup
 - Prettier help and changelog window
 - [temporary] LSP semantic highlighting takes over tree-sitter highlighting in Neovim 0.9.0. I disabled it manually for now, but I will come up with a more concrete solution soon
 
