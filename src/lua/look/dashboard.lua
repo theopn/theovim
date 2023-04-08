@@ -92,7 +92,10 @@ local function open()
   if vim.fn.expand("%") ~= "" then return end
 
   -- Check if window is too small to launch
-  if vim.api.nvim_win_get_height(0) < max_height then return end
+  if vim.api.nvim_win_get_height(0) < max_height then
+    vim.notify("Window height is too small to launch the dashboard :(")
+    return
+  end
 
   -- Create a new buffer
   local buf = vim.api.nvim_create_buf(false, true)
@@ -261,7 +264,7 @@ vim.api.nvim_create_autocmd("VimResized", {
     if vim.bo.filetype == "TheovimDashboard" then
       vim.opt_local.modifiable = true
       vim.api.nvim_buf_set_lines(0, 0, -1, false, { "" })
-      vim.defer_fn(function() open() end, 0)
+      open()
     end
   end,
 })
