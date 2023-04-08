@@ -61,7 +61,7 @@ require("mason-lspconfig").setup {
 require("mason-lspconfig").setup_handlers({
   -- Default handler
   function(server_name)
-    require("lspconfig")[server_name].setup({ capabilities = capabilities, on_attach = on_attach })
+    require("lspconfig")[server_name].setup({ capabilities = capabilities, on_attach = on_attach, })
   end,
   -- Lua gets a special treatment
   ["lua_ls"] = function()
@@ -89,4 +89,10 @@ require("mason-lspconfig").setup_handlers({
     })
   end,
 })
+-- }}}
+
+-- {{{ Disabling LSP semantic highlighting caused after Nvim 0.9
+for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+  vim.api.nvim_set_hl(0, group, {})
+end
 -- }}}
