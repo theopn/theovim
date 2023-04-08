@@ -37,8 +37,7 @@ require("core.plugins")
 require("look.colorscheme")
 require("look.statusline")
 require("look.tabline")
---require("look.dashboard")
-require("look.dashboard-dev")
+require("look.dashboard")
 --]]
 
 ---[[ Editor
