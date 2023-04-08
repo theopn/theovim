@@ -27,29 +27,29 @@ Logo: figlet -f soft Theovim
 -- Remove a hyphen before brackets to disable a module
 
 ---[[ Core
-require("core/base_config")
-require("core/keybindings")
-require("core/autocmds")
-require("core/plugins")
+require("core.base_config")
+require("core.keybindings")
+require("core.autocmds")
+require("core.plugins")
 --]]
 
 ---[[ Look
-require("look/colorscheme")
-require("look/statusline")
-require("look/tabline")
-require("look/dashboard")
+require("look.colorscheme")
+require("look.statusline")
+require("look.tabline")
+require("look.dashboard")
 --]]
 
 ---[[ Editor
-require("editor/tree_sitter")
-require("editor/fuzzy_finder")
-require("editor/lsp")
-require("editor/completion")
+require("editor.tree_sitter")
+require("editor.fuzzy_finder")
+require("editor.lsp")
+require("editor.completion")
 --]]
 
 ---[[ Theovim
-require("theovim/theovim_cmd")
-require("theovim/custom_menus")
+require("theovim.theovim_cmd")
+require("theovim.custom_menus")
 --]]
 
 ---[[ Safeguards around including user configuration file

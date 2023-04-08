@@ -45,8 +45,8 @@ local function theovim_update()
   local win = vim.api.nvim_open_win(buf, true, win_opts)
 
   -- options
-  vim.api.nvim_win_set_option(win, "winblend", 50)      --> 0 for solid color, 80 for transparent
   vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe") --> Kill the buffer when hidden
+  vim.api.nvim_win_set_option(win, "winblend", 50)      --> 0 for solid color, 80 for transparent
 
   -- keymaps
   local keymaps_opts = { silent = true, buffer = buf }
@@ -55,6 +55,7 @@ local function theovim_update()
 
   -- Executing commands
   local update_command = "cd ~/.theovim && ./theovim-util.sh update"
+  update_command = update_command .. " && echo -e '\nUpdate completed! Please restart Theovim :)\n'"
   vim.fn.termopen(update_command)
 
   require("lazy").sync()
@@ -69,7 +70,7 @@ vim.api.nvim_create_user_command("TheovimUpdate", function() theovim_update() en
 
 -- {{{ Util commands
 -- Reference: https://github.com/ellisonleao/glow.nvim/blob/main/lua/glow/init.lua
-local function spawn_floating_win(file_path)
+local function spawn_floating_help_win(file_path)
   local win_height = math.ceil(vim.o.lines * 0.8)
   local win_width = math.ceil(vim.o.columns * 0.8)
   local x_pos = math.ceil((vim.o.lines - win_height) * 0.5)  --> Centering the window
@@ -90,9 +91,10 @@ local function spawn_floating_win(file_path)
   local win = vim.api.nvim_open_win(buf, true, win_opts)
 
   -- options
-  vim.api.nvim_win_set_option(win, "winblend", 0)       --> 0 for solid color, 80 for transparent
-  vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe") --> Kill the buffer when hidden
-  vim.api.nvim_buf_set_option(buf, "filetype", "markdown")
+  vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")    --> Kill the buffer when hidden
+  vim.api.nvim_buf_set_option(buf, "filetype", "markdown") --> Markdown syntax highlighting
+  vim.opt_local.spell = false                              --> Diable spell check, spell is not a buffer option so this
+  vim.api.nvim_win_set_option(win, "winblend", 0)          --> 0 for solid color, 80 for transparent
 
   -- keymaps
   local keymaps_opts = { silent = true, buffer = buf }
@@ -106,14 +108,15 @@ local function spawn_floating_win(file_path)
   vim.api.nvim_buf_set_option(0, "modifiable", false)
 end
 
-local helpdoc_path = vim.api.nvim_get_runtime_file("theovim-docs/theovim-help.md", false)[1]
-vim.api.nvim_create_user_command("TheovimHelp", function() spawn_floating_win(helpdoc_path) end, { nargs = 0 })
+local helpdoc_path = vim.api.nvim_get_runtime_file("theovim-docs/theovim-help.md", false)[1] --> Lua... no 0 indexing
+vim.api.nvim_create_user_command("TheovimHelp", function() spawn_floating_help_win(helpdoc_path) end, { nargs = 0 })
 
 local vimhelp_path = vim.api.nvim_get_runtime_file("theovim-docs/vim-help.md", false)[1]
-vim.api.nvim_create_user_command("TheovimVanillaVimHelp", function() spawn_floating_win(vimhelp_path) end, { nargs = 0 })
+vim.api.nvim_create_user_command("TheovimVanillaVimHelp", function() spawn_floating_help_win(vimhelp_path) end,
+  { nargs = 0 })
 
 local info_path = vim.api.nvim_get_runtime_file("theovim-docs/theovim-info.md", false)[1]
-vim.api.nvim_create_user_command("TheovimInfo", function() spawn_floating_win(info_path) end, { nargs = 0 })
+vim.api.nvim_create_user_command("TheovimInfo", function() spawn_floating_help_win(info_path) end, { nargs = 0 })
 -- }}}
 
 -- {{{ Notepad

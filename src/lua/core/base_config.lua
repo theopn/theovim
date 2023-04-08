@@ -21,7 +21,8 @@ do
   local base_opt = {
     { "filetype",      'on' },   --> Detect what file I'm working on
     { "syntax",        'on' },   --> Syntax highlighting, usually overriden by Treesitter
-    { "confirm",       true },
+    { "confirm",       true },   --> Ask before when attempting to save without
+    { "autochdir",     false },  --> Don't change directory to where current buffer - handeled by custom cmd
     { "scrolloff",     7 },      --> Keep at least 7 lines visible above and below the cursor
     { "showtabline",   2 },      --> Always show tabline (default 1 - only if there are two or more tabs)
     { "laststatus",    3 },      --> 3 = one statusbar for all win, only available on Neovim 0.7+
@@ -73,6 +74,8 @@ do
   vim.api.nvim_create_user_command("ShowChanges", ":w !diff % -",
     { nargs = 0 })
   --
+  vim.api.nvim_create_user_command("CD", ":lcd %:h",
+    { nargs = 0 })
 end
 -- }}}
 

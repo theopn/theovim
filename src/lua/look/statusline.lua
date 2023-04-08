@@ -141,12 +141,13 @@ local function auto_format_status()
   if rawget(vim, "lsp") then
     for _, client in ipairs(vim.lsp.get_active_clients()) do
       if client.attached_buffers[vim.api.nvim_get_current_buf()] and client.server_capabilities.documentFormattingProvider then
-        return (LINTER_STATUS) and (" %#StatusLineYellowAccent#󰃢 Linter:  ") or
-            (" %#StatusLineRedAccent#󰃢 Linter:  ")
+        if vim.g.linter_status then --> Global variable for toggling linter, look at ../editor/lsp.lua
+          return " %#StatusLineYellowAccent#󰃢 Linter:  "
+        end
       end
     end
   end
-  return " %#StatusLineRedAccent#󰃢 Linter:  " --> Should I make it an empty string?
+  return " %#StatusLineRedAccent#󰃢 Linter:  "
 end
 
 local function ff_and_enc()
@@ -167,12 +168,14 @@ Statusline.build = function()
     -- Mode
     update_mode_colors(), --> Dynamically set the highlight depending on the current mode
     format_mode(),
-    -- File name and status
+    -- folder, file name, and status
     "%#StatusLineOrangeAccent# ",
-    " ",
-    "%f", --> Current file/path relative to the current folder
-    "%m", --> [-] for read only, [+] for modified buffer
-    "%r", --> [RO] for read only, I know it's redundant
+    " ",
+    vim.fn.fnamemodify(vim.fn.getcwd(), ":t"), --> current working directory
+    "  ",
+    "%f",                                      --> Current file/path relative to the current folder
+    "%m",                                      --> [-] for read only, [+] for modified buffer
+    "%r",                                      --> [RO] for read only, I know it's redundant
     -- Git
     "%#StatusLineRedAccent# ",
     "%<", --> Truncation starts here if file is too logn
