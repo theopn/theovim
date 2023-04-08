@@ -30,14 +30,14 @@ if (not status) then return end
 local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- Global var for auto formatting toggle
-LINTER_STATUS = true
+vim.g.linter_status = true
 
 local on_attach = function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
     -- User command to toggle code format only available when LSP is detected
     vim.api.nvim_create_user_command("LinterToggle", function()
-        LINTER_STATUS = not LINTER_STATUS
-        print(string.format("Linter %s!", (LINTER_STATUS) and ("on!") or ("off!")))
+        vim.g.linter_status = not vim.g.linter_status
+        print(string.format("Linter %s!", (vim.g.linter_status) and ("on!") or ("off!")))
       end,
       { nargs = 0 })
 
@@ -46,7 +46,7 @@ local on_attach = function(client, bufnr)
       group = vim.api.nvim_create_augroup("Format", { clear = false }),
       buffer = bufnr,
       callback = function()
-        if LINTER_STATUS then vim.lsp.buf.format() end
+        if vim.g.linter_status then vim.lsp.buf.format() end
       end
     })
   end
@@ -61,7 +61,7 @@ require("mason-lspconfig").setup {
 require("mason-lspconfig").setup_handlers({
   -- Default handler
   function(server_name)
-    require("lspconfig")[server_name].setup({ capabilities = capabilities, on_attach = on_attach })
+    require("lspconfig")[server_name].setup({ capabilities = capabilities, on_attach = on_attach, })
   end,
   -- Lua gets a special treatment
   ["lua_ls"] = function()
@@ -89,4 +89,10 @@ require("mason-lspconfig").setup_handlers({
     })
   end,
 })
+-- }}}
+
+-- {{{ Disabling LSP semantic highlighting caused after Nvim 0.9
+for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+  vim.api.nvim_set_hl(0, group, {})
+end
 -- }}}

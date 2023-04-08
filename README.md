@@ -10,7 +10,7 @@ Some Theovim philosophies that might convince you to use Theovim:
 2. Lua is a great language, even better if it's well-commented
 3. Simplicity is the best aesthetic
 4. Keybindings you can memorize are the best keybindings. Theovim's keybindings use mnemonics, and instead of trying to make keybindings for every single feature, some of the often but not frequently used features are bundled in a selectable menu (e.g. `<SPC>ca/fa/m/z`)
-5. If it can be done in less than 50 lines of code, do it (e.g. `:Notepad`). If a plugin must be used, keep it as close to the default/suggested configuration as possible. The plugin author is more knowledgeable about the code than I am
+5. If it can be done in less than 200 lines of code, do it (e.g. statusline, Dashboard, and other UI components). If a plugin must be used, keep it as close to the default/suggested configuration as possible. The plugin author is more knowledgeable about the code than I am
 
 ## Dependencies
 
