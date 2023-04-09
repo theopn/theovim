@@ -178,27 +178,26 @@ local function open()
 
   -- Keybindings --
 
-  local firstbtnline = headerStart + #header + #logo + 2
-  local keybinds = {}
+  local currBtnLine = headerStart + #header + #logo + 2 --> Line number where the first button is located
+  local btnsLineNums = {}
 
-  -- Bug: It has extra lines above and below the buttons each,
-  -- but table.remove or/and not subtracting 2 initially does not work
+  -- Make a table of line numbers where buttons exist
   for _, _ in ipairs(buttons) do
-    table.insert(keybinds, firstbtnline - 2)
-    firstbtnline = firstbtnline + 2
+    table.insert(btnsLineNums, currBtnLine - 2)
+    currBtnLine = currBtnLine + 2
   end
-  --table.remove(keybinds, #keybinds)
 
+  -- Setting hjkl and arrow keys movement
   local upMvmt = function()
-    local cur = vim.fn.line(".") -- Current line
-    -- Check if the current line number is button or move to the last element
-    local target_line = vim.tbl_contains(keybinds, cur) and cur - 2 or keybinds[#keybinds]
+    local curr = vim.fn.line(".") -- Current line
+    -- Check if the current line number - 2 is button or move to the last element
+    local target_line = vim.tbl_contains(btnsLineNums, curr - 2) and curr - 2 or btnsLineNums[#btnsLineNums]
     vim.api.nvim_win_set_cursor(0, { target_line, math.floor(vim.o.columns / 2) - 15 })
   end
   local downMvmt = function()
-    local cur = vim.fn.line(".") -- Current line
-    -- Check if the current line number is button or move to the first element
-    local target_line = vim.tbl_contains(keybinds, cur) and cur + 2 or keybinds[1]
+    local curr = vim.fn.line(".") -- Current line
+    -- Check if the current line number + 2 is button or move to the first element
+    local target_line = vim.tbl_contains(btnsLineNums, curr + 2) and curr + 2 or btnsLineNums[1]
     vim.api.nvim_win_set_cursor(0, { target_line, math.floor(vim.o.columns / 2) - 15 })
   end
   vim.keymap.set("n", "h", "", { buffer = true })
@@ -210,10 +209,11 @@ local function open()
   vim.keymap.set("n", "<UP>", upMvmt, { buffer = true })
   vim.keymap.set("n", "<RIGHT>", "", { buffer = true })
 
+  -- Setting return key movement
   vim.keymap.set("n", "<CR>", function()
-    for i, val in ipairs(keybinds) do
-      if val == vim.fn.line(".") then
-        local action = buttons[i][3] -- 3rd element of the buttons table
+    for i, v in ipairs(btnsLineNums) do
+      if v == vim.fn.line(".") then
+        local action = buttons[i][3] --> 3rd element of the buttons table
         if type(action) == "string" then
           vim.cmd(action)
         elseif type(action) == "function" then
@@ -255,7 +255,10 @@ end
 -- }}}
 
 -- {{{ Open the dashboard
-vim.defer_fn(function() open() end, 0)
+local function dashboardOpener()
+  vim.defer_fn(open, 0) --> https://www.youtube.com/watch?v=GMS0JvS7W1Y
+end
+dashboardOpener()
 -- }}}
 
 -- {{{ Auto-resize the Dashboard
@@ -264,7 +267,7 @@ vim.api.nvim_create_autocmd("VimResized", {
     if vim.bo.filetype == "TheovimDashboard" then
       vim.opt_local.modifiable = true
       vim.api.nvim_buf_set_lines(0, 0, -1, false, { "" })
-      open()
+      dashboardOpener()
     end
   end,
 })
