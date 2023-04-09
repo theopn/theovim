@@ -121,38 +121,38 @@ vim.api.nvim_create_user_command("TheovimInfo", function() spawn_floating_help_w
 
 -- {{{ Notepad
 -- Inspiration: https://github.com/tamton-aquib/stuff.nvim
-NOTEPAD_LOADED = false
-local buf, win
+vim.g.notepad_loaded = false
+local notepadBuf, notepadWin
 local function launch_notepad()
-  if not NOTEPAD_LOADED or not vim.api.nvim_win_is_valid(win) then
-    if not buf or not vim.api.nvim_buf_is_valid(buf) then
+  if not vim.g.notepad_loaded or not vim.api.nvim_win_is_valid(notepadWin) then
+    if not notepadBuf or not vim.api.nvim_buf_is_valid(notepadBuf) then
       -- Create a buffer if it none existed
-      buf = vim.api.nvim_create_buf(false, true)
-      vim.api.nvim_buf_set_option(buf, "bufhidden", "hide")
-      vim.api.nvim_buf_set_option(buf, "filetype", "markdown")
-      vim.api.nvim_buf_set_lines(buf, 0, 1, false,
+      notepadBuf = vim.api.nvim_create_buf(false, true)
+      vim.api.nvim_buf_set_option(notepadBuf, "bufhidden", "hide")
+      vim.api.nvim_buf_set_option(notepadBuf, "filetype", "markdown")
+      vim.api.nvim_buf_set_lines(notepadBuf, 0, 1, false,
         { "WARNING: Notepad content will be erased when the current Neovim instance closes" })
     end
     -- Create a window
-    win = vim.api.nvim_open_win(buf, true, {
+    notepadWin = vim.api.nvim_open_win(notepadBuf, true, {
       border = "rounded",
       relative = "editor",
       style = "minimal",
       height = math.ceil(vim.o.lines * 0.5),
       width = math.ceil(vim.o.columns * 0.5),
-      row = 1,                                       --> Top of the window
-      col = math.ceil(vim.o.columns * 0.5),          --> Far right; should add up to 1 with win_width
+      row = 1,                                              --> Top of the window
+      col = math.ceil(vim.o.columns * 0.5),                 --> Far right; should add up to 1 with win_width
     })
-    vim.api.nvim_win_set_option(win, "winblend", 30) --> Semi transparent buffer
+    vim.api.nvim_win_set_option(notepadWin, "winblend", 30) --> Semi transparent buffer
 
     -- Keymaps
-    local keymaps_opts = { silent = true, buffer = buf }
+    local keymaps_opts = { silent = true, buffer = notepadBuf }
     vim.keymap.set('n', "<ESC>", function() launch_notepad() end, keymaps_opts)
     vim.keymap.set('n', "q", function() launch_notepad() end, keymaps_opts)
   else
-    vim.api.nvim_win_hide(win)
+    vim.api.nvim_win_hide(notepadWin)
   end
-  NOTEPAD_LOADED = not NOTEPAD_LOADED
+  vim.g.notepad_loaded = not vim.g.notepad_loaded
 end
 
 vim.api.nvim_create_user_command("Notepad", launch_notepad, { nargs = 0 })
