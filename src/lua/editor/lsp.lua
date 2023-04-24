@@ -90,9 +90,3 @@ require("mason-lspconfig").setup_handlers({
   end,
 })
 -- }}}
-
--- {{{ Disabling LSP semantic highlighting caused after Nvim 0.9
-for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
-  vim.api.nvim_set_hl(0, group, {})
-end
--- }}}
