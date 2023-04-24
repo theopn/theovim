@@ -1,15 +1,19 @@
 # Theovim Information
 
-> Current Version: 2023.04.08
+> Current Version: 2023.04.24
 
 # Changelog
+
+## Version 2023.04.24
+
+- Dashboard bug fix
+- [TEMP] Manual support for semantic highlighting has been added - temporary until the colorscheme officially supports one
 
 ## Version 2023.04.08
 
 - Current working directory in the StatusLine
 - Dashboard revision (code base inspired by NvChad): Better error handling and faster startup
 - Prettier help and changelog window
-- [temporary] LSP semantic highlighting takes over tree-sitter highlighting in Neovim 0.9.0. I disabled it manually for now, but I will come up with a more concrete solution soon
 
 ## Version 2023.03.18
 
