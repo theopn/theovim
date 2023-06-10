@@ -25,7 +25,7 @@ require("tabby.tabline").set(function(line)
       local hl = tab.is_current() and tabby_theme.current_tab or tabby_theme.tab
       return {
         line.sep("", hl, tabby_theme.fill),
-        tab.is_current() and "" or "",
+        tab.is_current() and "" or "󰆣",
         tab.number(),
         tab.name(),
         tab.close_btn(""),

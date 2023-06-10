@@ -126,10 +126,10 @@ local function lsp_status()
     count[k] = #(vim.diagnostic.get(0, { severity = level })) --> 0 for current buf
   end
 
-  local errors = (count["errors"] > 0) and ("  " .. count["errors"]) or ("")
+  local errors = (count["errors"] > 0) and (" 󰅙 " .. count["errors"]) or ("")
   local warnings = (count["warnings"] > 0) and ("  " .. count["warnings"]) or ("")
-  local hints = (count["hints"] > 0) and ("  " .. count["hints"]) or ("")
-  local info = (count["info"] > 0) and ("  " .. count["info"]) or ("")
+  local hints = (count["hints"] > 0) and (" 󰌵 " .. count["hints"]) or ("")
+  local info = (count["info"] > 0) and (" 󰋼 " .. count["info"]) or ("")
 
   return string.format("%s%s%s%s",
     ("%#StatusLineRedAccent#" .. errors), ("%#StatusLineOrangeAccent#" .. warnings),
