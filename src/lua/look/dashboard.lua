@@ -63,7 +63,7 @@ local logo = {
 
 local buttons = {
   { "󰥨  Find File     ", "SPC f f", "Telescope find_files" },
-  { "  Recent Files  ",  "SPC f r", "Telescope oldfiles" },
+  { "󰈙  Recent Files  ", "SPC f r", "Telescope oldfiles" },
   { "  File Browser  ",  "SPC f b", "Telescope file_browser" },
   { "  New File      ",  "       ", "enew" },
   { "  Config Theovim",  "       ", "e ~/.config/nvim/lua/user_config.lua" },
