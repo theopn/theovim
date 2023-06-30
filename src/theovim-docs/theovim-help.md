@@ -17,7 +17,7 @@
 
 ## Insert Mode
 
-- j k                     : ESC + :update (writes to a file if there is a change)
+- j k                     : ESC
 - C-h/j/k/l               : Navigate in insert mode
 - Tab character           : Renders as "▷▷"
 - Trailing space          : Renders as "␣"
@@ -34,7 +34,6 @@
 - [LDR] |                 : Open a vertically split window
 - [LDR] -                 : Open a horizontally split window
 - [LDR] q                 : Close the current split pane
-- [LDR] hjkl              : Navigate around split windows
 - [LDR] arrow_keys        : Resize split windows
 
 ## Visual Mode
