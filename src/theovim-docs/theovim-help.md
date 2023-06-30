@@ -34,6 +34,7 @@
 - [LDR] |                 : Open a vertically split window
 - [LDR] -                 : Open a horizontally split window
 - [LDR] q                 : Close the current split pane
+- [LDR] hjkl              : Navigate around split windows
 - [LDR] arrow_keys        : Resize split windows
 
 ## Visual Mode
