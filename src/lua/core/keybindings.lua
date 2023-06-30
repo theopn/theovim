@@ -49,7 +49,7 @@ end
 local key_opt = {
   -- {{{ Text Edit Keybindings
   -- Insert Mode --
-  { 'i', "jk",              "<ESC><CMD>update<CR>" }, --> "joke", get it? Ha ha
+  { 'i', "jk",              "<ESC>" }, --> "joke", get it? Ha ha
   -- Navigation in insert mode --
   { 'i', "<C-h>",           "<LEFT>" },
   { 'i', "<C-j>",           "<DOWN>" },
@@ -75,10 +75,6 @@ local key_opt = {
   { 'n', "<leader>|",       "<CMD>vsplit<CR><C-w>l" },
   { 'n', "<leader>-",       "<CMD>split<CR><C-w>j" },
   { 'n', "<leader>q",       "<C-w>q" },
-  { 'n', "<leader>h",       "<C-w>h" },
-  { 'n', "<leader>j",       "<C-w>j" },
-  { 'n', "<leader>k",       "<C-w>k" },
-  { 'n', "<leader>l",       "<C-w>l" },
   { 'n', "<leader><LEFT>",  "<C-w>10<" },
   { 'n', "<leader><DOWN>",  "<C-w>5-" },
   { 'n', "<leader><UP>",    "<C-w>5+" },
