@@ -15,23 +15,20 @@ local function create_highlight(group, fg, bg)
   vim.cmd(highlight_cmd)
 end
 
--- For modes
-create_highlight("StatusLineFGAccent", "#93F5F5", nil)
 create_highlight("StatusLineBlueAccent", "#5AB0F6", nil)
 create_highlight("StatusLineRedAccent", "#FAA5A5", nil)
 create_highlight("StatusLineGreenAccent", "#BDF7AD", nil)
 create_highlight("StatusLineYellowAccent", "#F3FFC2", nil)
 create_highlight("StatusLinePurpleAccent", "#D3B3F5", nil)
-create_highlight("StatusLineGreyAccent", "#828B8F", nil)
-
--- For other components
 create_highlight("StatusLineOrangeAccent", "#FFCAA1")
 create_highlight("StatusLineLightGreyAccent", "#B7C2C7")
+create_highlight("StatusLineGreyAccent", "#828B8F", nil)
 
 -- Table for mode names
 local modes = {
   ["n"] = "N",
   ["no"] = "N Operator Pending",
+  ["niI"] = "Insert-N",
   ["v"] = "V",
   ["V"] = "V LINE",
   [""] = "V BLOCK",
@@ -56,25 +53,23 @@ local modes = {
 -- Format the mode
 local function format_mode()
   local current_mode = vim.api.nvim_get_mode().mode
-  return string.format("%s %s %s %s",
-    "", "󰄛", (modes[current_mode] ~= nil) and (modes[current_mode]) or (current_mode), ""):upper()
+  -- return string.format("%s %s %s %s",
+  --   "", "󰄛", (modes[current_mode] ~= nil) and (modes[current_mode]) or (current_mode), ""):upper()
+  return string.format(" %s ",
+    (modes[current_mode] ~= nil) and (modes[current_mode]) or (current_mode), ""):upper()
 end
 
 local function update_mode_colors()
   local current_mode = vim.api.nvim_get_mode().mode
-  local mode_color = "%#StatusLineFGAccent#"
-  if current_mode == "n" or current_mode == "nt" then
-    mode_color = "%#StatuslineBlueAccent#"
-  elseif current_mode == "i" or current_mode == "ic" then
-    mode_color = "%#StatuslineRedAccent#"
+  local mode_color = "%#StatusLineGreyAccent#"
+  if current_mode == "n" then
+    mode_color = "%#StatusLineBlueAccent#"
+  elseif current_mode == "i" then
+    mode_color = "%#StatusLineRedAccent#"
   elseif current_mode == "v" or current_mode == "V" or current_mode == "" then
-    mode_color = "%#StatuslineGreenAccent#"
-  elseif current_mode == "R" then
-    mode_color = "%#StatuslineYellowAccent#"
+    mode_color = "%#StatusLineGreenAccent#"
   elseif current_mode == "c" then
-    mode_color = "%#StatuslinePurpleAccent#"
-  elseif current_mode == "t" then
-    mode_color = "%#StatuslineGreyAccent#"
+    mode_color = "%#StatusLinePurpleAccent#"
   end
   return mode_color
 end
@@ -137,17 +132,18 @@ local function lsp_status()
 end
 
 -- For Theovim's code auto format toggle functionalities
-local function auto_format_status()
+local function linter_status()
   if rawget(vim, "lsp") then
     for _, client in ipairs(vim.lsp.get_active_clients()) do
       if client.attached_buffers[vim.api.nvim_get_current_buf()] and client.server_capabilities.documentFormattingProvider then
         if vim.g.linter_status then --> Global variable for toggling linter, look at ../editor/lsp.lua
-          return " %#StatusLineYellowAccent#󰃢 Linter:  "
+          --return " %#StatusLineYellowAccent#󰃢 Linter:  "
+          return " %#StatusLineYellowAccent#󰃢 Linter: on"
         end
       end
     end
   end
-  return " %#StatusLineRedAccent#󰃢 Linter:  "
+  return " %#StatusLineRedAccent#󰃢 Linter: off"
 end
 
 local function ff_and_enc()
@@ -187,7 +183,7 @@ Statusline.build = function()
     "%#StatusLineBlueAccent# ",
     lsp_server(),
     lsp_status(),
-    auto_format_status(),
+    linter_status(),
     -- File information
     "%#StatusLinePurpleAccent# ",
     "  %Y", --> Same as vim.bo.filetype:upper()
