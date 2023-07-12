@@ -71,6 +71,17 @@ local buttons = {
 }
 -- }}}
 
+-- {{{ Highlights for the DB
+local highlights = {
+  ThVimLogoHl = { fg = "#FFB86C" },
+  ThVimButtonsHl = { fg = "#8BE9FD" },
+  ThVimMsgHl = { fg = "#BD93F9" },
+}
+
+for group, properties in pairs(highlights) do
+  vim.api.nvim_set_hl(0, group, properties)
+end
+-- }}}
 
 -- {{{ Creating a dashboard
 -- Add lines above and below arts
@@ -170,7 +181,7 @@ local function open()
   for i = headerStart + #header - 2, headerStart + #header + #logo - 2 do
     vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimMsgHl", i, horiz_pad_index, -1)
   end
-  for i = headerStart + #header + #logo - 2, headerStart + #header + (#buttons * 2) + 1 do
+  for i = headerStart + #header + #logo - 2, headerStart + #header + #logo - 2 + (#buttons * 2) do
     vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimButtonsHl", i, horiz_pad_index, -1)
   end
 
@@ -239,18 +250,6 @@ local function open()
   vim.opt_local.colorcolumn    = "0"
 
   -----------------
-end
--- }}}
-
--- {{{ Highlights for the DB
-local highlights = {
-  ThVimLogoHl = { fg = "#FFB86C" },
-  ThVimButtonsHl = { fg = "#8BE9FD" },
-  ThVimMsgHl = { fg = "#BD93F9" },
-}
-
-for group, properties in pairs(highlights) do
-  vim.api.nvim_set_hl(0, group, properties)
 end
 -- }}}
 
