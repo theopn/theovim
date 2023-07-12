@@ -58,20 +58,12 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- {{{ Terminal related autocmd
 local terminal_augroup = vim.api.nvim_create_augroup("Terminal", { clear = true })
 
--- Insert mode when terminal is open
+-- Switch to insert mode when terminal is open
 vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
-  -- TermOpen for when terminal is opened for the first time
-  -- BufEnter when you navigate to an existing terminal buffer
-  -- Some people use "BufWinEnter" and "WinEnter", but I seem to have no luck
-  pattern = "term://*", --> TermOpen does not take a pattern value, but since it's a Lua table, it's ignored
-  callback = function() vim.cmd("startinsert") end
-})
-
--- Automatically close the terminal when exit
--- TODO: Translate the following to Lua
--- autocmd TermClose * if !v:event.status | exe 'bdelete! '..expand('<abuf>') | endif
-vim.api.nvim_create_autocmd("TermClose", {
+  -- TermOpen: for when terminal is opened for the first time
+  -- BufEnter: when you navigate to an existing terminal buffer
   group = terminal_augroup,
-  callback = function() vim.api.nvim_input("<CR>") end
+  pattern = "term://*", --> only for "BufEnter", ignored Lua table key when evaluating TermOpen
+  callback = function() vim.cmd("startinsert") end
 })
 -- }}}
