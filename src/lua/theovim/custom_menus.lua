@@ -74,9 +74,9 @@ THEOVIM_TELESCOPE_MENU = create_selectable_menu("Telescope option to launch:", t
 
 -- {{{ Git menu
 local git_options = {
-  ["1. Diff Current Buffer"] = "Git diffthis",
-  ["2. Git Commits"] = "Telescope git_commits",
-  ["3. Git Status"] = "Telescope git_status"
+  ["0. Diff Current Buffer"] = "Git diffthis",
+  ["1. Git Commits"] = "Telescope git_commits",
+  ["2. Git Status"] = "Telescope git_status"
 }
 THEOVIM_GIT_MENU = create_selectable_menu("Git functionality to use:", git_options)
 -- }}}
