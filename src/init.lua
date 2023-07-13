@@ -21,10 +21,8 @@ Cat: https://www.asciiart.eu/animals/cats
 -- Remove a hyphen before brackets to disable a module
 
 ---[[ Core
-require("core.base_config")
-require("core.keybindings")
-require("core.autocmds")
-require("core.plugins")
+require("core")
+require("plugins")
 --]]
 
 ---[[ Look

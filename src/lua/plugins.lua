@@ -15,7 +15,13 @@ local plugins = {
   -- }}}
 
   -- {{{ Look and feel
-  { "theopn/pastelcula.nvim" },                                  --> Colorscheme
+  { "theopn/pastelcula.nvim" }, --> Colorscheme
+  {
+    "folke/tokyonight.nvim",
+    config = function()
+      vim.cmd [[colorscheme tokyonight-moon]]
+    end
+  },
   { "nanozuki/tabby.nvim" },                                     --> Improving Vim's built-in tab system
   {
     "rcarriga/nvim-notify",                                      --> Prettier notification
