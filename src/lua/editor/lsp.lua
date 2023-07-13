@@ -9,6 +9,8 @@
 --]]
 --
 
+local util = require("theovim_util")
+
 -- List of LSP server used later
 -- Always check the memory usage of each language server. :LSpInfo to identify LSP server and use "sudo lsof -p PID" to check for associated files
 -- Blacklist: ltex-ls (java process running in the bg for each instance of markdown files)
@@ -89,4 +91,24 @@ require("mason-lspconfig").setup_handlers({
     })
   end,
 })
+-- }}}
+
+-- {{{ Custom LSP menu
+local lsp_options = {
+  ["1. Code Action"] = function() vim.lsp.buf.code_action() end,
+  ["2. References"] = function() vim.lsp.buf.references() end,
+  ["3. Current Buffer Diagonostics"] = function() vim.diagnostic.open_float(0, { scope = "buffer", border = "rounded" }) end,
+  --["4. Outline"] = "Lspsaga outline",
+  ["5. Hover Doc"] = function() vim.lsp.buf.hover() end, -- LSPSaga version requires Markdown treesitter
+  ["6. Rename Variable"] = function() vim.lsp.buf.rename() end,
+  ["7. Linter (Code Auto Format) Toggle"] = "LinterToggle",
+}
+local lsp_menu = function()
+  if #(vim.lsp.get_active_clients({ bufnr = 0 })) == 0 then
+    vim.notify("There is no LSP server attached to the current buffer")
+  else
+    util.create_select_menu("Code action to perform at the current cursor", lsp_options)() --> Extra paren to execute!
+  end
+end
+vim.keymap.set('n', "<leader>ca", lsp_menu, { noremap = true, silent = true })
 -- }}}

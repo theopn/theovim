@@ -8,6 +8,8 @@
 --]]
 --
 
+local util = require("theovim_util")
+
 require("telescope").setup({
   defaults = {
     mappings = {
@@ -20,3 +22,15 @@ require("telescope").setup({
   extensions = { file_browser = { hidden = true } },
 })
 require("telescope").load_extension("file_browser")
+
+-- {{{ Custom Telescope menu
+local telescope_options = {
+  ["1. Search History"] = "Telescope search_history",
+  ["2. Command History"] = "Telescope command_history",
+  ["3. Commands"] = "Telescope commands",
+  ["4. Help Tags"] = "Telescope help_tags",
+  ["5. Colorscheme"] = "Telescope colorscheme"
+}
+local telescope_menu = util.create_select_menu("Telescope option to launch:", telescope_options)
+vim.keymap.set('n', "<leader>fa", telescope_menu, { noremap = true, silent = true })
+-- }}}

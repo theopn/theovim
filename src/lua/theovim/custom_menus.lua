@@ -9,36 +9,6 @@
 
 local util = require("theovim_util")
 
--- {{{ LSP menu
-local lsp_options = {
-  ["1. Code Action"] = "Lspsaga code_action",
-  ["2. References"] = function() vim.lsp.buf.references() end,
-  ["3. Current Buffer Diagonostics"] = function() vim.diagnostic.open_float(0, { scope = "buffer", border = "rounded" }) end,
-  ["4. Outline"] = "Lspsaga outline",
-  ["5. Hover Doc"] = function() vim.lsp.buf.hover() end, -- LSPSaga version requires Markdown treesitter
-  ["6. Rename Variable"] = "Lspsaga rename",
-  ["7. Linter (Code Auto Format) Toggle"] = "LinterToggle",
-}
-THEOVIM_LSP_MENU = function()
-  if #(vim.lsp.get_active_clients({ bufnr = 0 })) == 0 then
-    vim.notify("There is no LSP server attached to the current buffer")
-  else
-    util.create_select_menu("Code action to perform at the current cursor", lsp_options)() --> Extra paren to execute!
-  end
-end
--- }}}
-
--- {{{ Telescope menu
-local telescope_options = {
-  ["1. Search History"] = "Telescope search_history",
-  ["2. Command History"] = "Telescope command_history",
-  ["3. Commands"] = "Telescope commands",
-  ["4. Help Tags"] = "Telescope help_tags",
-  ["5. Colorscheme"] = "Telescope colorscheme"
-}
-THEOVIM_TELESCOPE_MENU = util.create_select_menu("Telescope option to launch:", telescope_options)
--- }}}
-
 -- {{{ Git menu
 local git_options = {
   ["0. Diff Current Buffer"] = "Git diffthis",
