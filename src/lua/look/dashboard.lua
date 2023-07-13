@@ -33,14 +33,14 @@ local olivers = {
     "  (((^_(((/___(((_/   "
   },
   {
-    "     \\/       \\/     ",
-    "     /\\_______/\\     ",
-    "    /   o   o   \\    ",
-    "   (  ==  ^  ==  )   ",
-    "    )           (    ",
-    "   (             )   ",
-    "   ( (  )   (  ) )   ",
-    "  (__(__)___(__)__)  "
+    [[     \/       \/     ]],
+    [[     /\_______/\     ]],
+    [[    /   o   o   \    ]],
+    [[   (  ==  ^  ==  )   ]],
+    [[    )           (    ]],
+    [[   (             )   ]],
+    [[   ( (  )   (  ) )   ]],
+    [[  (__(__)___(__)__)  ]],
   },
   {
     "                         _    ",
@@ -50,7 +50,8 @@ local olivers = {
     "      '---''(_/--'  `-'\\_)    "
   },
 }
-local header = olivers[math.random(#olivers)]
+--local header = olivers[math.random(#olivers)]
+local header = olivers[5]
 
 -- figlet -f small theovim
 local logo = {
@@ -107,6 +108,10 @@ local function open()
     vim.notify("Window height is too small to launch the dashboard :(")
     return
   end
+
+  -- The default empty buffer will go away when the new Dashboard buffer replaces it
+  -- Instead of 0, vim.api.nvim_get_current_buf() could be used. However, because it's slow, the window flickers
+  vim.api.nvim_buf_set_option(0, "bufhidden", "wipe")
 
   -- Create a new buffer
   local buf = vim.api.nvim_create_buf(false, true)
