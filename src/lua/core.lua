@@ -191,66 +191,66 @@ end
 local key_opt = {
   -- {{{ Text Edit Keybindings
   -- Insert Mode --
-  { 'i', "jk",            "<ESC>" },                                                                                  --> "joke", get it? Ha ha
+  { 'i', "jk",              "<ESC>" },                                                                                           --> "joke", get it? Ha ha
   -- Normal Mode --
-  { 'n', "<leader>/",     "<CMD>let @/=''<CR>",                                                         "Clear last search" }, --> @/ is the macro for the last search
-  { 'n', "<leader>a",     "gg<S-v>G",                                                                   "Select [a]ll" },
+  { 'n', "<leader>/",       "<CMD>let @/=''<CR>",                                                         "Clear last search" }, --> @/ is the macro for the last search
+  { 'n', "<leader>a",       "gg<S-v>G",                                                                   "Select [a]ll" },
   -- Search auto center --
-  { 'n', "n",             "nzz" },
-  { 'n', "N",             "Nzz" },
+  { 'n', "n",               "nzz" },
+  { 'n', "N",               "Nzz" },
   -- Copy and paste --
-  { 'v', "<leader>y",     '"+y',                                                                        "[y}ank to the system clipboard (+" },
-  { 'n', "<leader>p",     "<CMD>Telescope registers<CR>" }, --> Use ":reg" w/o PLUGIN
+  { 'x', "<leader>y",       '"+y',                                                                        "[y}ank to the system clipboard (+" },
+  { 'n', "<leader>p",       "<CMD>Telescope registers<CR>" }, --> Use ":reg" w/o PLUGIN
   -- First, [d]elete the selection without pasting (pasting to the void reg _) then [p]aste the reg content
-  { 'x', "<leader>p",     '"_dp',                                                                       "[p]aste the current selection without overriding the reg" },
+  { 'x', "<leader>p",       '"_dp',                                                                       "[p]aste the current selection without overriding the reg" },
   -- Terminal Mode --
-  { 't', "<ESC>",         "<C-\\><C-n>",                                                                "[ESC] for terminal" },
+  { 't', "<ESC>",           "<C-\\><C-n>",                                                                "[ESC] for terminal" },
   -- Spell check --
-  { 'i', "<C-s>",         "<C-g>u<ESC>[s1z=`]a<C-g>u",                                                  "Fix nearest [s]pelling error and put the cursor back" },
-  { 'n', "<C-s>",         "z=",                                                                         "Toggle [s]pell suggestion window" },
-  { 'n', "<leader>st",    "<CMD>set spell!<CR>",                                                        "[s]pell check [t]oggle" },
+  { 'i', "<C-s>",           "<C-g>u<ESC>[s1z=`]a<C-g>u",                                                  "Fix nearest [s]pelling error and put the cursor back" },
+  { 'n', "<C-s>",           "z=",                                                                         "Toggle [s]pell suggestion window" },
+  { 'n', "<leader>st",      "<CMD>set spell!<CR>",                                                        "[s]pell check [t]oggle" },
   -- Split window --
-  { 'n', "<leader>|",     "<CMD>vsplit<CR><C-w>l",                                                      "[|] Create a vertical split window" },
-  { 'n', "<leader>-",     "<CMD>split<CR><C-w>j",                                                       "[-] Create a horizontal split window" },
-  { 'n', "<leader>q",     "<C-w>q",                                                                     "[q]uit the current window" },
-  { 'n', "<leader>h",     "<C-w>h" },
-  { 'n', "<leader>j",     "<C-w>j" },
-  { 'n', "<leader>k",     "<C-w>k" },
-  { 'n', "<leader>l",     "<C-w>l" },
-  { 'n', "<leader><C-h>", "<C-w>10<" },
-  { 'n', "<leader><C-j>", "<C-w>5-" },
-  { 'n', "<leader><C-k>", "<C-w>5+" },
-  { 'n', "<leader><C-l>", "<C-w>10>" },
+  { 'n', "<leader>|",       "<CMD>vsplit<CR><C-w>l",                                                      "[|] Create a vertical split window" },
+  { 'n', "<leader>-",       "<CMD>split<CR><C-w>j",                                                       "[-] Create a horizontal split window" },
+  { 'n', "<leader>q",       "<C-w>q",                                                                     "[q]uit the current window" },
+  { 'n', "<leader>h",       "<C-w>h" },
+  { 'n', "<leader>j",       "<C-w>j" },
+  { 'n', "<leader>k",       "<C-w>k" },
+  { 'n', "<leader>l",       "<C-w>l" },
+  { 'n', "<leader><LEFT>",  "<C-w>10<" },
+  { 'n', "<leader><DOWN>",  "<C-w>5-" },
+  { 'n', "<leader><UP>",    "<C-w>5+" },
+  { 'n', "<leader><RIGHT>", "<C-w>10>" },
   -- Tab --
-  { 'n', "<leader>n",     function() buffer_selector("Creating a new tab...", "tab sb ") end },                   --> ":ls<CR>:echo ...<CR>:tab sb<SPACE> w/o custom func
-  { 'n', "<leader>1",     "1gt" },                                                                                --> Go to 1st tab
-  { 'n', "<leader>2",     "2gt" },                                                                                --> ^
-  { 'n', "<leader>3",     "3gt" },                                                                                --> ^
-  { 'n', "<leader>4",     "4gt" },                                                                                --> ^
+  { 'n', "<leader>n",       function() buffer_selector("Creating a new tab...", "tab sb ") end },                            --> ":ls<CR>:echo ...<CR>:tab sb<SPACE> w/o custom func
+  { 'n', "<leader>1",       "1gt" },                                                                                         --> Go to 1st tab
+  { 'n', "<leader>2",       "2gt" },                                                                                         --> ^
+  { 'n', "<leader>3",       "3gt" },                                                                                         --> ^
+  { 'n', "<leader>4",       "4gt" },                                                                                         --> ^
   -- Buffer --
-  { 'n', "<leader>b",     "<CMD>Telescope buffers<CR>",                                                 "[b]uffer list" }, --> ":ls<CR>:b<SPACE>" W/O PLUGIN
-  { 'n', "<leader>,",     "<CMD>bprevious<CR>",                                                         "([<]) prev buffer" },
-  { 'n', "<leader>.",     "<CMD>bnext<CR>",                                                             "([>]) next buffer" },
-  { 'n', "<leader>x",     function() buffer_selector("Deleting a buffer...", "bdelete ") end }, --> ":ls<CR>:echo ...<CR>:bdelete<SPACE> w/o custom func
+  { 'n', "<leader>b",       "<CMD>Telescope buffers<CR>",                                                 "[b]uffer list" }, --> ":ls<CR>:b<SPACE>" W/O PLUGIN
+  { 'n', "<leader>[",       "<CMD>bprevious<CR>",                                                         "[[] prev buffer" },
+  { 'n', "<leader>]",       "<CMD>bnext<CR>",                                                             "[]] next buffer" },
+  { 'n', "<leader>x",       function() buffer_selector("Deleting a buffer...", "bdelete ") end }, --> ":ls<CR>:echo ...<CR>:bdelete<SPACE> w/o custom func
   -- }}}
 
   -- {{{ Plugin/Feature Specific Keybindings
-  { 'n', "<leader>?",     "<CMD>Telescope keymaps<CR>" },           --> Bring up finder for keymaps
-  { 'n', "<leader>t",     "<CMD>NvimTreeToggle<CR>" },              --> Tree toggle
+  { 'n', "<leader>?",       "<CMD>Telescope keymaps<CR>" },           --> Bring up finder for keymaps
+  { 'n', "<leader>t",       "<CMD>NvimTreeToggle<CR>" },              --> Tree toggle
   -- Custom menus --
-  { 'n', "<leader>g",     function() THEOVIM_GIT_MENU() end },      --> Git related features
-  { 'n', "<leader>m",     function() THEOVIM_MISC_MENU() end },     --> All the other features
-  { 'n', "<leader>z",     function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
+  { 'n', "<leader>g",       function() THEOVIM_GIT_MENU() end },      --> Git related features
+  { 'n', "<leader>m",       function() THEOVIM_MISC_MENU() end },     --> All the other features
+  { 'n', "<leader>z",       function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
   -- Telescope --
-  { 'n', "<leader>ca",    function() vim.notify("This keybinding requires fuzzy_finder.lua moduke") end },
-  { 'n', "<leader>ff",    "<CMD>Telescope find_files<CR>" },
-  { 'n', "<leader>fr",    "<CMD>Telescope oldfiles<CR>" },
-  { 'n', "<leader>fb",    "<CMD>Telescope file_browser<CR>" },
-  { 'n', "<leader>f/",    "<CMD>Telescope current_buffer_fuzzy_find<CR>" },
+  { 'n', "<leader>ca",      function() vim.notify("This keybinding requires fuzzy_finder.lua moduke") end },
+  { 'n', "<leader>ff",      "<CMD>Telescope find_files<CR>" },
+  { 'n', "<leader>fr",      "<CMD>Telescope oldfiles<CR>" },
+  { 'n', "<leader>fb",      "<CMD>Telescope file_browser<CR>" },
+  { 'n', "<leader>f/",      "<CMD>Telescope current_buffer_fuzzy_find<CR>" },
   -- LSP --
-  { 'n', "<leader>ca",    function() vim.notify("This keybinding requires lsp.lua moduke") end },
-  { 'n', "<leader>cd",    function() vim.lsp.buf.hover() end },                                        --> LSPSage requires markdown treesitter
-  { 'n', "<leader>cr",    function() vim.lsp.buf.rename() end,                                          "hi" }, --> vim.lsp.buf.rename()
+  { 'n', "<leader>ca",      function() vim.notify("This keybinding requires lsp.lua moduke") end },
+  { 'n', "<leader>cd",      function() vim.lsp.buf.hover() end },                                                 --> LSPSage requires markdown treesitter
+  { 'n', "<leader>cr",      function() vim.lsp.buf.rename() end,                                          "hi" }, --> vim.lsp.buf.rename()
   -- }}}
 }
 -- }}}
