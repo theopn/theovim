@@ -18,7 +18,6 @@
 ## Insert Mode
 
 - j k                     : ESC
-- C-h/j/k/l               : Navigate in insert mode
 - Tab character           : Renders as "▷▷"
 - Trailing space          : Renders as "␣"
 - Non-breaking space      : Renders as "⍽"
@@ -33,14 +32,15 @@
 
 - [LDR] |                 : Open a vertically split window
 - [LDR] -                 : Open a horizontally split window
-- [LDR] q                 : Close the current split pane
-- [LDR] hjkl              : Navigate around split windows
-- [LDR] arrow_keys        : Resize split windows
+- [LDR] q                 : Close the current window
+- [LDR] hjkl              : Navigate split windows
+- [LDR] <ARROW>           : Resize split windows
 
 ## Visual Mode
 
 - [LDR] y                 : Copy to '+' clipboard (should work for both MacOS and Linux with X11 window server)
-- [LDR] p                 : Open a list of contents from available registers
+- [LDR] p                 : In normal mode, open a list of contents from available registers
+                            In visual mode, paste a selection without overriding the register
 - :'<,'>CommentToggle     : Comment the selected lines
 
 ## Buffer and Tab Navigation
@@ -48,12 +48,12 @@
 > I recommend you to read the "Tab v.s. Buffer" section in `:TheovimVanillaVimHelp`
 
 - [LDR] [b]uffer          : Open a list of buffers
-- [LDR] , ("<")           : Navigate to the previous buffer
-- [LDR] . (">")           : Navigate to the next buffer
+- [LDR] [                 : Navigate to the previous buffer
+- [LDR] ]                 : Navigate to the next buffer
 - [LDR] x                 : Kill the current or selected buffer
 
 - [LDR] [n]ew             : Open a new tab with the current of the selected buffer
-- [LDR] 1-9               : Select a tab
+- [LDR] 1-4               : Select a tab
 
 ## Telescope
 
