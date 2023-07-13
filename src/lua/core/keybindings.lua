@@ -113,8 +113,8 @@ local key_opt = {
   { 'n', "<leader>f/",      "<CMD>Telescope current_buffer_fuzzy_find<CR>" },
   -- LSP --
   { 'n', "<leader>ca",      function() THEOVIM_LSP_MENU() end },
-  { 'n', "<leader>cd",      function() vim.lsp.buf.hover() end },                                      --> LSPSage requires markdown treesitter
-  { 'n', "<leader>cr",      function() require("lspsaga.rename"):lsp_rename() end,             "hi" }, --> vim.lsp.buf.rename()
+  { 'n', "<leader>cd",      function() vim.lsp.buf.hover() end },                    --> LSPSage requires markdown treesitter
+  { 'n', "<leader>cr",      function() vim.lsp.buf.rename() end,                               "hi" }, --> vim.lsp.buf.rename()
   -- }}}
 }
 -- }}}
