@@ -1,16 +1,40 @@
 --[[ theovim_util.lua
+-- $ figlet -f stampatello theovim
+-- .  .
+-- |- |-. ,-. ,-. .  , . ,-,-.
+-- |  | | |-' | | | /  | | | |
+-- `' ' ' `-' `-' `'   ' ' ' '
+--
 -- Collection of helper functions used by Theovim
+
+
+-- $ figlet -f slant theovim
+--    __  __                    _
+--   / /_/ /_  ___  ____ _   __(_)___ ___
+--  / __/ __ \/ _ \/ __ \ | / / / __ `__ \
+-- / /_/ / / /  __/ /_/ / |/ / / / / / / /
+-- \__/_/ /_/\___/\____/|___/_/_/ /_/ /_/
+
+
+
+-- $ figlet -f fuzzy theovim
+--  .-. .-.                      _
+-- .' `.: :                     :_;
+-- `. .': `-.  .--.  .--. .-..-..-.,-.,-.,-.
+--  : : : .. :' '_.'' .; :: `; :: :: ,. ,. :
+--  :_; :_;:_;`.__.'`.__.'`.__.':_;:_;:_;:_;
+--
 --]]
 local M = {}
 
---[[
+--[[ create_select_menu()
 -- Create a menu to execute a Vim command or Lua function using vim.ui.select()
 -- Example usage:
 -- local options = {
 --   [1. Onedark ] = "colo onedark"
 --   [2. Tokyonight ] = function() vim.cmd("colo tokyonight") end
 -- }
--- create_selectable_menu("Choose a colorscheme", options)
+-- create_select_menu("Choose a colorscheme", options)
 --
 -- @arg prompt: the prompt to display
 -- @arg options_table: Table of the form { [1. Display name] = lua-function/vim-cmd, ... }

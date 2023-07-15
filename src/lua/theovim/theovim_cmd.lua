@@ -7,7 +7,7 @@
 --]]
 --
 
-local util = require("theovim_util")
+local util = require("util")
 
 --[[ Notes on different exec commands
 -- vim.api.nvim_cmd(command):
