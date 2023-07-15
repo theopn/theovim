@@ -1,12 +1,13 @@
---[[
-" figlet -f rectangles theovim-plugin
-"  _   _               _               _         _
-" | |_| |_ ___ ___ _ _|_|_____ ___ ___| |_ _ ___|_|___
-" |  _|   | -_| . | | | |     |___| . | | | | . | |   |
-" |_| |_|_|___|___|\_/|_|_|_|_|   |  _|_|___|_  |_|_|_|
-"                                 |_|       |___|
---]]
+--[[ plugins.lua
+-- $ figlet -f rectangles theovim
+--  _   _               _
+-- | |_| |_ ___ ___ _ _|_|_____
+-- |  _|   | -_| . | | | |     |
+-- |_| |_|_|___|___|\_/|_|_|_|_|
 --
+-- Downloading and initializing plugins using Lazy plugin manager
+--]]
+
 -- {{{ Plugin list
 local plugins = {
   -- {{{ Dependencies
@@ -15,14 +16,20 @@ local plugins = {
   -- }}}
 
   -- {{{ Look and feel
-  { "theopn/pastelcula.nvim" }, --> Colorscheme
   {
-    "folke/tokyonight.nvim",
+    "folke/tokyonight.nvim", --> colorscheme
     config = function()
-      vim.cmd [[colorscheme tokyonight-moon]]
+      vim.cmd("colorscheme tokyonight-moon")
     end
   },
-  { "nanozuki/tabby.nvim" },                                     --> Improving Vim's built-in tab system
+  {
+    "akinsho/bufferline.nvim", --> Vim's built-in "tab" is more like desktop workspace in tiling WM. Let's fix that
+    version = "*",
+    dependencies = "nvim-tree/nvim-web-devicons",
+    config = function()
+      require("bufferline").setup()
+    end
+  },
   {
     "rcarriga/nvim-notify",                                      --> Prettier notification
     config = function()
