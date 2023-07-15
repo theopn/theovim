@@ -8,7 +8,7 @@
 --]]
 --
 
-local util = require("theovim_util")
+local util = require("util")
 
 require("telescope").setup({
   defaults = {

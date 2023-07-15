@@ -7,7 +7,7 @@
 --]]
 --
 
-local util = require("theovim_util")
+local util = require("util")
 
 -- {{{ Git menu
 local git_options = {

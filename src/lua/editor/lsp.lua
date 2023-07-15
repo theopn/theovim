@@ -9,7 +9,7 @@
 --]]
 --
 
-local util = require("theovim_util")
+local util = require("util")
 
 -- List of LSP server used later
 -- Always check the memory usage of each language server. :LSpInfo to identify LSP server and use "sudo lsof -p PID" to check for associated files
