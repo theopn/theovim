@@ -26,9 +26,7 @@ require("plugins")
 --]]
 
 ---[[ Look
-require("look.colorscheme")
 require("look.statusline")
-require("look.tabline")
 require("look.dashboard")
 --]]
 
