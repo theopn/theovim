@@ -81,6 +81,7 @@ table.insert(header, 1, emptyLine)
 header[#header + 1] = emptyLine
 logo[#logo + 1] = emptyLine
 
+local max_width = #buttons[1][1] + #buttons[1][2] + #buttons[1][3] + 1
 -- max height = empty line + #header + #logo + #buttons + empty lines after each button + empty line + 1 safety net
 local max_height = 1 + #header + #logo + (#buttons * 2) + 1 + 1
 -- }}}
@@ -108,6 +109,8 @@ end
 -- 0 will be used instead of nvim_get_current_buf() or nvim_get_current_win() unless win/buf handle needs to be saved
 --]]
 local render = function()
+  local win_width = vim.o.columns --> or vim.api.nvim_win_get_width(0)
+  local win_height = vim.api.nvim_win_get_height(0)
   -----------------------------------
   -- Condition check --
 
@@ -115,8 +118,8 @@ local render = function()
   if vim.api.nvim_buf_get_name(0) ~= "" then return end --> or use vim.fn.expand("%")
 
   -- Check if window is too small to launch
-  if vim.api.nvim_win_get_height(0) < max_height then
-    vim.notify("The window is too small to launch the dashboard :(")
+  if win_height < max_height or win_width < max_width then
+    vim.notify("Window is too small to launch the dashboard on :(")
     return
   end
 
@@ -137,7 +140,7 @@ local render = function()
   local dashboard = {}
   -- add padding to the header
   local addPaddingToHeader = function(str)
-    local pad = (vim.api.nvim_win_get_width(0) - vim.fn.strwidth(str)) / 2
+    local pad = (win_width - vim.fn.strwidth(str)) / 2
     return string.rep(" ", math.floor(pad)) .. str .. " "
   end
 
@@ -165,12 +168,12 @@ local render = function()
   -- Setting the dashboard --
 
   local result = {}
-  for i = 1, vim.api.nvim_win_get_height(0) do
+  for i = 1, win_height do
     result[i] = ""
   end
 
-  local headerStartButActlyForHeader = math.floor((vim.api.nvim_win_get_height(0) / 2) - (#dashboard / 2) - 1)
-  local headerStart = math.floor((vim.api.nvim_win_get_height(0) / 2) - (#dashboard / 2) - 1)
+  local headerStartButActlyForHeader = math.floor((win_height / 2) - (#dashboard / 2) - 1)
+  local headerStart = math.floor((win_height / 2) - (#dashboard / 2) - 1)
 
   -- adding the dashboard
   for _, val in ipairs(dashboard) do
@@ -182,7 +185,8 @@ local render = function()
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, result)
 
   -- setting the cursor. 15 is my best guess on where the first char of the button would be at
-  vim.api.nvim_win_set_cursor(0, { headerStart + #header + #logo, math.floor(vim.o.columns / 2) - 15 })
+  local cursor_column_idx = math.floor(win_width / 2) - 15
+  vim.api.nvim_win_set_cursor(0, { headerStart + #header + #logo, cursor_column_idx })
 
   ---------------------------
   -- Setting highlihgts --
@@ -220,13 +224,13 @@ local render = function()
     local curr = vim.fn.line(".") -- Current line
     -- Check if the current line number - 2 is button or move to the last element
     local target_line = vim.tbl_contains(btnsLineNums, curr - 2) and curr - 2 or btnsLineNums[#btnsLineNums]
-    vim.api.nvim_win_set_cursor(0, { target_line, math.floor(vim.o.columns / 2) - 15 })
+    vim.api.nvim_win_set_cursor(0, { target_line, cursor_column_idx })
   end
   local downMvmt = function()
     local curr = vim.fn.line(".") -- Current line
     -- Check if the current line number + 2 is button or move to the first element
     local target_line = vim.tbl_contains(btnsLineNums, curr + 2) and curr + 2 or btnsLineNums[1]
-    vim.api.nvim_win_set_cursor(0, { target_line, math.floor(vim.o.columns / 2) - 15 })
+    vim.api.nvim_win_set_cursor(0, { target_line, cursor_column_idx })
   end
   vim.keymap.set("n", "h", "", { buffer = true })
   vim.keymap.set("n", "j", downMvmt, { buffer = true })
