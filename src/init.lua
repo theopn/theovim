@@ -15,20 +15,14 @@ Cat: https://www.asciiart.eu/animals/cats
   | | |(/_(_)\_/ | |||
 
 --]]
---
 
--- Lua configs in ~/.config/nvim/lua
--- Remove a hyphen before brackets to disable a module
-
----[[ Core
+-- Core config modules
 require("core")
 require("plugins")
---]]
 
----[[ Look
-require("look.statusline")
+-- UI
+require("ui.statusline").setup()
 require("look.dashboard")
---]]
 
 ---[[ Editor
 require("editor.tree_sitter")
