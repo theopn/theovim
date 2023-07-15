@@ -1,14 +1,20 @@
---[[
-" figlet -f stampatello theovim-look
-" .  .                           .          .
-" |- |-. ,-. ,-. .  , . ,-,-.    |  ,-. ,-. | ,
-" |  | | |-' | | | /  | | | | -- |  | | | | |<
-" `' ' ' `-' `-' `'   ' ' ' '    `' `-' `-' ' `
---]]
+--[[ dashboard.lua
+-- $ figlet -f doom theovim
+--  _   _                     _
+-- | | | |                   (_)
+-- | |_| |__   ___  _____   ___ _ __ ___
+-- | __| '_ \ / _ \/ _ \ \ / / | '_ ` _ \
+-- | |_| | | |  __/ (_) \ V /| | | | | | |
+--  \__|_| |_|\___|\___/ \_/ |_|_| |_| |_|
 --
+-- Provide a framework to open a dashboard on the Neovim startup when there is no buffer opened (only the empty buf)
+--]]
+Dashboard = {}
 
 -- {{{ Variables
+-- ASCII arts of
 -- Mostly from: https://www.asciiart.eu/animals/cats
+-- Make sure the length of each string is consistent, since the
 local olivers = {
   {
     [[     \/   \/          ]],
@@ -65,60 +71,67 @@ local buttons = {
   { "󰥨  Find File     ", "SPC f f", "Telescope find_files" },
   { "󰈙  Recent Files  ", "SPC f r", "Telescope oldfiles" },
   { "  File Browser  ",  "SPC f b", "Telescope file_browser" },
-  { "  New File      ",  "       ", "enew" },
   { "  Config Theovim",  "       ", "e ~/.config/nvim/lua/user_config.lua" },
   { "  Exit Theovim  ",  "     ZZ", "quit" },
 }
--- }}}
 
--- {{{ Highlights for the DB
-local highlights = {
-  ThVimLogoHl = { fg = "#FFB86C" },
-  ThVimButtonsHl = { fg = "#8BE9FD" },
-  ThVimMsgHl = { fg = "#BD93F9" },
-}
-
-for group, properties in pairs(highlights) do
-  vim.api.nvim_set_hl(0, group, properties)
-end
--- }}}
-
--- {{{ Creating a dashboard
--- Add lines above and below arts
+-- Append empty lines to
 local emptyLine = string.rep(" ", vim.fn.strwidth(header[1]))
 table.insert(header, 1, emptyLine)
 header[#header + 1] = emptyLine
 logo[#logo + 1] = emptyLine
 
-local width = #header[1] + 3
-local max_height = #header + 2 + #logo + 1 + (#buttons * 2) + 1 + 1 -- Numbers are paddings + one extra safety net
+-- max height = empty line + #header + #logo + #buttons + empty lines after each button + empty line + 1 safety net
+local max_height = 1 + #header + #logo + (#buttons * 2) + 1 + 1
+-- }}}
 
--- Function to create a new dashboard on a startup
+
+--[[ create_highlights()
+-- Create highlights for dashboard using vim.api.nvim_set_hl()
+--]]
+local create_highlights = function()
+  local highlights = {
+    ThVimLogoHl = { fg = "#FFB86C" },
+    ThVimButtonsHl = { fg = "#8BE9FD" },
+    ThVimMsgHl = { fg = "#BD93F9" },
+  }
+  for group, properties in pairs(highlights) do
+    vim.api.nvim_set_hl(0, group, properties)
+  end
+end
+-- }}}
+
+--[[ open()
+-- When the buffer does not have a name, replace the buffer with the formated Dashboard contents
 -- Inspired from: https://github.com/chadcat7/kodo/blob/main/lua/ui/dash/init.lua
 --                https://github.com/NvChad/ui/blob/dev/lua/nvchad_ui/nvdash/init.lua
-local function open()
-  -- Condition check and table init --
+-- 0 will be used instead of nvim_get_current_buf() or nvim_get_current_win() unless win/buf handle needs to be saved
+--]]
+local render = function()
+  -----------------------------------
+  -- Condition check --
 
   -- Expands the current file name and see if it's empty
-  if vim.fn.expand("%") ~= "" then return end
+  if vim.api.nvim_buf_get_name(0) ~= "" then return end --> or use vim.fn.expand("%")
 
   -- Check if window is too small to launch
   if vim.api.nvim_win_get_height(0) < max_height then
-    vim.notify("Window height is too small to launch the dashboard :(")
+    vim.notify("The window is too small to launch the dashboard :(")
     return
   end
 
   -- The default empty buffer will go away when the new Dashboard buffer replaces it
-  -- Instead of 0, vim.api.nvim_get_current_buf() could be used. However, because it's slow, the window flickers
   vim.api.nvim_buf_set_option(0, "bufhidden", "wipe")
 
   -- Create a new buffer
-  local buf = vim.api.nvim_create_buf(false, true)
-  vim.api.nvim_win_set_buf(vim.api.nvim_get_current_win(), buf)
+  -- I could modify the current buffer, but if it's not a scratch buffer, it will be treated as writing to it
+  -- This causes two problems: 1. indentation guide plugin will be active
+  --                           2. when exiting, it will be treated as unsaved and will casue an error or prompt user
+  local buf = vim.api.nvim_create_buf(false, true) --> listed false, scratchbuffer true
+  vim.api.nvim_win_set_buf(0, buf)
 
   -----------------------------------
-
-  -- Init the table --
+  -- Init the DB contents--
 
   -- Table for the contents
   local dashboard = {}
@@ -149,7 +162,6 @@ local function open()
   table.remove(dashboard, #dashboard)                          -- Remove the extra new line padding from the buttons
 
   --------------------
-
   -- Setting the dashboard --
 
   local result = {}
@@ -169,28 +181,29 @@ local function open()
   -- setting the dasboard
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, result)
 
-  -- setting the cursor
+  -- setting the cursor. 15 is my best guess on where the first char of the button would be at
   vim.api.nvim_win_set_cursor(0, { headerStart + #header + #logo, math.floor(vim.o.columns / 2) - 15 })
 
   ---------------------------
-
   -- Setting highlihgts --
 
   local ThVimDashHl = vim.api.nvim_create_namespace("ThVimDashHl")
-  local horiz_pad_index = math.floor((vim.api.nvim_win_get_width(0) / 2) - (width / 2)) - 2
+  --local horiz_pad_index = math.floor((vim.api.nvim_win_get_width(0) / 2) - (width / 2)) - 2
 
-  for i = headerStart, headerStart + #header - 2 do
-    vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimLogoHl", i, horiz_pad_index, -1)
+  for i = headerStart, headerStart + #header - 2 do --> Ignore last two empty lines
+    --vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimLogoHl", i, horiz_pad_index, -1)
+    vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimLogoHl", i, 0, -1)
   end
-  for i = headerStart + #header - 2, headerStart + #header + #logo - 2 do
-    vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimMsgHl", i, horiz_pad_index, -1)
+  for i = headerStart + #header - 2, headerStart + #header + #logo - 2 do --> Again, -2 because of empty lines
+    --vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimMsgHl", i, horiz_pad_index, -1)
+    vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimMsgHl", i, 0, -1)
   end
-  for i = headerStart + #header + #logo - 2, headerStart + #header + #logo - 2 + (#buttons * 2) do
-    vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimButtonsHl", i, horiz_pad_index, -1)
+  for i = headerStart + #header + #logo - 2, headerStart + #header + #logo - 2 + (#buttons * 2) do --> Reach ends
+    --vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimButtonsHl", i, horiz_pad_index, -1)
+    vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimButtonsHl", i, 0, -1)
   end
 
   -----------------------
-
   -- Keybindings --
 
   local currBtnLine = headerStart + #header + #logo + 2 --> Line number where the first button is located
@@ -239,7 +252,6 @@ local function open()
   end, { buffer = true })
 
   -----------------
-
   -- Buf options --
 
   vim.opt_local.filetype       = "TheovimDashboard"
@@ -255,23 +267,31 @@ local function open()
 
   -----------------
 end
--- }}}
 
--- {{{ Open the dashboard
-local function dashboardOpener()
-  vim.defer_fn(open, 0) --> https://www.youtube.com/watch?v=GMS0JvS7W1Y
+--[[ opener()
+-- Wrap Dashboard.render() with schedule().
+-- schedule_wrap({cb}) "Defers callback `cb` until the Nvim API is safe to call," and schedule() calls wrapped func
+-- Let's say the user is resizing the terminal window. Without deferring, render() will jump ahead and start rendering,
+-- which casues breakage in calculations and rendering. This allows render() to wait until Neovim says it's safe
+--]]
+Dashboard.opener = function()
+  vim.schedule(render)
 end
-dashboardOpener()
--- }}}
 
--- {{{ Auto-resize the Dashboard
-vim.api.nvim_create_autocmd("VimResized", {
-  callback = function()
-    if vim.bo.filetype == "TheovimDashboard" then
-      vim.opt_local.modifiable = true
-      vim.api.nvim_buf_set_lines(0, 0, -1, false, { "" })
-      dashboardOpener()
-    end
-  end,
-})
--- }}}
+Dashboard.setup = function()
+  create_highlights()
+  Dashboard.opener()
+
+  -- Make autocmd for
+  vim.api.nvim_create_autocmd("VimResized", {
+    callback = function()
+      if vim.bo.filetype == "TheovimDashboard" then
+        vim.opt_local.modifiable = true
+        vim.api.nvim_buf_set_lines(0, 0, -1, false, { "" })
+        Dashboard.opener()
+      end
+    end,
+  })
+end
+
+return Dashboard
