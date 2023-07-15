@@ -1,11 +1,15 @@
---[[
-" figlet -f stampatello theovim-look
-" .  .                           .          .
-" |- |-. ,-. ,-. .  , . ,-,-.    |  ,-. ,-. | ,
-" |  | | |-' | | | /  | | | | -- |  | | | | |<
-" `' ' ' `-' `-' `'   ' ' ' '    `' `-' `-' ' `
---]]
+--[[ statusline.lua
+-- $ figlet -f stacey theovim
+-- ________________________________ _________________
+-- 7      77  7  77     77     77  V  77  77        7
+-- !__  __!|  !  ||  ___!|  7  ||  |  ||  ||  _  _  |
+--   7  7  |     ||  __|_|  |  ||  !  ||  ||  7  7  |
+--   |  |  |  7  ||     7|  !  ||     ||  ||  |  |  |
+--   !__!  !__!__!!_____!!_____!!_____!!__!!__!__!__!
 --
+-- Provide functions to build a Lua table and Luaeval string used for setting up Vim statusline
+--]]
+Statusline = {} --> This is global so that luaeval can keep calling build() function
 
 --[[ create_highlight()
 -- Creates a new highlight group. Suitable for groups with foreground or background only
@@ -189,7 +193,10 @@ local function ff_and_enc()
   return string.format("%s:%s", ff, enc):upper()
 end
 
-Statusline = {} --> Must be global
+--[[ build()
+-- Build a table with statusline components
+-- @return Lua table of Vim statusline components
+--]]
 Statusline.build = function()
   return table.concat({
     -- Mode
@@ -230,4 +237,11 @@ Statusline.build = function()
   })
 end
 
-vim.o.statusline = "%!luaeval('Statusline.build()')" --> vim.wo won't work with term window or floating
+--[[ setup()
+-- Set vim.o.statusline to luaeval of the build function
+--]]
+Statusline.setup = function()
+  vim.o.statusline = "%!luaeval('Statusline.build()')" --> vim.wo won't work with term window or floating
+end
+
+return Statusline
