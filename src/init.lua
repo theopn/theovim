@@ -23,7 +23,6 @@ require("plugins")
 -- UI
 require("ui.statusline").setup()
 require("ui.dashboard").setup()
---require("look.dashboard")
 
 ---[[ Editor
 require("editor.tree_sitter")
