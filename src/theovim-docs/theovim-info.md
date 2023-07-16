@@ -2,6 +2,13 @@
 
 ## Changelog
 
+### Version 2023.07.16.a
+
+> This is an emergency bug fix as the latest Telescope requires Neovim version 0.9.0 or above
+
+- [dev 82f7107] refactor(core): remove LSPSaga plugin and commented out codes in core.lua
+- [dev 22f2788] fix(plugins)!: downgrade Telescope version to 0.1.1 for Purdue Data server users
+
 ### Version 2023.07.16
 
 > This version is a part 1 of the major refactor project to make Theovim utilize more stock Neovim APIs and sustainable to maintain.
