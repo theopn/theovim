@@ -9,33 +9,30 @@
 --]]
 --
 
--- Table for icons
+-- Completion icons
+-- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#completion-kinds
 local kind_icons = {
-  Text = "",
-  Method = "",
-  Function = "",
-  Constructor = "",
-  Field = "ﰠ",
-  Variable = "",
-  Class = "ﴯ",
-  Interface = "",
+  Class = " ",
+  Color = " ",
+  Constant = " ",
+  Constructor = " ",
+  Enum = "了 ",
+  EnumMember = " ",
+  Field = "󰜢 ",
+  File = " ",
+  Folder = " ",
+  Function = "ƒ ",
+  Interface = "󰜰 ",
+  Keyword = "󰌆 ",
+  Method = "ƒ ",
   Module = "",
-  Property = "ﰠ",
-  Unit = "塞",
-  Value = "",
-  Enum = "",
-  Keyword = "",
-  Snippet = "",
-  Color = "",
-  File = "",
-  Reference = "",
-  Folder = "",
-  EnumMember = "",
-  Constant = "",
-  Struct = "פּ",
-  Event = "",
-  Operator = "",
-  TypeParameter = ""
+  Property = " ",
+  Snippet = " ",
+  Struct = " ",
+  Text = " ",
+  Unit = " ",
+  Value = "󰎠 ",
+  Variable = " ",
 }
 
 local cmp = require("cmp")
@@ -51,12 +48,12 @@ cmp.setup({
     documentation = cmp.config.window.bordered(),
   },
   mapping = cmp.mapping.preset.insert({
-    ["<C-j>"] = cmp.mapping.select_next_item(), --> <C-n>
-    ["<C-k>"] = cmp.mapping.select_prev_item(), --> <C-p>
-    ["<C-e>"] = cmp.mapping.abort(), --> Close the completion window
-    ["<C-[>"] = cmp.mapping.scroll_docs( -4), --> Scroll through the information window next to the item
-    ["<C-]>"] = cmp.mapping.scroll_docs(4), --> ^
-    ["<C-n>"] = cmp.mapping.complete(), --> Brings up completion window
+    ["<C-j>"] = cmp.mapping.select_next_item(),         --> <C-n>
+    ["<C-k>"] = cmp.mapping.select_prev_item(),         --> <C-p>
+    ["<C-e>"] = cmp.mapping.abort(),                    --> Close the completion window
+    ["<C-[>"] = cmp.mapping.scroll_docs(-4),            --> Scroll through the information window next to the item
+    ["<C-]>"] = cmp.mapping.scroll_docs(4),             --> ^
+    ["<C-n>"] = cmp.mapping.complete(),                 --> Brings up completion window
     ["<CR>"] = cmp.mapping.confirm({ select = false }), --> True to automatically select the first item without pressing tab
 
     -- Setting up tab behavior
@@ -76,8 +73,8 @@ cmp.setup({
     ["<S-TAB>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
-      elseif luasnip.jumpable( -1) then
-        luasnip.jump( -1)
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
       else
         fallback()
       end
@@ -98,11 +95,11 @@ cmp.setup({
       vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
       -- Source
       vim_item.menu = ({
-            nvim_lsp = "[LSP]",
-            luasnip = "[LuaSnip]",
-            buffer = "[Buffer]",
-            path = "[Path]"
-          })[entry.source.name]
+        nvim_lsp = "[LSP]",
+        luasnip = "[LuaSnip]",
+        buffer = "[Buffer]",
+        path = "[Path]"
+      })[entry.source.name]
       return vim_item
     end
   },

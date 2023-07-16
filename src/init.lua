@@ -1,44 +1,29 @@
 --[[
 Cat: https://www.asciiart.eu/animals/cats
      I added a few layers of belly so it looks more like my cat Oliver
-Logo: figlet -f soft Theovim
-      soft.flf file can be found in the static folder
 
-"                                                                    "
-"                             .---....___                            "
-"                    __..--''``          `` _..._    __              "
-"          /// //_.-'    .-/';  `         `<._  ``.''_ `. / // /     "
-"         ///_.-' _..--.'_    ;                    `( ) ) // //      "
-"         / (_..-' // (< _     ;_..__               ; `' / ///       "
-"          / // // //  `-._,_)' // / ``--...____..-' /// / //        "
-"                                                                    "
-" ------------------------- Hi I'm Oliver -------------------------- "
-"                                                                    "
-"    ,--------.,--.                            ,--.                  "
-"    '--.  .--'|  ,---.  ,---.  ,---.,--.  ,--.`--',--,--,--.        "
-"       |  |   |  .-.  || .-. :| .-. |\  `'  / ,--.|        |        "
-"       |  |   |  | |  |\   --.' '-' ' \    /  |  ||  |  |  |        "
-"       `--'   `--' `--' `----' `---'   `--'   `--'`--`--`--'        "
-"                                                                    "
---]]
---
+     \/       \/
+     /\_______/\
+    /   o   o   \
+   (  ==  ^  ==  )
+    )           (
+   (             )
+   ( (  )   (  ) )
+  (__(__)___(__)__)
+ ___
+  | |_  _  _     o __
+  | | |(/_(_)\_/ | |||
 
--- Lua configs in ~/.config/nvim/lua
--- Remove a hyphen before brackets to disable a module
-
----[[ Core
-require("core.base_config")
-require("core.keybindings")
-require("core.autocmds")
-require("core.plugins")
 --]]
 
----[[ Look
-require("look.colorscheme")
-require("look.statusline")
-require("look.tabline")
-require("look.dashboard")
---]]
+-- Core config modules
+require("core")
+require("plugins")
+
+-- UI
+require("ui.statusline").setup()
+require("ui.dashboard").setup()
+--require("look.dashboard")
 
 ---[[ Editor
 require("editor.tree_sitter")
