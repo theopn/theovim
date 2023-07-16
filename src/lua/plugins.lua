@@ -40,8 +40,11 @@ local plugins = {
   -- }}}
 
   -- {{{ File and search
-  { "nvim-treesitter/nvim-treesitter" },            --> Incremental highlighting
-  { "nvim-telescope/telescope.nvim" },              --> Expendable fuzzy finder
+  { "nvim-treesitter/nvim-treesitter" }, --> Incremental highlighting
+  {
+    "nvim-telescope/telescope.nvim",
+    version = "0.1.1"
+  },                                                --> Expendable fuzzy finder
   { "nvim-telescope/telescope-file-browser.nvim" }, --> File browser extension for Telescope
   {
     "kyazdani42/nvim-tree.lua",                     --> File tree
