@@ -37,6 +37,6 @@ require("theovim.custom_menus")
 --]]
 
 ---[[ Safeguards around including user configuration file
-local status, _ = pcall(require, "user_config")
+local status, _ = pcall(require, "config")
 if (not status) then return end
 --]]
