@@ -1,15 +1,48 @@
 # Theovim Information
 
-> Current Version: 2023.07.x
+## Changelog
 
-# Changelog
+### Version 2023.07.16
 
-## Version 2023.07.xx
+> This version is a part 1 of the major refactor project to make Theovim utilize more stock Neovim APIs and sustainable to maintain.
+> Many unused features are retiring and replaced.
+> Please refer to the list of commits for all the changes took place in this update.
 
-> This version organizes file structure and removes unnecessary features to make Theovim more simple to use and sustainable to maintain.
+- ADD descriptions for some keybindings (which is accessible through `[LDR]?`)
+- ADD new changelog style with list of commits
+- MODIFY statusline and Dashboard to be Lua module instead of direct execution
+- MODIFY file structure and add extensive comments to the code
+- REPLACE LSPSaga features in favor of stock Neovim `vim.lsp.buf` functions
+- REPLACE OneDark/Pastelcula colorscheme with Tokyonight
+- REPLACE tabby.nvim with bufferline.nvim
+- REMOVE template features for C header and TeX
+- REMOVE <CR> after termclose
 
 Commits:
 
+- [dev eb4e62b] docs: update theovim banner image
+- [dev eb34f74] feat(core): add more keybinding descriptions
+- [dev 66fea7b] fix(ui): fix dashboard issue where width of the window was not checked (#17)
+- [dev b87ce6d] feat(ui): change dashboard as a module
+- [dev 9ea8b5b] refactor(ui): change statusline to be a lua module
+- [dev 47231a7] style(util): change file name from theovim_util to util
+- [dev 3e453dc] feat(colorscheme)!: replace Onedark/Pastelcula with Tokyonight
+- [dev dfcd08d] feat(tabline)!: replace tabby.nvim with bufferline.nvim
+- [dev 1c94391] refactor(dashboard): use Lua multiline string instead of double quotes for ASCIIs
+- [dev 7413c00] fix(dashboard): fix the bug where empty buffer is present after DB is loaded
+- [dev ac563dd] feat(core): revise buffer navigation binding ([]) and reinstate window resize bindings
+- [dev 010a3a6] refactor(core): combine three core files to one, rename core/plugin module to plugin
+- [dev 5016000] fix(keybindings): replace deprecated LSPSaga rename function with stock Neovim's
+- [dev 5d4bfc1] refactor(util): separate menu and notepad function to theovim_util.lua module
+- [dev 1c80be6] style(statusline): add Lua doc comments for each function
+- [dev dae66be] style(custom_menus): fix git menu numbering
+- [dev 918d3d7] refactor(statusline): remove some highlightings for modes
+- [dev 44726d4] fix(dashboard): fix bug where the last button wasn't highlighted
+- [dev 7c2e101] refactor(core): remove <CR> after termclose and organize code base
+- [dev 81df9ee] refactor!: drop template features for C header and latex
+- [dev 60c89bb] docs(help): add <leader>hjkl help back
+- [dev 9fb56df] feat(keybinds): add <leader>hjkl for window navigation back
+- [dev 5222fdf] docs(info/changelog): add an example for new changelog style and separate old changelog contents
 - [dev 4867c37] refactor(keybindings): remove :update in jk and remove <leader>hjkl bindings for window navigation
 - [dev 071de95] fix: replace obsolete pre-3.0 Nerd Font icons for UI elements
 - [dev 4e6c2e3] fix: replace obsolete pre-3.0 Nerd Font icons for completion menu
