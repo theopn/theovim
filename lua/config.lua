@@ -12,3 +12,6 @@
 -- Setting a PDF viewer for a live compilation. Skim for Mac and Zathura for Linux
 vim.g.vimtex_view_method = "skim"
 --vim.g.vimtex_view_method = "zathura"
+
+
+-- TODO example of installing a plugin
