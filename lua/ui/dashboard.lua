@@ -17,48 +17,48 @@ Dashboard = {}
 -- Make sure the length of each string is consistent, since the
 local olivers = {
   {
-    [[     \/   \/          ]],
-    [[     |\__/,|     _    ]],
-    [[   _.|o o  |_   ) )   ]],
-    [[  -(((---(((--------  ]]
+    [[          \/   \/              ]],
+    [[          |\__/,|     _        ]],
+    [[        _.|o o  |_   ) )       ]],
+    [[       -(((---(((--------      ]]
   },
   -- This one is by Jonathan
   {
-    [[      \/ \/                  ]],
-    [[      /\_/\ _______          ]],
-    [[     = o_o =  _ _  \     _   ]],
-    [[     (__^__)   __(  \.__) )  ]],
-    [[  (@)<_____>__(_____)____/   ]],
-    [[    ♡ ~~ ♡ OLIVER ♡ ~~ ♡     ]],
+    [[       \/ \/                   ]],
+    [[       /\_/\ _______           ]],
+    [[      = o_o =  _ _  \     _    ]],
+    [[      (__^__)   __(  \.__) )   ]],
+    [[   (@)<_____>__(_____)____/    ]],
+    [[     ♡ ~~ ♡ OLIVER ♡ ~~ ♡      ]],
   },
   {
-    [[   \/   \/            ]],
-    [[   |\__/,|        _   ]],
-    [[   |_ _  |.-----.) )  ]],
-    [[   ( T   ))        )  ]],
-    [[  (((^_(((/___(((_/   ]]
+    [[        \/   \/                ]],
+    [[        |\__/,|        _       ]],
+    [[        |_ _  |.-----.) )      ]],
+    [[        ( T   ))        )      ]],
+    [[       (((^_(((/___(((_/       ]]
   },
   {
-    [[     \/       \/     ]],
-    [[     /\_______/\     ]],
-    [[    /   o   o   \    ]],
-    [[   (  ==  ^  ==  )   ]],
-    [[    )           (    ]],
-    [[   (             )   ]],
-    [[   ( (  )   (  ) )   ]],
-    [[  (__(__)___(__)__)  ]],
+    [[          \/       \/          ]],
+    [[          /\_______/\          ]],
+    [[         /   o   o   \         ]],
+    [[        (  ==  ^  ==  )        ]],
+    [[         )           (         ]],
+    [[        (             )        ]],
+    [[        ( (  )   (  ) )        ]],
+    [[       (__(__)___(__)__)       ]],
   },
   {
-    [[                         _    ]],
-    [[        |\      _-``---,) )   ]],
-    [[  ZZZzz /,`.-'`'    -.   /    ]],
-    [[       |,4-  ) )-,_. ,\ (     ]],
-    [[      '---''(_/--'  `-'\_)    ]]
+    [[                          _    ]],
+    [[         |\      _-``---,) )   ]],
+    [[   ZZZzz /,`.-'`'    -.   /    ]],
+    [[        |,4-  ) )-,_. ,\ (     ]],
+    [[       '---''(_/--'  `-'\_)    ]]
   },
 }
 local header = olivers[math.random(#olivers)]
 
--- figlet -f small theovim
+-- $ figlet -f small theovim
 local logo = {
   [[ ___                    ]],
   [[  | |_  _  _     o __   ]],
@@ -66,22 +66,23 @@ local logo = {
   "",
   os.date("[ ━━%m-%d━━ ❖ ━━%H:%M━━ ]"),
 }
-
+-- Hard code button spacing here
 local buttons = {
-  { "󰥨  Find File     ", "SPC f f", "Telescope find_files" },
-  { "󰈙  Recent Files  ", "SPC f r", "Telescope oldfiles" },
-  { "  File Browser  ",  "SPC f b", "Telescope file_browser" },
-  { "  Config Theovim",  "       ", "e ~/.config/nvim/lua/user_config.lua" },
-  { "  Exit Theovim  ",  "     ZZ", "quit" },
+  { "󰥨  Find File      SPC f f", "Telescope find_files" },
+  { "󰈙  Recent Files   SPC f r", "Telescope oldfiles" },
+  { "  File Browser   SPC f b",  "Telescope file_browser" },
+  { "  Config Theovim        ",  "e ~/.config/nvim/lua/user_config.lua" },
+  { "  Exit Theovim        ZZ",  "quit" },
 }
 
--- Append empty lines to
-local emptyLine = string.rep(" ", vim.fn.strwidth(header[1]))
+-- Always make sure
+local max_width = #header[1] + 1
+
+local emptyLine = string.rep(" ", max_width)
 table.insert(header, 1, emptyLine)
 header[#header + 1] = emptyLine
 logo[#logo + 1] = emptyLine
 
-local max_width = #buttons[1][1] + #buttons[1][2] + #buttons[1][3] + 1
 -- max height = empty line + #header + #logo + #buttons + empty lines after each button + empty line + 1 safety net
 local max_height = 1 + #header + #logo + (#buttons * 2) + 1 + 1
 -- }}}
@@ -139,30 +140,26 @@ local render = function()
   -- Table for the contents
   local dashboard = {}
   -- add padding to the header
-  local addPaddingToHeader = function(str)
+  local add_padding = function(str)
     local pad = (win_width - vim.fn.strwidth(str)) / 2
     return string.rep(" ", math.floor(pad)) .. str .. " "
   end
 
-  -- Function to format the button icon, description, and shortcuts
-  local formatBtns = function(txt1, txt2)
-    local btn_len = vim.fn.strwidth(txt1) + vim.fn.strwidth(txt2)
-    local spacing = vim.fn.strwidth(header[1]) - btn_len
-    return txt1 .. string.rep(" ", spacing - 1) .. txt2 .. " "
-  end
-
   -- Inserting contentst to the DB table
   for _, val in ipairs(header) do
-    table.insert(dashboard, val .. " ")
+    --table.insert(dashboard, val .. " ")
+    table.insert(dashboard, add_padding(val))
   end
   for _, val in ipairs(logo) do
-    table.insert(dashboard, val .. " ")
+    --table.insert(dashboard, val .. " ")
+    table.insert(dashboard, add_padding(val))
   end
   for _, val in ipairs(buttons) do
-    table.insert(dashboard, formatBtns(val[1], val[2]) .. " ") -- Button formatting
-    table.insert(dashboard, emptyLine .. " ")                  -- New line
+    --table.insert(dashboard, val[1] .. " " .. val[2] .. " ") -- Button formatting
+    table.insert(dashboard, add_padding(val[1])) -- Button formatting
+    table.insert(dashboard, emptyLine .. " ")    -- New line
   end
-  table.remove(dashboard, #dashboard)                          -- Remove the extra new line padding from the buttons
+  table.remove(dashboard, #dashboard)            -- Remove the extra new line padding from the buttons
 
   --------------------
   -- Setting the dashboard --
@@ -177,7 +174,8 @@ local render = function()
 
   -- adding the dashboard
   for _, val in ipairs(dashboard) do
-    result[headerStartButActlyForHeader] = addPaddingToHeader(val)
+    result[headerStartButActlyForHeader] = val
+    --result[headerStartButActlyForHeader] = addPaddingToHeader(val)
     headerStartButActlyForHeader = headerStartButActlyForHeader + 1
   end
 
@@ -185,7 +183,7 @@ local render = function()
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, result)
 
   -- setting the cursor. 15 is my best guess on where the first char of the button would be at
-  local cursor_column_idx = math.floor(win_width / 2) - 15
+  local cursor_column_idx = math.floor(win_width / 2) - 14
   vim.api.nvim_win_set_cursor(0, { headerStart + #header + #logo, cursor_column_idx })
 
   ---------------------------
@@ -245,7 +243,7 @@ local render = function()
   vim.keymap.set("n", "<CR>", function()
     for i, v in ipairs(btnsLineNums) do
       if v == vim.fn.line(".") then
-        local action = buttons[i][3] --> 3rd element of the buttons table
+        local action = buttons[i][2] --> 2nd element of the buttons table
         if type(action) == "string" then
           vim.cmd(action)
         elseif type(action) == "function" then
