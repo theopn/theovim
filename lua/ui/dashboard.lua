@@ -68,40 +68,24 @@ local logo = {
 }
 -- Hard code button spacing here
 local buttons = {
-  { "󰥨  Find File      SPC f f", "Telescope find_files" },
-  { "󰈙  Recent Files   SPC f r", "Telescope oldfiles" },
-  { "  File Browser   SPC f b",  "Telescope file_browser" },
-  { "  Config Theovim        ",  "e ~/.config/nvim/lua/user_config.lua" },
-  { "  Exit Theovim        ZZ",  "quit" },
+  { "󰥨  Find File      SPC f f", cmd = "Telescope find_files" },
+  { "󰈙  Recent Files   SPC f r", cmd = "Telescope oldfiles" },
+  { "  File Browser   SPC f b",  cmd = "Telescope file_browser" },
+  { "  Config Theovim        ",  cmd = "e ~/.config/nvim/lua/config.lua" },
+  { "  Exit Theovim        ZZ",  cmd = "quit" },
 }
 
--- Always make sure
-local max_width = #header[1] + 1
-
-local emptyLine = string.rep(" ", max_width)
-table.insert(header, 1, emptyLine)
-header[#header + 1] = emptyLine
-logo[#logo + 1] = emptyLine
-
+-- Calculating max width and make an empty length of the max width
+local max_width = #header[1] + 1 --> A space appended in render() function
+local empty_line = string.rep(" ", max_width)
+-- Add empty line paddings for ASCII
+table.insert(header, 1, empty_line)
+header[#header + 1] = empty_line
+logo[#logo + 1] = empty_line
 -- max height = empty line + #header + #logo + #buttons + empty lines after each button + empty line + 1 safety net
 local max_height = 1 + #header + #logo + (#buttons * 2) + 1 + 1
 -- }}}
 
-
---[[ create_highlights()
--- Create highlights for dashboard using vim.api.nvim_set_hl()
---]]
-local create_highlights = function()
-  local highlights = {
-    ThVimLogoHl = { fg = "#FFB86C" },
-    ThVimButtonsHl = { fg = "#8BE9FD" },
-    ThVimMsgHl = { fg = "#BD93F9" },
-  }
-  for group, properties in pairs(highlights) do
-    vim.api.nvim_set_hl(0, group, properties)
-  end
-end
--- }}}
 
 --[[ open()
 -- When the buffer does not have a name, replace the buffer with the formated Dashboard contents
@@ -110,7 +94,7 @@ end
 -- 0 will be used instead of nvim_get_current_buf() or nvim_get_current_win() unless win/buf handle needs to be saved
 --]]
 local render = function()
-  local win_width = vim.o.columns --> or vim.api.nvim_win_get_width(0)
+  local win_width = vim.api.nvim_win_get_width(0)
   local win_height = vim.api.nvim_win_get_height(0)
   -----------------------------------
   -- Condition check --
@@ -119,7 +103,7 @@ local render = function()
   if vim.api.nvim_buf_get_name(0) ~= "" then return end --> or use vim.fn.expand("%")
 
   -- Check if window is too small to launch
-  if win_height < max_height or win_width < max_width then
+  if win_height < max_height then
     vim.notify("Window is too small to launch the dashboard on :(")
     return
   end
@@ -127,10 +111,7 @@ local render = function()
   -- The default empty buffer will go away when the new Dashboard buffer replaces it
   vim.api.nvim_buf_set_option(0, "bufhidden", "wipe")
 
-  -- Create a new buffer
-  -- I could modify the current buffer, but if it's not a scratch buffer, it will be treated as writing to it
-  -- This causes two problems: 1. indentation guide plugin will be active
-  --                           2. when exiting, it will be treated as unsaved and will casue an error or prompt user
+  -- Create a new buffer and replace the old one
   local buf = vim.api.nvim_create_buf(false, true) --> listed false, scratchbuffer true
   vim.api.nvim_win_set_buf(0, buf)
 
@@ -147,19 +128,16 @@ local render = function()
 
   -- Inserting contentst to the DB table
   for _, val in ipairs(header) do
-    --table.insert(dashboard, val .. " ")
-    table.insert(dashboard, add_padding(val))
+    table.insert(dashboard, add_padding(val) .. " ")
   end
   for _, val in ipairs(logo) do
-    --table.insert(dashboard, val .. " ")
-    table.insert(dashboard, add_padding(val))
+    table.insert(dashboard, add_padding(val) .. " ")
   end
   for _, val in ipairs(buttons) do
-    --table.insert(dashboard, val[1] .. " " .. val[2] .. " ") -- Button formatting
-    table.insert(dashboard, add_padding(val[1])) -- Button formatting
-    table.insert(dashboard, emptyLine .. " ")    -- New line
+    table.insert(dashboard, add_padding(val[1]) .. " ")
+    table.insert(dashboard, empty_line .. " ")
   end
-  table.remove(dashboard, #dashboard)            -- Remove the extra new line padding from the buttons
+  table.remove(dashboard, #dashboard) --> Remove the extra new line padding from the buttons
 
   --------------------
   -- Setting the dashboard --
@@ -169,65 +147,75 @@ local render = function()
     result[i] = ""
   end
 
-  local headerStartButActlyForHeader = math.floor((win_height / 2) - (#dashboard / 2) - 1)
-  local headerStart = math.floor((win_height / 2) - (#dashboard / 2) - 1)
+  local hdr_start_idx_save = math.floor((win_height / 2) - (#dashboard / 2) - 1)
+  local hdr_start_idx = math.floor((win_height / 2) - (#dashboard / 2) - 1)
 
   -- adding the dashboard
   for _, val in ipairs(dashboard) do
-    result[headerStartButActlyForHeader] = val
-    --result[headerStartButActlyForHeader] = addPaddingToHeader(val)
-    headerStartButActlyForHeader = headerStartButActlyForHeader + 1
+    result[hdr_start_idx_save] = val
+    hdr_start_idx_save = hdr_start_idx_save + 1
   end
 
   -- setting the dasboard
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, result)
+  -- Buf options
+  vim.opt_local.filetype       = "TheovimDashboard"
+  vim.opt_local.buflisted      = false
+  vim.opt_local.list           = false
+  vim.opt_local.wrap           = true
+  vim.opt_local.relativenumber = false
+  vim.opt_local.number         = false
+  vim.opt_local.cursorline     = false
+  vim.opt_local.cursorcolumn   = false
+  vim.opt_local.colorcolumn    = "0"
+  vim.opt_local.modifiable     = true
 
   -- setting the cursor. 15 is my best guess on where the first char of the button would be at
-  local cursor_column_idx = math.floor(win_width / 2) - 14
-  vim.api.nvim_win_set_cursor(0, { headerStart + #header + #logo, cursor_column_idx })
+  local cursor_column_idx      = (win_width > max_width) and (math.floor(win_width / 2) - 15) or (0)
+  vim.api.nvim_win_set_cursor(0, { hdr_start_idx + #header + #logo, cursor_column_idx })
 
   ---------------------------
   -- Setting highlihgts --
 
-  local ThVimDashHl = vim.api.nvim_create_namespace("ThVimDashHl")
+  local dash_hl_namespace = vim.api.nvim_create_namespace("ThVimDashHl")
   --local horiz_pad_index = math.floor((vim.api.nvim_win_get_width(0) / 2) - (width / 2)) - 2
 
-  for i = headerStart, headerStart + #header - 2 do --> Ignore last two empty lines
+  for i = hdr_start_idx, hdr_start_idx + #header - 2 do --> Ignore last two empty lines
     --vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimLogoHl", i, horiz_pad_index, -1)
-    vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimLogoHl", i, 0, -1)
+    vim.api.nvim_buf_add_highlight(buf, dash_hl_namespace, "ThVimLogoHl", i, 0, -1)
   end
-  for i = headerStart + #header - 2, headerStart + #header + #logo - 2 do --> Again, -2 because of empty lines
+  for i = hdr_start_idx + #header - 2, hdr_start_idx + #header + #logo - 2 do --> Again, -2 because of empty lines
     --vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimMsgHl", i, horiz_pad_index, -1)
-    vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimMsgHl", i, 0, -1)
+    vim.api.nvim_buf_add_highlight(buf, dash_hl_namespace, "ThVimMsgHl", i, 0, -1)
   end
-  for i = headerStart + #header + #logo - 2, headerStart + #header + #logo - 2 + (#buttons * 2) do --> Reach ends
+  for i = hdr_start_idx + #header + #logo - 2, hdr_start_idx + #header + #logo - 2 + (#buttons * 2) do --> Reach ends
     --vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimButtonsHl", i, horiz_pad_index, -1)
-    vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimButtonsHl", i, 0, -1)
+    vim.api.nvim_buf_add_highlight(buf, dash_hl_namespace, "ThVimButtonsHl", i, 0, -1)
   end
 
   -----------------------
   -- Keybindings --
 
-  local currBtnLine = headerStart + #header + #logo + 2 --> Line number where the first button is located
-  local btnsLineNums = {}
+  local curr_btn_line = hdr_start_idx + #header + #logo + 2 --> Line number where the first button is located
+  local btns_line_nums = {}
 
   -- Make a table of line numbers where buttons exist
   for _, _ in ipairs(buttons) do
-    table.insert(btnsLineNums, currBtnLine - 2)
-    currBtnLine = currBtnLine + 2
+    table.insert(btns_line_nums, curr_btn_line - 2)
+    curr_btn_line = curr_btn_line + 2
   end
 
   -- Setting hjkl and arrow keys movement
   local upMvmt = function()
     local curr = vim.fn.line(".") -- Current line
     -- Check if the current line number - 2 is button or move to the last element
-    local target_line = vim.tbl_contains(btnsLineNums, curr - 2) and curr - 2 or btnsLineNums[#btnsLineNums]
+    local target_line = vim.tbl_contains(btns_line_nums, curr - 2) and curr - 2 or btns_line_nums[#btns_line_nums]
     vim.api.nvim_win_set_cursor(0, { target_line, cursor_column_idx })
   end
   local downMvmt = function()
     local curr = vim.fn.line(".") -- Current line
     -- Check if the current line number + 2 is button or move to the first element
-    local target_line = vim.tbl_contains(btnsLineNums, curr + 2) and curr + 2 or btnsLineNums[1]
+    local target_line = vim.tbl_contains(btns_line_nums, curr + 2) and curr + 2 or btns_line_nums[1]
     vim.api.nvim_win_set_cursor(0, { target_line, cursor_column_idx })
   end
   vim.keymap.set("n", "h", "", { buffer = true })
@@ -241,9 +229,9 @@ local render = function()
 
   -- Setting return key movement
   vim.keymap.set("n", "<CR>", function()
-    for i, v in ipairs(btnsLineNums) do
+    for i, v in ipairs(btns_line_nums) do
       if v == vim.fn.line(".") then
-        local action = buttons[i][2] --> 2nd element of the buttons table
+        local action = buttons[i].cmd
         if type(action) == "string" then
           vim.cmd(action)
         elseif type(action) == "function" then
@@ -254,21 +242,24 @@ local render = function()
   end, { buffer = true })
 
   -----------------
-  -- Buf options --
-
-  vim.opt_local.filetype       = "TheovimDashboard"
-  vim.opt_local.buflisted      = false
-  vim.opt_local.modifiable     = false
-  vim.opt_local.list           = false
-  vim.opt_local.wrap           = false
-  vim.opt_local.relativenumber = false
-  vim.opt_local.number         = false
-  vim.opt_local.cursorline     = false
-  vim.opt_local.cursorcolumn   = false
-  vim.opt_local.colorcolumn    = "0"
-
+  vim.opt_local.modifiable = false
   -----------------
 end
+
+--[[ create_highlights()
+-- Create highlights for dashboard using vim.api.nvim_set_hl()
+--]]
+local create_highlights = function()
+  local highlights = {
+    ThVimLogoHl = { fg = "#FFB86C" },
+    ThVimButtonsHl = { fg = "#8BE9FD" },
+    ThVimMsgHl = { fg = "#BD93F9" },
+  }
+  for group, properties in pairs(highlights) do
+    vim.api.nvim_set_hl(0, group, properties)
+  end
+end
+-- }}}
 
 --[[ opener()
 -- Wrap Dashboard.render() with schedule().
