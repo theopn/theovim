@@ -76,7 +76,7 @@ local buttons = {
 }
 
 -- Calculating max width and make an empty length of the max width
-local max_width = #header[1] + 1 --> A space appended in render() function
+local max_width = #header[1]
 local empty_line = string.rep(" ", max_width)
 -- Add empty line paddings for ASCII
 table.insert(header, 1, empty_line)
@@ -114,28 +114,39 @@ local render = function()
   -- Create a new buffer and replace the old one
   local buf = vim.api.nvim_create_buf(false, true) --> listed false, scratchbuffer true
   vim.api.nvim_win_set_buf(0, buf)
+  vim.opt_local.filetype       = "TheovimDashboard"
+  vim.opt_local.buflisted      = false
+  vim.opt_local.list           = false
+  vim.opt_local.wrap           = true
+  vim.opt_local.relativenumber = false
+  vim.opt_local.number         = false
+  vim.opt_local.cursorline     = false
+  vim.opt_local.cursorcolumn   = false
+  vim.opt_local.colorcolumn    = "0"
+
+  vim.opt_local.modifiable     = true
 
   -----------------------------------
   -- Init the DB contents--
 
   -- Table for the contents
-  local dashboard = {}
+  local dashboard              = {}
   -- add padding to the header
-  local add_padding = function(str)
+  local add_padding            = function(str)
     local pad = (win_width - vim.fn.strwidth(str)) / 2
-    return string.rep(" ", math.floor(pad)) .. str .. " "
+    return string.rep(" ", math.floor(pad)) .. str
   end
 
-  -- Inserting contentst to the DB table
+  -- Inserting contents to the DB table
   for _, val in ipairs(header) do
-    table.insert(dashboard, add_padding(val) .. " ")
+    table.insert(dashboard, add_padding(val))
   end
   for _, val in ipairs(logo) do
-    table.insert(dashboard, add_padding(val) .. " ")
+    table.insert(dashboard, add_padding(val))
   end
   for _, val in ipairs(buttons) do
-    table.insert(dashboard, add_padding(val[1]) .. " ")
-    table.insert(dashboard, empty_line .. " ")
+    table.insert(dashboard, add_padding(val[1]))
+    table.insert(dashboard, empty_line)
   end
   table.remove(dashboard, #dashboard) --> Remove the extra new line padding from the buttons
 
@@ -158,20 +169,9 @@ local render = function()
 
   -- setting the dasboard
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, result)
-  -- Buf options
-  vim.opt_local.filetype       = "TheovimDashboard"
-  vim.opt_local.buflisted      = false
-  vim.opt_local.list           = false
-  vim.opt_local.wrap           = true
-  vim.opt_local.relativenumber = false
-  vim.opt_local.number         = false
-  vim.opt_local.cursorline     = false
-  vim.opt_local.cursorcolumn   = false
-  vim.opt_local.colorcolumn    = "0"
-  vim.opt_local.modifiable     = true
 
   -- setting the cursor. 15 is my best guess on where the first char of the button would be at
-  local cursor_column_idx      = (win_width > max_width) and (math.floor(win_width / 2) - 15) or (0)
+  local cursor_column_idx = (win_width > max_width) and (math.floor(win_width / 2) - 15) or (0)
   vim.api.nvim_win_set_cursor(0, { hdr_start_idx + #header + #logo, cursor_column_idx })
 
   ---------------------------
@@ -241,9 +241,8 @@ local render = function()
     end
   end, { buffer = true })
 
-  -----------------
+  -- The end --
   vim.opt_local.modifiable = false
-  -----------------
 end
 
 --[[ create_highlights()
