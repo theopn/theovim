@@ -152,7 +152,6 @@ local render = function()
 
   --------------------
   -- Setting the dashboard --
-
   local result = {}
   for i = 1, win_height do
     result[i] = ""
@@ -178,18 +177,14 @@ local render = function()
   -- Setting highlihgts --
 
   local dash_hl_namespace = vim.api.nvim_create_namespace("ThVimDashHl")
-  --local horiz_pad_index = math.floor((vim.api.nvim_win_get_width(0) / 2) - (width / 2)) - 2
 
   for i = hdr_start_idx, hdr_start_idx + #header - 2 do --> Ignore last two empty lines
-    --vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimLogoHl", i, horiz_pad_index, -1)
     vim.api.nvim_buf_add_highlight(buf, dash_hl_namespace, "ThVimLogoHl", i, 0, -1)
   end
   for i = hdr_start_idx + #header - 2, hdr_start_idx + #header + #logo - 2 do --> Again, -2 because of empty lines
-    --vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimMsgHl", i, horiz_pad_index, -1)
     vim.api.nvim_buf_add_highlight(buf, dash_hl_namespace, "ThVimMsgHl", i, 0, -1)
   end
   for i = hdr_start_idx + #header + #logo - 2, hdr_start_idx + #header + #logo - 2 + (#buttons * 2) do --> Reach ends
-    --vim.api.nvim_buf_add_highlight(buf, ThVimDashHl, "ThVimButtonsHl", i, horiz_pad_index, -1)
     vim.api.nvim_buf_add_highlight(buf, dash_hl_namespace, "ThVimButtonsHl", i, 0, -1)
   end
 
