@@ -5,7 +5,13 @@
 -- |  _|   | -_| . | | | |     |
 -- |_| |_|_|___|___|\_/|_|_|_|_|
 --
--- Downloading and initializing plugins using Lazy plugin manager
+-- This file does:
+--   - Initialize the list of plug-ins to be installed
+--   - Bootstrap Lazy plugin manager and install plug-ins
+--   - Initialize plug-ins using eacch setup() function
+--   - For some plug-ins, provide a small configuration work in `config`
+--     This is limited to basic config, and extensive config for some plug-ins will be done elsewhere
+--   - For some plug-ins, install external dependencies
 --]]
 
 -- {{{ Plugin list
@@ -27,7 +33,19 @@ local plugins = {
     version = "*",
     dependencies = "nvim-tree/nvim-web-devicons",
     config = function()
-      require("bufferline").setup()
+      require("bufferline").setup({
+        options = {
+          diagnostics = "nvim_lsp",
+          offsets = {
+            {
+              filetype = "NvimTree",
+              text = "File Tree",
+              highlight = "Directory",
+              separator = true
+            },
+          }
+        },
+      })
     end
   },
   {
