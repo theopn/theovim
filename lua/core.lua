@@ -188,28 +188,28 @@ end
 local key_opt = {
   -- {{{ Text Edit Keybindings
   -- Insert Mode --
-  { 'i', "jk",              "<ESC>" },                                            --> "joke", get it? Ha ha
+  { 'i', "jk",              "<ESC>" },                                                 --> "joke", get it? Ha ha
   -- Normal Mode --
-  { 'n', "<leader>/",       "<CMD>let @/=''<CR>",          "Clear last search" }, --> @/ is the macro for the last search
-  { 'n', "<leader>a",       "gg<S-v>G",                    "Select [a]ll" },
+  { 'n', "<leader>/",       "<CMD>let @/=''<CR>",          "[/]: clear last search" }, --> @/ is the macro for the last search
+  { 'n', "<leader>a",       "gg<S-v>G",                    "[a]ll: select all" },
   -- Search auto center --
   { 'n', "n",               "nzz" },
   { 'n', "N",               "Nzz" },
   -- Copy and paste --
-  { 'x', "<leader>y",       '"+y',                         "[y}ank to the system clipboard (+" },
+  { 'x', "<leader>y",       '"+y',                         "[y]ank: yank to the system clipboard (+)" },
   { 'n', "<leader>p",       "<CMD>Telescope registers<CR>" }, --> Use ":reg" w/o PLUGIN
   -- First, [d]elete the selection without pasting (pasting to the void reg _) then [p]aste the reg content
-  { 'x', "<leader>p",       '"_dp',                        "[p]aste the current selection without overriding the reg" },
+  { 'x', "<leader>p",       '"_dp',                        "[p]aste: paste the current selection without overriding the reg" },
   -- Terminal Mode --
-  { 't', "<ESC>",           "<C-\\><C-n>",                 "[ESC] for terminal" },
+  { 't', "<ESC>",           "<C-\\><C-n>",                 "[ESC]: exit insert mode for the terminal" },
   -- Spell check --
-  { 'i', "<C-s>",           "<C-g>u<ESC>[s1z=`]a<C-g>u",   "Fix nearest [s]pelling error and put the cursor back" },
-  { 'n', "<C-s>",           "z=",                          "Toggle [s]pell suggestion window" },
-  { 'n', "<leader>st",      "<CMD>set spell!<CR>",         "[s]pell check [t]oggle" },
+  { 'i', "<C-s>",           "<C-g>u<ESC>[s1z=`]a<C-g>u",   "[s]pell: fix nearest spelling error and put the cursor back" },
+  { 'n', "<C-s>",           "z=",                          "[s]pell: toggle spell suggestion window for the word under the cursor" },
+  { 'n', "<leader>st",      "<CMD>set spell!<CR>",         "[s]pell [t]oggle: turn spell check on/off for the current buffer" },
   -- Split window --
-  { 'n', "<leader>|",       "<CMD>vsplit<CR><C-w>l",       "[|] Create a vertical split window" },
-  { 'n', "<leader>-",       "<CMD>split<CR><C-w>j",        "[-] Create a horizontal split window" },
-  { 'n', "<leader>q",       "<C-w>q",                      "[q]uit the current window" },
+  { 'n', "<leader>|",       "<CMD>vsplit<CR><C-w>l",       "[|]: create a vertical split window" },
+  { 'n', "<leader>-",       "<CMD>split<CR><C-w>j",        "[-]: create a horizontal split window" },
+  { 'n', "<leader>q",       "<C-w>q",                      "[q]uit: close the current window" },
   { 'n', "<leader>h",       "<C-w>h" },
   { 'n', "<leader>j",       "<C-w>j" },
   { 'n', "<leader>k",       "<C-w>k" },
@@ -220,15 +220,15 @@ local key_opt = {
   { 'n', "<leader><RIGHT>", "<C-w>10>" },
   -- Tab --
   { 'n', "<leader>n",
-    function() buffer_selector("Creating a new tab...", "tab sb ") end }, --> ":ls<CR>:echo ...<CR>:tab sb<SPACE> w/o custom func
-  { 'n', "<leader>1", "1gt" },                                            --> Go to 1st tab
-  { 'n', "<leader>2", "2gt" },                                            --> ^
-  { 'n', "<leader>3", "3gt" },                                            --> ^
-  { 'n', "<leader>4", "4gt" },                                            --> ^
+    function() buffer_selector("Creating a new tab...", "tab sb ") end },               --> ":ls<CR>:echo ...<CR>:tab sb<SPACE> w/o custom func
+  { 'n', "<leader>1", "1gt" },                                                          --> Go to 1st tab
+  { 'n', "<leader>2", "2gt" },                                                          --> ^
+  { 'n', "<leader>3", "3gt" },                                                          --> ^
+  { 'n', "<leader>4", "4gt" },                                                          --> ^
   -- Buffer --
-  { 'n', "<leader>b", "<CMD>Telescope buffers<CR>", "[b]uffer list" },    --> ":ls<CR>:b<SPACE>" W/O PLUGIN
-  { 'n', "<leader>[", "<CMD>bprevious<CR>",         "[[] prev buffer" },
-  { 'n', "<leader>]", "<CMD>bnext<CR>",             "[]] next buffer" },
+  { 'n', "<leader>b", "<CMD>Telescope buffers<CR>", "[b]uffer: open the buffer list" }, --> ":ls<CR>:b<SPACE>" W/O PLUGIN
+  { 'n', "<leader>[", "<CMD>bprevious<CR>",         "[[]: navigate to prev buffer" },
+  { 'n', "<leader>]", "<CMD>bnext<CR>",             "[]]: navigate to next buffer" },
   { 'n', "<leader>x",
     function() buffer_selector("Deleting a buffer...", "bdelete ") end }, --> ":ls<CR>:echo ...<CR>:bdelete<SPACE> w/o custom func
   -- }}}
@@ -248,9 +248,10 @@ local key_opt = {
   { 'n', "<leader>f/", "<CMD>Telescope current_buffer_fuzzy_find<CR>" },
   -- LSP --
   { 'n', "<leader>ca",
-    function() vim.notify("This keybinding requires lsp.lua moduke") end },
-  { 'n', "<leader>cd", function() vim.lsp.buf.hover() end,  "([c]ode) view hover [d]oc for the item under the cursor" },
-  { 'n', "<leader>cr", function() vim.lsp.buf.rename() end, "([c]ode) [r]ename the variable under the cursor" },
+    function() vim.notify("This keybinding requires lsp.lua moduke") end,
+    "[c]ode [a]ction: open the menu to perform LSP features" },
+  { 'n', "<leader>cd", function() vim.lsp.buf.hover() end,  "[c]ode [d]oc: open hover doc for the item under the cursor" },
+  { 'n', "<leader>cr", function() vim.lsp.buf.rename() end, "[c]ode [r]ename: rename the variable under the cursor" },
   -- }}}
 }
 -- }}}

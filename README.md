@@ -25,8 +25,10 @@ Some Theovim philosophies that might convince you to use Theovim:
 ## Installation
 
 ```bash
-git clone https://github.com/theopn/theovim.git ~/.theovim
-~/.theovim/theovim-util.sh install
+# Optional backup
+[[ -e ~/.config/nvim ]] && mv ~/.config/nvim ~/.config/nvim.bak
+# Install Theovim files in ~/.config/nvim
+git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim
 ```
 
 ## Usage

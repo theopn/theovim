@@ -1,16 +1,19 @@
---[[
-" figlet -f small theovim-file,search
-"  _   _                _           __ _ _                           _
-" | |_| |_  ___ _____ _(_)_ __ ___ / _(_) |___   ___ ___ __ _ _ _ __| |_
-" |  _| ' \/ -_) _ \ V / | '  \___|  _| | / -_)_(_-</ -_) _` | '_/ _| ' \
-"  \__|_||_\___\___/\_/|_|_|_|_|  |_| |_|_\___( )__/\___\__,_|_| \__|_||_|
-"                                             |/
+--[[ fuzzy_finder.lua
+-- $ figlet -f fuzzy theovim
+--  .-. .-.                      _
+-- .' `.: :                     :_;
+-- `. .': `-.  .--.  .--. .-..-..-.,-.,-.,-.
+--  : : : .. :' '_.'' .; :: `; :: :: ,. ,. :
+--  :_; :_;:_;`.__.'`.__.'`.__.':_;:_;:_;:_;
+--
+-- Set up fuzzy finder plug-in. Currerntly Telescope.nvim
 --]]
 --
 
 local util = require("util")
+local telescope = require("telescope")
 
-require("telescope").setup({
+telescope.setup({
   defaults = {
     mappings = {
       i = {
@@ -21,7 +24,7 @@ require("telescope").setup({
   },
   extensions = { file_browser = { hidden = true } },
 })
-require("telescope").load_extension("file_browser")
+telescope.load_extension("file_browser")
 
 -- {{{ Custom Telescope menu
 local telescope_options = {

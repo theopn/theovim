@@ -1,31 +1,26 @@
---[[
-" figlet -f stacey theovim-lsp
-" ________________________________ _____________________   ______________
-" 7      77  7  77     77     77  V  77  77        77  7   7     77     7
-" !__  __!|  !  ||  ___!|  7  ||  |  ||  ||  _  _  ||  |   |  ___!|  -  |
-"   7  7  |     ||  __|_|  |  ||  !  ||  ||  7  7  ||  !___!__   7|  ___!
-"   |  |  |  7  ||     7|  !  ||     ||  ||  |  |  ||     77     ||  7
-"   !__!  !__!__!!_____!!_____!!_____!!__!!__!__!__!!_____!!_____!!__!
---]]
+--[[ lsp.lua
+-- $ figlet -f larry3d theovim
+--  __    __
+-- /\ \__/\ \                              __
+-- \ \ ,_\ \ \___      __    ___   __  __ /\_\    ___ ___
+--  \ \ \/\ \  _ `\  /'__`\ / __`\/\ \/\ \\/\ \ /' __` __`\
+--   \ \ \_\ \ \ \ \/\  __//\ \L\ \ \ \_/ |\ \ \/\ \/\ \/\ \
+--    \ \__\\ \_\ \_\ \____\ \____/\ \___/  \ \_\ \_\ \_\ \_\
+--     \/__/ \/_/\/_/\/____/\/___/  \/__/    \/_/\/_/\/_/\/_/
 --
-
+-- Configuration for Neovim's built-in LSP
+--]]
 local util = require("util")
-
--- List of LSP server used later
--- Always check the memory usage of each language server. :LSpInfo to identify LSP server and use "sudo lsof -p PID" to check for associated files
--- Blacklist: ltex-ls (java process running in the bg for each instance of markdown files)
-local server_list = {
-  "bashls", "clangd", "lua_ls", "pylsp",
-}
-
-local theo_server_recommendations = {
-  "cssls", "html", "sqlls", "texlab"
-}
-
--- {{{ Call lspconfig settings
 local status, lspconfig = pcall(require, "lspconfig")
 if (not status) then return end
--- }}}
+local mason_lspconfig = require("mason-lspconfig")
+
+-- List of LSP server used later
+-- Always check the memory usage of each language server. :LSpInfo to identify LSP server
+-- and use "sudo lsof -p PID" to check for associated files
+local server_list = {
+  "bashls", "clangd", "lua_ls", "pylsp", "texlab",
+}
 
 -- {{{ Language Server Settings
 -- Capabilities and on_attach function that will be called for all LSP servers
@@ -34,6 +29,15 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protoc
 -- Global var for auto formatting toggle
 vim.g.linter_status = true
 
+--[[ on_attach()
+-- A function to attach for a buffer with LSP capabilities
+-- List of features:
+--   - Provide a "LinterToggle" user command
+--   - If conditions are met, format the buffer before write
+--
+-- @arg client: name of the client name used by Neovim
+-- @arg bufnr: buffer number used by Neovim
+--]]
 local on_attach = function(client, bufnr)
   if client.server_capabilities.documentFormattingProvider then
     -- User command to toggle code format only available when LSP is detected
@@ -55,15 +59,15 @@ local on_attach = function(client, bufnr)
 end
 
 -- Let Mason-lspconfig handle LSP setup
-require("mason-lspconfig").setup {
+mason_lspconfig.setup {
   ensure_installed = server_list,
   automatic_installation = true,
 }
 
-require("mason-lspconfig").setup_handlers({
+mason_lspconfig.setup_handlers({
   -- Default handler
   function(server_name)
-    require("lspconfig")[server_name].setup({ capabilities = capabilities, on_attach = on_attach, })
+    lspconfig[server_name].setup({ capabilities = capabilities, on_attach = on_attach, })
   end,
   -- Lua gets a special treatment
   ["lua_ls"] = function()
