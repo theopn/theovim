@@ -2,9 +2,54 @@
 
 ## Changelog
 
+### Version 2023.07.19
+
+> This update is the second part of the refactoring project + improvement in built-in dashboard.
+> **Starting this update, users are to directly clone the repository to `~/.config` directory**.
+> You have two choices on using Theovim after this update:
+>
+> 1. **Migrate to the new file structure and continue getting the update (recommended)**:
+>
+> The command to migrate to the new structure is:
+> $ cd ~/.theovim && git pull && cd -
+> $ rm ~/.config/nvim && mv ~/.theovim ~/.config/nvim
+>
+> Or re-install Theovim using the following command:
+> $ rm -rf ~/.config/nvim && git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim && rm -rf ~/.theovim
+>
+> 2. Continue using Theovim as-is by switching to `depr-file-struct` branch and do not receive future updates:
+> Execute the following commands:
+> $ cd ~/.theovim && git pull && cd -
+> $ cd ~/.theovim && git fetch && git checkout depr-file-struct && cd -
+>
+> Thank you for using Theovim! I hope this update to be the new starting point to further improve the experience.
+
+- [dev f1ea2b9] feat(core): add more keybinding helpers
+- [dev 2914dbf] refactor(init): modify init.lua to fit the new file struct
+- [dev 5cbb24a] refactor(config): move tree-sitter config to config folder
+- [dev a210126] refactor(lsp): migrate lsp config to a separate folder
+- [dev b789bf8] refactor(completion): move completion config to config folder
+- [dev 2ac8677] fix(ui): use notify_once instead of notify for dashboard error msg to prevent spamming
+- [dev 67200d0] refactor(fuzzy finder): move fuzzy finder config to config folder
+- [dev ea5b5bb] style(lsp): add file name in the header comment
+- [dev 7c88b65] refactor(lsp): move lsp config file to config folder
+- [dev f6aeb14] feat(plugins): add nvimtree compatibility for bufferline
+- [dev aeffe2d] style(ui): remove commented code from dashboard
+- [dev 40567f3] docs(license) rename license and modify name
+- [dev eb1b732] fix(ui): remove unnecessary empty space appending
+- [dev 68e2e5a] refactor(ui): rename dashboard variables and move code to make more sense
+- [dev 9ce56c3] refactor(ui): modify dashboard code so the header is the longest string and buttons and bindings are combined
+- [dev 653e3b9] docs: add the new installation procedure to the readme
+- [dev 98879da] style(util): add comments to notepad
+- [dev be677a5] fix(init): fix the name of the config file
+- [dev 7500dde] refactor(config): remove old user_config
+- [dev 2532e44] fix: fix gitignore config file name
+- [dev 5f02894] fix(config): fix config template directory
+- [dev 6a682de] refactor!: change file structure so that repo can be cloned directly to ~/.config
+
 ### Version 2023.07.16.a
 
-> This is an emergency bug fix as the latest Telescope requires Neovim version 0.9.0 or above
+> This is a bug fix as the latest Telescope requires Neovim version 0.9.0 or above
 
 - [dev 82f7107] refactor(core): remove LSPSaga plugin and commented out codes in core.lua
 - [dev 22f2788] fix(plugins)!: downgrade Telescope version to 0.1.1 for Purdue Data server users
