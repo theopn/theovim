@@ -104,7 +104,7 @@ local render = function()
 
   -- Check if window is too small to launch
   if win_height < max_height then
-    vim.notify("Window is too small to launch the dashboard on :(")
+    vim.notify_once("Dashboard: window size is too small :(") --> use notify_once to stop notification spamming
     return
   end
 
@@ -169,7 +169,7 @@ local render = function()
   -- setting the dasboard
   vim.api.nvim_buf_set_lines(buf, 0, -1, false, result)
 
-  -- setting the cursor. 15 is my best guess on where the first char of the button would be at
+  -- set the cursor: 15 is is my best guess on where the first char of the button would be. If too narrow, use 0
   local cursor_column_idx = (win_width > max_width) and (math.floor(win_width / 2) - 15) or (0)
   vim.api.nvim_win_set_cursor(0, { hdr_start_idx + #header + #logo, cursor_column_idx })
 
