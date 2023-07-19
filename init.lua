@@ -24,12 +24,13 @@ require("plugins")
 require("ui.statusline").setup()
 require("ui.dashboard").setup()
 
----[[ Editor
-require("editor.tree_sitter")
-require("editor.fuzzy_finder")
-require("editor.lsp")
-require("editor.completion")
---]]
+-- LSP configurations
+require("lsp.lsp")
+require("lsp.completion")
+
+-- Plugin configurations
+require("config.tree_sitter")
+require("config.fuzzy_finder")
 
 ---[[ Theovim
 require("theovim.theovim_cmd")
