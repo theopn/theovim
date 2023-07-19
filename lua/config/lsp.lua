@@ -1,4 +1,4 @@
---[[
+--[[ lsp.lua
 -- $ figlet -f larry3d theovim
 --  __    __
 -- /\ \__/\ \                              __
