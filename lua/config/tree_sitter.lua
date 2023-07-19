@@ -1,14 +1,13 @@
 --[[
-" figlet -f small theovim-file,search
-"  _   _                _           __ _ _                           _
-" | |_| |_  ___ _____ _(_)_ __ ___ / _(_) |___   ___ ___ __ _ _ _ __| |_
-" |  _| ' \/ -_) _ \ V / | '  \___|  _| | / -_)_(_-</ -_) _` | '_/ _| ' \
-"  \__|_||_\___\___/\_/|_|_|_|_|  |_| |_|_\___( )__/\___\__,_|_| \__|_||_|
-"                                             |/
---]]
+-- $ figlet -f threepoint theovim
+-- _|_|_  _  _   . _ _
+--  | | |(/_(_)\/|| | |
 --
+-- Configuration for the Neovim's built-in tree-sitter highlight
+--]]
+local treesitter = require("nvim-treesitter.configs")
 
-require("nvim-treesitter.configs").setup({
+treesitter.setup({
   ensure_installed = { "bash", "c", "lua", "markdown", "python", "vim" },
   sync_install = false,
   auto_install = true,
