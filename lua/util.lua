@@ -6,24 +6,6 @@
 -- `' ' ' `-' `-' `'   ' ' ' '
 --
 -- Collection of helper functions used by Theovim
-
-
--- $ figlet -f slant theovim
---    __  __                    _
---   / /_/ /_  ___  ____ _   __(_)___ ___
---  / __/ __ \/ _ \/ __ \ | / / / __ `__ \
--- / /_/ / / /  __/ /_/ / |/ / / / / / / /
--- \__/_/ /_/\___/\____/|___/_/_/ /_/ /_/
-
-
-
--- $ figlet -f fuzzy theovim
---  .-. .-.                      _
--- .' `.: :                     :_;
--- `. .': `-.  .--.  .--. .-..-..-.,-.,-.,-.
---  : : : .. :' '_.'' .; :: `; :: :: ,. ,. :
---  :_; :_;:_;`.__.'`.__.'`.__.':_;:_;:_;:_;
---
 --]]
 local M = {}
 
@@ -72,7 +54,7 @@ M.create_select_menu = function(prompt, options_table)
 end
 
 --[[ launch_notepad()
--- Notepad
+-- Launch a small, transparent floating window with a scartch buffer that persists until Neovim closes
 --]]
 vim.g.notepad_loaded = false
 local notepad_buf, notepad_win
