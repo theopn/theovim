@@ -1,13 +1,15 @@
---[[
-" figlet -f stacey theovim-lsp
-" ________________________________ _____________________   ______________
-" 7      77  7  77     77     77  V  77  77        77  7   7     77     7
-" !__  __!|  !  ||  ___!|  7  ||  |  ||  ||  _  _  ||  |   |  ___!|  -  |
-"   7  7  |     ||  __|_|  |  ||  !  ||  ||  7  7  ||  !___!__   7|  ___!
-"   |  |  |  7  ||     7|  !  ||     ||  ||  |  |  ||     77     ||  7
-"   !__!  !__!__!!_____!!_____!!_____!!__!!__!__!__!!_____!!_____!!__!
---]]
+--[[ completion.lua
+-- $ figlet -f computer theovim
+-- eeeee e   e eeee eeeee ee   e e  eeeeeee
+--   8   8   8 8    8  88 88   8 8  8  8  8
+--   8e  8eee8 8eee 8   8 88  e8 8e 8e 8  8
+--   88  88  8 88   8   8  8  8  88 88 8  8
+--   88  88  8 88ee 8eee8  8ee8  88 88 8  8
 --
+-- Configuration for Nvim-cmp and snippets. Extension of lsp.lua
+--]]
+local cmp = require("cmp")
+local luasnip = require("luasnip")
 
 -- Completion icons
 -- https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#completion-kinds
@@ -35,8 +37,6 @@ local kind_icons = {
   Variable = " ",
 }
 
-local cmp = require("cmp")
-local luasnip = require("luasnip")
 cmp.setup({
   snippet = {
     expand = function(args)
