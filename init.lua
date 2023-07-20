@@ -29,8 +29,8 @@ require("lsp.lsp")
 require("lsp.completion")
 
 -- Plugin configurations
-require("config.tree_sitter")
-require("config.fuzzy_finder")
+require("config.treesitter")
+require("config.fuzzy")
 
 ---[[ Theovim
 require("theovim.theovim_cmd")

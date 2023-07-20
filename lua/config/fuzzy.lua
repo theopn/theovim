@@ -1,4 +1,4 @@
---[[ fuzzy_finder.lua
+--[[ fuzzy.lua
 -- $ figlet -f fuzzy theovim
 --  .-. .-.                      _
 -- .' `.: :                     :_;
