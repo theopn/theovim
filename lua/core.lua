@@ -182,10 +182,20 @@ local function buffer_selector(custom_prompt, action)
     end)
 end
 
+local function url_handler()
+  local url = string.match(vim.fn.getline("."), "[a-z]*://[^ >,;]*")
+  if url ~= nil then
+    vim.cmd('exec "!open \'' .. url .. '\'"')
+  else
+    vim.notify("No URI found in the current line")
+  end
+end
+
 -- }}}
 
 -- {{{ Keybinding table
 local key_opt = {
+  { 'n', "gx",              url_handler,                   "Open URL under the cursor using shell open command" },
   -- {{{ Text Edit Keybindings
   -- Insert Mode --
   { 'i', "jk",              "<ESC>" },                                                 --> "joke", get it? Ha ha
