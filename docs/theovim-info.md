@@ -2,6 +2,12 @@
 
 ## Changelog
 
+### Version 2023.07.xx
+
+- [dev f98802e] refactor: change some ascii logo
+- [dev ba59508] refactor(misc): move some theovim func to misc.lua
+- [dev 58b4e3a] refactor(config): rename config file names
+
 ### Version 2023.07.19
 
 > This update is the second part of the refactoring project + improvement in built-in dashboard.

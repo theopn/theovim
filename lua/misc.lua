@@ -1,4 +1,4 @@
---[[
+--[[ misc.lua
 -- $ figlet -f doom theovim
 --  _   _                     _
 -- | | | |                   (_)
@@ -7,10 +7,45 @@
 -- | |_| | | |  __/ (_) \ V /| | | | | | |
 --  \__|_| |_|\___|\___/ \_/ |_|_| |_| |_|
 --
---  Collection of all miscellaneous Theovim features
+-- Collection of all miscellaneous Theovim features
 --]]
 
 local util = require("util")
+
+local NVIM_CONFIG_PATH = vim.opt.runtimepath:get()[1]
+
+-- Making Theovim update command
+do
+  local update_cmd = "cd " .. NVIM_CONFIG_PATH .. " && git pull"
+  local theovim_git_pull = util.spawn_floating_shell(update_cmd, 0.3, 0.5, "TOP", 24)
+  -- nargs ?: 0 or 1, *: > 0, +: > 1 args
+  vim.api.nvim_create_user_command("TheovimUpdate",
+    function()
+      theovim_git_pull()
+      require("lazy").sync()
+      --vim.cmd("MasonUpdate")
+      --vim.cmd("TSUpdate")
+    end, { nargs = 0 })
+end
+
+-- Various help document windows
+do
+  local helpdoc_path = vim.api.nvim_get_runtime_file("docs/theovim-help.md", false)[1]
+  local helpdoc_func = util.spawn_floting_doc_win(helpdoc_path)
+  vim.api.nvim_create_user_command("TheovimHelp", helpdoc_func, { nargs = 0 })
+
+  local vimhelp_path = vim.api.nvim_get_runtime_file("docs/vim-help.md", false)[1]
+  local vimhelp_func = util.spawn_floting_doc_win(vimhelp_path)
+  vim.api.nvim_create_user_command("TheovimVanillaVimHelp", vimhelp_func, { nargs = 0 })
+
+  local info_path = vim.api.nvim_get_runtime_file("docs/theovim-info.md", false)[1]
+  local info_func = util.spawn_floting_doc_win(info_path)
+  vim.api.nvim_create_user_command("TheovimInfo", info_func, { nargs = 0 })
+end
+
+do
+  vim.api.nvim_create_user_command("Notepad", util.launch_notepad, { nargs = 0 })
+end
 
 -- {{{ Git menu
 local git_options = {
