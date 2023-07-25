@@ -38,9 +38,13 @@ do
   local vimhelp_func = util.spawn_floting_doc_win(vimhelp_path)
   vim.api.nvim_create_user_command("TheovimVanillaVimHelp", vimhelp_func, { nargs = 0 })
 
-  local info_path = vim.api.nvim_get_runtime_file("docs/theovim-info.md", false)[1]
-  local info_func = util.spawn_floting_doc_win(info_path)
-  vim.api.nvim_create_user_command("TheovimInfo", info_func, { nargs = 0 })
+  local changelog_path = vim.api.nvim_get_runtime_file("CHANGELOG.md", false)[1]
+  local changelog_func = util.spawn_floting_doc_win(changelog_path)
+  vim.api.nvim_create_user_command("TheovimChangelog", changelog_func, { nargs = 0 })
+
+  local changlog_hist_path = vim.api.nvim_get_runtime_file("docs/changelog-history.md", false)[1]
+  local changelog_hist_func = util.spawn_floting_doc_win(changlog_hist_path)
+  vim.api.nvim_create_user_command("TheovimChangelogHistory", changelog_hist_func, { nargs = 0 })
 end
 
 do
@@ -83,7 +87,7 @@ local misc_options = {
   ["4. :TheovimUpdate"] = "TheovimUpdate",
   ["5. :TheovimHelp"] = "TheovimHelp",
   ["6. :TheovimVanillaVimHelp"] = "TheovimVanillaVimHelp",
-  ["7. :TheovimInfo"] = "TheovimInfo",
+  ["7. :TheovimChangelog"] = "TheovimChangelog",
 }
 THEOVIM_MISC_MENU = util.create_select_menu("What fun feature would you like to use?", misc_options)
 --}}}
