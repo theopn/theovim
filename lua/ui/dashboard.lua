@@ -1,11 +1,7 @@
 --[[ dashboard.lua
--- $ figlet -f doom theovim
---  _   _                     _
--- | | | |                   (_)
--- | |_| |__   ___  _____   ___ _ __ ___
--- | __| '_ \ / _ \/ _ \ \ / / | '_ ` _ \
--- | |_| | | |  __/ (_) \ V /| | | | | | |
---  \__|_| |_|\___|\___/ \_/ |_|_| |_| |_|
+-- $ figlet -f mini theovim
+-- _|_|_  _  _   o._ _
+--  |_| |(/_(_)\/|| | |
 --
 -- Provide a framework to open a dashboard on the Neovim startup when there is no buffer opened (only the empty buf)
 --]]
@@ -58,7 +54,6 @@ local olivers = {
 }
 local header = olivers[math.random(#olivers)]
 
--- $ figlet -f small theovim
 local logo = {
   [[ ___                    ]],
   [[  | |_  _  _     o __   ]],

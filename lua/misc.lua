@@ -1,3 +1,15 @@
+--[[
+-- $ figlet -f doom theovim
+--  _   _                     _
+-- | | | |                   (_)
+-- | |_| |__   ___  _____   ___ _ __ ___
+-- | __| '_ \ / _ \/ _ \ \ / / | '_ ` _ \
+-- | |_| | | |  __/ (_) \ V /| | | | | | |
+--  \__|_| |_|\___|\___/ \_/ |_|_| |_| |_|
+--
+--  Collection of all miscellaneous Theovim features
+--]]
+
 local util = require("util")
 
 -- {{{ Git menu
