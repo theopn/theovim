@@ -19,26 +19,36 @@
 -- Initialize all configuration files
 --]]
 
+-- Try catch for modules
+local function safe_require(module)
+  local status, loaded_module = pcall(require, module)
+  if status then
+    return loaded_module
+  end
+  vim.notify("Error loading the module: " .. module)
+  return nil
+end
+
 -- Core config modules
-require("core")
-require("plugins")
+safe_require("core")
+safe_require("plugins")
 
 -- Theovim built-in UI elements
-require("ui.statusline").setup()
-require("ui.dashboard").setup()
+local statusline = safe_require("ui.statusline")
+if statusline then statusline.setup() end
+local dashboard = safe_require("ui.dashboard")
+if dashboard then dashboard.setup() end
 
 -- LSP configurations
-require("lsp.lsp")
-require("lsp.completion")
+safe_require("lsp.lsp")
+safe_require("lsp.completion")
 
 -- Plugin configurations
-require("config.treesitter")
-require("config.fuzzy")
+safe_require("config.treesitter")
+safe_require("config.fuzzy")
 
 -- Other Theovim features
-require("misc")
+safe_require("misc")
 
----[[ Safeguards around including user configuration file
-local status, _ = pcall(require, "config")
-if (not status) then return end
---]]
+-- User configuration
+safe_require("config")
