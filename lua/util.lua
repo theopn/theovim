@@ -16,7 +16,8 @@ local M = {}
 --   [1. Onedark ] = "colo onedark"
 --   [2. Tokyonight ] = function() vim.cmd("colo tokyonight") end
 -- }
--- create_select_menu("Choose a colorscheme", options)
+-- local colo_picker = util.create_select_menu("Choose a colorscheme", options)
+-- vim.api.nvim_create_user_command("ColoPicker", colo_picker, { nargs = 0 })
 --
 -- @arg prompt: the prompt to display
 -- @arg options_table: Table of the form { [n. Display name] = lua-function/vim-cmd, ... }
@@ -53,6 +54,48 @@ M.create_select_menu = function(prompt, options_table)
   return menu
 end
 
+--[[
+-- TODO
+--
+-- @return a function that creates the floating terminal
+--]]
+M.spawn_floating_term = function()
+  local win_height = math.ceil(vim.o.lines * 0.8)
+  local win_width = math.ceil(vim.o.columns * 0.8)
+  local x_pos = math.ceil((vim.o.lines - win_height) * 0.5)  --> Centering the window
+  local y_pos = math.ceil((vim.o.columns - win_width) * 0.5) --> Centering the window
+
+  local win_opts = {
+    border = "rounded", --> sigle, double, rounded, solid, shadow
+    relative = "editor",
+    style = "minimal",  --> No number, cursorline, etc.
+    width = win_width,
+    height = win_height,
+    row = x_pos,
+    col = y_pos,
+  }
+
+  local float_win = function()
+    -- create preview buffer and set local options
+    local buf = vim.api.nvim_create_buf(false, true) --> Not add to buffer list (false), scratch buffer (true)
+    local win = vim.api.nvim_open_win(buf, true, win_opts)
+
+    -- options
+    vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe") --> Kill the buffer when hidden
+    vim.api.nvim_win_set_option(win, "winblend", 24)      --> 0 for solid color, 80 for transparent
+
+    -- keymap
+    local keymaps_opts = { silent = true, buffer = buf }
+    vim.keymap.set('n', "q", "<C-w>q", keymaps_opts) --> both C-w q or below function are fine
+    vim.keymap.set('n', "<ESC>", function() vim.api.nvim_win_close(win, true) end, keymaps_opts)
+
+    -- Open term
+    vim.cmd("term")
+    vim.cmd("startinsert")
+  end
+  return float_win
+end
+
 --[[ spawn_floating_shell()
 -- Launch a given command in a floating shell
 -- Inspiration from: https://github.com/ellisonleao/weather.nvim
@@ -62,7 +105,7 @@ end
 -- @arg width_ratio: Floating window width relative to the Vim window width
 -- @arg pos: Position of the window. One of "TOP", "CENTER", or "BOTTOM"
 -- @arg transparency: 0 for solid color, 80 for totally transparent window
--- @return a function that creates the floating shell
+-- @return a function that creates the floating shell with the given job running
 --]]
 M.spawn_floating_shell = function(cmd, height_ratio, width_ratio, pos, transparency)
   -- Window size

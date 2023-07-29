@@ -73,7 +73,7 @@ local terminal_options = {
   ["1. Bottom"] = function() vim.cmd("botright " .. math.ceil(vim.fn.winheight(0) * 0.3) .. "sp | term") end,
   ["2. Left"] = function() vim.cmd("top " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term") end,
   ["3. Right"] = function() vim.cmd("bot " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term") end,
-  ["4. Floating"] = "Lspsaga term_toggle",
+  ["4. Floating"] = util.spawn_floating_term(),
   ["5. New Tab"] = function() vim.cmd("tabnew | term") end,
 }
 THEOVIM_TERMINAL_MENU = util.create_select_menu("Where would you like to launch a terminal?", terminal_options)
