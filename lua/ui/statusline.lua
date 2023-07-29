@@ -9,7 +9,7 @@
 --
 -- Provide functions to build a Lua table and Luaeval string used for setting up Vim statusline
 --]]
-Statusline = {} --> This is global so that luaeval can keep calling build() function
+Statusline = {} --> global so that luaeval can keep calling build() function
 
 --[[ create_highlight()
 -- Creates a new highlight group. Suitable for groups with foreground or background only

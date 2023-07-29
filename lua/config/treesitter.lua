@@ -1,4 +1,4 @@
---[[
+--[[ treesitter.lua
 -- $ figlet -f threepoint theovim
 -- _|_|_  _  _   . _ _
 --  | | |(/_(_)\/|| | |

@@ -35,17 +35,14 @@ git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim
 
 - `:TheovimHelp` contains all the custom commands and shortcuts
 - `:TheovimUpdate` updates the latest changes to Theovim by pulling the changes and running update utilities
-- `:TheovimInfo` shows the current version and information about the Neovim/Theovim
+- `:TheovimChangelog` for the current version information and latest changes
 
 ## Highlights
 
 - Fully featured LSP with auto-completion, error detection, auto formatting, etc.
 - Telescope fuzzy finder used for buffer selection, file opening, file browsing, etc.
-- LaTeX and markdown compilation (`:VimtexCompile`, `:MarkdownPreviewToggle`)
-- Templates for LaTeX, C header file, etc.
-- Helpful features like `:Notepad`, `:TheovimVanillaVimHelp`, etc.
+- Real-time LaTeX and markdown compilation (`:VimtexCompile`, `:MarkdownPreviewToggle`)
 - Informative statusline
-- Better tab/buffer management system using [tabby.nvim](https://github.com/nanozuki/tabby.nvim) and custom keybindings
 - Use of standard (Neo)vim features (floating window, `vim.ui.select`, built-in dashboard, etc.) for the better performance
 
 ## Other Things

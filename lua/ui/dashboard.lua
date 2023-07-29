@@ -1,15 +1,11 @@
 --[[ dashboard.lua
--- $ figlet -f doom theovim
---  _   _                     _
--- | | | |                   (_)
--- | |_| |__   ___  _____   ___ _ __ ___
--- | __| '_ \ / _ \/ _ \ \ / / | '_ ` _ \
--- | |_| | | |  __/ (_) \ V /| | | | | | |
---  \__|_| |_|\___|\___/ \_/ |_|_| |_| |_|
+-- $ figlet -f mini theovim
+-- _|_|_  _  _   o._ _
+--  |_| |(/_(_)\/|| | |
 --
 -- Provide a framework to open a dashboard on the Neovim startup when there is no buffer opened (only the empty buf)
 --]]
-Dashboard = {}
+local Dashboard = {}
 
 -- {{{ Variables
 -- ASCII arts of
@@ -58,7 +54,6 @@ local olivers = {
 }
 local header = olivers[math.random(#olivers)]
 
--- $ figlet -f small theovim
 local logo = {
   [[ ___                    ]],
   [[  | |_  _  _     o __   ]],
@@ -87,7 +82,7 @@ local max_height = 1 + #header + #logo + (#buttons * 2) + 1 + 1
 -- }}}
 
 
---[[ open()
+--[[ render()
 -- When the buffer does not have a name, replace the buffer with the formated Dashboard contents
 -- Inspired from: https://github.com/chadcat7/kodo/blob/main/lua/ui/dash/init.lua
 --                https://github.com/NvChad/ui/blob/dev/lua/nvchad_ui/nvdash/init.lua
