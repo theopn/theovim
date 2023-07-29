@@ -171,35 +171,13 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { noremap = true }) --> Unbind 
 vim.g.mapleader = " "                                                --> Space as the leader key
 -- }}}
 
--- {{{ Function for selecting buffer
--- @arg action: vim command to do with the given buffer name
-local function buffer_selector(custom_prompt, action)
-  -- Creating a table of buffers
-  -- nvim_exec returns output (non-error, non-shell :!) if output (boolean value) is true, else empty string
-  local contents_str = vim.api.nvim_exec("buffers", true)
-  local contents_table = {}
-  for line in contents_str:gmatch("[^\n]+") do --> Add each new line to a table
-    table.insert(contents_table, line)
-  end
-  -- Prompting user
-  vim.ui.select(contents_table,
-    {
-      prompt = custom_prompt .. '\n' .. "Choose a buffer or enter/q to select the current buffer:",
-    },
-    function(choice)
-      if choice == nil then
-        vim.cmd(action)
-      else
-        local buffer_num = string.match(choice, "%d+") --> get the first number from the buffer list
-        vim.cmd(action .. buffer_num)
-      end
-    end)
-end
-
+--[[ url_handler()
+-- Find the URL in the current line and open it in a browser if possible
+--]]
 local function url_handler()
   local url = string.match(vim.fn.getline("."), "[a-z]*://[^ >,;]*")
   if url ~= nil then
-    vim.cmd('exec "!open \'' .. url .. '\'"')
+    vim.cmd("silent exec '!open " .. url .. "'")
   else
     vim.notify("No URI found in the current line")
   end
@@ -244,7 +222,7 @@ local key_opt = {
   { 'n', "<leader><RIGHT>", "<C-w>10>" },
   -- Tab --
   { 'n', "<leader>n",
-    function() buffer_selector("Creating a new tab...", "tab sb ") end },               --> ":ls<CR>:echo ...<CR>:tab sb<SPACE> w/o custom func
+    ":ls<CR>:echomsg 'Choose a buf to create a new tab with'<CR>:tab sb<SPACE>" },
   { 'n', "<leader>1", "1gt" },                                                          --> Go to 1st tab
   { 'n', "<leader>2", "2gt" },                                                          --> ^
   { 'n', "<leader>3", "3gt" },                                                          --> ^
@@ -254,16 +232,12 @@ local key_opt = {
   { 'n', "<leader>[", "<CMD>bprevious<CR>",         "[[]: navigate to prev buffer" },
   { 'n', "<leader>]", "<CMD>bnext<CR>",             "[]]: navigate to next buffer" },
   { 'n', "<leader>x",
-    function() buffer_selector("Deleting a buffer...", "bdelete ") end }, --> ":ls<CR>:echo ...<CR>:bdelete<SPACE> w/o custom func
+    ":ls<CR>:echo 'Choose a buffer to delete'<CR>:bdelete<SPACE>" },
   -- }}}
 
   -- {{{ Plugin/Feature Specific Keybindings
-  { 'n', "<leader>?",  "<CMD>Telescope keymaps<CR>" },           --> Bring up finder for keymaps
-  { 'n', "<leader>t",  "<CMD>NvimTreeToggle<CR>" },              --> Tree toggle
-  -- Custom menus --
-  { 'n', "<leader>g",  function() THEOVIM_GIT_MENU() end },      --> Git related features
-  { 'n', "<leader>m",  function() THEOVIM_MISC_MENU() end },     --> All the other features
-  { 'n', "<leader>z",  function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
+  { 'n', "<leader>?",  "<CMD>Telescope keymaps<CR>" }, --> Bring up finder for keymaps
+  { 'n', "<leader>t",  "<CMD>NvimTreeToggle<CR>" },    --> Tree toggle
   -- Telescope --
   { 'n', "<leader>ca", function() vim.notify_once("This keybinding requires fuzzy_finder.lua moduke") end },
   { 'n', "<leader>ff", "<CMD>Telescope find_files<CR>" },
@@ -274,8 +248,12 @@ local key_opt = {
   { 'n', "<leader>ca",
     function() vim.notify_once("This keybinding requires lsp.lua moduke") end,
     "[c]ode [a]ction: open the menu to perform LSP features" },
-  { 'n', "<leader>cd", function() vim.lsp.buf.hover() end,  "[c]ode [d]oc: open hover doc for the item under the cursor" },
-  { 'n', "<leader>cr", function() vim.lsp.buf.rename() end, "[c]ode [r]ename: rename the variable under the cursor" },
+  { 'n', "<leader>cd", function() vim.lsp.buf.hover() end,    "[c]ode [d]oc: open hover doc for the item under the cursor" },
+  { 'n', "<leader>cr", function() vim.lsp.buf.rename() end,   "[c]ode [r]ename: rename the variable under the cursor" },
+  -- Custom menus --
+  { 'n', "<leader>g",  function() THEOVIM_GIT_MENU() end },      --> Git related features
+  { 'n', "<leader>m",  function() THEOVIM_MISC_MENU() end },     --> All the other features
+  { 'n', "<leader>z",  function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
   -- }}}
 }
 -- }}}
