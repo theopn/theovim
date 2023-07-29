@@ -17,6 +17,7 @@ Details:
 
 Commits:
 
+- [e4798c0] feat(dev): add a commit list generator for dev tool
 - [718040a] fix: fix missing desc keys in keybindings defined somewhere other than core.lua
 - [a36c19c] refactor(misc): move keybindings in core to where func are created in misc.lua
 - [04e2e52] refactor(core): remove custom function for <SPC>n and x bindings
