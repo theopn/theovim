@@ -239,7 +239,7 @@ local key_opt = {
   { 'n', "<leader>?",  "<CMD>Telescope keymaps<CR>" }, --> Bring up finder for keymaps
   { 'n', "<leader>t",  "<CMD>NvimTreeToggle<CR>" },    --> Tree toggle
   -- Telescope --
-  { 'n', "<leader>ca", function() vim.notify_once("This keybinding requires fuzzy_finder.lua moduke") end },
+  { 'n', "<leader>ca", function() vim.notify_once("This keybinding requires fuzzy_finder.lua module") end },
   { 'n', "<leader>ff", "<CMD>Telescope find_files<CR>" },
   { 'n', "<leader>fr", "<CMD>Telescope oldfiles<CR>" },
   { 'n', "<leader>fb", "<CMD>Telescope file_browser<CR>" },
@@ -248,12 +248,8 @@ local key_opt = {
   { 'n', "<leader>ca",
     function() vim.notify_once("This keybinding requires lsp.lua moduke") end,
     "[c]ode [a]ction: open the menu to perform LSP features" },
-  { 'n', "<leader>cd", function() vim.lsp.buf.hover() end,    "[c]ode [d]oc: open hover doc for the item under the cursor" },
-  { 'n', "<leader>cr", function() vim.lsp.buf.rename() end,   "[c]ode [r]ename: rename the variable under the cursor" },
-  -- Custom menus --
-  { 'n', "<leader>g",  function() THEOVIM_GIT_MENU() end },      --> Git related features
-  { 'n', "<leader>m",  function() THEOVIM_MISC_MENU() end },     --> All the other features
-  { 'n', "<leader>z",  function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
+  { 'n', "<leader>cd", function() vim.lsp.buf.hover() end,  "[c]ode [d]oc: open hover doc for the item under the cursor" },
+  { 'n', "<leader>cr", function() vim.lsp.buf.rename() end, "[c]ode [r]ename: rename the variable under the cursor" },
   -- }}}
 }
 -- }}}

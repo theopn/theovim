@@ -57,7 +57,8 @@ local git_options = {
   ["1. Git Commits"] = "Telescope git_commits",
   ["2. Git Status"] = "Telescope git_status"
 }
-THEOVIM_GIT_MENU = util.create_select_menu("Git functionality to use:", git_options)
+local git_menu = util.create_select_menu("Git functionality to use:", git_options)
+vim.keymap.set({ 'n', "<leader>g", git_menu, "[g]it: open the menu to perform Git features" })
 -- }}}
 
 -- {{{ Terminal menu
@@ -76,7 +77,8 @@ local terminal_options = {
   ["4. Floating"] = util.spawn_floating_term(),
   ["5. New Tab"] = function() vim.cmd("tabnew | term") end,
 }
-THEOVIM_TERMINAL_MENU = util.create_select_menu("Where would you like to launch a terminal?", terminal_options)
+local term_menu = util.create_select_menu("Where would you like to launch a terminal?", terminal_options)
+vim.keymap.set({ 'n', "<leader>z", term_menu, "[z]sh: launch terminal" })
 -- }}}
 
 -- {{{ Miscellaneous features
@@ -90,4 +92,5 @@ local misc_options = {
   ["7. :TheovimChangelog"] = "TheovimChangelog",
 }
 THEOVIM_MISC_MENU = util.create_select_menu("What fun feature would you like to use?", misc_options)
+vim.keymap.set({ 'n', "<leader>m", git_menu, "[m]isc: open menu to use other miscellaneous Theovim features" })
 --}}}
