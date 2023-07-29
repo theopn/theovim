@@ -138,13 +138,27 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 })
 -- }}}
 
--- {{{ Switch to insert mode when terminal is open
+-- {{{ Terminal autocmd
+-- Switch to insert mode when terminal is open
+local term_augroup = vim.api.nvim_create_augroup("Terminal", { clear = true })
 vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
   -- TermOpen: for when terminal is opened for the first time
   -- BufEnter: when you navigate to an existing terminal buffer
-  group = vim.api.nvim_create_augroup("Terminal", { clear = true }),
+  group = term_augroup,
   pattern = "term://*", --> only applicable for "BufEnter", an ignored Lua table key when evaluating TermOpen
   callback = function() vim.cmd("startinsert") end
+})
+
+-- Automatically close terminal unless exit code isn't 0
+vim.api.nvim_create_autocmd("TermClose", {
+  group = term_augroup,
+  callback = function()
+    if vim.v.event.status == 0 then
+      vim.api.nvim_buf_delete(0, {})
+    else
+      vim.notify_once("Error code detected in the current terminal job!")
+    end
+  end
 })
 -- }}}
 
@@ -157,35 +171,23 @@ vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { noremap = true }) --> Unbind 
 vim.g.mapleader = " "                                                --> Space as the leader key
 -- }}}
 
--- {{{ Function for selecting buffer
--- @arg action: vim command to do with the given buffer name
-local function buffer_selector(custom_prompt, action)
-  -- Creating a table of buffers
-  -- nvim_exec returns output (non-error, non-shell :!) if output (boolean value) is true, else empty string
-  local contents_str = vim.api.nvim_exec("buffers", true)
-  local contents_table = {}
-  for line in contents_str:gmatch("[^\n]+") do --> Add each new line to a table
-    table.insert(contents_table, line)
+--[[ url_handler()
+-- Find the URL in the current line and open it in a browser if possible
+--]]
+local function url_handler()
+  local url = string.match(vim.fn.getline("."), "[a-z]*://[^ >,;]*")
+  if url ~= nil then
+    vim.cmd("silent exec '!open " .. url .. "'")
+  else
+    vim.notify("No URI found in the current line")
   end
-  -- Prompting user
-  vim.ui.select(contents_table,
-    {
-      prompt = custom_prompt .. '\n' .. "Choose a buffer or enter/q to select the current buffer:",
-    },
-    function(choice)
-      if choice == nil then
-        vim.cmd(action)
-      else
-        local buffer_num = string.match(choice, "%d+") --> get the first number from the buffer list
-        vim.cmd(action .. buffer_num)
-      end
-    end)
 end
 
 -- }}}
 
 -- {{{ Keybinding table
 local key_opt = {
+  { 'n', "gx",              url_handler,                   "Open URL under the cursor using shell open command" },
   -- {{{ Text Edit Keybindings
   -- Insert Mode --
   { 'i', "jk",              "<ESC>" },                                                 --> "joke", get it? Ha ha
@@ -220,7 +222,7 @@ local key_opt = {
   { 'n', "<leader><RIGHT>", "<C-w>10>" },
   -- Tab --
   { 'n', "<leader>n",
-    function() buffer_selector("Creating a new tab...", "tab sb ") end },               --> ":ls<CR>:echo ...<CR>:tab sb<SPACE> w/o custom func
+    ":ls<CR>:echomsg 'Choose a buf to create a new tab with'<CR>:tab sb<SPACE>" },
   { 'n', "<leader>1", "1gt" },                                                          --> Go to 1st tab
   { 'n', "<leader>2", "2gt" },                                                          --> ^
   { 'n', "<leader>3", "3gt" },                                                          --> ^
@@ -230,25 +232,21 @@ local key_opt = {
   { 'n', "<leader>[", "<CMD>bprevious<CR>",         "[[]: navigate to prev buffer" },
   { 'n', "<leader>]", "<CMD>bnext<CR>",             "[]]: navigate to next buffer" },
   { 'n', "<leader>x",
-    function() buffer_selector("Deleting a buffer...", "bdelete ") end }, --> ":ls<CR>:echo ...<CR>:bdelete<SPACE> w/o custom func
+    ":ls<CR>:echo 'Choose a buffer to delete'<CR>:bdelete<SPACE>" },
   -- }}}
 
   -- {{{ Plugin/Feature Specific Keybindings
-  { 'n', "<leader>?",  "<CMD>Telescope keymaps<CR>" },           --> Bring up finder for keymaps
-  { 'n', "<leader>t",  "<CMD>NvimTreeToggle<CR>" },              --> Tree toggle
-  -- Custom menus --
-  { 'n', "<leader>g",  function() THEOVIM_GIT_MENU() end },      --> Git related features
-  { 'n', "<leader>m",  function() THEOVIM_MISC_MENU() end },     --> All the other features
-  { 'n', "<leader>z",  function() THEOVIM_TERMINAL_MENU() end }, --> Quick terminal launch
+  { 'n', "<leader>?",  "<CMD>Telescope keymaps<CR>" }, --> Bring up finder for keymaps
+  { 'n', "<leader>t",  "<CMD>NvimTreeToggle<CR>" },    --> Tree toggle
   -- Telescope --
-  { 'n', "<leader>ca", function() vim.notify("This keybinding requires fuzzy_finder.lua moduke") end },
+  { 'n', "<leader>ca", function() vim.notify_once("This keybinding requires fuzzy_finder.lua module") end },
   { 'n', "<leader>ff", "<CMD>Telescope find_files<CR>" },
   { 'n', "<leader>fr", "<CMD>Telescope oldfiles<CR>" },
   { 'n', "<leader>fb", "<CMD>Telescope file_browser<CR>" },
   { 'n', "<leader>f/", "<CMD>Telescope current_buffer_fuzzy_find<CR>" },
   -- LSP --
   { 'n', "<leader>ca",
-    function() vim.notify("This keybinding requires lsp.lua moduke") end,
+    function() vim.notify_once("This keybinding requires lsp.lua moduke") end,
     "[c]ode [a]ction: open the menu to perform LSP features" },
   { 'n', "<leader>cd", function() vim.lsp.buf.hover() end,  "[c]ode [d]oc: open hover doc for the item under the cursor" },
   { 'n', "<leader>cr", function() vim.lsp.buf.rename() end, "[c]ode [r]ename: rename the variable under the cursor" },

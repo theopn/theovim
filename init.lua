@@ -1,43 +1,54 @@
---[[
-Cat: https://www.asciiart.eu/animals/cats
-     I added a few layers of belly so it looks more like my cat Oliver
-
-     \/       \/
-     /\_______/\
-    /   o   o   \
-   (  ==  ^  ==  )
-    )           (
-   (             )
-   ( (  )   (  ) )
-  (__(__)___(__)__)
- ___
-  | |_  _  _     o __
-  | | |(/_(_)\_/ | |||
-
+--[[ init.lua
+--
+--      \/       \/
+--      /\_______/\
+--     /   o   o   \
+--    (  ==  ^  ==  )
+--     )           (
+--    (             )
+--    ( (  )   (  ) )
+--   (__(__)___(__)__)
+--  ___
+--   | |_  _  _     o __
+--   | | |(/_(_)\_/ | |||
+--
+-- Cat : https://www.asciiart.eu/animals/cats
+--      I added a few layers of belly so it looks more like my cat Oliver
+-- Logo: $figlet -f mini Theovim
+--
+-- Initialize all configuration files
 --]]
+
+-- Try catch for modules
+local function safe_require(module)
+  local status, loaded_module = pcall(require, module)
+  if status then
+    return loaded_module
+  end
+  vim.notify("Error loading the module: " .. module)
+  return nil
+end
 
 -- Core config modules
-require("core")
-require("plugins")
+safe_require("core")
+safe_require("plugins")
 
--- UI
-require("ui.statusline").setup()
-require("ui.dashboard").setup()
+-- Theovim built-in UI elements
+local statusline = safe_require("ui.statusline")
+if statusline then statusline.setup() end
+local dashboard = safe_require("ui.dashboard")
+if dashboard then dashboard.setup() end
 
 -- LSP configurations
-require("lsp.lsp")
-require("lsp.completion")
+safe_require("lsp.lsp")
+safe_require("lsp.completion")
 
 -- Plugin configurations
-require("config.tree_sitter")
-require("config.fuzzy_finder")
+safe_require("config.treesitter")
+safe_require("config.fuzzy")
 
----[[ Theovim
-require("theovim.theovim_cmd")
-require("theovim.custom_menus")
---]]
+-- Other Theovim features
+safe_require("misc")
 
----[[ Safeguards around including user configuration file
-local status, _ = pcall(require, "config")
-if (not status) then return end
---]]
+-- User configuration
+safe_require("config")
