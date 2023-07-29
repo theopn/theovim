@@ -115,5 +115,6 @@ local lsp_menu = function()
     util.create_select_menu("Code action to perform at the current cursor", lsp_options)() --> Extra paren to execute!
   end
 end
-vim.keymap.set('n', "<leader>ca", lsp_menu, { noremap = true, silent = true })
+vim.keymap.set('n', "<leader>ca", lsp_menu,
+  { noremap = true, silent = true, desc = "[c]ode [a]ction: open menu for LSP features" })
 -- }}}
