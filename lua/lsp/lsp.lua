@@ -102,10 +102,11 @@ local lsp_options = {
   ["1. Code Action"] = function() vim.lsp.buf.code_action() end,
   ["2. References"] = function() vim.lsp.buf.references() end,
   ["3. Current Buffer Diagonostics"] = function() vim.diagnostic.open_float(0, { scope = "buffer", border = "rounded" }) end,
-  --["4. Outline"] = "Lspsaga outline",
-  ["5. Hover Doc"] = function() vim.lsp.buf.hover() end, -- LSPSaga version requires Markdown treesitter
-  ["6. Rename Variable"] = function() vim.lsp.buf.rename() end,
+  ["4. Symbols"] = function() vim.lsp.buf.document_symbol() end,
+  ["5. Hover Doc (<LDR>cd)"] = function() vim.lsp.buf.hover() end,
+  ["6. Rename Variable (<LDR>cr)"] = function() vim.lsp.buf.rename() end,
   ["7. Linter (Code Auto Format) Toggle"] = "LinterToggle",
+  ["8. LSP Server Information"] = "LspInfo",
 }
 local lsp_menu = function()
   if #(vim.lsp.get_active_clients({ bufnr = 0 })) == 0 then
