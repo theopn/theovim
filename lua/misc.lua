@@ -22,7 +22,6 @@ do
   vim.api.nvim_create_user_command("TheovimUpdate",
     function()
       theovim_git_pull()
-      require("lazy").sync()
       --vim.cmd("MasonUpdate")
       --vim.cmd("TSUpdate")
     end, { nargs = 0 })
@@ -58,7 +57,8 @@ local git_options = {
   ["2. Git Status"] = "Telescope git_status"
 }
 local git_menu = util.create_select_menu("Git functionality to use:", git_options)
-vim.keymap.set({ 'n', "<leader>g", git_menu, "[g]it: open the menu to perform Git features" })
+vim.keymap.set('n', "<leader>g", git_menu,
+  { noremap = true, silent = true, desc = "[g]it: open the menu to perform Git features" })
 -- }}}
 
 -- {{{ Terminal menu
@@ -78,7 +78,8 @@ local terminal_options = {
   ["5. New Tab"] = function() vim.cmd("tabnew | term") end,
 }
 local term_menu = util.create_select_menu("Where would you like to launch a terminal?", terminal_options)
-vim.keymap.set({ 'n', "<leader>z", term_menu, "[z]sh: launch terminal" })
+vim.keymap.set('n', "<leader>z", term_menu,
+  { noremap = true, silent = true, desc = "[z]sh: launch terminal" })
 -- }}}
 
 -- {{{ Miscellaneous features
@@ -91,6 +92,7 @@ local misc_options = {
   ["6. :TheovimVanillaVimHelp"] = "TheovimVanillaVimHelp",
   ["7. :TheovimChangelog"] = "TheovimChangelog",
 }
-THEOVIM_MISC_MENU = util.create_select_menu("What fun feature would you like to use?", misc_options)
-vim.keymap.set({ 'n', "<leader>m", git_menu, "[m]isc: open menu to use other miscellaneous Theovim features" })
+local misc_menu = util.create_select_menu("What fun feature would you like to use?", misc_options)
+vim.keymap.set('n', "<leader>m", misc_menu,
+  { noremap = true, silent = true, desc = "[m]isc: open menu to use other miscellaneous Theovim features" })
 --}}}
