@@ -222,7 +222,7 @@ local key_opt = {
   { 'n', "<leader><RIGHT>", "<C-w>10>" },
   -- Tab --
   { 'n', "<leader>n",
-    ":ls<CR>:echomsg 'Choose a buf to create a new tab with'<CR>:tab sb<SPACE>" },
+    ":ls<CR>:echo '[Theovim] Choose a buf to create a new tab w/ (blank: choose curr buf, RET: confirm, ESC: cancel)'<CR>:tab sb<SPACE>" },
   { 'n', "<leader>1", "1gt" },                                                          --> Go to 1st tab
   { 'n', "<leader>2", "2gt" },                                                          --> ^
   { 'n', "<leader>3", "3gt" },                                                          --> ^
@@ -232,7 +232,7 @@ local key_opt = {
   { 'n', "<leader>[", "<CMD>bprevious<CR>",         "[[]: navigate to prev buffer" },
   { 'n', "<leader>]", "<CMD>bnext<CR>",             "[]]: navigate to next buffer" },
   { 'n', "<leader>x",
-    ":ls<CR>:echo 'Choose a buffer to delete'<CR>:bdelete<SPACE>" },
+    ":ls<CR>:echo '[Theovim] Choose a buf to delete (blank: choose curr buf, RET: confirm, ESC: cancel)'<CR>:bdelete<SPACE>" },
   -- }}}
 
   -- {{{ Plugin/Feature Specific Keybindings
