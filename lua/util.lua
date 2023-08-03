@@ -60,19 +60,21 @@ end
 -- @return a function that creates the floating terminal
 --]]
 M.spawn_floating_term = function()
-  local win_height = math.ceil(vim.o.lines * 0.8)
-  local win_width = math.ceil(vim.o.columns * 0.8)
-  local x_pos = math.ceil((vim.o.lines - win_height) * 0.5)  --> Centering the window
-  local y_pos = math.ceil((vim.o.columns - win_width) * 0.5) --> Centering the window
+  local win_height = vim.api.nvim_win_get_height(0) or vim.o.columns
+  local win_width = vim.api.nvim_win_get_width(0) or vim.o.lines
+  local float_win_height = math.ceil(win_height * 0.8)
+  local float_win_width = math.ceil(win_width * 0.8)
+  local x_pos = math.ceil((win_width - float_win_width) * 0.5)   --> Centering the window
+  local y_pos = math.ceil((win_height - float_win_height) * 0.5) --> Centering the window
 
   local win_opts = {
     border = "rounded", --> sigle, double, rounded, solid, shadow
     relative = "editor",
     style = "minimal",  --> No number, cursorline, etc.
-    width = win_width,
-    height = win_height,
-    row = x_pos,
-    col = y_pos,
+    width = float_win_width,
+    height = float_win_height,
+    row = y_pos,
+    col = x_pos,
   }
 
   local float_win = function()
@@ -114,8 +116,8 @@ M.spawn_floating_shell = function(cmd, height_ratio, width_ratio, pos, transpare
   -- Window position
   local pos_enum = {
     TOP = 1,
-    CENTER = math.ceil((vim.o.columns - win_width) * 0.5),
-    BOTTOM = vim.o.columns
+    CENTER = math.ceil((vim.o.lines - win_height) * 0.5),
+    BOTTOM = vim.o.lines
   }
   local x_pos = pos_enum[pos]
   local y_pos = math.ceil((vim.o.columns - win_width) * 0.5) --> always center the horizontally
@@ -164,19 +166,21 @@ end
 -- @return a function that creates the floating window
 --]]
 M.spawn_floting_doc_win = function(file_path)
-  local win_height = math.ceil(vim.o.lines * 0.8)
-  local win_width = math.ceil(vim.o.columns * 0.8)
-  local x_pos = math.ceil((vim.o.lines - win_height) * 0.5)  --> Centering the window
-  local y_pos = math.ceil((vim.o.columns - win_width) * 0.5) --> Centering the window
+  local win_height = vim.api.nvim_win_get_height(0) or vim.o.lines
+  local win_width = vim.api.nvim_win_get_width(0) or vim.o.columns
+  local float_win_height = math.ceil(win_height * 0.8)
+  local float_win_width = math.ceil(win_width * 0.8)
+  local x_pos = math.ceil((win_width - float_win_width) * 0.5)   --> Centering the window
+  local y_pos = math.ceil((win_height - float_win_height) * 0.5) --> Centering the window
 
   local win_opts = {
     border = "rounded", --> sigle, double, rounded, solid, shadow
     relative = "editor",
     style = "minimal",  --> No number, cursorline, etc.
-    width = win_width,
-    height = win_height,
-    row = x_pos,
-    col = y_pos,
+    width = float_win_width,
+    height = float_win_height,
+    row = y_pos,
+    col = x_pos,
   }
 
   local float_win = function()
