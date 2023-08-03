@@ -36,6 +36,8 @@ safe_require("plugins")
 -- Theovim built-in UI elements
 local statusline = safe_require("ui.statusline")
 if statusline then statusline.setup() end
+local winbar = safe_require("ui.winbar")
+if winbar then winbar.setup() end
 local dashboard = safe_require("ui.dashboard")
 if dashboard then dashboard.setup() end
 
@@ -44,8 +46,9 @@ safe_require("lsp.lsp")
 safe_require("lsp.completion")
 
 -- Plugin configurations
-safe_require("config.treesitter")
+safe_require("config.tabby")
 safe_require("config.fuzzy")
+safe_require("config.treesitter")
 
 -- Other Theovim features
 safe_require("misc")
