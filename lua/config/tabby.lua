@@ -1,11 +1,12 @@
 --[[ tabby.lua
---
+-- Configuration for tabby.nvim to improve Vim's stock tab experience
+-- https://github.com/nanozuki/tabby.nvim
 --]]
 
 local theme = {
   fill = "TabLineFill",
   head = "TabLine",
-  current_tab = "TabLineSel",
+  current_tab = { fg = "#f2e9de", bg = "#222436", style = "italic" },
   tab = "TabLine",
   win = "TabLine",
   tail = "TabLine",
