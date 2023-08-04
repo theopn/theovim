@@ -22,9 +22,8 @@ local plugins = {
   -- }}}
 
   -- {{{ Look and feel
-  { "nanozuki/tabby.nvim", }, --> Improving Vim's built-in "tab" (which is more like desktop workspacesj)
   {
-    "folke/tokyonight.nvim",  --> colorscheme
+    "folke/tokyonight.nvim", --> colorscheme
     config = function() vim.cmd("colorscheme tokyonight-moon") end,
   },
   {
