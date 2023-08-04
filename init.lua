@@ -40,7 +40,7 @@ local winbar = safe_require("ui.winbar")
 if winbar then winbar.setup() end
 local dashboard = safe_require("ui.dashboard")
 if dashboard then dashboard.setup() end
---require("ui.tabline").setup()
+require("ui.tabline").setup()
 --require("ui.buf").setup()
 
 -- LSP configurations
