@@ -6,7 +6,14 @@
 --  |  |  | |-' | |  \ /  | | | |
 --  o  o  o o-o o-o   o   | o o o
 --]]
+local M = {}
 
+--[[ create_highlight()
+-- Creates a new highlight group. Suitable for groups with foreground or background only
+-- @arg group: Name of the highlight group to create
+-- @arg fg: Foreground hex code. If none is provided, nil is used
+-- @arg bg: Background hex code. If none is provided, nil is used
+--]]
 local function create_highlight(group, fg, bg)
   local highlight_cmd = "highlight " .. group
   highlight_cmd = (fg ~= nil) and (highlight_cmd .. " guifg=" .. fg) or (highlight_cmd)
@@ -14,9 +21,12 @@ local function create_highlight(group, fg, bg)
   vim.cmd(highlight_cmd)
 end
 
--- Create highlight groups
 create_highlight("TabLineSel", "#5AB0F6", "#1e2030")
 
+--[[ get_listed_bufs()
+-- Returns the Lua list of listed buffers
+-- @return list of buffers that are loaded, valid, and listed
+--]]
 local function get_listed_bufs()
   local listed_buf = {}
   for _, buf in pairs(vim.api.nvim_list_bufs()) do
@@ -30,8 +40,10 @@ local function get_listed_bufs()
   return listed_buf
 end
 
-local M = {}
-
+--[[ options
+-- Povides a default option to be used for build()
+-- CURRENTLY NOT IN USE
+--]]
 M.options = {
   show_index = true,
   show_modify = true,
@@ -44,7 +56,9 @@ M.options = {
 }
 
 --[[ build()
--- Inspired by https://github.com/crispgm/nvim-tabline
+-- Format a string for Vim tabline based on tabs and current buffer information
+--
+-- @return formatted string to be used as a Vim tabline
 --]]
 M.build = function()
   -- Init
@@ -106,6 +120,10 @@ M.build = function()
   return s
 end
 
+--[[ setup()
+-- Evaluate user options, devicons presence and assign a newly created global function based on build() to tabline
+-- Inspired by https://github.com/crispgm/nvim-tabline
+--]]
 function M.setup(user_options)
   if user_options then M.options = vim.tbl_extend('force', M.options, user_options) end
   M.has_devicons, M.devicons = pcall(require, 'nvim-web-devicons')
@@ -114,8 +132,7 @@ function M.setup(user_options)
     return M.build()
   end
 
-  vim.o.showtabline = 2
-  vim.o.tabline = '%!v:lua.nvim_tabline()'
+  vim.opt.tabline = '%!v:lua.nvim_tabline()'
 end
 
 return M
