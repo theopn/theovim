@@ -54,8 +54,8 @@ M.create_select_menu = function(prompt, options_table)
   return menu
 end
 
---[[
--- TODO
+--[[ spawn_floating_term()
+-- Create a floating terminal (80% of the current window size)
 --
 -- @return a function that creates the floating terminal
 --]]
