@@ -14,7 +14,7 @@
 --
 -- Cat : https://www.asciiart.eu/animals/cats
 --      I added a few layers of belly so it looks more like my cat Oliver
--- Logo: $figlet -f mini Theovim
+-- Logo: $ figlet -f mini Theovim
 --
 -- Initialize all configuration files
 --]]
@@ -36,11 +36,12 @@ safe_require("plugins")
 -- Theovim built-in UI elements
 local statusline = safe_require("ui.statusline")
 if statusline then statusline.setup() end
+local tabline = safe_require("ui.tabline")
+if tabline then tabline.setup() end
 local winbar = safe_require("ui.winbar")
 if winbar then winbar.setup() end
 local dashboard = safe_require("ui.dashboard")
 if dashboard then dashboard.setup() end
-require("ui.tabline").setup()
 --require("ui.buf").setup()
 
 -- LSP configurations
