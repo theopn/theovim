@@ -34,6 +34,8 @@ safe_require("core")
 safe_require("plugins")
 
 -- Theovim built-in UI elements
+local highlights = safe_require("ui.highlights")
+if highlights then highlights.setup() end
 local statusline = safe_require("ui.statusline")
 if statusline then statusline.setup() end
 local tabline = safe_require("ui.tabline")
