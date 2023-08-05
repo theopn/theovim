@@ -1,4 +1,10 @@
 --[[ components.lua
+-- figlet -f chunky theovim
+--  __   __                       __
+-- |  |_|  |--.-----.-----.--.--.|__|.--------.
+-- |   _|     |  -__|  _  |  |  ||  ||        |
+-- |____|__|__|_____|_____|\___/ |__||__|__|__|
+--
 -- Provides components for statusline/winbar
 --]]
 local M = {}
