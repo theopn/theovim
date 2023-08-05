@@ -52,19 +52,23 @@ Statusline.build = function()
     "%#StatusLineOrangeAccent# ",
     " ",
     vim.fn.fnamemodify(vim.fn.getcwd(), ":t"), --> current working directory
+    -- File info
     "  ",
-    "%f",                                      --> Current file/path relative to the current folder
-    "%m",                                      --> [-] for read only, [+] for modified buffer
-    "%r",                                      --> [RO] for read only, I know it's redundant
+    "%f", --> Current file/path relative to the current folder
+    "%m", --> [-] for read only, [+] for modified buffer
+    "%r", --> [RO] for read only, I know it's redundant
+    "%<", --> Truncation starts here (and to the left) if file is too logn
 
     -- Git
     " %#StatusLineRedAccent#",
-    "%<", --> Truncation starts here if file is too logn
     components.git_status(),
 
     -- Spacer
     "%#Normal#",
     "%=",
+
+    -- Global linter statsu
+    components.linter_status(),
 
     -- File information
     "%#StatusLinePurpleAccent#",
