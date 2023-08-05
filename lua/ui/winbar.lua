@@ -15,11 +15,13 @@ Winbar = {}
 local status, devicons = pcall(require, "nvim-web-devicons")
 if status then devicons.setup() end
 
-Winbar.winbar_filetype_exclude = {
+--[[ excluded_ft
+-- List of excluded filetypes
+--]]
+Winbar.excluded_ft = {
   "help",
-  "dashboard",
-  "packer",
-  "NvimTree",
+  "theovimdashboard",
+  "nvimtree",
 }
 
 --[[ is_excluded_buf()
@@ -28,7 +30,7 @@ Winbar.winbar_filetype_exclude = {
 -- @return whether
 --]]
 local is_excluded_buf = function()
-  if vim.tbl_contains(Winbar.winbar_filetype_exclude, vim.bo.filetype) then
+  if vim.tbl_contains(Winbar.excluded_ft, string.lower(vim.bo.filetype)) then
     vim.opt_local.winbar = nil --> On a second thought, isn't this useless bc setup() sets it to "" regardless
     return true
   end
