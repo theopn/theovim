@@ -93,7 +93,7 @@ M.lsp_server = function()
   if rawget(vim, "lsp") then
     for _, client in ipairs(vim.lsp.get_active_clients()) do
       if client.attached_buffers[vim.api.nvim_get_current_buf()] then
-        return (vim.o.columns <= 100) and ("  LSP ") or ("  LSP: " .. client.name)
+        return "  LSP: " .. client.name
       end
     end
   end
@@ -143,13 +143,12 @@ M.linter_status = function()
     for _, client in ipairs(vim.lsp.get_active_clients()) do
       if client.attached_buffers[vim.api.nvim_get_current_buf()] and client.server_capabilities.documentFormattingProvider then
         if vim.g.linter_status then
-          --return " %#StatusLineYellowAccent#󰃢 Linter:  "
-          return " %#StatusLineYellowAccent#󰃢 Linter: on"
+          return " %#StatusLineYellowAccent#󰃢 Linter  "
         end
       end
     end
   end
-  return " %#StatusLineRedAccent#󰃢 Linter: off"
+  return " %#StatusLineRedAccent#󰃢 Linter  "
 end
 
 --[[ ff_and_enc()
