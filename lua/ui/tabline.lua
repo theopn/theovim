@@ -47,8 +47,9 @@ end
 -- @return formatted string to be used as a Vim tabline
 --]]
 M.build = function()
-  -- Init
-  local s = "%#TabLine# Theo   "
+  -- Init + %< to have truncation start after the logo
+  local s = "%#TabLine# Theo   %<"
+
   local curr_tabnum = vim.fn.tabpagenr()
   for i = 1, vim.fn.tabpagenr("$") do
     -- Variables
