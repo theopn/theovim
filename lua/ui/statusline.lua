@@ -8,6 +8,7 @@
 --   !__!  !__!__!!_____!!_____!!_____!!__!!__!__!__!
 --
 -- Provide functions to build a Lua table and Luaeval string used for setting up Vim statusline
+--
 -- @requires ui.components for Statusline/Winbar components
 --]]
 local components = require("ui.components")

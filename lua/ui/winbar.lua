@@ -6,6 +6,8 @@
 --  dBP   dBP dBP dBP    dBP.BP  BB.BP dBP dBPdBPdBP
 -- dBP   dBP dBP dBBBBP dBBBBP   BBBP dBP dBPdBPdBP
 -- Provide tools to build a winbar component with buffer and LSP information
+--
+-- @requires ui.components for Statusline/Winbar components
 --]]
 local components = require("ui.components")
 
@@ -37,9 +39,10 @@ end
 -- @arg ft File type of the buffer that tries to get the icon for
 -- @return Icon from the devicons plug-in
 --]]
-local get_devicon = function(ft)
+local get_devicon = function(bufname)
   if Winbar.has_devicons then
-    local icon = Winbar.devicons.get_icon_by_filetype(ft)
+    local ext = vim.fn.fnamemodify(bufname, ":e")
+    local icon = Winbar.devicons.get_icon(bufname, ext, { default = true })
     if icon then return icon end
   end
   return ""
@@ -61,7 +64,7 @@ function Winbar.build()
     "%<",
 
     -- File info
-    get_devicon(vim.bo.filetype),
+    get_devicon(vim.fn.bufname("%")),
     " %t",
     "%m",
     "%r ",
