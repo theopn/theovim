@@ -8,22 +8,6 @@
 --]]
 local M = {}
 
---[[ create_highlight()
--- Creates a new highlight group. Suitable for groups with foreground or background only
--- @arg group: Name of the highlight group to create
--- @arg fg: Foreground hex code. If none is provided, nil is used
--- @arg bg: Background hex code. If none is provided, nil is used
---]]
-local function create_highlight(group, fg, bg)
-  local highlight_cmd = "highlight " .. group
-  highlight_cmd = (fg ~= nil) and (highlight_cmd .. " guifg=" .. fg) or (highlight_cmd)
-  highlight_cmd = (bg ~= nil) and (highlight_cmd .. " guibg=" .. bg) or (highlight_cmd)
-  vim.cmd(highlight_cmd)
-end
-
--- Custom highlight
-create_highlight("TabLineSel", "#5AB0F6", "#1E2030") --> Reverse of Tokyonight "TabLineSel" for cleaner look
-
 --[[ get_listed_bufs()
 -- Returns the Lua list of listed buffers
 -- @return list of buffers that are loaded, valid, and listed
@@ -48,7 +32,7 @@ end
 --]]
 M.build = function()
   -- Init + %< to have truncation start after the logo
-  local s = "%#TabLine# Theo   %<"
+  local s = "%#TabLineFill# Theo   %<"
 
   local curr_tabnum = vim.fn.tabpagenr()
   for i = 1, vim.fn.tabpagenr("$") do
@@ -59,14 +43,14 @@ M.build = function()
     local curr_bufname = vim.fn.bufname(curr_bufnum)
     local is_curr_buff_modified = vim.fn.getbufvar(curr_bufnum, "&modified")
 
-    -- Highlight based on whether tab is selected or not
-    s = s .. ((i == curr_tabnum) and "%#TabLineSel#" or "%#TabLine#")
-    -- Left margin/separator s = s .. ""
-    s = s .. " "
-    -- make tab clickable (%nT)
-    s = s .. "%" .. i .. "T"
-    -- Index
-    s = s .. string.format(" %i ", i)
+    -- Basic setup
+    s = table.concat({
+      s,
+      ((i == curr_tabnum) and "%#TabLineSel#" or "%#TabLine#"), --> diff hl for active and inactive tabs
+      " ",                                                      --> Left margin/separator " "
+      "%", i, "T",                                              --> make tab clickable (%nT)
+      string.format("%i ", i)                                   --> Tab index
+    })
 
     -- Icon
     if M.has_devicons then
@@ -74,6 +58,7 @@ M.build = function()
       local icon = M.devicons.get_icon(curr_bufname, ext, { default = true }) .. " "
       s = s .. icon
     end
+
     -- Current name of the tab
     local display_curr_bufname = vim.fn.fnamemodify(curr_bufname, ":t")
     -- Limiting inactive tab name to n character + 3 (... that will be appended)
@@ -81,7 +66,7 @@ M.build = function()
     if i ~= curr_tabnum and string.len(display_curr_bufname) > bufname_len_limit + 3 then
       display_curr_bufname = string.sub(display_curr_bufname, 1, 10) .. "..."
     end
-    -- Append
+    -- Append formatted bufname
     if display_curr_bufname ~= "" then
       s = s .. display_curr_bufname
     elseif vim.bo.filetype ~= "" then
@@ -99,17 +84,21 @@ M.build = function()
     -- Functional close button or modified indicator
     s = s .. ((is_curr_buff_modified == 1) and " " or " ")
 
-    -- Reset button (%T) s = s .. " %T%#Normal# "
-    s = s .. "%T %#Normal# "
+    -- Reset button (%T) s = s .. " %T%#TabLineFill# "
+    s = s .. "%T %#TabLineFill# "
   end
 
   -- Number of buffer and tab on the far right
-  local buf_num_str = string.format("  Buf: %i", #get_listed_bufs())
-  local tab_num_str = string.format("  Tab: %i", vim.fn.tabpagenr("$"))
-  s = s .. "%#TabLineFill#" --> Background color
-  s = s .. "%="             --> Spacer
-  s = s .. "%#TabLineSel#"  --> Foreground color for buf num and tab number
-  s = s .. string.format(" %s | %s ", buf_num_str, tab_num_str)
+  s = table.concat({
+    s,
+    "%#TabLineFill#", --> BG color
+    "%=", --> Spacer
+    "%#TabLineSel#", --> FG color for buf and tab status
+    string.format("  Buf: %i ", #get_listed_bufs()), --> Buf num
+    "| ",
+    string.format("  Tab: %i ", vim.fn.tabpagenr("$")), --> Tab num
+    " ", --> right margin
+  })
   return s
 end
 
