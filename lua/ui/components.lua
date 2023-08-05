@@ -49,15 +49,15 @@ end
 --]]
 M.update_mode_colors = function()
   local current_mode = vim.api.nvim_get_mode().mode
-  local mode_color = "%#StatusLineGreyAccent#"
+  local mode_color = "%#PastelculaGreyAccent#"
   if current_mode == "n" then
-    mode_color = "%#StatusLineBlueAccent#"
+    mode_color = "%#PastelculaBlueAccent#"
   elseif current_mode == "i" then
-    mode_color = "%#StatusLineRedAccent#"
+    mode_color = "%#PastelculaRedAccent#"
   elseif current_mode == "v" or current_mode == "V" or current_mode == "" then
-    mode_color = "%#StatusLineGreenAccent#"
+    mode_color = "%#PastelculaGreenAccent#"
   elseif current_mode == "c" then
-    mode_color = "%#StatusLinePurpleAccent#"
+    mode_color = "%#PastelculaPurpleAccent#"
   end
   return mode_color
 end
@@ -129,8 +129,8 @@ M.lsp_status = function()
   local info = (count["info"] > 0) and (" 󰋼 " .. count["info"]) or ("")
 
   return string.format("%s%s%s%s ",
-    ("%#StatusLineRedAccent#" .. errors), ("%#StatusLineOrangeAccent#" .. warnings),
-    ("%#StatusLineYellowAccent#" .. hints), ("%#StatusLineGreenAccent#" .. info))
+    ("%#PastelculaRedAccent#" .. errors), ("%#PastelculaOrangeAccent#" .. warnings),
+    ("%#PastelculaYellowAccent#" .. hints), ("%#PastelculaGreenAccent#" .. info))
 end
 
 --[[ linter_status()
@@ -143,12 +143,12 @@ M.linter_status = function()
     for _, client in ipairs(vim.lsp.get_active_clients()) do
       if client.attached_buffers[vim.api.nvim_get_current_buf()] and client.server_capabilities.documentFormattingProvider then
         if vim.g.linter_status then
-          return " %#StatusLineYellowAccent#󰃢 Linter  "
+          return " %#PastelculaYellowAccent#󰃢 Linter  "
         end
       end
     end
   end
-  return " %#StatusLineRedAccent#󰃢 Linter  "
+  return " %#PastelculaRedAccent#󰃢 Linter  "
 end
 
 --[[ ff_and_enc()

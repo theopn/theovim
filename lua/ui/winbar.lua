@@ -36,7 +36,7 @@ local is_excluded_buf = function()
 end
 
 --[[ get_devicon()
--- @arg ft File type of the buffer that tries to get the icon for
+-- @arg Name of the buffer
 -- @return Icon from the devicons plug-in
 --]]
 local get_devicon = function(bufname)
@@ -59,9 +59,9 @@ function Winbar.build()
   end
 
   local winbar = table.concat({
-    "%#StatusLineLightGreyAccent#",
+    "%#PastelculaLightGreyAccent#",
     " ",
-    "%<",
+    "%<", --> Truncation starts here so the left separator will be visible at all time
 
     -- File info
     get_devicon(vim.fn.bufname("%")),
@@ -70,12 +70,11 @@ function Winbar.build()
     "%r ",
 
     -- LSP
-    --"%#StatusLineBlueAccent#",
     components.lsp_server(),
     components.lsp_status(),
 
-    "%#StatusLineLightGreyAccent#",
-    " ",
+    "%#PastelculaLightGreyAccent#",
+    "",
     "%#Normal#"
   })
   return winbar
@@ -84,7 +83,6 @@ end
 --[[ setup()
 -- Set Neovim winbar to be the luaeval of the build() function
 --]]
-
 function Winbar.setup()
   Winbar.has_devicons, Winbar.devicons = pcall(require, "nvim-web-devicons")
   vim.opt.winbar = "%{%v:lua.Winbar.build()%}"
