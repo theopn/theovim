@@ -21,7 +21,8 @@ local function create_highlight(group, fg, bg)
   vim.cmd(highlight_cmd)
 end
 
-create_highlight("TabLineSel", "#5AB0F6", "#1e2030")
+-- Custom highlight
+create_highlight("TabLineSel", "#5AB0F6", "#1E2030") --> Reverse of Tokyonight "TabLineSel" for cleaner look
 
 --[[ get_listed_bufs()
 -- Returns the Lua list of listed buffers
@@ -39,21 +40,6 @@ local function get_listed_bufs()
   end
   return listed_buf
 end
-
---[[ options
--- Povides a default option to be used for build()
--- CURRENTLY NOT IN USE
---]]
-M.options = {
-  show_index = true,
-  show_modify = true,
-  show_icon = true,
-  fnamemodify = ':t',
-  brackets = { "[", "]" },
-  no_name = 'No Name',
-  modify_indicator = ' [+]',
-  inactive_tab_max_length = 0,
-}
 
 --[[ build()
 -- Format a string for Vim tabline based on tabs and current buffer information
@@ -74,10 +60,12 @@ M.build = function()
 
     -- Highlight based on whether tab is selected or not
     s = s .. ((i == curr_tabnum) and "%#TabLineSel#" or "%#TabLine#")
-    -- Initialize and make tab clickable (%nT)
-    s = s .. " " .. "%" .. i .. "T"
+    -- Left margin/separator s = s .. ""
+    s = s .. " "
+    -- make tab clickable (%nT)
+    s = s .. "%" .. i .. "T"
     -- Index
-    s = s .. i .. " "
+    s = s .. string.format(" %i ", i)
 
     -- Icon
     if M.has_devicons then
@@ -105,18 +93,22 @@ M.build = function()
     if #buflist > 1 then s = s .. " [+" .. (#buflist - 1) .. "]" end
 
     -- Make close button clickable ("%nX", %999X closes the current tab)
-    s = s .. "%" .. i .. "X"
+    local curr_tab_close_btn = "%" .. i .. "X"
+    s = s .. curr_tab_close_btn
     -- Functional close button or modified indicator
     s = s .. ((is_curr_buff_modified == 1) and " " or " ")
 
-    -- Reset button (%T)
-    s = s .. "%T  "
+    -- Reset button (%T) s = s .. " %T%#Normal# "
+    s = s .. "%T %#Normal# "
   end
 
   -- Number of buffer and tab on the far right
-  local buf_num_str = string.format("  Buf: %i ", #get_listed_bufs())
-  local tab_num_str = string.format("  Tab: %i ", vim.fn.tabpagenr("$"))
-  s = s .. "%#TabLineFill#" .. "%= %#TabLineSel#" .. buf_num_str .. "| " .. tab_num_str
+  local buf_num_str = string.format("  Buf: %i", #get_listed_bufs())
+  local tab_num_str = string.format("  Tab: %i", vim.fn.tabpagenr("$"))
+  s = s .. "%#TabLineFill#" --> Background color
+  s = s .. "%="             --> Spacer
+  s = s .. "%#TabLineSel#"  --> Foreground color for buf num and tab number
+  s = s .. string.format(" %s | %s ", buf_num_str, tab_num_str)
   return s
 end
 
@@ -124,15 +116,14 @@ end
 -- Evaluate user options, devicons presence and assign a newly created global function based on build() to tabline
 -- Inspired by https://github.com/crispgm/nvim-tabline
 --]]
-function M.setup(user_options)
-  if user_options then M.options = vim.tbl_extend('force', M.options, user_options) end
-  M.has_devicons, M.devicons = pcall(require, 'nvim-web-devicons')
+function M.setup()
+  M.has_devicons, M.devicons = pcall(require, "nvim-web-devicons")
 
   function _G.nvim_tabline()
     return M.build()
   end
 
-  vim.opt.tabline = '%!v:lua.nvim_tabline()'
+  vim.opt.tabline = "%!v:lua.nvim_tabline()"
 end
 
 return M
