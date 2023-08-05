@@ -241,7 +241,7 @@ end
 -- Set vim.o.statusline to luaeval of the build function
 --]]
 Statusline.setup = function()
-  vim.o.statusline = "%!luaeval('Statusline.build()')" --> vim.wo won't work with term window or floating
+  vim.opt.statusline = "%{%v:lua.Statusline.build()%}"
 end
 
 return Statusline
