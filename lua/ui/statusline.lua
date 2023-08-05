@@ -15,30 +15,6 @@ local components = require("ui.components")
 
 Statusline = {} --> global so that luaeval can keep calling build() function
 
---[[ create_highlight()
--- Creates a new highlight group. Suitable for groups with foreground or background only
--- @arg group: Name of the highlight group to create
--- @arg fg: Foreground hex code. If none is provided, nil is used
--- @arg bg: Background hex code. If none is provided, nil is used
---]]
-local function create_highlight(group, fg, bg)
-  local highlight_cmd = "highlight " .. group
-  highlight_cmd = (fg ~= nil) and (highlight_cmd .. " guifg=" .. fg) or (highlight_cmd)
-  highlight_cmd = (bg ~= nil) and (highlight_cmd .. " guibg=" .. bg) or (highlight_cmd)
-  vim.cmd(highlight_cmd)
-end
-
--- Create highlight groups
-create_highlight("StatusLineBlueAccent", "#5AB0F6", nil)
-create_highlight("StatusLineRedAccent", "#FAA5A5", nil)
-create_highlight("StatusLineGreenAccent", "#BDF7AD", nil)
-create_highlight("StatusLineYellowAccent", "#F3FFC2", nil)
-create_highlight("StatusLinePurpleAccent", "#D3B3F5", nil)
-create_highlight("StatusLineOrangeAccent", "#FFCAA1")
-create_highlight("StatusLineLightGreyAccent", "#B7C2C7")
-create_highlight("StatusLineGreyAccent", "#828B8F", nil)
-
-
 --[[ build()
 -- Build a table with statusline components
 -- @return Lua table of Vim statusline components
@@ -50,7 +26,7 @@ Statusline.build = function()
     components.format_mode(),
 
     -- folder, file name, and status
-    "%#StatusLineOrangeAccent# ",
+    "%#PastelculaOrangeAccent# ",
     " ",
     vim.fn.fnamemodify(vim.fn.getcwd(), ":t"), --> current working directory
     -- File info
@@ -61,7 +37,7 @@ Statusline.build = function()
     "%<", --> Truncation starts here (and to the left) if file is too logn
 
     -- Git
-    " %#StatusLineRedAccent#",
+    " %#PastelculaRedAccent#",
     components.git_status(),
 
     -- Spacer
@@ -72,8 +48,8 @@ Statusline.build = function()
     components.linter_status(),
 
     -- File information
-    "%#StatusLinePurpleAccent#",
-    "   %Y", --> Same as vim.bo.filetype:upper()
+    "%#PastelculaPurpleAccent#",
+    "   %Y ", --> Same as vim.bo.filetype:upper()
 
     components.ff_and_enc(),
     -- Location in the file
