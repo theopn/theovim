@@ -11,10 +11,6 @@ local components = require("ui.components")
 
 Winbar = {}
 
--- Check if devicon is available
-local status, devicons = pcall(require, "nvim-web-devicons")
-if status then devicons.setup() end
-
 --[[ excluded_ft
 -- List of excluded filetypes
 --]]
@@ -37,6 +33,18 @@ local is_excluded_buf = function()
   return false
 end
 
+--[[ get_devicon()
+-- @arg ft File type of the buffer that tries to get the icon for
+-- @return Icon from the devicons plug-in
+--]]
+local get_devicon = function(ft)
+  if Winbar.has_devicons then
+    local icon = Winbar.devicons.get_icon_by_filetype(ft)
+    if icon then return icon end
+  end
+  return ""
+end
+
 --[[ build()
 -- Build a winbar with file information and LSP components
 --
@@ -48,28 +56,24 @@ function Winbar.build()
   end
 
   local winbar = table.concat({
-    -- Left margin
-    --"%=",
-
-    "%#StatusLineGreyAccent#",
+    "%#StatusLineLightGreyAccent#",
     " ",
     "%<",
 
     -- File info
-    status and devicons.get_icon_color_by_filetype(vim.bo.filetype) or "",
-    " %t ",
+    get_devicon(vim.bo.filetype),
+    " %t",
     "%m",
-    "%r",
+    "%r ",
 
     -- LSP
+    --"%#StatusLineBlueAccent#",
     components.lsp_server(),
     components.lsp_status(),
 
-    "%#StatusLineGreyAccent#",
-    "  ",
-
-    -- Right margin
-    "%=",
+    "%#StatusLineLightGreyAccent#",
+    " ",
+    "%#Normal#"
   })
   return winbar
 end
@@ -77,7 +81,9 @@ end
 --[[ setup()
 -- Set Neovim winbar to be the luaeval of the build() function
 --]]
+
 function Winbar.setup()
+  Winbar.has_devicons, Winbar.devicons = pcall(require, "nvim-web-devicons")
   vim.opt.winbar = "%{%v:lua.Winbar.build()%}"
 end
 
