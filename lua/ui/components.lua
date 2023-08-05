@@ -128,7 +128,7 @@ M.lsp_status = function()
   local hints = (count["hints"] > 0) and (" 󰌵 " .. count["hints"]) or ("")
   local info = (count["info"] > 0) and (" 󰋼 " .. count["info"]) or ("")
 
-  return string.format("%s%s%s%s",
+  return string.format("%s%s%s%s ",
     ("%#StatusLineRedAccent#" .. errors), ("%#StatusLineOrangeAccent#" .. warnings),
     ("%#StatusLineYellowAccent#" .. hints), ("%#StatusLineGreenAccent#" .. info))
 end
