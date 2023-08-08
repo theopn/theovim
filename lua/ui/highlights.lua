@@ -1,4 +1,11 @@
 --[[ highlights.lua
+-- $ figlet -f hollywood theovim
+--          /'  /'
+--      --/'--/'
+--      /'  /'__     ____     ____   .     ,   O  ,__________
+--    /'  /'    )  /'    )  /'    )--|    /  /'  /'    )     )
+--  /'  /'    /' /(___,/' /'    /'   |  /' /'  /'    /'    /'
+-- (__/'    /(__(________(___,/'    _|/(__(__/'    /'    /(__
 --
 -- Initialize highlights used by Theovim UI modules
 --]]
