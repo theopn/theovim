@@ -13,11 +13,10 @@
 --------------------------------------------------------- SET: ---------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
 
--- {{{ These are options widely accepted to be the "default" within the Neovim/Vim communities
 do
-  local unopinionated_opt = {
-    { "filetype",      'on' },  --> Detect the type of the file that is edited
-    { "syntax",        'on' },  --> Turn the default highlighting on, overriden by Treesitter in supported buffers
+  local base_opt = {
+    { "filetype",      "on" },  --> Detect the type of the file that is edited
+    { "syntax",        "on" },  --> Turn the default highlighting on, overriden by Treesitter in supported buffers
     { "confirm",       true },  --> Confirm before exiting with unsaved bufffer(s)
     { "autochdir",     false }, --> When on, Vim will change the CWD whenever you open a file, switch buffers ,etc.
     { "scrolloff",     7 },     --> Keep minimum x number of screen lines above and below the cursor
@@ -29,28 +28,25 @@ do
     { "ignorecase",    true },  --> Ignore case in search
     { "smartcase",     true },  --> /smartcase -> apply ignorecase | /sMartcase -> do not apply ignorecase
     -- Split pane --
-    { "splitright",    false }, --> Vertical split default to left
-    { "splitbelow",    true },  --> Horizontal split default to below
+    { "splitright",    true },  --> Vertical split created right
+    { "splitbelow",    true },  --> Horizontal split created below
     { "termguicolors", true },  --> Enables 24-bit RGB color in the TUI
-    { "mouse",         'a' },   --> Enable mouse
+    { "mouse",         "a" },   --> Enable mouse
     { "list",          true },  --> Needed for listchars
     { "listchars",              --> Listing special chars
       { tab = "▷▷", trail = "␣", nbsp = "⍽" } },
     -- Fold --
     { "foldmethod", "expr" }, --> Leave the fold up to treesitter
-    { "foldlevel",  1 },      --> Useless with expr, but when folding by "marker", it only folds folds w/in a fold only
+    { "foldlevel",  1 },      --> Ignored when expr, but when folding by "marker", it only folds folds w/in a fold only
     { "foldenable", false },  --> True for "marker" + level = 1, false for TS folding
   }
   -- Folding using TreeSitter --
   vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
-  for _, v in ipairs(unopinionated_opt) do
+  for _, v in ipairs(base_opt) do
     vim.opt[v[1]] = v[2]
   end
 end
--- }}}
 
--- {{{ These are options that the Theovim author believes to be most optimal for his use -- feel free to change
--- }}}
 do
   local edit_opt = {
     { "tabstop",      2 },        --> How many characters Vim /treats/renders/ <TAB> as
@@ -71,7 +67,7 @@ do
   -- Show the changes made since the last write
   vim.api.nvim_create_user_command("ShowChanges", ":w !diff % -",
     { nargs = 0 })
-  --
+  -- Change curr window local dir to the dir of curr file
   vim.api.nvim_create_user_command("CD", ":lcd %:h",
     { nargs = 0 })
 end
@@ -166,10 +162,9 @@ vim.api.nvim_create_autocmd("TermClose", {
 -------------------------------------------------------- KEYMAP --------------------------------------------------------
 ------------------------------------------------------------------------------------------------------------------------
 
--- {{{ Leader
+-- Leader
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { noremap = true }) --> Unbind space
 vim.g.mapleader = " "                                                --> Space as the leader key
--- }}}
 
 --[[ url_handler()
 -- Find the URL in the current line and open it in a browser if possible
@@ -183,84 +178,159 @@ local function url_handler()
   end
 end
 
--- }}}
-
 -- {{{ Keybinding table
 local key_opt = {
-  { 'n', "gx",              url_handler,                   "Open URL under the cursor using shell open command" },
-  -- {{{ Text Edit Keybindings
-  -- Insert Mode --
-  { 'i', "jk",              "<ESC>" },                                                 --> "joke", get it? Ha ha
-  -- Normal Mode --
-  { 'n', "<leader>/",       "<CMD>let @/=''<CR>",          "[/]: clear last search" }, --> @/ is the macro for the last search
-  { 'n', "<leader>a",       "gg<S-v>G",                    "[a]ll: select all" },
-  -- Search auto center --
-  { 'n', "n",               "nzz" },
-  { 'n', "N",               "Nzz" },
-  -- Copy and paste --
-  { 'x', "<leader>y",       '"+y',                         "[y]ank: yank to the system clipboard (+)" },
-  { 'n', "<leader>p",       "<CMD>Telescope registers<CR>" }, --> Use ":reg" w/o PLUGIN
-  -- First, [d]elete the selection without pasting (pasting to the void reg _) then [p]aste the reg content
-  { 'x', "<leader>p",       '"_dp',                        "[p]aste: paste the current selection without overriding the reg" },
-  -- Terminal Mode --
-  { 't', "<ESC>",           "<C-\\><C-n>",                 "[ESC]: exit insert mode for the terminal" },
-  -- Spell check --
-  { 'i', "<C-s>",           "<C-g>u<ESC>[s1z=`]a<C-g>u",   "[s]pell: fix nearest spelling error and put the cursor back" },
-  { 'n', "<C-s>",           "z=",                          "[s]pell: toggle spell suggestion window for the word under the cursor" },
-  { 'n', "<leader>st",      "<CMD>set spell!<CR>",         "[s]pell [t]oggle: turn spell check on/off for the current buffer" },
-  -- Split window --
-  { 'n', "<leader>|",       "<CMD>vsplit<CR><C-w>l",       "[|]: create a vertical split window" },
-  { 'n', "<leader>-",       "<CMD>split<CR><C-w>j",        "[-]: create a horizontal split window" },
-  { 'n', "<leader>q",       "<C-w>q",                      "[q]uit: close the current window" },
-  { 'n', "<leader>h",       "<C-w>h" },
-  { 'n', "<leader>j",       "<C-w>j" },
-  { 'n', "<leader>k",       "<C-w>k" },
-  { 'n', "<leader>l",       "<C-w>l" },
-  { 'n', "<leader><LEFT>",  "<C-w>10<" },
-  { 'n', "<leader><DOWN>",  "<C-w>5-" },
-  { 'n', "<leader><UP>",    "<C-w>5+" },
-  { 'n', "<leader><RIGHT>", "<C-w>10>" },
-  -- Tab --
-  { 'n', "<leader>n",
-    ":ls<CR>:echo '[Theovim] Choose a buf to create a new tab w/ (blank: choose curr buf, RET: confirm, ESC: cancel)'<CR>:tab sb<SPACE>" },
-  { 'n', "<leader>1", "1gt" },                                                          --> Go to 1st tab
-  { 'n', "<leader>2", "2gt" },                                                          --> ^
-  { 'n', "<leader>3", "3gt" },                                                          --> ^
-  { 'n', "<leader>4", "4gt" },                                                          --> ^
-  -- Buffer --
-  { 'n', "<leader>b", "<CMD>Telescope buffers<CR>", "[b]uffer: open the buffer list" }, --> ":ls<CR>:b<SPACE>" W/O PLUGIN
-  { 'n', "<leader>[", "<CMD>bprevious<CR>",         "[[]: navigate to prev buffer" },
-  { 'n', "<leader>]", "<CMD>bnext<CR>",             "[]]: navigate to next buffer" },
-  { 'n', "<leader>x",
-    ":ls<CR>:echo '[Theovim] Choose a buf to delete (blank: choose curr buf, RET: confirm, ESC: cancel)'<CR>:bdelete<SPACE>" },
-  -- }}}
+  -- Convenience
+  { 'i', "jk",        "<ESC>",              "[j]o[k]er: Better ESC" },
+  { 't', "<ESC>",     "<C-\\><C-n>",        "[ESC]: exit insert mode for the terminal" },
+  { 'n', "<leader>a", "gg<S-v>G",           "[a]ll: select all" },
+  { 'n', "gx",        url_handler,          "Open URL under the cursor using shell open command" },
 
-  -- {{{ Plugin/Feature Specific Keybindings
+  -- Search
+  { 'n', "n",         "nzz",                "Highlight next search and center the screen" },
+  { 'n', "N",         "Nzz",                "Highlight prev search and center the screen" },
+  { 'n', "<leader>/", "<CMD>let @/=''<CR>", "[/]: clear search" }, --> @/ is the macro for the last search
+
+  -- Copy and paste --
+  { 'x', "<leader>y", '"+y',                "[y]ank: yank to the system clipboard (+)" },
+  {
+    'n',
+    "<leader>p",
+    "<CMD>Telescope registers<CR>", --> Use ":reg" w/o PLUGIN
+    "[p]aste: choose from a register",
+  },
+  {
+    'x',
+    "<leader>p",
+    '"_dp', --> First, [d]elete the selection and send content to _ void reg then [p]aste the reg content
+    "[p]aste: paste the current selection without overriding the reg",
+  },
+
+  -- Spell check --
+  {
+    'i',
+    "<C-s>",
+    "<C-g>u<ESC>[s1z=`]a<C-g>u",
+    "[s]pell: fix nearest spelling error and put the cursor back",
+  },
+  {
+    'n',
+    "<C-s>",
+    "z=",
+    "[s]pell: toggle spell suggestion window for the word under the cursor",
+  },
+  {
+    'n',
+    "<leader>st",
+    "<CMD>set spell!<CR>",
+    "[s]pell [t]oggle: turn spell check on/off for the current buffer",
+  },
+
+  -- Buffer
+  {
+    'n',
+    "<leader>b",
+    "<CMD>Telescope buffers<CR>", --> ":ls<CR>:b<SPACE>" W/O PLUGIN
+    "[b]uffer: open the buffer list",
+  },
+  { 'n', "<leader>[", "<CMD>bprevious<CR>", "[[]: navigate to prev buffer" },
+  { 'n', "<leader>]", "<CMD>bnext<CR>",     "[]]: navigate to next buffer" },
+  {
+    'n',
+    "<leader>k",
+    ":ls<CR>:echo '[Theovim] Choose a buf to delete (blank: choose curr buf, RET: confirm, ESC: cancel)'<CR>:bdelete<SPACE>",
+    "[k]ill : Choose a buffer to kill",
+  },
+
+  -- Window
+  {
+    'n',
+    "<leader>+",
+    "<CMD>exe 'resize ' . (winheight(0) * 3/2)<CR>",
+    "[+]: Increase the current window height by one-third",
+  },
+  {
+    'n',
+    "<leader>-",
+    "<CMD>exe 'resize ' . (winheight(0) * 2/3)<CR>",
+    "[-]: Decrease the current window height by one-third",
+  },
+  {
+    'n',
+    "<leader>>",
+    function()
+      local width = math.ceil(vim.api.nvim_win_get_width(0) * 3 / 2)
+      vim.cmd("vertical resize " .. width)
+    end,
+    "[>]: Increase the current window width by one-third",
+  },
+  {
+    'n',
+    "<leader><",
+    function()
+      local width = math.ceil(vim.api.nvim_win_get_width(0) * 2 / 3)
+      vim.cmd("vertical resize " .. width)
+    end,
+    "[<]: Decrease the current window width by one-third",
+  },
+
+  -- Tab
+  {
+    'n',
+    "<leader>n",
+    ":ls<CR>:echo '[Theovim] Choose a buf to create a new tab w/ (blank: choose curr buf, RET: confirm, ESC: cancel)'<CR>:tab sb<SPACE>",
+    "[n]ew: create a new tab",
+  },
+  { 'n',
+    "<leader>q",
+    "<CMD>tabclose<CR>",
+    "[q]uit: close current tab",
+  },
+  { 'n', "<leader>1", "1gt", }, --> Go to 1st tab
+  { 'n', "<leader>2", "2gt", },
+  { 'n', "<leader>3", "3gt", },
+  { 'n', "<leader>4", "4gt", },
+  { 'n', "<leader>5", "5gt", },
+
+  -- LSP --
+  {
+    'n',
+    "<leader>ca",
+    function() vim.notify_once("This keybinding requires lsp.lua module") end,
+    "[c]ode [a]ction: open the menu to perform LSP features",
+  },
+  {
+    'n',
+    "<leader>cd",
+    function() vim.lsp.buf.hover() end,
+    "[c]ode [d]oc: open hover doc for the item under the cursor",
+  },
+  {
+    'n',
+    "<leader>cr",
+    function() vim.lsp.buf.rename() end,
+    "[c]ode [r]ename: rename the variable under the cursor",
+  },
+
+  -- Plugin/Feature Specific Keybindings
   { 'n', "<leader>?",  "<CMD>Telescope keymaps<CR>" }, --> Bring up finder for keymaps
   { 'n', "<leader>t",  "<CMD>NvimTreeToggle<CR>" },    --> Tree toggle
+
   -- Telescope --
-  { 'n', "<leader>ca", function() vim.notify_once("This keybinding requires fuzzy_finder.lua module") end },
+  { 'n', "<leader>fa", function() vim.notify_once("This keybinding requires fuzzy_finder.lua module") end },
   { 'n', "<leader>ff", "<CMD>Telescope find_files<CR>" },
   { 'n', "<leader>fr", "<CMD>Telescope oldfiles<CR>" },
   { 'n', "<leader>fb", "<CMD>Telescope file_browser<CR>" },
   { 'n', "<leader>f/", "<CMD>Telescope current_buffer_fuzzy_find<CR>" },
-  -- LSP --
-  { 'n', "<leader>ca",
-    function() vim.notify_once("This keybinding requires lsp.lua moduke") end,
-    "[c]ode [a]ction: open the menu to perform LSP features" },
-  { 'n', "<leader>cd", function() vim.lsp.buf.hover() end,  "[c]ode [d]oc: open hover doc for the item under the cursor" },
-  { 'n', "<leader>cr", function() vim.lsp.buf.rename() end, "[c]ode [r]ename: rename the variable under the cursor" },
-  -- }}}
 }
 -- }}}
 
 -- Set keybindings
 for _, v in ipairs(key_opt) do
-  -- non-resucrive mapping, call commands silently
+  -- non-recursive mapping, call commands silently
   local opt = { noremap = true, silent = true }
   -- Add optional description to the table if needed
-  if v[4] then
-    opt.desc = v[4]
-  end
+  if v[4] then opt.desc = v[4] end
+  -- Set keybinding
   vim.keymap.set(v[1], v[2], v[3], opt)
 end
