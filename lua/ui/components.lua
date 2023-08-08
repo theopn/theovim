@@ -1,5 +1,5 @@
 --[[ components.lua
--- figlet -f chunky theovim
+-- $ figlet -f chunky theovim
 --  __   __                       __
 -- |  |_|  |--.-----.-----.--.--.|__|.--------.
 -- |   _|     |  -__|  _  |  |  ||  ||        |

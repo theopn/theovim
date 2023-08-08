@@ -5,6 +5,14 @@
 -- -o- O--o o-o o-o o   o   o-O-o
 --  |  |  | |-' | |  \ /  | | | |
 --  o  o  o o-o o-o   o   | o o o
+--
+-- Initialize tabline with:
+-- - Theovim logo
+-- - Clickable tabs
+-- - Number of window iff there is more than one
+-- - Clickable close button that changes when curr buf is modified
+-- - # of buffer and # of win
+-- No requirement other than nvim-web-devicons (optional) and TabLine highlights which every colorscheme should have
 --]]
 local M = {}
 
@@ -94,9 +102,9 @@ M.build = function()
     "%#TabLineFill#", --> BG color
     "%=", --> Spacer
     "%#TabLineSel#", --> FG color for buf and tab status
-    string.format("  Buf: %i ", #get_listed_bufs()), --> Buf num
+    string.format("  #Buf: %i ", #get_listed_bufs()), --> Buf num
     "| ",
-    string.format("  Tab: %i ", vim.fn.tabpagenr("$")), --> Tab num
+    string.format("  #Tab: %i ", vim.fn.tabpagenr("$")), --> Tab num
     " ", --> right margin
   })
   return s
