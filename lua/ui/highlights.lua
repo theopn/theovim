@@ -55,7 +55,6 @@ M.highlights = {
   -- For dashboards
   TheovimDraculaOrange = { fg = "#FFB86C" },
   TheovimDraculaCyan = { fg = "#8BE9FD" },
-  TheovimDraculaPurple = { fg = "#BD93F9" },
 }
 
 --[[ setup()
