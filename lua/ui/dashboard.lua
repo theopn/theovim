@@ -4,6 +4,8 @@
 --  |_| |(/_(_)\/|| | |
 --
 -- Provide a framework to open a dashboard on the Neovim startup when there is no buffer opened (only the empty buf)
+--
+-- Requires highlights.lua for highlight components
 --]]
 local Dashboard = {}
 
@@ -65,9 +67,9 @@ local logo = {
 local buttons = {
   { "󰥨  Find File      SPC f f", cmd = "Telescope find_files" },
   { "󰈙  Recent Files   SPC f r", cmd = "Telescope oldfiles" },
-  { "  File Browser   SPC f b",  cmd = "Telescope file_browser" },
-  { "  Config Theovim        ",  cmd = "e ~/.config/nvim/lua/config.lua" },
-  { "  Exit Theovim        ZZ",  cmd = "quit" },
+  { "  File Browser   SPC f b", cmd = "Telescope file_browser" },
+  { "  Config Theovim        ", cmd = "e ~/.config/nvim/lua/config.lua" },
+  { "  Exit Theovim        ZZ", cmd = "quit" },
 }
 
 -- Calculating max width and make an empty length of the max width
@@ -169,18 +171,16 @@ local render = function()
   vim.api.nvim_win_set_cursor(0, { hdr_start_idx + #header + #logo, cursor_column_idx })
 
   ---------------------------
-  -- Setting highlihgts --
+  -- Setting highlights --
 
-  local dash_hl_namespace = vim.api.nvim_create_namespace("ThVimDashHl")
-
-  for i = hdr_start_idx, hdr_start_idx + #header - 2 do --> Ignore last two empty lines
-    vim.api.nvim_buf_add_highlight(buf, dash_hl_namespace, "ThVimLogoHl", i, 0, -1)
+  for i = hdr_start_idx, hdr_start_idx + #header - 2 do                       --> Ignore last two empty lines
+    vim.api.nvim_buf_add_highlight(buf, -1, "TheovimDraculaOrange", i, 0, -1) --> -1 for no namespace
   end
   for i = hdr_start_idx + #header - 2, hdr_start_idx + #header + #logo - 2 do --> Again, -2 because of empty lines
-    vim.api.nvim_buf_add_highlight(buf, dash_hl_namespace, "ThVimMsgHl", i, 0, -1)
+    vim.api.nvim_buf_add_highlight(buf, -1, "PastelculaPurpleAccent", i, 0, -1)
   end
   for i = hdr_start_idx + #header + #logo - 2, hdr_start_idx + #header + #logo - 2 + (#buttons * 2) do --> Reach ends
-    vim.api.nvim_buf_add_highlight(buf, dash_hl_namespace, "ThVimButtonsHl", i, 0, -1)
+    vim.api.nvim_buf_add_highlight(buf, -1, "TheovimDraculaCyan", i, 0, -1)
   end
 
   -----------------------
@@ -235,21 +235,6 @@ local render = function()
   vim.opt_local.modifiable = false
 end
 
---[[ create_highlights()
--- Create highlights for dashboard using vim.api.nvim_set_hl()
---]]
-local create_highlights = function()
-  local highlights = {
-    ThVimLogoHl = { fg = "#FFB86C" },
-    ThVimButtonsHl = { fg = "#8BE9FD" },
-    ThVimMsgHl = { fg = "#BD93F9" },
-  }
-  for group, properties in pairs(highlights) do
-    vim.api.nvim_set_hl(0, group, properties)
-  end
-end
--- }}}
-
 --[[ opener()
 -- Wrap Dashboard.render() with schedule().
 -- schedule_wrap({cb}) "Defers callback `cb` until the Nvim API is safe to call," and schedule() calls wrapped func
@@ -261,7 +246,6 @@ Dashboard.opener = function()
 end
 
 Dashboard.setup = function()
-  create_highlights()
   Dashboard.opener()
 
   -- Make autocmd for
