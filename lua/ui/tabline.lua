@@ -84,7 +84,7 @@ M.build = function()
     end
 
     -- Number of windows in the tab
-    if #buflist > 1 then s = s .. " [+" .. (#buflist - 1) .. "]" end
+    if #buflist > 1 then s = s .. " [" .. (#buflist) .. " Win]" end
 
     -- Make close button clickable ("%nX", %999X closes the current tab)
     local curr_tab_close_btn = "%" .. i .. "X"
