@@ -50,7 +50,7 @@ M.highlights = {
   PastelculaYellowAccent = { fg = "#F3FFC2", },
   PastelculaPurpleAccent = { fg = "#D3B3F5", },
   PastelculaOrangeAccent = { fg = "#FFCAA1" },
-  PastelculaLightGreyAccent = { fg = "#B7C2C7" },
+  PastelculaLightGreyAccent = { fg = "#B7C2C7", italic = true },
   PastelculaGreyAccent = { fg = "#828B8F", },
   -- For dashboards
   TheovimDraculaOrange = { fg = "#FFB86C" },
