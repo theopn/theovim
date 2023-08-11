@@ -277,9 +277,9 @@ local key_opt = {
   -- Tab
   {
     'n',
-    "<leader>n",
+    "<leader>t",
     ":ls<CR>:echo '[Theovim] Choose a buf to create a new tab w/ (blank: choose curr buf, RET: confirm, ESC: cancel)'<CR>:tab sb<SPACE>",
-    "[n]ew: create a new tab",
+    "[t]ab: create a new tab",
   },
   { 'n',
     "<leader>q",
@@ -313,8 +313,18 @@ local key_opt = {
   },
 
   -- Plugin/Feature Specific Keybindings
-  { 'n', "<leader>?",  "<CMD>Telescope keymaps<CR>" }, --> Bring up finder for keymaps
-  { 'n', "<leader>t",  "<CMD>NvimTreeToggle<CR>" },    --> Tree toggle
+  {
+    'n',
+    "<leader>?",
+    "<CMD>Telescope keymaps<CR>",
+    "[?]: Finder for keymap",
+  },
+  {
+    'n',
+    "<leader>n",
+    "<CMD>NvimTreeToggle<CR>",
+    "[N]vimTree/[n]etrw: File tree",
+  },
 
   -- Telescope --
   { 'n', "<leader>fa", function() vim.notify_once("This keybinding requires fuzzy_finder.lua module") end },
