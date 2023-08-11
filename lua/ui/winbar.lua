@@ -35,19 +35,6 @@ local is_excluded_buf = function()
   return false
 end
 
---[[ get_devicon()
--- @arg Name of the buffer
--- @return Icon from the devicons plug-in
---]]
-local get_devicon = function(bufname)
-  if Winbar.has_devicons then
-    local ext = vim.fn.fnamemodify(bufname, ":e")
-    local icon = Winbar.devicons.get_icon(bufname, ext, { default = true })
-    if icon then return icon end
-  end
-  return ""
-end
-
 --[[ build()
 -- Build a winbar with file information and LSP components
 --
@@ -60,21 +47,20 @@ function Winbar.build()
 
   local winbar = table.concat({
     "%#PastelculaLightGreyAccent#",
-    " ",
-    "%<", --> Truncation starts here so the left separator will be visible at all time
+    " ",
+    "%<", --> Truncation starts here so the icon will be visible at all time
 
     -- File info
-    get_devicon(vim.fn.bufname("%")),
+    components.file_icon(Winbar.has_devicons, Winbar.devicons, vim.fn.bufname("%")),
     " %t",
     "%m",
     "%r ",
 
     -- LSP
+    "%#PastelculaLightGreyAccent#",
     components.lsp_server(),
     components.lsp_status(),
 
-    "%#PastelculaLightGreyAccent#",
-    "",
     "%#Normal#"
   })
   return winbar
