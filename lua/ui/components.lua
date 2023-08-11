@@ -62,6 +62,27 @@ M.update_mode_colors = function()
   return mode_color
 end
 
+--[[ file_icon()
+-- Returns highlighted icon from nvim-web-devicons plug-in
+-- usage:
+-- M.has_devicons. M.devicons = pcall(require, "nvim-web-devicons")
+-- require("ui.components").file_icon(M.has_devicons, M.devicons, vim.fn.bufname("%"))
+--
+--
+-- @arg status First pcall return value
+-- @arg module Second pcall return value
+-- @arg bufname Name of the buffer
+-- @return string in the format :"%#Highlight#<icon>"
+--]]
+M.file_icon = function(status, module, bufname)
+  if status then
+    local ext = vim.fn.fnamemodify(bufname, ":e")
+    local icon, hl = module.get_icon(bufname, ext, { default = true })
+    if icon then return "%#" .. hl .. "#" .. icon end
+  end
+  return ""
+end
+
 --[[ git_status()
 -- Using Gitsigns information, create a formatted string for the Git info that the current buffer belongs to
 -- Loosely based on: https://github.com/NvChad/ui/blob/main/lua/nvchad_ui/statusline/modules.lua#L65
@@ -93,7 +114,8 @@ M.lsp_server = function()
   if rawget(vim, "lsp") then
     for _, client in ipairs(vim.lsp.get_active_clients()) do
       if client.attached_buffers[vim.api.nvim_get_current_buf()] then
-        return "  LSP: " .. client.name
+        --return "  LSP: " .. client.name
+        return " LSP: " .. client.name
       end
     end
   end
