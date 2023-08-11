@@ -78,7 +78,7 @@ M.file_icon = function(status, module, bufname)
   if status then
     local ext = vim.fn.fnamemodify(bufname, ":e")
     local icon, hl = module.get_icon(bufname, ext, { default = true })
-    if icon then return "%#" .. hl .. "#" .. icon end
+    return string.format("%%#%s#%s", hl, icon)
   end
   return ""
 end
@@ -114,8 +114,7 @@ M.lsp_server = function()
   if rawget(vim, "lsp") then
     for _, client in ipairs(vim.lsp.get_active_clients()) do
       if client.attached_buffers[vim.api.nvim_get_current_buf()] then
-        --return "  LSP: " .. client.name
-        return " LSP: " .. client.name
+        return "  LSP: " .. client.name
       end
     end
   end
