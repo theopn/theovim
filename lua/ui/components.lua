@@ -95,14 +95,14 @@ M.git_status = function()
     return ""
   end
 
-  local git_status = vim.b.gitsigns_status_dict
+  local stat = vim.b.gitsigns_status_dict
 
-  local added = (git_status.added and git_status.added ~= 0) and ("+" .. git_status.added) or ("")
-  local changed = (git_status.changed and git_status.changed ~= 0) and ("~" .. git_status.changed) or ("")
-  local removed = (git_status.removed and git_status.removed ~= 0) and ("-" .. git_status.removed) or ("")
-  local branch_name = " " .. git_status.head
+  local added = (stat.added and stat.added ~= 0) and (string.format("+%s ", stat.added)) or ("")
+  local changed = (stat.changed and stat.changed ~= 0) and (string.format("~%s ", stat.changed)) or ("")
+  local removed = (stat.removed and stat.removed ~= 0) and (string.format("-%s ", stat.removed)) or ("")
+  local branch_name = string.format(" %s", stat.head)
 
-  return string.format("%s %s %s %s", branch_name, added, changed, removed)
+  return string.format("%s %s%s%s", branch_name, added, changed, removed)
 end
 
 --[[ lsp_server()
@@ -111,11 +111,9 @@ end
 --         Else "LSP: lsp-client-name"
 --]]
 M.lsp_server = function()
-  if rawget(vim, "lsp") then
-    for _, client in ipairs(vim.lsp.get_active_clients()) do
-      if client.attached_buffers[vim.api.nvim_get_current_buf()] then
-        return "  LSP: " .. client.name
-      end
+  for _, client in ipairs(vim.lsp.get_active_clients()) do
+    if client.attached_buffers[vim.api.nvim_get_current_buf()] then
+      return "  LSP: " .. client.name
     end
   end
   return ""
@@ -128,7 +126,7 @@ end
 --         Else Formatted string of number of errors, warnings, hints, and info (not included if 0)
 --]]
 M.lsp_status = function()
-  if not rawget(vim, "lsp") or #(vim.lsp.get_active_clients()) == 0 then
+  if #(vim.lsp.get_active_clients()) == 0 then
     return ""
   end
 
@@ -140,7 +138,6 @@ M.lsp_status = function()
     hints = "Hint",
   }
   for k, level in pairs(levels) do
-    -- OP used vim.tbl_count, but I think Lua built=in # is better
     count[k] = #(vim.diagnostic.get(0, { severity = level })) --> 0 for current buf
   end
 
@@ -160,16 +157,10 @@ end
 -- @requires vim.g.linter_status variable created in Theovim's LSP settings
 --]]
 M.linter_status = function()
-  if rawget(vim, "lsp") then
-    for _, client in ipairs(vim.lsp.get_active_clients()) do
-      if client.attached_buffers[vim.api.nvim_get_current_buf()] and client.server_capabilities.documentFormattingProvider then
-        if vim.g.linter_status then
-          return " %#PastelculaYellowAccent#󰃢 Linter  "
-        end
-      end
-    end
+  if #(vim.lsp.get_active_clients({ bufnr = 0 })) == 0 then
+    return ""
   end
-  return " %#PastelculaRedAccent#󰃢 Linter  "
+  return (vim.g.linter_status) and ("%#PastelculaYellowAccent#󰃢 Linter  ") or ("%#PastelculaRedAccent#󰃢 Linter  ")
 end
 
 --[[ ff_and_enc()
