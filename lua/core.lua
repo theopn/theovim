@@ -170,9 +170,10 @@ vim.g.mapleader = " "                                                --> Space a
 -- Find the URL in the current line and open it in a browser if possible
 --]]
 local function url_handler()
-  local url = string.match(vim.fn.getline("."), "[a-z]*://[^ >,;]*")
+  -- <something>://<something that aren't >,;)>
+  local url = string.match(vim.fn.getline("."), "[a-z]*://[^ >,;)]*")
   if url ~= nil then
-    vim.cmd("silent exec '!open " .. url .. "'")
+    vim.cmd("exec '!open " .. url .. "'")
   else
     vim.notify("No URI found in the current line")
   end
