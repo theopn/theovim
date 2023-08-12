@@ -13,7 +13,7 @@
 --   | | |(/_(_)\_/ | |||
 --
 -- Cat : https://www.asciiart.eu/animals/cats
---      I added a few layers of belly so it looks more like my cat Oliver
+--      My friend added a few layers of belly so it looks more like chunky my cat Oliver
 -- Logo: $ figlet -f mini Theovim
 --
 -- Initialize all configuration files
@@ -44,7 +44,6 @@ local winbar = safe_require("ui.winbar")
 if winbar then winbar.setup() end
 local dashboard = safe_require("ui.dashboard")
 if dashboard then dashboard.setup() end
---require("ui.buf").setup()
 
 -- LSP configurations
 safe_require("lsp.lsp")
