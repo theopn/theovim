@@ -302,18 +302,6 @@ local key_opt = {
   },
   {
     'n',
-    "<leader>cd",
-    function() vim.lsp.buf.hover() end,
-    "[c]ode [d]oc: open hover doc for the item under the cursor",
-  },
-  {
-    'n',
-    "<leader>cr",
-    function() vim.lsp.buf.rename() end,
-    "[c]ode [r]ename: rename the variable under the cursor",
-  },
-  {
-    'n',
     "<leader>n",
     "<CMD>NvimTreeToggle<CR>",
     "[N]vimTree/[n]etrw: File tree",

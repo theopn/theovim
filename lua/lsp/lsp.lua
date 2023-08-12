@@ -15,16 +15,15 @@ local status, lspconfig = pcall(require, "lspconfig")
 if (not status) then return end
 local mason_lspconfig = require("mason-lspconfig")
 
--- List of LSP server used later
--- Always check the memory usage of each language server. :LSpInfo to identify LSP server
--- and use "sudo lsof -p PID" to check for associated files
-local server_list = {
-  "bashls", "clangd", "lua_ls", "pylsp", "texlab",
-}
-
--- {{{ Language Server Settings
--- Capabilities and on_attach function that will be called for all LSP servers
-local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+--[[ set_lsp_keymaps()
+-- Initialize LSP keymaps for LOCAL BUF. Isolated as a separate func to only be called in LSP buffers
+--]]
+local function set_lsp_keymaps()
+  vim.keymap.set('n', "<leader>cd", function() vim.lsp.buf.hover() end,
+    { buffer = true, noremap = true, silent = true, desc = "[c]ode [d]oc: open hover doc for the cursor item" })
+  vim.keymap.set('n', "<leader>cr", function() vim.lsp.buf.rename() end,
+    { buffer = true, noremap = true, silent = true, desc = "[c]ode [r]enme: rename the cursor item" })
+end
 
 -- Global var for auto formatting toggle
 vim.g.linter_status = true
@@ -39,9 +38,10 @@ vim.g.linter_status = true
 -- @arg bufnr: buffer number used by Neovim
 --]]
 local on_attach = function(client, bufnr)
+  set_lsp_keymaps()
   if client.server_capabilities.documentFormattingProvider then
     -- User command to toggle code format only available when LSP is detected
-    vim.api.nvim_create_user_command("LinterToggle", function()
+    vim.api.nvim_create_user_command("LspLinterToggle", function()
         vim.g.linter_status = not vim.g.linter_status
         print(string.format("Linter %s!", (vim.g.linter_status) and ("on!") or ("off!")))
       end,
@@ -58,6 +58,16 @@ local on_attach = function(client, bufnr)
   end
 end
 
+-- List of LSP server used later
+-- Always check the memory usage of each language server. :LSpInfo to identify LSP server
+-- and use "sudo lsof -p PID" to check for associated files
+local server_list = {
+  "bashls", "clangd", "lua_ls", "pylsp", "texlab",
+}
+
+-- nvim_cmp capabilities
+local cmp_capability = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
+
 -- Let Mason-lspconfig handle LSP setup
 mason_lspconfig.setup {
   ensure_installed = server_list,
@@ -67,12 +77,12 @@ mason_lspconfig.setup {
 mason_lspconfig.setup_handlers({
   -- Default handler
   function(server_name)
-    lspconfig[server_name].setup({ capabilities = capabilities, on_attach = on_attach, })
+    lspconfig[server_name].setup({ capabilities = cmp_capability, on_attach = on_attach, })
   end,
   -- Lua gets a special treatment
   ["lua_ls"] = function()
     lspconfig.lua_ls.setup({
-      capabilities = capabilities,
+      capabilities = cmp_capability,
       on_attach = on_attach,
       settings = {
         -- https://github.com/CppCXY/EmmyLuaCodeStyle/blob/master/lua.template.editorconfig
@@ -97,24 +107,26 @@ mason_lspconfig.setup_handlers({
 })
 -- }}}
 
--- {{{ Custom LSP menu
+-- Custom LSP menu
 local lsp_options = {
-  ["1. Code Action"] = function() vim.lsp.buf.code_action() end,
-  ["2. References"] = function() vim.lsp.buf.references() end,
-  ["3. Current Buffer Diagonostics"] = function() vim.diagnostic.open_float(0, { scope = "buffer", border = "rounded" }) end,
-  ["4. Symbols"] = function() vim.lsp.buf.document_symbol() end,
-  ["5. Hover Doc (<LDR>cd)"] = function() vim.lsp.buf.hover() end,
-  ["6. Rename Variable (<LDR>cr)"] = function() vim.lsp.buf.rename() end,
-  ["7. Linter (Code Auto Format) Toggle"] = "LinterToggle",
-  ["8. LSP Server Information"] = "LspInfo",
+  ["1. Code Action"]                      = function() vim.lsp.buf.code_action() end,
+  ["2. References"]                       = function() vim.lsp.buf.references() end,
+  ["3. Current Buffer Diagonostics"]      =
+      function()
+        vim.diagnostic.open_float(0, { scope = "buffer", border = "rounded" })
+      end,
+  ["4. Symbols"]                          = function() vim.lsp.buf.document_symbol() end,
+  ["5. Hover Doc (<LDR>cd)"]              = function() vim.lsp.buf.hover() end,
+  ["6. Rename Variable (<LDR>cr)"]        = function() vim.lsp.buf.rename() end,
+  ["7. Linter (Code Auto Format) Toggle"] = "LspLinterToggle",
+  ["8. LSP Server Information"]           = "LspInfo",
 }
 local lsp_menu = function()
   if #(vim.lsp.get_active_clients({ bufnr = 0 })) == 0 then
-    vim.notify("There is no LSP server attached to the current buffer")
+    vim.notify_once("There is no LSP server attached to the current buffer")
   else
     util.create_select_menu("Code action to perform at the current cursor", lsp_options)() --> Extra paren to execute!
   end
 end
 vim.keymap.set('n', "<leader>ca", lsp_menu,
   { noremap = true, silent = true, desc = "[c]ode [a]ction: open menu for LSP features" })
--- }}}
