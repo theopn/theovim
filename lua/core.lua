@@ -300,13 +300,6 @@ local key_opt = {
     function() vim.notify_once("This keybinding requires lsp.lua module") end,
     "[c]ode [a]ction: open the menu to perform LSP features",
   },
-  {
-    'n',
-    "<leader>n",
-    "<CMD>NvimTreeToggle<CR>",
-    "[N]vimTree/[n]etrw: File tree",
-  },
-
 }
 -- }}}
 
