@@ -38,7 +38,10 @@ local create_highlight_vim_cmd = function(group, fg, bg)
 end
 
 --[[ get_hl_component()
+-- Wrapper around nvim_get_hl() to extract the value of specified attribute
 --
+-- @arg name Name of the highlight group
+-- @arg attribute Attribute user wants to know the value of
 --]]
 local function get_hl_component(name, attribute)
   local group = vim.api.nvim_get_hl(0, { name = name })
@@ -64,7 +67,7 @@ M.highlights = {
   PastelculaOrangeAccent = { fg = "#FFCAA1" },
   PastelculaLightGreyAccent = { fg = "#B7C2C7", italic = true },
   PastelculaGreyAccent = { fg = "#828B8F", },
-  -- For dashboards
+  -- For the dashboard
   TheovimDraculaOrange = { fg = "#FFB86C" },
   TheovimDraculaCyan = { fg = "#8BE9FD" },
 }
