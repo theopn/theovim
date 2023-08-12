@@ -50,6 +50,10 @@ local plugins = {
   {
     "kyazdani42/nvim-tree.lua",                      --> File tree
     config = function()
+      -- Keymap to toggle
+      vim.keymap.set('n', "<leader>n", "<CMD>NvimTreeToggle<CR>",
+        { noremap = true, silent = true, desc = "[n]vim tree/[n]etrw: toggle file tree" })
+
       -- Disable netrw
       vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
