@@ -15,6 +15,7 @@
 -- No requirement other than nvim-web-devicons (optional) and TabLine highlights which every colorscheme should have
 --]]
 local M = {}
+local fn = vim.fn
 
 --[[ get_listed_bufs()
 -- Returns the Lua list of listed buffers
@@ -22,12 +23,11 @@ local M = {}
 --]]
 local function get_listed_bufs()
   local listed_buf = {}
-  for _, buf in pairs(vim.api.nvim_list_bufs()) do
-    if vim.api.nvim_buf_is_loaded(buf)
-        and vim.api.nvim_buf_is_valid(buf)
-        and vim.bo[buf].buflisted
-    then
-      table.insert(listed_buf, buf)
+  local len = 0 --> direct insertion is faster than table.insert
+  for buf = 1, fn.bufnr("$") do
+    if fn.buflisted(buf) ~= 0 then
+      len = len + 1
+      listed_buf[len] = buf
     end
   end
   return listed_buf
@@ -42,33 +42,30 @@ M.build = function()
   -- Init + %< to have truncation start after the logo
   local s = "%#TabLineFill# Theo   %<"
 
-  local curr_tabnum = vim.fn.tabpagenr()
-  for i = 1, vim.fn.tabpagenr("$") do
+  local curr_tabnum = fn.tabpagenr()
+  for i = 1, fn.tabpagenr("$") do
     -- Variables
-    local winnum = vim.fn.tabpagewinnr(i)
-    local buflist = vim.fn.tabpagebuflist(i)
+    local winnum = fn.tabpagewinnr(i)
+    local buflist = fn.tabpagebuflist(i)
     local curr_bufnum = buflist[winnum]
-    local curr_bufname = vim.fn.bufname(curr_bufnum)
-    local is_curr_buff_modified = vim.fn.getbufvar(curr_bufnum, "&modified")
+    local curr_bufname = fn.bufname(curr_bufnum)
+    local is_curr_buff_modified = fn.getbufvar(curr_bufnum, "&modified")
 
     -- Basic setup
-    s = table.concat({
-      s,
-      ((i == curr_tabnum) and "%#TabLineSel#" or "%#TabLine#"), --> diff hl for active and inactive tabs
-      " ",                                                      --> Left margin/separator " "
-      "%", i, "T",                                              --> make tab clickable (%nT)
-      string.format("%i ", i)                                   --> Tab index
-    })
+    s = s .. ((i == curr_tabnum) and "%#TabLineSel#" or "%#TabLine#") --> diff hl for active and inactive tabs
+    s = s .. " "                                                      --> Left margin/separator " "
+    s = s .. "%" .. i .. "T"                                          --> make tab clickable (%nT)
+    s = s .. i .. " "                                                 --> Tab index
 
     -- Icon
     if M.has_devicons then
-      local ext = vim.fn.fnamemodify(curr_bufname, ":e")
+      local ext = fn.fnamemodify(curr_bufname, ":e")
       local icon = M.devicons.get_icon(curr_bufname, ext, { default = true }) .. " "
       s = s .. icon
     end
 
     -- Current name of the tab
-    local display_curr_bufname = vim.fn.fnamemodify(curr_bufname, ":t")
+    local display_curr_bufname = fn.fnamemodify(curr_bufname, ":t")
     -- Limiting inactive tab name to n character + 3 (... that will be appended)
     local bufname_len_limit = 24
     if i ~= curr_tabnum and string.len(display_curr_bufname) > bufname_len_limit + 3 then
@@ -80,7 +77,7 @@ M.build = function()
     elseif vim.bo.filetype ~= "" then
       s = s .. vim.bo.filetype
     else
-      s = s .. "Nameless"
+      s = s .. "[No Name]"
     end
 
     -- Number of windows in the tab
@@ -92,21 +89,19 @@ M.build = function()
     -- Functional close button or modified indicator
     s = s .. ((is_curr_buff_modified == 1) and " " or " ")
 
-    -- Reset button (%T) s = s .. " %T%#TabLineFill# "
-    s = s .. "%T %#TabLineFill# "
+    -- Reset button (%T)
+    s = s .. "%T"
+    -- BG highlight and left spacing
+    s = s .. " %#TabLineFill# "
   end
 
   -- Number of buffer and tab on the far right
-  s = table.concat({
-    s,
-    "%#TabLineFill#", --> BG color
-    "%=", --> Spacer
-    "%#TabLineSel#", --> FG color for buf and tab status
-    string.format("  #Buf: %i ", #get_listed_bufs()), --> Buf num
-    "| ",
-    string.format("  #Tab: %i ", vim.fn.tabpagenr("$")), --> Tab num
-    " ", --> right margin
-  })
+  s = s .. "%=" --> spacer
+  s = s .. "%#TabLineSel#" -->
+  s = s .. string.format("   #Tab: %i", fn.tabpagenr("$")) --> Tab num
+  s = s .. " |"
+  s = s .. string.format("   #Buf: %i", #get_listed_bufs()) --> Buf num
+  s = s .. "  " --> right margin
   return s
 end
 
