@@ -24,7 +24,15 @@ local plugins = {
   -- {{{ Look and feel
   {
     "folke/tokyonight.nvim", --> colorscheme
-    config = function() vim.cmd("colorscheme tokyonight-moon") end,
+    config = function()
+      vim.cmd([[
+      try
+        colo tokyonight-moon
+      catch
+        colo slate
+      endtry
+      ]])
+    end,
   },
   {
     "rcarriga/nvim-notify", --> Prettier notification
