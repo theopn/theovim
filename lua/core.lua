@@ -8,10 +8,10 @@
 -- Core configuration for Theovim, written only using stock Neovim features and Lua without external plugins or moduels
 -- This file alone should provide a sane default Neovim experience (you can rename it as init.lua to use it standalone)
 --]]
+local opt = vim.opt
+local keymap = vim.keymap
 
-------------------------------------------------------------------------------------------------------------------------
---------------------------------------------------------- SET: ---------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------- OPT: ---------------------------------------------------------
 
 do
   local base_opt = {
@@ -41,9 +41,9 @@ do
     { "foldenable", false },  --> True for "marker" + level = 1, false for TS folding
   }
   -- Folding using TreeSitter --
-  vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
+  opt.foldexpr = "nvim_treesitter#foldexpr()"
   for _, v in ipairs(base_opt) do
-    vim.opt[v[1]] = v[2]
+    opt[v[1]] = v[2]
   end
 end
 
@@ -58,7 +58,7 @@ do
     { "spell",        false },    --> autocmd will enable spellcheck in Tex or markdown
   }
   for _, v in ipairs(edit_opt) do
-    vim.opt[v[1]] = v[2]
+    opt[v[1]] = v[2]
   end
   -- Trimming extra whitespaces --
   -- \s: white space char, \+ :one or more, $: end of the line, e: suppresses warning, no need for <CR> for usercmd
@@ -81,14 +81,12 @@ do
     { "cursorcolumn",   true },
   }
   for _, v in pairs(win_opt) do
-    vim.opt[v[1]] = v[2]
+    opt[v[1]] = v[2]
   end
 end
 -- }}}
 
-------------------------------------------------------------------------------------------------------------------------
 ------------------------------------------------------- AUTOCMD --------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------
 
 -- {{{ File settings based on ft
 -- Dictionary for supported file type (key) and the table containing values (values)
@@ -158,13 +156,11 @@ vim.api.nvim_create_autocmd("TermClose", {
 })
 -- }}}
 
-------------------------------------------------------------------------------------------------------------------------
 -------------------------------------------------------- KEYMAP --------------------------------------------------------
-------------------------------------------------------------------------------------------------------------------------
 
--- Leader
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { noremap = true }) --> Unbind space
-vim.g.mapleader = " "                                                --> Space as the leader key
+-- Leader --
+keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { noremap = true }) --> Unbind space
+vim.g.mapleader = " "                                            --> Space as the leader key
 
 --[[ url_handler()
 -- Find the URL in the current line and open it in a browser if possible
@@ -173,7 +169,7 @@ local function url_handler()
   -- <something>://<something that aren't >,;)>
   local url = string.match(vim.fn.getline("."), "[a-z]*://[^ >,;)]*")
   if url ~= nil then
-    vim.cmd("exec '!open " .. url .. "'")
+    vim.cmd("silent exec '!open " .. url .. "'")
   else
     vim.notify("No URI found in the current line")
   end
@@ -181,13 +177,13 @@ end
 
 -- {{{ Keybinding table
 local key_opt = {
-  -- Convenience
+  -- Convenience --
   { 'i', "jk",        "<ESC>",              "[j]o[k]er: Better ESC" },
   { 't', "<ESC>",     "<C-\\><C-n>",        "[ESC]: exit insert mode for the terminal" },
   { 'n', "<leader>a", "gg<S-v>G",           "[a]ll: select all" },
   { 'n', "gx",        url_handler,          "Open URL under the cursor using shell open command" },
 
-  -- Search
+  -- Search --
   { 'n', "n",         "nzz",                "Highlight next search and center the screen" },
   { 'n', "N",         "Nzz",                "Highlight prev search and center the screen" },
   { 'n', "<leader>/", "<CMD>let @/=''<CR>", "[/]: clear search" }, --> @/ is the macro for the last search
@@ -227,7 +223,7 @@ local key_opt = {
     "[s]pell [t]oggle: turn spell check on/off for the current buffer",
   },
 
-  -- Buffer
+  -- Buffer --
   {
     'n',
     "<leader>b",
@@ -243,7 +239,7 @@ local key_opt = {
     "[k]ill : Choose a buffer to kill",
   },
 
-  -- Window
+  -- Window --
   {
     'n',
     "<leader>+",
@@ -275,7 +271,7 @@ local key_opt = {
     "[<]: Decrease the current window width by one-third",
   },
 
-  -- Tab
+  -- Tab --
   {
     'n',
     "<leader>t",
@@ -310,5 +306,5 @@ for _, v in ipairs(key_opt) do
   -- Add optional description to the table if needed
   if v[4] then opt.desc = v[4] end
   -- Set keybinding
-  vim.keymap.set(v[1], v[2], v[3], opt)
+  keymap.set(v[1], v[2], v[3], opt)
 end
