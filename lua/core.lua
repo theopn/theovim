@@ -197,7 +197,7 @@ local key_opt = {
   {
     'n',
     "<leader>p",
-    "<CMD>Telescope registers<CR>", --> Use ":reg" w/o PLUGIN
+    "<CMD>reg", --> will be overriden in Telescope config
     "[p]aste: choose from a register",
   },
   {
@@ -231,7 +231,7 @@ local key_opt = {
   {
     'n',
     "<leader>b",
-    "<CMD>Telescope buffers<CR>", --> ":ls<CR>:b<SPACE>" W/O PLUGIN
+    ":ls<CR>:b<SPACE>", --> will be overriden in Telescope config
     "[b]uffer: open the buffer list",
   },
   { 'n', "<leader>[", "<CMD>bprevious<CR>", "[[]: navigate to prev buffer" },
@@ -312,14 +312,6 @@ local key_opt = {
     function() vim.lsp.buf.rename() end,
     "[c]ode [r]ename: rename the variable under the cursor",
   },
-
-  -- Plugin/Feature Specific Keybindings
-  {
-    'n',
-    "<leader>?",
-    "<CMD>Telescope keymaps<CR>",
-    "[?]: Finder for keymap",
-  },
   {
     'n',
     "<leader>n",
@@ -327,12 +319,6 @@ local key_opt = {
     "[N]vimTree/[n]etrw: File tree",
   },
 
-  -- Telescope --
-  { 'n', "<leader>fa", function() vim.notify_once("This keybinding requires fuzzy_finder.lua module") end },
-  { 'n', "<leader>ff", "<CMD>Telescope find_files<CR>" },
-  { 'n', "<leader>fr", "<CMD>Telescope oldfiles<CR>" },
-  { 'n', "<leader>fb", "<CMD>Telescope file_browser<CR>" },
-  { 'n', "<leader>f/", "<CMD>Telescope current_buffer_fuzzy_find<CR>" },
 }
 -- }}}
 
