@@ -1,4 +1,4 @@
---[[ highlights.lua
+--[[ highlights.lu
 -- $ figlet -f hollywood theovim
 --          /'  /'
 --      --/'--/'
@@ -37,13 +37,25 @@ local create_highlight_vim_cmd = function(group, fg, bg)
   vim.cmd(highlight_cmd)
 end
 
+--[[ get_hl_component()
+--
+--]]
+local function get_hl_component(name, attribute)
+  local group = vim.api.nvim_get_hl(0, { name = name })
+  return group[attribute]
+end
+
 --[[
 -- Table containing all the highlights to be initialized
 --]]
 M.highlights = {
+  -- Overrides for Tokyonight
   -- Make the bg same color as TokyoNight TabLineFill bg for the cleaner look
   TabLineSel = { fg = "#5AB0F6", bg = "#1E2030", italic = true, },
-  -- For statusline and
+  -- Add italics to StatusLine (used for WInbar)
+  StatusLine = { fg = get_hl_component("StatusLine", "fg"), bg = get_hl_component("StatusLine", "bg"), italic = true },
+
+  -- Custom statusline highlight (from my old colorscheme [Pastelcula](https://github.com/theopn/pastelcula.nvim))
   PastelculaBlueAccent = { fg = "#5AB0F6", },
   PastelculaRedAccent = { fg = "#FAA5A5", },
   PastelculaGreenAccent = { fg = "#BDF7AD", },
