@@ -15,10 +15,10 @@ Some Theovim philosophies that might convince you to use Theovim:
 
 ## Dependencies
 
-- *A terminal emulator capable of rendering 256 xterm colors*
-- *`npm`, `g++` (`gcc-c++`), and `unzip` for `bashls` and `clangd` language server*
-- *Neovim version > 0.8.0*
-- *[NerdFonts](https://www.nerdfonts.com/font-downloads) to render glyphs*
+- **Terminal emulator with true color support (Wezterm, Kitty, Alacritty, iTerm 2, etc.)**
+- **Neovim version > 0.8.0**
+- **`npm`, `g++` (`gcc-c++`), and `unzip` for `bashls` and `clangd` language server**
+- **[NerdFonts](https://www.nerdfonts.com/font-downloads) to render glyphs**
 - `git` to update Theovim
 
 ## Installation
@@ -60,20 +60,44 @@ File structure:
         └── winbar.lua              --> Simple Winbar to complement global statusline
 ```
 
-### Keybindings
+### Basic Keybindings
 
-- Leader (`LDR`) key is the space bar (`SPC`) by default
-- `jk`: ESC
+- Leader (`[LDR]`) key is the space bar (`SPC`) by default
+- `j k` (normal): ESC
 
-- `<LDR> t`: **Make a new [t]ab**. Hit enter to make a new tab with the current buffer. Type one of the displayed buffer number and hit enter to make a tab with the specified buffer (reference "buffer picker screenshot" for the demo). If this is confusing, read [my article on Vim workflow](//TODO) to gain understanding of Vim's tab system
 
-- `<LDR> k`: **[k]ill a buffer**. Hit enter to kill the current buffer. Type one of the displayed buffer number and hit enter to kill the specified buffer (reference "buffer picker demo" for the example)
+- `[LDR] a` (normal): Select all
+- `[LDR] /` (normal): Clear last search and search highlights
+
+Spell check:
+
+Buffer navigation
+
+- `[LDR] t`: **Make a new [t]ab**. Hit enter to make a new tab with the current buffer or type one of the displayed buffer number to specify a buffer (reference "ls command demo"). If this is confusing, read [my article on Vim workflow](//TODO) to gain understanding of Vim's tab system
+
+- `[LDR] k`: **[k]ill a buffer**. Hit enter to kill the current buffer or type one of the displayed buffer number to specify a buffer (reference "ls command demo")
 
 <details>
-  <summary>Buffer Picker Demo</summary>
+  <summary>Buffer Kill Demo</summary>
 
-  ![buffer-picker-demo](./assets/buffer-picker-demo.gif)
+  ![buf-kill-demo](./assets/buf-kill-demo.gif)
 </details>
+
+### Options
+
+- Tab character           : Renders as "▷▷"
+- Trailing space          : Renders as "␣"
+- Non-breaking space      : Renders as "⍽"
+
+### Spell Check
+
+- Spell check is supported for English using Vim's built-in spell check feature. Use `:h spell` for more information
+- Spell check is enabled in text buffers (`*.txt`, `*.md`, `*.tex`, etc.) by default. You can use toggle spell check binding (or `:set spell`/ `:set spell!` to globally toggle spell check) to turn spell check on other buffers
+
+- `C-s`:
+    - (insert): Fix the nearest spelling error and put the cursor back
+    - (normal): Bring up spell suggestions for the word under the cursor
+- `[LDR]st`: Toggle spell check
 
 ### Telescope
 
@@ -87,12 +111,20 @@ Error message
 
 Completion
 
-Formatting
+Formatting:
+
+- Linter (code formatter) is available for some buffers when LSP servers provide a formatter (`vim.lsp.buf.format()`). When Linter is on, your code will be formatted eery time you save. **You can turn this off using `:LspLinterToggle`**. You can track the status of Linter in the statusline component (reference the "Built-in UI" section below). `LspLinterToggle` is global option, meaning if you turn on/off Linter, it will be applied to all buffers. It also does not have a memory, meaning when you turn Linter off and relaunch Neovim, it will be on again. To change the default behavior, add the following option to `config.lua`
+
+```lua
+vim.g.linter_status = false
+```
 
 Adding a new LSP server: 
 
 - Theovim automatically installs [bashls](https://github.com/bash-lsp/bash-language-server), [clangd](https://github.com/clangd/clangd), [lua_ls](https://github.com/LuaLS/lua-language-server), [pylsp](https://github.com/python-lsp/python-lsp-server), and [texlab](https://github.com/latex-lsp/texlab)
 - Browse `:Mason` or [nvim-lspconfig server list](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md) for available LSP servers. Use `:MasonInstall <lsp-name>` and `:MasonUninstall <lsp-name>` commands to install/uninstall LSP server
+
+Other features:
 
 ### Markdown and LaTeX
 
@@ -124,6 +156,9 @@ Statusline: from left to right,
 Winbar:
 
 ### Miscellaneous Theovim Features
+
+- [LDR] [g]it: Menu for Git related functionalities (status, diff, commits, etc.)
+- [LDR] [m]isc: Menu for miscellaneous Theovim features
 
 - Notepad
 - TrimWhiteSpace
