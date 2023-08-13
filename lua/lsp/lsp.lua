@@ -25,9 +25,6 @@ local function set_lsp_keymaps()
     { buffer = true, noremap = true, silent = true, desc = "[c]ode [r]enme: rename the cursor item" })
 end
 
--- Global var for auto formatting toggle
-vim.g.linter_status = true
-
 --[[ on_attach()
 -- A function to attach for a buffer with LSP capabilities
 -- List of features:
@@ -39,6 +36,8 @@ vim.g.linter_status = true
 --]]
 local on_attach = function(client, bufnr)
   set_lsp_keymaps()
+  -- Global var for auto formatting toggle
+  if not vim.g.linter_status then vim.g.linter_status = true end
   if client.server_capabilities.documentFormattingProvider then
     -- User command to toggle code format only available when LSP is detected
     vim.api.nvim_create_user_command("LspLinterToggle", function()
