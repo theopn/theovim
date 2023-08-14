@@ -198,7 +198,7 @@ local key_opt = {
   {
     'x',
     "<leader>p",
-    '"_dp', --> First, [d]elete the selection and send content to _ void reg then [p]aste the reg content
+    '"_dP', --> First, [d]elete the selection and send content to _ void reg then [P]aste (b4 cursor unlike small p)
     "[p]aste: paste the current selection without overriding the reg",
   },
 
