@@ -179,7 +179,6 @@ end
 local key_opt = {
   -- Convenience --
   { 'i', "jk",        "<ESC>",              "[j]o[k]er: Better ESC" },
-  { 't', "<ESC>",     "<C-\\><C-n>",        "[ESC]: exit insert mode for the terminal" },
   { 'n', "<leader>a", "gg<S-v>G",           "[a]ll: select all" },
   { 'n', "gx",        url_handler,          "Open URL under the cursor using shell open command" },
 
@@ -201,6 +200,17 @@ local key_opt = {
     "<leader>p",
     '"_dp', --> First, [d]elete the selection and send content to _ void reg then [p]aste the reg content
     "[p]aste: paste the current selection without overriding the reg",
+  },
+
+  -- Terminal --
+  { 't', "<ESC>",     "<C-\\><C-n>",        "[ESC]: exit insert mode for the terminal" },
+  {
+    'n',
+    "<leader>z",
+    function() --> will be overriden in misc.lua terminal location picker
+      vim.cmd("botright " .. math.ceil(vim.fn.winheight(0) * (1 / 3)) .. "sp | term")
+    end,
+    "[z]sh: Launch a terminal below",
   },
 
   -- Spell check --
@@ -302,9 +312,9 @@ local key_opt = {
 -- Set keybindings
 for _, v in ipairs(key_opt) do
   -- non-recursive mapping, call commands silently
-  local opt = { noremap = true, silent = true }
-  -- Add optional description to the table if needed
-  if v[4] then opt.desc = v[4] end
+  local opts = { noremap = true, silent = true }
+  -- Add optional description to the table if provided
+  if v[4] then opts.desc = v[4] end
   -- Set keybinding
-  keymap.set(v[1], v[2], v[3], opt)
+  keymap.set(v[1], v[2], v[3], opts)
 end
