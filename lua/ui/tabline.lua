@@ -97,11 +97,10 @@ M.build = function()
 
   -- Number of buffer and tab on the far right
   s = s .. "%=" --> spacer
-  s = s .. "%#TabLineSel#" -->
   s = s .. string.format("   #Tab: %i", fn.tabpagenr("$")) --> Tab num
   s = s .. " |"
   s = s .. string.format("   #Buf: %i", #get_listed_bufs()) --> Buf num
-  s = s .. "  " --> right margin
+  s = s .. " " --> right margin
   return s
 end
 
