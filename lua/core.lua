@@ -15,30 +15,31 @@ local keymap = vim.keymap
 
 do
   local base_opt = {
-    { "filetype",      "on" },  --> Detect the type of the file that is edited
-    { "syntax",        "on" },  --> Turn the default highlighting on, overriden by Treesitter in supported buffers
-    { "confirm",       true },  --> Confirm before exiting with unsaved bufffer(s)
+    { "filetype",      "on" }, --> Detect the type of the file that is edited
+    { "syntax",        "on" }, --> Turn the default highlighting on, overriden by Treesitter in supported buffers
+    { "confirm",       true }, --> Confirm before exiting with unsaved bufffer(s)
     { "autochdir",     false }, --> When on, Vim will change the CWD whenever you open a file, switch buffers ,etc.
-    { "scrolloff",     7 },     --> Keep minimum x number of screen lines above and below the cursor
-    { "showtabline",   2 },     --> 0: never, 1: if there are at least two tab pages, 2: always
-    { "laststatus",    3 },     --> Similar to showtabline, and in Nvim 0.7, 3 displays one bar for multiple windows
+    { "scrolloff",     7 }, --> Keep minimum x number of screen lines above and below the cursor
+    { "showtabline",   2 }, --> 0: never, 1: if there are at least two tab pages, 2: always
+    { "laststatus",    3 }, --> Similar to showtabline, and in Nvim 0.7, 3 displays one bar for multiple windows
     -- Search --
-    { "hlsearch",      true },  --> Highlight search results
-    { "incsearch",     true },  --> As you type, match the currently typed workd w/o pressing enter
-    { "ignorecase",    true },  --> Ignore case in search
-    { "smartcase",     true },  --> /smartcase -> apply ignorecase | /sMartcase -> do not apply ignorecase
+    { "hlsearch",      true }, --> Highlight search results
+    { "incsearch",     true }, --> As you type, match the currently typed workd w/o pressing enter
+    { "ignorecase",    true }, --> Ignore case in search
+    { "smartcase",     true }, --> /smartcase -> apply ignorecase | /sMartcase -> do not apply ignorecase
     -- Split pane --
-    { "splitright",    true },  --> Vertical split created right
-    { "splitbelow",    true },  --> Horizontal split created below
-    { "termguicolors", true },  --> Enables 24-bit RGB color in the TUI
-    { "mouse",         "a" },   --> Enable mouse
-    { "list",          true },  --> Needed for listchars
-    { "listchars",              --> Listing special chars
-      { tab = "▷▷", trail = "␣", nbsp = "⍽" } },
+    { "splitright",    true }, --> Vertical split created right
+    { "splitbelow",    true }, --> Horizontal split created below
+    { "termguicolors", true }, --> Enables 24-bit RGB color in the TUI
+    { "mouse",         "a" }, --> Enable mouse
+    { "list",          true }, --> Needed for listchars
+    { "listchars", --> Listing special chars
+      { tab = "⇥ ", leadmultispace = "│ ", trail = "␣", nbsp = "⍽" } },
+    { "showbreak", "↪" }, --> Beginning of wrapped lines
     -- Fold --
     { "foldmethod", "expr" }, --> Leave the fold up to treesitter
-    { "foldlevel",  1 },      --> Ignored when expr, but when folding by "marker", it only folds folds w/in a fold only
-    { "foldenable", false },  --> True for "marker" + level = 1, false for TS folding
+    { "foldlevel", 1 }, --> Ignored when expr, but when folding by "marker", it only folds folds w/in a fold only
+    { "foldenable", false }, --> True for "marker" + level = 1, false for TS folding
   }
   -- Folding using TreeSitter --
   opt.foldexpr = "nvim_treesitter#foldexpr()"
