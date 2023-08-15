@@ -15,6 +15,22 @@ local status, lspconfig = pcall(require, "lspconfig")
 if (not status) then return end
 local mason_lspconfig = require("mason-lspconfig")
 
+--[[ set_diagnostics_config()
+-- Initialize Vim diagnostics settings
+--]]
+local function set_diagnostics_config()
+  vim.diagnostic.config({
+    float = {
+      rounded = true,
+      format = function(diagnostic)
+        -- ERROR (line n): message
+        return string.format("%s (line %i): %s", vim.diagnostic.severity[diagnostic.severity], diagnostic.lnum,
+          diagnostic.message)
+      end
+    },
+  })
+end
+
 --[[ set_lsp_keymaps()
 -- Initialize LSP keymaps for LOCAL BUF. Isolated as a separate func to only be called in LSP buffers
 --]]
@@ -23,6 +39,16 @@ local function set_lsp_keymaps()
     { buffer = true, noremap = true, silent = true, desc = "[c]ode [d]oc: open hover doc for the cursor item" })
   vim.keymap.set('n', "<leader>cr", function() vim.lsp.buf.rename() end,
     { buffer = true, noremap = true, silent = true, desc = "[c]ode [r]enme: rename the cursor item" })
+  vim.keymap.set('n',
+    "<leader>ce",
+    function()
+      vim.diagnostic.open_float({ header = "Buffer Diagnostics", scope = "buffer" })
+    end,
+    { buffer = true, noremap = true, silent = true, desc = "[c]ode [e]rror: open diagnostics pop-up for the buffer" })
+  vim.keymap.set('n', "<leader>cp", function() vim.diagnostic.goto_prev() end,
+    { buffer = true, noremap = true, silent = true, desc = "[c]ode [p]rev: navigate to previous error" })
+  vim.keymap.set('n', "<leader>cn", function() vim.diagnostic.goto_next() end,
+    { buffer = true, noremap = true, silent = true, desc = "[c]ode [n]ext: navigate to next error" })
 end
 
 --[[ on_attach()
@@ -35,6 +61,8 @@ end
 -- @arg bufnr: buffer number used by Neovim
 --]]
 local on_attach = function(client, bufnr)
+  -- Basic settings
+  set_diagnostics_config()
   set_lsp_keymaps()
   -- Global var for auto formatting toggle
   if not vim.g.linter_status then vim.g.linter_status = true end
@@ -110,15 +138,9 @@ mason_lspconfig.setup_handlers({
 local lsp_options = {
   ["1. Code Action"]                      = function() vim.lsp.buf.code_action() end,
   ["2. References"]                       = function() vim.lsp.buf.references() end,
-  ["3. Current Buffer Diagonostics"]      =
-      function()
-        vim.diagnostic.open_float(0, { scope = "buffer", border = "rounded" })
-      end,
-  ["4. Symbols"]                          = function() vim.lsp.buf.document_symbol() end,
-  ["5. Hover Doc (<LDR>cd)"]              = function() vim.lsp.buf.hover() end,
-  ["6. Rename Variable (<LDR>cr)"]        = function() vim.lsp.buf.rename() end,
-  ["7. Linter (Code Auto Format) Toggle"] = "LspLinterToggle",
-  ["8. LSP Server Information"]           = "LspInfo",
+  ["3. Symbols"]                          = function() vim.lsp.buf.document_symbol() end,
+  ["4. Linter (Code Auto Format) Toggle"] = "LspLinterToggle",
+  ["5. LSP Server Information"]           = "LspInfo",
 }
 local lsp_menu = function()
   if #(vim.lsp.get_active_clients({ bufnr = 0 })) == 0 then
