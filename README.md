@@ -108,7 +108,11 @@ Overridden keybindings: These are Vim keybindings overridden by Theovim.
   ![ldr-k-demo](./assets/ldr-k-demo.gif)
 </details>
 
-//TODO: leader p demo
+<details>
+  <summary>Leader p Demo</summary>
+
+  ![ldr-p-demo](./assets/ldr-p-demo.gif)
+</details>
 
 ### Commands (core.lua)
 
@@ -172,6 +176,9 @@ When Winbar says you have an LSP server running in the buffer, you are in for a 
 - `[LDR] c a`: **[c]ode [a]ction**. Open the menu for LSP features
 - `[LDR] c d`: **[c]ode [d]oc**. Open a hover doc for the cursor item
 - `[LDR] c r`: **[c]ode [r]name**. Rename the cursor item
+- `[LDR] c e`: **[c]ode [e]rror**. 
+- `[LDR] c p`: **[c]ode [p]rev**. 
+- `[LDR] c n`: **[c]ode [n]ext**. 
 
 Many LSP servers detect information from your code as well as system-wide libraries and project files in the same directory. If the LSP doesn't work as you wish, consult the LSP server documentation.
 
@@ -179,10 +186,9 @@ Diagnostics:
 
 Whenever an LSP server detects an error or has a suggestion for your code, Theovim will display the diagnostics status in your Winbar. Four types of diagnostics are: "Error", "Warning", "Hint", and "Info". For example, the below image is the `clangd` LSP server displaying warnings and an error for my C code.
 
-//TODO
 ![lsp-diagnostics-example.jpg](./assets/lsp-diagnostics-example.jpg)
 
-You can navigate diagnostics using //TODO
+You can get a comprehensive list of diagnostics in the current buffer using `[LDR] c e`. You can navigate to nearest diagnostics using `[LDR] c p`/`n`.
 
 Completion
 
