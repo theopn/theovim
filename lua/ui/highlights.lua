@@ -52,11 +52,10 @@ end
 -- Table containing all the highlights to be initialized
 --]]
 M.highlights = {
-  -- Overrides for Tokyonight
-  -- Make the bg same color as TokyoNight TabLineFill bg for the cleaner look
-  TabLineSel = { fg = "#5AB0F6", bg = "#1E2030", italic = true, },
-  -- Add italics to StatusLine (used for WInbar)
-  StatusLine = { fg = get_hl_component("StatusLine", "fg"), bg = get_hl_component("StatusLine", "bg"), italic = true },
+  -- Invert current tabline color for cleaner look
+  TabLineSel = { fg = get_hl_component("TabLineSel", "bg"), bg = get_hl_component("TabLineSel", "fg"), italic = true, },
+  -- Make Winbar same as Statusline with italics
+  Winbar = { fg = get_hl_component("StatusLine", "fg"), bg = get_hl_component("StatusLine", "bg"), italic = true },
 
   -- Custom statusline highlight (from my old colorscheme [Pastelcula](https://github.com/theopn/pastelcula.nvim))
   PastelculaBlueAccent = { fg = "#5AB0F6", },
