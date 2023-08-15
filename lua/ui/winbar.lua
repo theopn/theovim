@@ -46,24 +46,24 @@ function Winbar.build()
   end
 
   local winbar = table.concat({
-    "%#StatusLine#",
+    "%#Winbar#",
     " ",
 
     components.file_icon(Winbar.has_devicons, Winbar.devicons, vim.fn.bufname("%")),
     "%<", --> Truncation starts here so the icon will be visible at all time
 
     -- File info
-    "%#StatusLine#",
+    "%#Winbar#",
     " %t",
     "%m",
     "%r ",
 
     -- LSP
-    "%#StatusLine#",
+    "%#Winbar#",
     components.lsp_server(),
     components.lsp_status(),
 
-    "%#StatusLine#",
+    "%#Winbar#",
     "",
 
     "%#Normal#"
