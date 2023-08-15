@@ -29,11 +29,11 @@ end
 
 -- Various help document windows
 do
-  local helpdoc_path = vim.api.nvim_get_runtime_file("docs/theovim-help.md", false)[1]
+  local helpdoc_path = vim.api.nvim_get_runtime_file("doc/theovim-help.md", false)[1]
   local helpdoc_func = util.spawn_floting_doc_win(helpdoc_path)
   vim.api.nvim_create_user_command("TheovimHelp", helpdoc_func, { nargs = 0 })
 
-  local vimhelp_path = vim.api.nvim_get_runtime_file("docs/vim-help.md", false)[1]
+  local vimhelp_path = vim.api.nvim_get_runtime_file("doc/vim-help.md", false)[1]
   local vimhelp_func = util.spawn_floting_doc_win(vimhelp_path)
   vim.api.nvim_create_user_command("TheovimVanillaVimHelp", vimhelp_func, { nargs = 0 })
 
@@ -41,7 +41,7 @@ do
   local changelog_func = util.spawn_floting_doc_win(changelog_path)
   vim.api.nvim_create_user_command("TheovimChangelog", changelog_func, { nargs = 0 })
 
-  local changlog_hist_path = vim.api.nvim_get_runtime_file("docs/changelog-history.md", false)[1]
+  local changlog_hist_path = vim.api.nvim_get_runtime_file("doc/changelog-history.md", false)[1]
   local changelog_hist_func = util.spawn_floting_doc_win(changlog_hist_path)
   vim.api.nvim_create_user_command("TheovimChangelogHistory", changelog_hist_func, { nargs = 0 })
 end
