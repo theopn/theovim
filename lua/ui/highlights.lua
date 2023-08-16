@@ -55,7 +55,7 @@ M.highlights = {
   -- Invert current tabline color for cleaner look
   TabLineSel = { fg = get_hl_component("TabLineSel", "bg"), bg = get_hl_component("TabLineSel", "fg"), italic = true, },
 
-  -- Custom statusline highlight (from my old colorscheme [Pastelcula](https://github.com/theopn/pastelcula.nvim))
+  -- Custom Theovim highlights (from my old colorscheme [Pastelcula](https://github.com/theopn/pastelcula.nvim) )
   PastelculaBlueAccent = { fg = "#5AB0F6", },
   PastelculaRedAccent = { fg = "#FAA5A5", },
   PastelculaGreenAccent = { fg = "#BDF7AD", },
@@ -64,9 +64,6 @@ M.highlights = {
   PastelculaOrangeAccent = { fg = "#FFCAA1" },
   PastelculaLightGreyAccent = { fg = "#B7C2C7", italic = true },
   PastelculaGreyAccent = { fg = "#828B8F", },
-  -- For the dashboard
-  TheovimDraculaOrange = { fg = "#FFB86C" },
-  TheovimDraculaCyan = { fg = "#8BE9FD" },
 }
 
 --[[ setup()
