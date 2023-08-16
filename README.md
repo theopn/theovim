@@ -1,5 +1,7 @@
 # Theovim
 
+> If you are viewing this document using `:TheovimReadme`, use `:MarkdownPreviewToggle` to render the contents in your browser.
+
 ![theovim-banner](./assets/theovim-banner.jpg)
 
 Theovim is my Neovim configuration, featuring opinionated base Vim settings, ~30 carefully selected plug-ins, and custom UI components written 100% in Lua.
@@ -32,7 +34,8 @@ git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim
 
 ## Features and Usage
 
-File structure:
+<details>
+    <summary>File structure:</summary>
 
 ```
 ├── init.lua                        --> Module initializations
@@ -60,6 +63,8 @@ File structure:
         └── winbar.lua              --> Simple Winbar to complement global Statusline
 ```
 
+</details>
+
 ### Keybindings (core.lua)
 
 - Leader (`[LDR]`) key is the space bar (`SPC`)
@@ -71,14 +76,18 @@ File structure:
 Copy and paste:
 
 - `[LDR] y` (visual): Yank to the system clipboard ([unnamedplus](https://stackoverflow.com/questions/30691466/what-is-difference-between-vims-clipboard-unnamed-and-unnamedplus-settings))
-- `[LDR] p` (visual): Paste the selection without overriding the default register (reference "leader p demo" below)
+- `[LDR] p` (visual): Paste the selection without overriding the default register
 - `[LDR] p` (normal): Open a register (similar to clipboard history -- `:h registers`) selection
+
+![ldr-p-demo](./assets/ldr-p-demo.gif)
 
 Buffer navigation:
 
 - `[LDR] b`: **[b]uffer**. Open a buffer list
 - `[LDR] [`/`]`: Navigate to prev/next buffers
-- `[LDR] k`: **[k]ill buffer**. Delete a buffer. Hit enter to kill the current buffer or type one of the displayed buffer numbers to specify a buffer (reference "leader k demo" below)
+- `[LDR] k`: **[k]ill buffer**. Delete a buffer. Hit enter to kill the current buffer or type one of the displayed buffer numbers to specify a buffer
+
+![ldr-k-demo](./assets/ldr-k-demo.gif)
 
 Window resizing:
 
@@ -89,7 +98,7 @@ Window resizing:
 
 Tab navigation:
 
-- `[LDR] t`: **new [t]ab**. Create a new tab. Hit enter to make a new tab with the current buffer or type one of the displayed buffer numbers to specify a buffer (reference "leader k demo" below). If this is confusing, read [my article on Vim workflow](//TODO) to learn about the Vim tab system
+- `[LDR] t`: **new [t]ab**. Create a new tab. Hit enter to make a new tab with the current buffer or type one of the displayed buffer numbers to specify a buffer (reference the `[LDR] k` demo above). If this is confusing, read [my article on Vim workflow](//TODO) to learn about the Vim tab system
 - `[LDR] q`: **[q]uit**. Close the current tab. (you cannot close the one and only tab. Use `C-w q` or `:q`)
 - `[LDR] 1`-`5`: Navigate to tab number 1 - 5
 
@@ -100,23 +109,9 @@ Overridden keybindings: These are Vim keybindings overridden by Theovim.
 - `n`/`N`: Cycle through search results and center the screen
     - Vim does not center the screen by default
 
-**Demo**:
-
-<details>
-  <summary>Leader k Demo</summary>
-
-  ![ldr-k-demo](./assets/ldr-k-demo.gif)
-</details>
-
-<details>
-  <summary>Leader p Demo</summary>
-
-  ![ldr-p-demo](./assets/ldr-p-demo.gif)
-</details>
-
 ### Commands (core.lua)
 
-Many of these features are accessible through `[LDR] m` keybinding (reference "Miscellaneous Theovim Features" section).
+Many of these commands are accessible through `[LDR] m` keybinding (reference "Miscellaneous Theovim Features" section).
 
 - `:TrimWhiteSpace`: Remove trailing whitespaces
 - `:ShowChanges`: Show the difference between the saved file and the current Vim buffer using shell commands
@@ -126,11 +121,15 @@ Many of these features are accessible through `[LDR] m` keybinding (reference "M
 
 - By default, tab characters are set to 2 spaces. For some filetypes, the value of `tabstop` will change (e.g., Java has a tab width of 4 characters)
 
+`listchars` rendering:
+
 - Tab character                 : Renders as `⇥ `
 - Leading spaces (indentation)  : Renders as `│ `
 - Trailing space                : Renders as `␣`
 - Non-breaking space            : Renders as `⍽`
 - Beginning of a wrapped line   : Renders as `↪`
+
+![listchars-example.jpg](./assets/listchars-ex.jpg)
 
 - In some filetype, `colorcolumn` (highlights a specific column) is enabled based on its typical language convention. For example, in C/C++ buffers, the 80th column will be highlighted so that you don't exceed 80 characters per line
 
@@ -160,15 +159,6 @@ vim.opt.confirm = false --> turn off confirm prompt when quitting with unsaved b
     1. Automatically start the insert mode when terminal buffers open. Use ESC to escape to the normal mode
     2. Closes the terminal if the exit code is 0. Otherwise, you will get a notification, and the terminal window will persist until you hit enter
 
-### Markdown and LaTeX (plugins.lua)
-
-- `:MarkdownPreviewToggle`: Toggle GitHub-style real-time markdown preview in your default browser
-- `:VimtexCompile`: Toggle LaTeX compile and real-time preview on buffer save. You should specify and prepare the PDF viewer of your choice in `config.lua`. Currently, [Skim](https://skim-app.sourceforge.io/) (for MacOS) or [Zathura](https://pwmt.org/projects/zathura/) for Linux/MacOS are supported
-
-```lua
-vim.g.vimtex_view_method = "skim" --> or "zathura"
-```
-
 ### LSP (lsp.lua)
 
 When Winbar says you have an LSP server running in the buffer, you are in for a treat! Theovim uses the Neovim built-in LSP to provide modern IDE features. The followings are keybindings related to LSP features:
@@ -188,7 +178,7 @@ Whenever an LSP server detects an error or has a suggestion for your code, Theov
 
 ![lsp-diagnostics-example.jpg](./assets/lsp-diagnostics-example.jpg)
 
-You can get a comprehensive list of diagnostics in the current buffer using `[LDR] c e`. You can navigate to nearest diagnostics using `[LDR] c p`/`n`.
+You can get a comprehensive list of diagnostics in the current buffer using `[LDR] c e`. You can navigate to the nearest diagnostics using `[LDR] c p`/`n`.
 
 Completion
 
@@ -242,12 +232,22 @@ Following features are accessible through `[LDR] c a`:
 - Symbols: List all variables, functions, and other components that the LSP server detects for a quick navigation
 - **To stop LSP server, use `:LspStop`**
 
+### Markdown and LaTeX (plugins.lua)
+
+- `:MarkdownPreviewToggle`: Toggle GitHub-style real-time markdown preview in your default browser
+- `:VimtexCompile`: Toggle LaTeX compile and real-time preview on buffer save. You should specify and prepare the PDF viewer of your choice in `config.lua`. Currently, [Skim](https://skim-app.sourceforge.io/) (for MacOS) or [Zathura](https://pwmt.org/projects/zathura/) for Linux/MacOS are supported
+
+```lua
+vim.g.vimtex_view_method = "skim" --> or "zathura"
+```
 
 ---
 BELOW DOC IS INCOMPLETE
 
 
 ### Telescope (/config/fuzzy.lua)
+
+Telescopw
 
 - Reference the full README in //TODO
 - File browser (`<LDR>fb`): 
@@ -275,7 +275,6 @@ Syntax, file, search:
 - `kyazdan142/nvim-tree.lua`: File tree
 - `stevearc/oil.nvim`: Manage files like Vim buffer
 - `lewis6991/gitsigns.nvim`: Git information
-- `lukas-reineke/indent-blankline.nvim`: Indentation guide
 - `windwp/nvim-autopairs`: Autopair for `()`, `[]`, etc.
 - `terrortylor/nvim-comment`: Comment code block
 - `norcalli/nvim-colorizer.lua`: Color highlighting
