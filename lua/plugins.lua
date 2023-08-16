@@ -14,20 +14,20 @@
 --   - For some plug-ins, install external dependencies
 --]]
 
--- {{{ Plugin list
+-- Plug-in list
 local plugins = {
-  -- {{{ Dependencies
+  -- dependencies
   { "nvim-lua/plenary.nvim", },       --> Lua function library for Neovim (used by Telescope)
   { "nvim-tree/nvim-web-devicons", }, --> Icons for barbar, Telescope, and more
   -- }}}
 
-  -- {{{ Look and feel
+  -- UI
   {
     "folke/tokyonight.nvim", --> colorscheme
     config = function()
       vim.cmd([[
       try
-        colo tokyonight-moon
+        colo tokyonight-night
       catch
         colo slate
       endtry
@@ -38,9 +38,8 @@ local plugins = {
     "rcarriga/nvim-notify", --> Prettier notification
     config = function() vim.notify = require("notify") end,
   },
-  -- }}}
 
-  -- {{{ File and search
+  -- Syntax, file, search
   { "nvim-treesitter/nvim-treesitter", },            --> Incremental highlighting
   {
     "nvim-telescope/telescope.nvim",                 --> Expandable fuzzy finer
@@ -79,10 +78,6 @@ local plugins = {
     config = function() require("gitsigns").setup() end,
   },
   {
-    "lukas-reineke/indent-blankline.nvim", --> Indentation guide
-    config = function() require("indent_blankline").setup() end,
-  },
-  {
     "windwp/nvim-autopairs", --> Autopair
     config = function() require("nvim-autopairs").setup() end,
   },
@@ -94,9 +89,8 @@ local plugins = {
     "norcalli/nvim-colorizer.lua", --> Color highlighter
     config = function() require("colorizer").setup() end,
   },
-  -- }}}
 
-  -- {{{ LSP
+  -- LSP
   { "neovim/nvim-lspconfig", }, --> Neovim defult LSP engine
   {
     "williamboman/mason.nvim",  --> LSP Manager
@@ -115,7 +109,7 @@ local plugins = {
   { "hrsh7th/cmp-cmdline", },                                                   --> nvim-cmp source for :commands
   { "hrsh7th/nvim-cmp", },                                                      --> Completion Engine
 
-  -- {{{ Language specific
+  -- Text editing
   {
     "iamcco/markdown-preview.nvim",                       --> MarkdownPreview to toggle
     build = function() vim.fn["mkdp#util#install"]() end, --> Binary installation for markdown-preview
@@ -126,9 +120,7 @@ local plugins = {
     config = function() vim.g.tex_flavor = "latex" end,
     ft = { "plaintex", "tex" },
   }
-  -- }}}
 }
--- }}}
 
 --- {{{ Lazy.nvim installation
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
