@@ -21,10 +21,12 @@ local mason_lspconfig = require("mason-lspconfig")
 local function set_diagnostics_config()
   vim.diagnostic.config({
     float = {
-      rounded = true,
+      border = "rounded",
       format = function(diagnostic)
-        -- ERROR (line n): message
-        return string.format("%s (line %i): %s", vim.diagnostic.severity[diagnostic.severity], diagnostic.lnum,
+        -- "ERROR (line n): message"
+        return string.format("%s (line %i): %s",
+          vim.diagnostic.severity[diagnostic.severity],
+          diagnostic.lnum,
           diagnostic.message)
       end
     },
