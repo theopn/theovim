@@ -141,14 +141,14 @@ M.lsp_status = function()
     count[k] = #(vim.diagnostic.get(0, { severity = level })) --> 0 for current buf
   end
 
-  local errors = (count["errors"] > 0) and (" 󰅙 " .. count["errors"]) or ("")
-  local warnings = (count["warnings"] > 0) and ("  " .. count["warnings"]) or ("")
-  local hints = (count["hints"] > 0) and (" 󰌵 " .. count["hints"]) or ("")
-  local info = (count["info"] > 0) and (" 󰋼 " .. count["info"]) or ("")
+  local errors = (count["errors"] > 0) and (" E:" .. count["errors"]) or ("")
+  local warnings = (count["warnings"] > 0) and (" W:" .. count["warnings"]) or ("")
+  local hints = (count["hints"] > 0) and (" HINT:" .. count["hints"]) or ("")
+  local info = (count["info"] > 0) and (" INFO:" .. count["info"]) or ("")
 
   return string.format("%s%s%s%s ",
-    ("%#PastelculaRedAccent#" .. errors), ("%#PastelculaOrangeAccent#" .. warnings),
-    ("%#PastelculaYellowAccent#" .. hints), ("%#PastelculaGreenAccent#" .. info))
+    ("%#DiagnosticError#" .. errors), ("%#DiagnosticWarn#" .. warnings),
+    ("%#DiagnosticHint#" .. hints), ("%#DiagnosticInfo#" .. info))
 end
 
 --[[ linter_status()
@@ -160,7 +160,7 @@ M.linter_status = function()
   if #(vim.lsp.get_active_clients({ bufnr = 0 })) == 0 then
     return ""
   end
-  return (vim.g.linter_status) and ("%#PastelculaYellowAccent#󰃢 Linter  ") or ("%#PastelculaRedAccent#󰃢 Linter  ")
+  return (vim.g.linter_status) and ("%#PastelculaYellowAccent#󰃢 Linter ON") or ("%#PastelculaRedAccent#󰃢 Linter OFF")
 end
 
 --[[ ff_and_enc()
