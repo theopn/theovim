@@ -173,14 +173,14 @@ local render = function()
   ---------------------------
   -- Setting highlights --
 
-  for i = hdr_start_idx, hdr_start_idx + #header - 2 do                       --> Ignore last two empty lines
-    vim.api.nvim_buf_add_highlight(buf, -1, "TheovimDraculaOrange", i, 0, -1) --> -1 for no namespace
+  for i = hdr_start_idx, hdr_start_idx + #header - 2 do                         --> Ignore last two empty lines
+    vim.api.nvim_buf_add_highlight(buf, -1, "PastelculaOrangeAccent", i, 0, -1) --> -1 for no namespace
   end
-  for i = hdr_start_idx + #header - 2, hdr_start_idx + #header + #logo - 2 do --> Again, -2 because of empty lines
+  for i = hdr_start_idx + #header - 2, hdr_start_idx + #header + #logo - 2 do   --> Again, -2 because of empty lines
     vim.api.nvim_buf_add_highlight(buf, -1, "PastelculaPurpleAccent", i, 0, -1)
   end
   for i = hdr_start_idx + #header + #logo - 2, hdr_start_idx + #header + #logo - 2 + (#buttons * 2) do --> Reach ends
-    vim.api.nvim_buf_add_highlight(buf, -1, "TheovimDraculaCyan", i, 0, -1)
+    vim.api.nvim_buf_add_highlight(buf, -1, "PastelculaLightGreyAccent", i, 0, -1)
   end
 
   -----------------------
@@ -196,25 +196,25 @@ local render = function()
   end
 
   -- Setting hjkl and arrow keys movement
-  local upMvmt = function()
+  local up_mvmt = function()
     local curr = vim.fn.line(".") -- Current line
     -- Check if the current line number - 2 is button or move to the last element
     local target_line = vim.tbl_contains(btns_line_nums, curr - 2) and curr - 2 or btns_line_nums[#btns_line_nums]
     vim.api.nvim_win_set_cursor(0, { target_line, cursor_column_idx })
   end
-  local downMvmt = function()
+  local down_mvmt = function()
     local curr = vim.fn.line(".") -- Current line
     -- Check if the current line number + 2 is button or move to the first element
     local target_line = vim.tbl_contains(btns_line_nums, curr + 2) and curr + 2 or btns_line_nums[1]
     vim.api.nvim_win_set_cursor(0, { target_line, cursor_column_idx })
   end
   vim.keymap.set("n", "h", "", { buffer = true })
-  vim.keymap.set("n", "j", downMvmt, { buffer = true })
-  vim.keymap.set("n", "k", upMvmt, { buffer = true })
+  vim.keymap.set("n", "j", down_mvmt, { buffer = true })
+  vim.keymap.set("n", "k", up_mvmt, { buffer = true })
   vim.keymap.set("n", "l", "", { buffer = true })
   vim.keymap.set("n", "<LEFT>", "", { buffer = true })
-  vim.keymap.set("n", "<DOWN>", downMvmt, { buffer = true })
-  vim.keymap.set("n", "<UP>", upMvmt, { buffer = true })
+  vim.keymap.set("n", "<DOWN>", down_mvmt, { buffer = true })
+  vim.keymap.set("n", "<UP>", up_mvmt, { buffer = true })
   vim.keymap.set("n", "<RIGHT>", "", { buffer = true })
 
   -- Setting return key movement
@@ -245,10 +245,12 @@ Dashboard.opener = function()
   vim.schedule(render)
 end
 
+--[[ setup()
+-- Call opener in the startup and make autocmd for resizing
+--]]
 Dashboard.setup = function()
   Dashboard.opener()
 
-  -- Make autocmd for
   vim.api.nvim_create_autocmd("VimResized", {
     callback = function()
       if vim.bo.filetype == "TheovimDashboard" then
