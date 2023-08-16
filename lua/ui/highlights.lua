@@ -54,8 +54,6 @@ end
 M.highlights = {
   -- Invert current tabline color for cleaner look
   TabLineSel = { fg = get_hl_component("TabLineSel", "bg"), bg = get_hl_component("TabLineSel", "fg"), italic = true, },
-  -- Make Winbar same as Statusline with italics
-  Winbar = { fg = get_hl_component("StatusLine", "fg"), bg = get_hl_component("StatusLine", "bg"), italic = true },
 
   -- Custom statusline highlight (from my old colorscheme [Pastelcula](https://github.com/theopn/pastelcula.nvim))
   PastelculaBlueAccent = { fg = "#5AB0F6", },
