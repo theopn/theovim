@@ -74,8 +74,6 @@ M.build = function()
     -- Append formatted bufname
     if display_curr_bufname ~= "" then
       s = s .. display_curr_bufname
-    elseif vim.bo.filetype ~= "" then
-      s = s .. vim.bo.filetype
     else
       s = s .. "[No Name]"
     end
