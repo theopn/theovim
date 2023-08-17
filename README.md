@@ -24,6 +24,7 @@
       - [Completion](#completion)
       - [Linter (Code formatter)](#linter--code-formatter-)
       - [Adding a New LSP Server](#adding-a-new-lsp-server)
+    + [Telescope](#telescope)
     + [Markdown and LaTeX](#markdown-and-latex)
 
 [comment]: # (https://ecotrust-canada.github.io/markdown-toc/)
@@ -210,7 +211,7 @@ The following keybindings are enabled when an LSP server is active in the curren
 - `[LDR] c e`: [c]ode **[e]rror**. List diagnostics in the current buffer
 - `[LDR] c p`: [c]ode **[p]rev**. Navigate to the previous diagnostics
 - `[LDR] c n`: [c]ode **[n]ext**. Navigate to the next diagnostics
-- `[LDR] c a`: [c]ode **[a]ll**. Open the menu for LSP features
+- `[LDR] c a`: [c]ode **[a]ll**. Open the menu for other LSP features
 
 Following features are accessible through `[LDR] c a`:
 
@@ -273,6 +274,30 @@ There is also a Vim command line completion.
 - Theovim automatically installs [bashls](https://github.com/bash-lsp/bash-language-server), [clangd](https://github.com/clangd/clangd), [lua_ls](https://github.com/LuaLS/lua-language-server), [pylsp](https://github.com/python-lsp/python-lsp-server), and [texlab](https://github.com/latex-lsp/texlab)
 - Browse `:Mason` or [nvim-lspconfig server list](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md) for available LSP servers. Use `:MasonInstall <lsp-name>` and `:MasonUninstall <lsp-name>` commands to install/uninstall LSP server
 
+### Telescope
+
+[Telescope](https://github.com/nvim-telescope/telescope.nvim) is an awesome fuzzy finder for Neovim.
+
+- `[LDR] ?`: **Help**. Open keymap fuzzy finder
+- `[LDR] f b`: **[f]uzzy [b]rowser**. File browser in the fuzzy finder form. It's useful when you want to navigate to the parent directory
+- `[LDR] f f`: **[f]uzzy [f]iles**. Fuzzy finder for files in the current directory and subdirectories. Optionally, install [fd](https://github.com/sharkdp/fd) for better performance, `.gitignore` support, and other fd features.
+- `[LDR] f r`: **[f]uzzy [r]ecent**. Open recent file fuzzy finder
+- `[LDR] f /`: **[f]uzzy [/]search**. Open fuzzy finder for current buffer words
+- `[LDR] f a`: [f]uzzy **[a]ll**. Open the menu for other Telescope features
+
+Following features are accessible through `[LDR] f a`:
+
+- Search history
+- Command history
+- Commands (all available commands)
+- Help tags (Vim built-in help documentation)
+- Colorschemes
+
+- `C-j`/`k` or `C-n`/`p`: Scroll Telescope items
+- `C-d`/`u`: Scroll Telescope preview window
+- `C-c` or `<ESC> <ESC>`: Close Telescope
+- `<RET>`: Confirm Telescope selection
+
 
 ### Markdown and LaTeX
 
@@ -284,13 +309,6 @@ There is also a Vim command line completion.
 
 ---
 BELOW DOC IS INCOMPLETE
-
-### Telescope
-
-[Telescope](https://github.com/nvim-telescope/telescope.nvim) is an awesome fuzzy finder for Neovim.
-
-- File browser (`<LDR>fb`): 
-- Find Files (`<LDR>ff`): Fuzzy finder for files in the current directory and subdirectories. Optionally, install [fd](https://github.com/sharkdp/fd) for better performance, `.gitignore` support, and other fd features.
 
 ### Plug-in List
 
@@ -368,8 +386,4 @@ Winbar:
 - `:TheovimHelp` contains all the custom commands and shortcuts
 - `:TheovimUpdate` updates the latest changes to Theovim by pulling the changes and running update utilities
 - `:TheovimChangelog` for the current version information and latest changes
-
-## Other Things
-
-- Join (informal) Theovim user group [Discord server](https://discord.gg/er5EqNdkhH)
 
