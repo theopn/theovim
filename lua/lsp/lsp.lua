@@ -124,7 +124,10 @@ mason_lspconfig.setup_handlers({
             },
           },
           diagnostics = {
-            globals = { "vim" } --> expose the LSP to vim.all.the.fun.stuff
+            globals = { "vim" } --> Make diagnostics tolerate vim.fun.stuff
+          },
+          workspace = {
+            library = vim.api.nvim_get_runtime_file("lua", true), --> Expose some Neovim API
           },
           telemetry = {
             enable = false,
