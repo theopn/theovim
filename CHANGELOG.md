@@ -1,41 +1,37 @@
-# Version 2023.07.29
+# V.2023.08.17
 
-Summary:
+This is the final step of the major refactor plan.
+It focuses on removing duplicate keybindings, revising documentation, and adding two new UI components: TabLine and Winbar.
 
-This version focuses on bug fixes and (more) refactoring after last two refactor update
-**Update command was broken in the last update!** Sorry about this, and use:
-`$ cd ~/.config/nvim && git pull && cd -`
-to manually update Theovim. Afterwards, you can use `:TheovimUpdate`
+Removed/changed keybindings and features:
 
-Details:
+- `[LDR] |`: Use `C-w v` instead
+- `[LDR] -`: Use `C-w s` instead
+- `[LDR] q`: Closes *tab* (i.e., it won't close the Vim if there's only one tab) instead of a window
+            Use `C-w q` to close a window instead
+- `[LDR] hjkl`: Use `C-w hjkl` instead
+- `[LDR] <arrow-key>`: Use `C-w 10 <>-+` to resize window (10 can be any number of pixels) instead
+                     Or use new `[LDR] <>-+` binding to resize window by 1/3 of the current size
+- `[LDR] n`: Toggles `nvim-tree` instead of making a new tab. This is a swap with `[LDR] t`
+- `[LDR] x`: Changed to `[LDR] k` ([k]ill buffer)
+- `[LDR] t`: Creates a new tab instead of toggling `nvim-tree`. This is a swap with `[LDR] n`
 
-- Add a new changelog style
-- Add autocmd to close terminal window when exit code is 0
-- Add `gx` binding to open URL in the current line (provided by netrw in "stock" Vim, but NvimTree disables netrw)
-- Add LSP symbol and server information shortcut to [c]ode [a]tion keybinding
-- Fix broken update and help doc commands
+- `:TheovimHelp` and was replaced by `:TheovimReadme`
 
-Commits:
+New keybindings and features:
 
-- [e4798c0] feat(dev): add a commit list generator for dev tool
-- [718040a] fix: fix missing desc keys in keybindings defined somewhere other than core.lua
-- [a36c19c] refactor(misc): move keybindings in core to where func are created in misc.lua
-- [04e2e52] refactor(core): remove custom function for <SPC>n and x bindings
-- [37edf4c] feat(util): replace LSPSaga floating terminal feature with nvim built-in
-- [0cae2f7] feat(lsp): add symbol and server information to <spc>ca bindings
-- [3037852] feat(init): add safeguard around require
-- [ffcd83e] feat(core): add autocmd to close term when exit code is 0
-- [5d91547] fix(ui): change dashboard table to local instead of global
-- [a315c8a] docs(readme): update changelog commands
-- [fcdcbb1] refactor(misc): update changelog command with new paths
-- [8405677] feat(core): add gx url opening binding
-- [95dbcac] docs(changelog): separate changelog to current (CHANGELOG.md) and historic ones
-- [8d3a5fd] fix(init): remove stray temp func
-- [b3c4024] refactor(misc)!: move theovim features to misc.lua, refactor floating win functions, rename doc folder
-- [f98802e] refactor: change some ascii logo
-- [ba59508] refactor(misc): move some theovim func to misc.lua
-- [58b4e3a] refactor(config): rename config file names
+- `[LDR] <>-+`: Resize window by 1/3 of the current size
+- `[LDR] k`: Replaces `[LDR] x` and [k]ills a buffer
+- `[LDR] c e`: Open diagnostics pop-up for the current buffer ([c]ode [e]rror)
+- `[LDR] c p`: Navigate to previous diagnostic ([c]ode [p]rev)
+- `[LDR] c n`: Navigate to next diagnostic ([c]ode [n]ext)
 
----
+- **`README.md` has been rewritten completely. Please read it!**
+- `listchars` (how Vim renders tab, trailing and leading whitespaces, etc.) has changed. Refer to README.md for more information.
+    - `indent-blankline` plug-in has been replaced with `leadmultispace`
+- **New handmade tabline** replaces `bufferline.nvim`!
+- **New handmade Winbar** is included to help you navigate split windows
+    - LSP information has moved to Winbar to give a buffer-specific LSP information and de-clutter Statusline
+- Highlighting and look of UI components has been changed slightly
+- Completion source for Neovim APIs
 
-EOF

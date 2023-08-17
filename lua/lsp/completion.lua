@@ -81,14 +81,18 @@ cmp.setup({
     end, { 'i', 's' }),
   }),
   sources = cmp.config.sources(
+  -- Ordered by priority
     {
       { name = "nvim_lsp" },
       { name = "luasnip" },
+      { name = "nvim_lua" },
     },
+    -- Separate code related completion and buffer/path
     {
       { name = "buffer" },
       { name = "path" },
-    }),
+    }
+  ),
   formatting = {
     format = function(entry, vim_item)
       -- Kind icons
@@ -97,19 +101,20 @@ cmp.setup({
       vim_item.menu = ({
         nvim_lsp = "[LSP]",
         luasnip = "[LuaSnip]",
+        nvim_lua = "[NvimAPI]",
         buffer = "[Buffer]",
-        path = "[Path]"
+        path = "[Path]",
       })[entry.source.name]
       return vim_item
     end
   },
 })
 
--- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
-cmp.setup.cmdline('/', {
+-- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline({ '/', '?' }, {
   mapping = cmp.mapping.preset.cmdline(),
   sources = {
-    { name = "buffer" }
+    { name = 'buffer' }
   }
 })
 
@@ -117,8 +122,8 @@ cmp.setup.cmdline('/', {
 cmp.setup.cmdline(':', {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
-    { name = "path" }
+    { name = 'path' }
   }, {
-    { name = "cmdline" }
+    { name = 'cmdline' }
   })
 })
