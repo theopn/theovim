@@ -2,8 +2,6 @@
 
 > If you are reading this document using `:TheovimReadme`, you can use `:MarkdownPreviewToggle` to render the contents in your browser.
 
-![theovim-banner](./assets/theovim-banner.jpg)
-
 <details>
     <summary>
     <b>TOC</b>
@@ -30,6 +28,8 @@
 [comment]: # (https://ecotrust-canada.github.io/markdown-toc/)
 
 </details>
+
+![theovim-banner](./assets/theovim-banner.jpg)
 
 ## Overview
 
@@ -307,8 +307,44 @@ Following features are accessible through `[LDR] f a`:
     vim.g.vimtex_view_method = "skim" --> or "zathura"
     ```
 
+### Built-in UI Elements
+
+#### Notepad
+
+`:Notepad` opens a tiny, semi-transparent floating window in the top right corner. Here, you can write quick notes for your current Neovim sessions. As the Notepad warning suggests, the contents of the Notepad will persist *until you close the current Vim session*.
+
+![notepad](./assets/notepad.jpg)
+
+- Use `:w file-name.md` to save the current Notepad contents
+- `q`/`<ESC>`: Hides the Notepad window
+    - Using `:q` to close the Notepad mess up the closing mechanism
+
+#### Startup Dashboard
+
+When Neovim launches with no argument, you will be greeted with a Dashboard containing a randomly selected ASCII art of my cat Oliver. For the ASCII arts credit, please read the comments in [dashboard.lua](./lua/ui/dashboard.lua).
+
+![dashboard](./assets/dashboard.jpg)
+
+- `jk` or left/right arrow: navigate the Dashboard buttons
+- `<RET>`: Confirm button selection
+- You can navigate to other parts of the Dashboard using a mouse or other navigation keys. However, the buffer is unmodifiable and will not function unless the cursor is on one of the buttons. `jk` will take you to the first or last button if the cursor is out-of-place
+
+#### TabLine
+
+Theovim's TabLine improves Vim built-in tab experience with tab number, modified indicator, and number of tabs and buffers.
+
+![tabline](./assets/tabline.jpg)
+
+- Tab title displays current buffer file name as long as there is one
+- Number of windows includes floating windows or windows for unlisted buffers (e.g., `:Notepad` scratch buffer, file tree, help, etc.)
+- Number of buffers does not include unlisted buffers
+
 ---
 BELOW DOC IS INCOMPLETE
+
+#### TODO Winbar and StatusLine
+
+![winbar-and-statusline](./assets/winbar-and-statusline.jpg)
 
 ### Plug-in List
 
@@ -355,33 +391,12 @@ Markdown:
 - `iamcco/markdown-preview.nvim`: markdown preview
 - `lervag/vimtex`: LaTeX integration
 
-### Built-in UI Elements
-
-Startup dashboard: launches when Neovim is opened with no argument. You can operate each function using `jk` (or arrow keys) and enter key. One of ASCII arts of my cat Oliver is randomly selected.
-
-//TODO image of the dashboard in collapsible HTML element
-
-Tabline:
-
-Statusline: from left to right,
-
-// image
-
-```
-| Mode | current working dir | file name [modified statu] | git information | ... | Linter status | Filetype | File format and encoding | line:column location in the buffer
-```
-
-Winbar:
-
 ### Miscellaneous Theovim Features
 
-- [LDR] [g]it: Menu for Git related functionalities (status, diff, commits, etc.)
-- [LDR] [m]isc: Menu for miscellaneous Theovim features
+- `[LDR] g`: **[g]it** Menu for Git related functionalities (status, diff, commits, etc.)
+- `[LDR] m`: **misc**. Menu for miscellaneous Theovim features
 
-- Notepad
-- TrimWhiteSpace
-- ShowChanges
-- Built-in documentation
+- `:Notepad`
 
 - `:TheovimHelp` contains all the custom commands and shortcuts
 - `:TheovimUpdate` updates the latest changes to Theovim by pulling the changes and running update utilities
