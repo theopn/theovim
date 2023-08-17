@@ -21,7 +21,7 @@ local create_highlight_nvim_api = function(group, properties)
   vim.api.nvim_set_hl(0, group, properties)
 end
 
---[[ create_highlight_vim_cmd()
+--[[ create_highlight_vimscript()
 -- Creates a new highlight group using Vimscript. Suitable for groups with foreground or background only
 -- it is slower compared to create_highlights_nvim_api
 --   https://www.reddit.com/r/neovim/comments/sihuq7/comment/hvazzwp/?utm_source=share&utm_medium=web2x&context=3
@@ -30,7 +30,7 @@ end
 -- @arg fg: Foreground hex code. If none is provided, nil is used
 -- @arg bg: Background hex code. If none is provided, nil is used
 --]]
-local create_highlight_vim_cmd = function(group, fg, bg)
+local create_highlight_vimscript = function(group, fg, bg)
   local highlight_cmd = "highlight " .. group
   highlight_cmd = (fg ~= nil) and (highlight_cmd .. " guifg=" .. fg) or (highlight_cmd)
   highlight_cmd = (bg ~= nil) and (highlight_cmd .. " guibg=" .. bg) or (highlight_cmd)
@@ -43,9 +43,22 @@ end
 -- @arg name Name of the highlight group
 -- @arg attribute Attribute user wants to know the value of
 --]]
-local function get_hl_component(name, attribute)
+local function get_hl_component_nvim_api(name, attribute)
   local group = vim.api.nvim_get_hl(0, { name = name })
   return group[attribute]
+end
+
+--[[ get_hl_component_vimscript()
+-- Extract a specific highlight value using Vimscript function
+-- This is worse version of get_hl_component_nvim_api()
+-- If you are using Neovim >= 0.9, use vim.api.nvim_get_hl() like in get_hl_component_nvim_api()
+--
+-- @arg name Name of the highlight group
+-- @arg attribute Attribute user wants to know the value of
+--]]
+local function get_hl_component_vimscript(name, attribute)
+  local fn = vim.fn
+  return fn.synIDattr(fn.synIDtrans(fn.hlID(name)), attribute)
 end
 
 --[[
@@ -53,7 +66,12 @@ end
 --]]
 M.highlights = {
   -- Invert current tabline color for cleaner look
-  TabLineSel = { fg = get_hl_component("TabLineSel", "bg"), bg = get_hl_component("TabLineSel", "fg"), italic = true, },
+  TabLineSel = {
+    -- For Theovim's Neovim 0.8 compatibility as of V.2023.08.17, we cannot use vim.api.nvim_get_hl()
+    fg = get_hl_component_vimscript("TabLineSel", "bg"),
+    bg = get_hl_component_vimscript("TabLineSel", "fg"),
+    italic = true,
+  },
 
   -- Custom Theovim highlights (from my old colorscheme [Pastelcula](https://github.com/theopn/pastelcula.nvim) )
   PastelculaBlueAccent = { fg = "#5AB0F6", },
