@@ -4,7 +4,29 @@
 
 ![theovim-banner](./assets/theovim-banner.jpg)
 
-[TOC]
+- [Theovim](#theovim)
+  * [Overview](#overview)
+  * [Dependencies](#dependencies)
+  * [Installation](#installation)
+  * [Features and Usage](#features-and-usage)
+    + [Core Keybindings](#core-keybindings)
+    + [Core Commands](#core-commands)
+    + [Core Options](#core-options)
+    + [Spell Check](#spell-check)
+    + [Terminal Emulator](#terminal-emulator)
+    + [LSP](#lsp)
+      - [Diagnostics](#diagnostics)
+      - [Completion](#completion)
+      - [Linter (Code formatter)](#linter--code-formatter-)
+      - [Adding a New LSP Server](#adding-a-new-lsp-server)
+    + [Markdown and LaTeX](#markdown-and-latex)
+    + [Telescope (/config/fuzzy.lua)](#telescope---config-fuzzylua-)
+    + [Plug-in List](#plug-in-list)
+    + [Built-in UI Elements](#built-in-ui-elements)
+    + [Miscellaneous Theovim Features (misc.lua, util.lua)](#miscellaneous-theovim-features--misclua--utillua-)
+  * [Other Things](#other-things)
+
+[comment]: # (https://ecotrust-canada.github.io/markdown-toc/)
 
 ## Overview
 
@@ -20,14 +42,16 @@ Some of the philosophies I stick to when I configure Neovims are:
 1. 10 keybindings you can memorize are better than 50 complicated keybindings
 1. Keep things minimal
 
-I don't think you should simply clone this repository and use it as your Neovim config.
-No, it's not because Theovim is poorly written (maybe slightly), but **partially because Theovim contains some opinionated features**, and **_mainly because you learn so much more about the text editor when you configure it yourself_**.
-If you really want to do that, you can configure some of your settings in `config.lua`.
+I don't advise you to use this repository as your personal config as it contains some opinionated features and because you learn much about (neo)vim when you configure it yourself.
 
-Instead, **you are welcome to take inspiration from any of the Theovim components** (by forking or reading/copying the source code -- it's licensed under MIT after all).
-It contains some of my proud work,
-such as beautiful handmade [TabLine, StatusLine, and startup Dashboard](https://github.com/theopn/theovim/tree/main/lua/ui),
-[clever keybindings](https://github.com/theopn/theovim/blob/main/lua/core.lua), and [clean file organization](#features-and-usage).
+Instead, you are welcome to fork the repository or read/copy the source code. It contains some of my proud and interesting work, such as:
+
+- [clever keybindings](./lua/core.lua)
+- [TabLine](./lua/ui/tabline.lua)
+- [Startup Dashboard](./lua/ui/dashboard.lua)
+- [Notepad](./lua/util.lua)
+- [Using Vim.ui.select](./lua/util.lua)
+- [Floating term](./lua/util.lua)
 
 I also wrote articles about some of my Neovim config components in my blog.
 
