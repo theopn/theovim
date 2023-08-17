@@ -1,6 +1,6 @@
 # Theovim
 
-> If you are reading this document using `:TheovimReadme`, you can use `:MarkdownPreviewToggle` to render the contents in your browser.
+> If you are reading this document using `:TheovimReadme`, use `:MarkdownPreviewToggle` to render the contents in your browser.
 
 <details>
     <summary>
@@ -39,10 +39,10 @@
 
 ## Overview
 
-Theovim is my Neovim configuration, geared toward my work as a CS student (C, Python, Java, LaTeX, LaTeX, and LaTeX).
+Theovim is my Neovim configuration, geared toward my CS studies (C, Python, Java, LaTeX, LaTeX, and LaTeX).
 It features opinionated base Vim settings and keybindings, ~30 carefully selected plug-ins, and custom UI components written 100% in Lua.
 
-Some of the philosophies I stick to when I configure Neovims are:
+The philosophies I stick to when I configure Neovim are:
 
 1. Prefer Neovim API and Lua over plug-ins
 1. When you use a plug-in, keep the stock configuration as much as possible. The author knows more about the plug-in than you do
@@ -55,10 +55,11 @@ I don't advise using this repository as your personal config because it contains
 
 Instead, you are welcome to fork the repository or read/copy the source code. It contains some of my proud and interesting work, such as:
 
-- [Memorable keybindings](./lua/core.lua)
+- [No-plug-in core config with memorable keybindings](./lua/core.lua)
 - [TabLine](./lua/ui/tabline.lua)
 - [Startup Dashboard](./lua/ui/dashboard.lua)
-- [Notepad, floating term, and using vim.ui.select()](./lua/util.lua)
+- [StatusLine](./lua/ui/statusline.lua) and [Winbar](./lua/ui/winbar.lua) [components](./lua/ui/components.lua)
+- [Notepad, floating term, and custom menu using `vim.ui.select()`](./lua/util.lua)
 
 I also wrote articles about some of my Neovim config components in my blog.
 
@@ -71,7 +72,7 @@ I also wrote articles about some of my Neovim config components in my blog.
 - **A terminal emulator with true color support**
     - [Wezterm](https://wezfurlong.org/wezterm/index.html) is my choice of terminal emulator.
     	It's fast, feature-rich, and configured in Lua
-    - [Kitty](https://sw.kovidgoyal.net/kitty/), [Alacritty](https://alacritty.org/), and [iTerm 2 for MacOS](https://iterm2.com/) are all great options
+    - [Kitty](https://sw.kovidgoyal.net/kitty/), [Alacritty](https://alacritty.org/), and [iTerm 2 for MacOS](https://iterm2.com/) are great options
     - Alternatively, you can use a GUI Neovim client like [Neovide](https://neovide.dev/)
 - **Neovim version > 0.8.3**
     - Unfortunately, my school's Debian server uses outdated Neovim, forcing me to use some deprecated APIs and older versions of plug-ins
@@ -155,7 +156,7 @@ git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim
     - `[LDR] q`: **[q]uit**. Close the current tab. (you cannot close the one and only tab. Use `C-w q` or `:q`)
     - `[LDR] 1`-`5`: Navigate to tab number 1 - 5
 - Overridden keybindings: These are Vim keybindings overridden by Theovim
-    - `gx`: Open URL in the current line (error notification if no URL is found)
+    - `gx`: Open URL in the current line (error notification if no URL found in the current line)
         - In Vim, this keybinding is provided by `netrw`, which is disabled in Theovim for a better file management plug-in
     - `n`/`N`: Cycle through search results and center the screen
         - Vim does not center the screen by default
@@ -173,12 +174,12 @@ Many of these commands are accessible through `[LDR] m` keybinding (reference "M
 - By default, tab characters are set to 2 spaces. For some filetypes, the value of `tabstop` will change (e.g., Java has a tab width of 4 characters)
 - `listchars` rendering:
     ![listchars-example.jpg](./assets/listchars-ex.jpg)
-    - Tab character                 : Renders as `⇥ `
-    - Leading spaces (indentation)  : Renders as `│ `
-    - Trailing space                : Renders as `␣`
-    - Non-breaking space            : Renders as `⍽`
-    - Beginning of a wrapped line   : Renders as `↪`
-- In some filetype, `colorcolumn` (highlights a specific column) is enabled based on its typical language convention. For example, in C/C++ buffers, the 80th column will be highlighted so that you don't exceed 80 characters per line
+    - Tab character                     : Renders as `⇥ `
+    - Two leading spaces (indentation)  : Render as `│ `
+    - Trailing space                    : Renders as `␣`
+    - Non-breaking space                : Renders as `⍽`
+    - Beginning of a wrapped line       : Renders as `↪`
+- In some filetype, `colorcolumn` (highlights a specific column) is enabled based on the language style convention. For example, in C/C++ buffers, the 80th column will be highlighted
 
 - You can override any of the options in `core.lua` in your `config.lua`:
     ```lua
@@ -189,9 +190,9 @@ Many of these commands are accessible through `[LDR] m` keybinding (reference "M
 
 ### Spell Check
 
-- Spell check is supported for English using the Vim built-in spell check feature. Use the `:h spell` for more information
-- Spell check is enabled in text buffers (`*.txt`, `*.md`, `*.tex`, etc.).
-    You can use toggle spell check binding (or `:set spell`/ `:set spell!` to toggle spell check globally) to turn spell check on other buffers
+- English spell check is supported via the Vim built-in spell check feature. Use the `:h spell` for more information
+- Spell check is enabled by default in text filetypes (`*.txt`, `*.md`, `*.tex`, etc.).
+    - You can turn spell check on in other buffers using the toggle keybinding
 
 - `C-s`: **[s]pell**
     - (insert): Fix the nearest spelling error and put the cursor back
@@ -200,7 +201,7 @@ Many of these commands are accessible through `[LDR] m` keybinding (reference "M
 
 ### Terminal Emulator
 
-- `[LDR] z`: **[z]sh**. Prompts you for the location where the new terminal window is to be launched (bottom, left, or right third, floating, new tab)
+- `[LDR] z`: **[z]sh**. Prompts you for the location to launch a new terminal window (bottom, left, or right third, floating, new tab)
 - Theovim uses Neovims built-in terminal emulator. For more information, `:h terminal`
 - There are autocmd to:
     1. Automatically start the insert mode when terminal buffers open. Use `ESC` to escape to the normal mode
@@ -253,9 +254,10 @@ Theovim offers completion engines for LSP buffers as well as general text editin
 The order of completion item detection:
 
 1. LSP engine (if applicable)
-2. LuaSnip snippets
-3. Buffer words
-4. Path completion
+1. LuaSnip snippets
+1. Neovim API (if applicable)
+1. Buffer words
+1. Path completion
 
     ![path-completion-example.jpg](./assets/path-completion-example.jpg)
 
@@ -268,16 +270,21 @@ There is also a Vim command line completion.
 - Linter is available for some buffers when LSP servers provide formatting (`vim.lsp.buf.format()`)
 - You can track the status of Linter in the Statusline component (reference the "Built-in UI" section below).
 - When Linter is on, it will format the code every time you save. **You can turn this off using `:LspLinterToggle`**
-    - `LspLinterToggle` is a global option, meaning if you turn on/off Linter, it applies to all buffers
-    - It also does not have a memory, meaning when you turn Linter off and relaunch Neovim, it will be on again
-    - To change the default behavior, add the following option to `config.lua`
-        ```lua
-        vim.g.linter_status = false
+- `LspLinterToggle` is a global option, meaning if you turn on/off Linter, it applies to all buffers
+- It also does not have a memory, meaning when you turn Linter off and relaunch Neovim, it will be on again
+- To disable Linter by default, add the following line to `config.lua`
+    ```lua
+    vim.g.linter_status = false
         ```
 
 #### Adding a New LSP Server
 
-- Theovim automatically installs [bashls](https://github.com/bash-lsp/bash-language-server), [clangd](https://github.com/clangd/clangd), [lua_ls](https://github.com/LuaLS/lua-language-server), [pylsp](https://github.com/python-lsp/python-lsp-server), and [texlab](https://github.com/latex-lsp/texlab)
+- Theovim automatically installs
+    [bashls](https://github.com/bash-lsp/bash-language-server),
+    [clangd](https://github.com/clangd/clangd),
+    [lua_ls](https://github.com/LuaLS/lua-language-server),
+    [pylsp](https://github.com/python-lsp/python-lsp-server),
+    and [texlab](https://github.com/latex-lsp/texlab)
 - Browse `:Mason` or [nvim-lspconfig server list](https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md) for available LSP servers. Use `:MasonInstall <lsp-name>` and `:MasonUninstall <lsp-name>` commands to install/uninstall LSP server
 
 ### Telescope
@@ -303,15 +310,6 @@ Following features are accessible through `[LDR] f a`:
 - `C-d`/`u`: Scroll Telescope preview window
 - `C-c` or `<ESC> <ESC>`: Close Telescope
 - `<RET>`: Confirm Telescope selection
-
-
-### Markdown and LaTeX
-
-- `:MarkdownPreviewToggle`: Toggle GitHub-style real-time markdown preview in your default browser
-- `:VimtexCompile`: Toggle LaTeX compile and real-time preview on buffer save. You should specify and prepare the PDF viewer of your choice in `config.lua`. Currently, [Skim](https://skim-app.sourceforge.io/) (for MacOS) or [Zathura](https://pwmt.org/projects/zathura/) for Linux/MacOS are supported
-    ```lua
-    vim.g.vimtex_view_method = "skim" --> or "zathura"
-    ```
 
 ### Built-in UI Elements
 
@@ -374,6 +372,18 @@ StatusLine components:
 ```
 | N |  CWD  foo/bar.c[+]  branch +13 ~20 -36       Linter ON  FILETYPE  file_format:encoding  line:col page_percentage
 ```
+
+### Markdown and LaTeX
+
+- `:MarkdownPreviewToggle`: Toggle GitHub-style real-time markdown preview in your default browser
+- `:VimtexCompile`: Toggle LaTeX compile and real-time preview on buffer save. You should specify and prepare the PDF viewer of your choice in `config.lua`. Currently, [Skim](https://skim-app.sourceforge.io/) (for MacOS) or [Zathura](https://pwmt.org/projects/zathura/) for Linux/MacOS are supported
+    ```lua
+    vim.g.vimtex_view_method = "skim" --> or "zathura"
+    ```
+
+### nvim-tree and Oil
+
+- `[LDR] n`: Toggle `nvim-tree`
 
 ### Miscellaneous Theovim Features
 
