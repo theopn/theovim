@@ -1,62 +1,57 @@
 # Changelog History
 
+## Version 2023.07.29
+
+Summary:
+
+This version focuses on bug fixes and (more) refactoring after last two refactor update
+**Update command was broken in the last update!** Sorry about this, and use:
+
+`$ cd ~/.config/nvim && git pull && cd -`
+
+to manually update Theovim. Afterwards, you can use `:TheovimUpdate`
+
+Details:
+
+- Add a new changelog style
+- Add autocmd to close terminal window when exit code is 0
+- Add `gx` binding to open URL in the current line (provided by netrw in "stock" Vim, but NvimTree disables netrw)
+- Add LSP symbol and server information shortcut to [c]ode [a]tion keybinding
+- Fix broken update and help doc commands
+
 ## V. 2023.07.19
 
-> This update is the second part of the refactoring project + improvement in built-in dashboard.
-> **Starting this update, users are to directly clone the repository to `~/.config` directory**.
-> You have two choices on using Theovim after this update:
->
-> 1. **Migrate to the new file structure and continue getting the update (recommended)**:
->
-> The command to migrate to the new structure is:
-> $ cd ~/.theovim && git pull && cd -
-> $ rm ~/.config/nvim && mv ~/.theovim ~/.config/nvim
->
-> Or re-install Theovim using the following command:
-> $ rm -rf ~/.config/nvim && git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim && rm -rf ~/.theovim
->
-> 2. Continue using Theovim as-is by switching to `depr-file-struct` branch and do not receive future updates:
-> Execute the following commands:
-> $ cd ~/.theovim && git pull && cd -
-> $ cd ~/.theovim && git fetch && git checkout depr-file-struct && cd -
->
-> Thank you for using Theovim! I hope this update to be the new starting point to further improve the experience.
+This update is the second part of the refactoring project + improvement in built-in dashboard.
+**Starting this update, users are to directly clone the repository to `~/.config` directory**.
+You have two choices on using Theovim after this update:
 
-- [dev f1ea2b9] feat(core): add more keybinding helpers
-- [dev 2914dbf] refactor(init): modify init.lua to fit the new file struct
-- [dev 5cbb24a] refactor(config): move tree-sitter config to config folder
-- [dev a210126] refactor(lsp): migrate lsp config to a separate folder
-- [dev b789bf8] refactor(completion): move completion config to config folder
-- [dev 2ac8677] fix(ui): use notify_once instead of notify for dashboard error msg to prevent spamming
-- [dev 67200d0] refactor(fuzzy finder): move fuzzy finder config to config folder
-- [dev ea5b5bb] style(lsp): add file name in the header comment
-- [dev 7c88b65] refactor(lsp): move lsp config file to config folder
-- [dev f6aeb14] feat(plugins): add nvimtree compatibility for bufferline
-- [dev aeffe2d] style(ui): remove commented code from dashboard
-- [dev 40567f3] docs(license) rename license and modify name
-- [dev eb1b732] fix(ui): remove unnecessary empty space appending
-- [dev 68e2e5a] refactor(ui): rename dashboard variables and move code to make more sense
-- [dev 9ce56c3] refactor(ui): modify dashboard code so the header is the longest string and buttons and bindings are combined
-- [dev 653e3b9] docs: add the new installation procedure to the readme
-- [dev 98879da] style(util): add comments to notepad
-- [dev be677a5] fix(init): fix the name of the config file
-- [dev 7500dde] refactor(config): remove old user_config
-- [dev 2532e44] fix: fix gitignore config file name
-- [dev 5f02894] fix(config): fix config template directory
-- [dev 6a682de] refactor!: change file structure so that repo can be cloned directly to ~/.config
+1. **Migrate to the new file structure and continue getting the update (recommended)**:
+    The command to migrate to the new structure is:
+    $ cd ~/.theovim && git pull && cd -
+    $ rm ~/.config/nvim && mv ~/.theovim ~/.config/nvim
+
+    Or re-install Theovim using the following command:
+    $ rm -rf ~/.config/nvim && git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim && rm -rf ~/.theovim
+
+2. Continue using Theovim as-is by switching to `depr-file-struct` branch and do not receive future updates:
+    Execute the following commands:
+    $ cd ~/.theovim && git pull && cd -
+    $ cd ~/.theovim && git fetch && git checkout depr-file-struct && cd -
+
+Thank you for using Theovim! I hope this update to be the new starting point to further improve the experience.
 
 ## V. 2023.07.16.a
 
 > This is a bug fix as the latest Telescope requires Neovim version 0.9.0 or above
 
-- [dev 82f7107] refactor(core): remove LSPSaga plugin and commented out codes in core.lua
-- [dev 22f2788] fix(plugins)!: downgrade Telescope version to 0.1.1 for Purdue Data server users
+- Removed LspSaga plug-in
+- Downgrade Telescope version to 0.1.1
 
 ## V. 2023.07.16
 
-> This version is a part 1 of the major refactor project to make Theovim utilize more stock Neovim APIs and sustainable to maintain.
-> Many unused features are retiring and replaced.
-> Please refer to the list of commits for all the changes took place in this update.
+This version is a part 1 of the major refactor project to make Theovim utilize more stock Neovim APIs and sustainable to maintain.
+Many unused features are retiring and replaced.
+Please refer to the list of commits for all the changes took place in this update.
 
 - ADD descriptions for some keybindings (which is accessible through `[LDR]?`)
 - ADD new changelog style with list of commits
@@ -67,35 +62,6 @@
 - REPLACE tabby.nvim with bufferline.nvim
 - REMOVE template features for C header and TeX
 - REMOVE <CR> after termclose
-
-Commits:
-
-- [dev eb4e62b] docs: update theovim banner image
-- [dev eb34f74] feat(core): add more keybinding descriptions
-- [dev 66fea7b] fix(ui): fix dashboard issue where width of the window was not checked (#17)
-- [dev b87ce6d] feat(ui): change dashboard as a module
-- [dev 9ea8b5b] refactor(ui): change statusline to be a lua module
-- [dev 47231a7] style(util): change file name from theovim_util to util
-- [dev 3e453dc] feat(colorscheme)!: replace Onedark/Pastelcula with Tokyonight
-- [dev dfcd08d] feat(tabline)!: replace tabby.nvim with bufferline.nvim
-- [dev 1c94391] refactor(dashboard): use Lua multiline string instead of double quotes for ASCIIs
-- [dev 7413c00] fix(dashboard): fix the bug where empty buffer is present after DB is loaded
-- [dev ac563dd] feat(core): revise buffer navigation binding ([]) and reinstate window resize bindings
-- [dev 010a3a6] refactor(core): combine three core files to one, rename core/plugin module to plugin
-- [dev 5016000] fix(keybindings): replace deprecated LSPSaga rename function with stock Neovim's
-- [dev 5d4bfc1] refactor(util): separate menu and notepad function to theovim_util.lua module
-- [dev 1c80be6] style(statusline): add Lua doc comments for each function
-- [dev dae66be] style(custom_menus): fix git menu numbering
-- [dev 918d3d7] refactor(statusline): remove some highlightings for modes
-- [dev 44726d4] fix(dashboard): fix bug where the last button wasn't highlighted
-- [dev 7c2e101] refactor(core): remove <CR> after termclose and organize code base
-- [dev 81df9ee] refactor!: drop template features for C header and latex
-- [dev 60c89bb] docs(help): add <leader>hjkl help back
-- [dev 9fb56df] feat(keybinds): add <leader>hjkl for window navigation back
-- [dev 5222fdf] docs(info/changelog): add an example for new changelog style and separate old changelog contents
-- [dev 4867c37] refactor(keybindings): remove :update in jk and remove <leader>hjkl bindings for window navigation
-- [dev 071de95] fix: replace obsolete pre-3.0 Nerd Font icons for UI elements
-- [dev 4e6c2e3] fix: replace obsolete pre-3.0 Nerd Font icons for completion menu
 
 ## Version 2023.04.24
 
