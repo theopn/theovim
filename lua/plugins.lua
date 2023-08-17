@@ -39,10 +39,12 @@ local plugins = {
   },
 
   -- Syntax, file, search
-  { "nvim-treesitter/nvim-treesitter", },            --> Incremental highlighting
+  { "nvim-treesitter/nvim-treesitter", }, --> Incremental highlighting
   {
-    "nvim-telescope/telescope.nvim",                 --> Expandable fuzzy finer
-    version = "0.1.1",                               --> Last version to support neovim 0.8
+    "nvim-telescope/telescope.nvim",      --> Expandable fuzzy finer
+    -- ! Latest version to support Neovim 0.8
+    -- Will be updated in the future Theovim release
+    version = "0.1.1",
   },
   { "nvim-telescope/telescope-file-browser.nvim", }, --> File browser extension for Telescope
   {
