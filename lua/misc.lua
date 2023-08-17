@@ -27,15 +27,11 @@ do
     end, { nargs = 0 })
 end
 
--- Various help document windows
+-- Help document windows
 do
-  local helpdoc_path = vim.api.nvim_get_runtime_file("doc/theovim-help.md", false)[1]
-  local helpdoc_func = util.spawn_floting_doc_win(helpdoc_path)
-  vim.api.nvim_create_user_command("TheovimHelp", helpdoc_func, { nargs = 0 })
-
-  local vimhelp_path = vim.api.nvim_get_runtime_file("doc/vim-help.md", false)[1]
-  local vimhelp_func = util.spawn_floting_doc_win(vimhelp_path)
-  vim.api.nvim_create_user_command("TheovimVanillaVimHelp", vimhelp_func, { nargs = 0 })
+  local readme_path = vim.api.nvim_get_runtime_file("README.md", false)[1]
+  local helpdoc_func = util.spawn_floting_doc_win(readme_path)
+  vim.api.nvim_create_user_command("TheovimReadme", helpdoc_func, { nargs = 0 })
 
   local changelog_path = vim.api.nvim_get_runtime_file("CHANGELOG.md", false)[1]
   local changelog_func = util.spawn_floting_doc_win(changelog_path)
@@ -88,9 +84,8 @@ local misc_options = {
   ["2. :TrimWhitespace"] = "TrimWhitespace",
   ["3. :ShowChanges"] = "ShowChanges",
   ["4. :TheovimUpdate"] = "TheovimUpdate",
-  ["5. :TheovimHelp"] = "TheovimHelp",
-  ["6. :TheovimVanillaVimHelp"] = "TheovimVanillaVimHelp",
-  ["7. :TheovimChangelog"] = "TheovimChangelog",
+  ["5. :TheovimReadme"] = "TheovimReadme",
+  ["6. :TheovimChangelog"] = "TheovimChangelog",
 }
 local misc_menu = util.create_select_menu("What fun feature would you like to use?", misc_options)
 vim.keymap.set('n', "<leader>m", misc_menu,
