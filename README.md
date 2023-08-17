@@ -20,10 +20,16 @@
     + [LSP](#lsp)
       - [Diagnostics](#diagnostics)
       - [Completion](#completion)
-      - [Linter (Code formatter)](#linter--code-formatter-)
+      - [Linter (Code Formatting)](#linter--code-formatting-)
       - [Adding a New LSP Server](#adding-a-new-lsp-server)
     + [Telescope](#telescope)
     + [Markdown and LaTeX](#markdown-and-latex)
+    + [Built-in UI Elements](#built-in-ui-elements)
+      - [Notepad](#notepad)
+      - [Startup Dashboard](#startup-dashboard)
+      - [TabLine](#tabline)
+      - [Winbar and StatusLine](#winbar-and-statusline)
+    + [Miscellaneous Theovim Features](#miscellaneous-theovim-features)
 
 [comment]: # (https://ecotrust-canada.github.io/markdown-toc/)
 
@@ -62,7 +68,7 @@ I also wrote articles about some of my Neovim config components in my blog.
 
 ## Dependencies
 
-- **A terminal emulator with a truecolor support**
+- **A terminal emulator with true color support**
     - [Wezterm](https://wezfurlong.org/wezterm/index.html) is my choice of terminal emulator.
     	It's fast, feature-rich, and configured in Lua
     - [Kitty](https://sw.kovidgoyal.net/kitty/), [Alacritty](https://alacritty.org/), and [iTerm 2 for MacOS](https://iterm2.com/) are all great options
@@ -228,7 +234,7 @@ Whenever an LSP server detects an error or has a suggestion for your code, Theov
 
 ![lsp-diagnostics-example.jpg](./assets/lsp-diagnostics-example.jpg)
 
-You can get a pop-up list of diagnostics in the current buffer using `[LDR] c e`. You can navigate to the nearest diagnostics using `[LDR] c p`/`n`.
+You can get a list of current buffer diagnostics using `[LDR] c e`. You can navigate to the nearest diagnostics using `[LDR] c p`/`n`.
 
 #### Completion
 
@@ -257,12 +263,12 @@ There is also a Vim command line completion.
 
 ![cmd-completion-example.jpg](./assets/cmd-completion-example.jpg)
 
-#### Linter (Code formatter)
+#### Linter (Code Formatting)
 
-- Linter is available for some buffers when LSP servers provide a formatter (`vim.lsp.buf.format()`)
+- Linter is available for some buffers when LSP servers provide formatting (`vim.lsp.buf.format()`)
 - You can track the status of Linter in the Statusline component (reference the "Built-in UI" section below).
 - When Linter is on, it will format the code every time you save. **You can turn this off using `:LspLinterToggle`**
-    - `LspLinterToggle` is a global option, meaning if you turn on/off Linter, it will be applied to all buffers
+    - `LspLinterToggle` is a global option, meaning if you turn on/off Linter, it applies to all buffers
     - It also does not have a memory, meaning when you turn Linter off and relaunch Neovim, it will be on again
     - To change the default behavior, add the following option to `config.lua`
         ```lua
@@ -317,7 +323,7 @@ Following features are accessible through `[LDR] f a`:
 
 - Use `:w file-name.md` to save the current Notepad contents
 - `q`/`<ESC>`: Hides the Notepad window
-    - Using `:q` to close the Notepad mess up the closing mechanism
+    - Using `:q` to close the Notepad messes up the closing mechanism
 
 #### Startup Dashboard
 
@@ -331,7 +337,7 @@ When Neovim launches with no argument, you will be greeted with a Dashboard cont
 
 #### TabLine
 
-Theovim's TabLine improves Vim built-in tab experience with tab number, modified indicator, and number of tabs and buffers.
+Theovim's TabLine improves the built-in Vim tab system with tab number, modified indicator, and number of tabs and buffers.
 
 ![tabline](./assets/tabline.jpg)
 
@@ -339,66 +345,43 @@ Theovim's TabLine improves Vim built-in tab experience with tab number, modified
 - Number of windows includes floating windows or windows for unlisted buffers (e.g., `:Notepad` scratch buffer, file tree, help, etc.)
 - Number of buffers does not include unlisted buffers
 
----
-BELOW DOC IS INCOMPLETE
-
-#### TODO Winbar and StatusLine
+#### Winbar and StatusLine
 
 ![winbar-and-statusline](./assets/winbar-and-statusline.jpg)
 
-### Plug-in List
+Winbar components:
 
-Theovim has 26 plug-ins (+ Lazy).
+- File name
+- Modified ([+]) or read-only ([-])
+- LSP server name (if an LSP server is active)
+- LSP diagnostics information (if an LSP server is active)
 
-Dependencies:
+```
+| filename.c[+] LSP: server_name E:5 W:1 HINT:4 INFO:5 |
+```
 
-- `nvim-lua-plenary.nvim`: Lua function library for Neovim
-- `nvim-tree/nvim-web-devicons`: Icons based on filetype
+StatusLine components:
 
-UI:
+- Current mode
+- Current working directory
+- File path and name relative to the CWD
+- Git branch and lines changed
+- Linter status (if an LSP server is active)
+- Filetype
+- File format (UNIX or DOS icon)
+- Current line and column number + percentage through file of displayed window
 
-- `folke/tokyonight.nvim`: Theovim's colorscheme
-- `rcarriga/nvim-notify`: Prettier notification
-
-Syntax, file, search:
-
-- `nvim-treesitter/nvim-tresitter`: Incremental highlighting
-- `nvim-telescope/telescope.nvim`: Fuzzy finder
-- `nvim-telescope/telescope-file-browser.nvim`: File browser extension for Telescope
-- `kyazdan142/nvim-tree.lua`: File tree
-- `stevearc/oil.nvim`: Manage files like Vim buffer
-- `lewis6991/gitsigns.nvim`: Git information
-- `windwp/nvim-autopairs`: Autopair for `()`, `[]`, etc.
-- `terrortylor/nvim-comment`: Comment code block
-- `norcalli/nvim-colorizer.lua`: Color highlighting
-
-LSP:
-
-- `neovim/nvim-lspconfig`: Built-in LSP engine
-- `williamboman/mason.nvim`: LSP server manager
-- `williamboman/mason-lspconfig.nvim`: Bridge b/w lspconfig and Mason
-- `theopn/friendly-snippets`: VS Code style snippet collection
-- `L3MON4D3/LuaSnip`: Snippet engine that accepts VS Code style snippets
-- `saadparwiz1/cmp_luasnip`: Bridge b/w nvim cmp and LuaSnip
-- `hrsh7th/cmp-nvim-lsp`: nvim-cmp source for LSP engine
-- `hrsh7th/cmp-buffer`: nvim-cmp source for buffer words
-- `hrsh7th/cmp-path`: nvim-cmp source for file path
-- `hrsh7th/cmp-cmdline`: nvim-cmp source for :commands
-- `hrsh7th/nvim-cmp`: Completion engine
-
-Markdown:
-
-- `iamcco/markdown-preview.nvim`: markdown preview
-- `lervag/vimtex`: LaTeX integration
+```
+| N |  CWD  foo/bar.c[+]  branch +13 ~20 -36       Linter ON  FILETYPE  file_format:encoding  line:col page_percentage
+```
 
 ### Miscellaneous Theovim Features
 
-- `[LDR] g`: **[g]it** Menu for Git related functionalities (status, diff, commits, etc.)
+- `[LDR] g`: **[g]it** Menu for Git-related functionalities (status, diff, commits, etc.)
 - `[LDR] m`: **misc**. Menu for miscellaneous Theovim features
 
-- `:Notepad`
-
-- `:TheovimHelp` contains all the custom commands and shortcuts
 - `:TheovimUpdate` updates the latest changes to Theovim by pulling the changes and running update utilities
-- `:TheovimChangelog` for the current version information and latest changes
+- `:TheovimReadme`: Opens this document in a floating window
+- `:TheovimChangelog`: View the current version information and latest changes
+- `:TheovimChangelogHistory`: View the historic changelogs
 
