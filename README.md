@@ -1,6 +1,6 @@
 # Theovim
 
-> If you are accessing this document using `:TheovimReadme`, you can use `:MarkdownPreviewToggle` to render the contents in your browser.
+> If you are reading this document using `:TheovimReadme`, you can use `:MarkdownPreviewToggle` to render the contents in your browser.
 
 ![theovim-banner](./assets/theovim-banner.jpg)
 
@@ -20,11 +20,6 @@
       - [Linter (Code formatter)](#linter--code-formatter-)
       - [Adding a New LSP Server](#adding-a-new-lsp-server)
     + [Markdown and LaTeX](#markdown-and-latex)
-    + [Telescope (/config/fuzzy.lua)](#telescope---config-fuzzylua-)
-    + [Plug-in List](#plug-in-list)
-    + [Built-in UI Elements](#built-in-ui-elements)
-    + [Miscellaneous Theovim Features (misc.lua, util.lua)](#miscellaneous-theovim-features--misclua--utillua-)
-  * [Other Things](#other-things)
 
 [comment]: # (https://ecotrust-canada.github.io/markdown-toc/)
 
@@ -36,40 +31,38 @@ It features opinionated base Vim settings and keybindings, ~30 carefully selecte
 Some of the philosophies I stick to when I configure Neovims are:
 
 1. Prefer Neovim API and Lua over plug-ins
-1. When using a plug-in, keep the stock configuration as much as possible. The plug-in author knows more about the plug-in than I do
-1. Always comment the code!
+1. When you use a plug-in, keep the stock configuration as much as possible. The author knows more about the plug-in than you do
+1. Always comment on the code!
 1. Avoid duplicate keybindings and features
 1. 10 keybindings you can memorize are better than 50 complicated keybindings
 1. Keep things minimal
 
-I don't advise you to use this repository as your personal config as it contains some opinionated features and because you learn much about (neo)vim when you configure it yourself.
+I don't advise using this repository as your personal config because it contains some opinionated features, and you can learn much about (neo)vim when you configure it yourself.
 
 Instead, you are welcome to fork the repository or read/copy the source code. It contains some of my proud and interesting work, such as:
 
 - [clever keybindings](./lua/core.lua)
 - [TabLine](./lua/ui/tabline.lua)
 - [Startup Dashboard](./lua/ui/dashboard.lua)
-- [Notepad](./lua/util.lua)
-- [Using Vim.ui.select](./lua/util.lua)
-- [Floating term](./lua/util.lua)
+- [Notepad, floating term, and using vim.ui.select()](./lua/util.lua)
 
 I also wrote articles about some of my Neovim config components in my blog.
 
 - [Using vim.ui.select to Group Features and Fix Keybinding Problems](https://theopark.me/writing/2023-07-22-vim-ui-select/)
 
-**If you found Theovim inspiring, please leave a star!**
+**If you found Theovim helpful, please leave a star!**
 
 ## Dependencies
 
-- **A terminal emulator with true color support**
+- **A terminal emulator with a truecolor support**
     - [Wezterm](https://wezfurlong.org/wezterm/index.html) is my choice of terminal emulator.
     	It's fast, feature-rich, and configured in Lua
     - [Kitty](https://sw.kovidgoyal.net/kitty/), [Alacritty](https://alacritty.org/), and [iTerm 2 for MacOS](https://iterm2.com/) are all great options
     - Alternatively, you can use a GUI Neovim client like [Neovide](https://neovide.dev/)
 - **Neovim version > 0.8.3**
     - Unfortunately, my school's Debian server uses outdated Neovim, forcing me to use some deprecated APIs and older versions of plug-ins
-    - Theovim development happens in the latest Neovim, and I use 0.8 for testing only. Outdated features will be updated as soon as possible
-    - Thanks my friend Shriansh for at least making them upgrade from 0.5 to 0.8
+    - These will be indicated in code comments and will be fixed as soon as possible
+    - Thanks to my friend Shriansh for at least making them upgrade from 0.5 to 0.8
 - **[NerdFonts](https://www.nerdfonts.com/font-downloads) to render glyphs**
 - `npm`, `g++` (`gcc-c++`), and `unzip` for `bashls` and `clangd` language server
 - `git` to update Theovim
@@ -128,14 +121,15 @@ git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim
 - `[LDR] /`: Clear the last search and search highlights
 
 - Yank and paste:
-    - `[LDR] y` (visual): Yank to the system clipboard ([unnamedplus](https://stackoverflow.com/questions/30691466/what-is-difference-between-vims-clipboard-unnamed-and-unnamedplus-settings))
+    - `[LDR] y` (visual): Yank to the system clipboard
+        ([unnamedplus](https://stackoverflow.com/questions/30691466/what-is-difference-between-vims-clipboard-unnamed-and-unnamedplus-settings))
     - `[LDR] p` (visual): Paste the selection without overriding the default register
         ![ldr-p-demo](./assets/ldr-p-demo.gif)
     - `[LDR] p` (normal): Open a register (similar to clipboard history -- `:h registers`) selection
 - Buffer navigation:
     - `[LDR] b`: **[b]uffer**. Open a buffer list
     - `[LDR] [`/`]`: Navigate to prev/next buffers
-    - `[LDR] k`: **[k]ill buffer**. Delete a buffer. Hit enter to kill the current buffer or type one of the displayed buffer numbers to specify a buffer
+    - `[LDR] k`: **[k]ill buffer**. Delete a buffer. Hit enter to kill the current buffer or type buffer numbers
         ![ldr-k-demo](./assets/ldr-k-demo.gif)
 - Window resizing: Theovim does not offer many window resizing/navigation bindings since Vim already has `C-w` keybindings.
     Familiarize yourself with `C-hjkl`, `C-w` (for navigating to floating windows), `C-w =`, `C-w |`, etc.
@@ -143,8 +137,7 @@ git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim
     - `[LDR] >`/`<`: Increase/decrease the current window width by one-third
 - Tab navigation:
     - `[LDR] t`: **new [t]ab**. Create a new tab.
-    Hit enter to make a new tab with the current buffer or type one of the displayed buffer numbers to specify a buffer (reference the `[LDR] k` demo above).
-    If the Vim tab system confusing, read [my article on Vim workflow](//TODO) to learn about the Vim tab system
+    Hit enter to make a new tab with the current buffer or type buffer numbers (reference the `[LDR] k` demo above)
     - `[LDR] q`: **[q]uit**. Close the current tab. (you cannot close the one and only tab. Use `C-w q` or `:q`)
     - `[LDR] 1`-`5`: Navigate to tab number 1 - 5
 - Overridden keybindings: These are Vim keybindings overridden by Theovim
@@ -158,8 +151,8 @@ git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim
 Many of these commands are accessible through `[LDR] m` keybinding (reference "Miscellaneous Theovim Features" section).
 
 - `:TrimWhiteSpace`: Remove trailing whitespaces
-- `:ShowChanges`: Show the difference between the saved file and the current Vim buffer using shell commands
-- `:CD`: You might launch Vim in `foo` directory and open `foo/bar/baz/file.txt`. Use this command to change the working directory to `baz` (to narrow the Telescope search down, etc.). It only affects the current buffer. You can change the CWD and relative file path in the Statusline
+- `:ShowChanges`: Show the difference between the saved file and the current Vim buffer
+- `:CD`: You might launch Vim in `~` directory and open `~/foo/bar/baz/file.txt`. Use this command to change the working directory to `baz` (to narrow the Telescope search down, etc.). It only affects the current buffer. You can see the CWD and relative file path in the Statusline
 
 ### Core Options
 
@@ -231,7 +224,6 @@ You can get a pop-up list of diagnostics in the current buffer using `[LDR] c e`
 
 #### Completion
 
-//TODO
 ![lsp-completion-example.jpg](./assets/lsp-completion-example.jpg)
 
 Theovim offers completion engines for LSP buffers as well as general text editing.
@@ -251,9 +243,10 @@ The order of completion item detection:
 3. Buffer words
 4. Path completion
 
+    ![path-completion-example.jpg](./assets/path-completion-example.jpg)
+
 There is also a Vim command line completion.
 
-//TODO
 ![cmd-completion-example.jpg](./assets/cmd-completion-example.jpg)
 
 #### Linter (Code formatter)
@@ -285,12 +278,11 @@ There is also a Vim command line completion.
 ---
 BELOW DOC IS INCOMPLETE
 
-### Telescope (/config/fuzzy.lua)
+### Telescope
 
-Telescope 
+[Telescope](https://github.com/nvim-telescope/telescope.nvim) is an awesome fuzzy finder for Neovim.
 
-- Reference the full README in //TODO
-- File browser (`<LDR>fb`):
+- File browser (`<LDR>fb`): 
 - Find Files (`<LDR>ff`): Fuzzy finder for files in the current directory and subdirectories. Optionally, install [fd](https://github.com/sharkdp/fd) for better performance, `.gitignore` support, and other fd features.
 
 ### Plug-in List
@@ -356,7 +348,7 @@ Statusline: from left to right,
 
 Winbar:
 
-### Miscellaneous Theovim Features (misc.lua, util.lua)
+### Miscellaneous Theovim Features
 
 - [LDR] [g]it: Menu for Git related functionalities (status, diff, commits, etc.)
 - [LDR] [m]isc: Menu for miscellaneous Theovim features
