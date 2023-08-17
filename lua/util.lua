@@ -222,7 +222,10 @@ function M.launch_notepad()
       vim.api.nvim_buf_set_option(M.notepad_buf, "bufhidden", "hide")
       vim.api.nvim_buf_set_option(M.notepad_buf, "filetype", "markdown")
       vim.api.nvim_buf_set_lines(M.notepad_buf, 0, 1, false,
-        { "WARNING: Notepad content will be erased when the current Neovim instance closes" })
+        { "# Theovim Notepad",
+          "",
+          "> Notepad clears when the current Neovim session closes",
+        })
     end
     -- Create a window
     M.notepad_win = vim.api.nvim_open_win(M.notepad_buf, true, {
