@@ -19,7 +19,6 @@ local plugins = {
   -- dependencies
   { "nvim-lua/plenary.nvim", },       --> Lua function library for Neovim (used by Telescope)
   { "nvim-tree/nvim-web-devicons", }, --> Icons for barbar, Telescope, and more
-  -- }}}
 
   -- UI
   {
@@ -70,7 +69,7 @@ local plugins = {
     end,
   },
   {
-    "stevearc/oil.nvim", --> Manage files like Vim buffer; !currently testing!
+    "stevearc/oil.nvim", --> Manage files like Vim buffer; currently testing!
     config = function() require("oil").setup() end,
   },
   {
