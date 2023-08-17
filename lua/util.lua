@@ -54,25 +54,27 @@ M.create_select_menu = function(prompt, options_table)
   return menu
 end
 
---[[
--- TODO
+--[[ spawn_floating_term()
+-- Create a floating terminal (80% of the current window size)
 --
 -- @return a function that creates the floating terminal
 --]]
 M.spawn_floating_term = function()
-  local win_height = math.ceil(vim.o.lines * 0.8)
-  local win_width = math.ceil(vim.o.columns * 0.8)
-  local x_pos = math.ceil((vim.o.lines - win_height) * 0.5)  --> Centering the window
-  local y_pos = math.ceil((vim.o.columns - win_width) * 0.5) --> Centering the window
+  local win_height = vim.api.nvim_win_get_height(0) or vim.o.columns
+  local win_width = vim.api.nvim_win_get_width(0) or vim.o.lines
+  local float_win_height = math.ceil(win_height * 0.8)
+  local float_win_width = math.ceil(win_width * 0.8)
+  local x_pos = math.ceil((win_width - float_win_width) * 0.5)   --> Centering the window
+  local y_pos = math.ceil((win_height - float_win_height) * 0.5) --> Centering the window
 
   local win_opts = {
     border = "rounded", --> sigle, double, rounded, solid, shadow
     relative = "editor",
     style = "minimal",  --> No number, cursorline, etc.
-    width = win_width,
-    height = win_height,
-    row = x_pos,
-    col = y_pos,
+    width = float_win_width,
+    height = float_win_height,
+    row = y_pos,
+    col = x_pos,
   }
 
   local float_win = function()
@@ -114,8 +116,8 @@ M.spawn_floating_shell = function(cmd, height_ratio, width_ratio, pos, transpare
   -- Window position
   local pos_enum = {
     TOP = 1,
-    CENTER = math.ceil((vim.o.columns - win_width) * 0.5),
-    BOTTOM = vim.o.columns
+    CENTER = math.ceil((vim.o.lines - win_height) * 0.5),
+    BOTTOM = vim.o.lines
   }
   local x_pos = pos_enum[pos]
   local y_pos = math.ceil((vim.o.columns - win_width) * 0.5) --> always center the horizontally
@@ -164,19 +166,21 @@ end
 -- @return a function that creates the floating window
 --]]
 M.spawn_floting_doc_win = function(file_path)
-  local win_height = math.ceil(vim.o.lines * 0.8)
-  local win_width = math.ceil(vim.o.columns * 0.8)
-  local x_pos = math.ceil((vim.o.lines - win_height) * 0.5)  --> Centering the window
-  local y_pos = math.ceil((vim.o.columns - win_width) * 0.5) --> Centering the window
+  local win_height = vim.api.nvim_win_get_height(0) or vim.o.lines
+  local win_width = vim.api.nvim_win_get_width(0) or vim.o.columns
+  local float_win_height = math.ceil(win_height * 0.8)
+  local float_win_width = math.ceil(win_width * 0.8)
+  local x_pos = math.ceil((win_width - float_win_width) * 0.5)   --> Centering the window
+  local y_pos = math.ceil((win_height - float_win_height) * 0.5) --> Centering the window
 
   local win_opts = {
     border = "rounded", --> sigle, double, rounded, solid, shadow
     relative = "editor",
     style = "minimal",  --> No number, cursorline, etc.
-    width = win_width,
-    height = win_height,
-    row = x_pos,
-    col = y_pos,
+    width = float_win_width,
+    height = float_win_height,
+    row = y_pos,
+    col = x_pos,
   }
 
   local float_win = function()
@@ -205,39 +209,44 @@ end
 
 --[[ launch_notepad()
 -- Launch a small, transparent floating window with a scartch buffer that persists until Neovim closes
+--
+-- @requires M.notepad_loaded, M.notepad_buf, M.notepad_win variables in util (this) module
 --]]
-vim.g.notepad_loaded = false
-local notepad_buf, notepad_win
+M.notepad_loaded = false
+M.notepad_buf, M.notepad_win = nil, nil
 function M.launch_notepad()
-  if not vim.g.notepad_loaded or not vim.api.nvim_win_is_valid(notepad_win) then
-    if not notepad_buf or not vim.api.nvim_buf_is_valid(notepad_buf) then
+  if not M.notepad_loaded or not vim.api.nvim_win_is_valid(M.notepad_win) then
+    if not M.notepad_buf or not vim.api.nvim_buf_is_valid(M.notepad_buf) then
       -- Create a buffer if it none existed
-      notepad_buf = vim.api.nvim_create_buf(false, true)
-      vim.api.nvim_buf_set_option(notepad_buf, "bufhidden", "hide")
-      vim.api.nvim_buf_set_option(notepad_buf, "filetype", "markdown")
-      vim.api.nvim_buf_set_lines(notepad_buf, 0, 1, false,
-        { "WARNING: Notepad content will be erased when the current Neovim instance closes" })
+      M.notepad_buf = vim.api.nvim_create_buf(false, true)
+      vim.api.nvim_buf_set_option(M.notepad_buf, "bufhidden", "hide")
+      vim.api.nvim_buf_set_option(M.notepad_buf, "filetype", "markdown")
+      vim.api.nvim_buf_set_lines(M.notepad_buf, 0, 1, false,
+        { "# Theovim Notepad",
+          "",
+          "> Notepad clears when the current Neovim session closes",
+        })
     end
     -- Create a window
-    notepad_win = vim.api.nvim_open_win(notepad_buf, true, {
+    M.notepad_win = vim.api.nvim_open_win(M.notepad_buf, true, {
       border = "rounded",
       relative = "editor",
       style = "minimal",
       height = math.ceil(vim.o.lines * 0.5),
       width = math.ceil(vim.o.columns * 0.5),
-      row = 1,                                               --> Top of the window
-      col = math.ceil(vim.o.columns * 0.5),                  --> Far right; should add up to 1 with win_width
+      row = 1,                                                 --> Top of the window
+      col = math.ceil(vim.o.columns * 0.5),                    --> Far right; should add up to 1 with win_width
     })
-    vim.api.nvim_win_set_option(notepad_win, "winblend", 30) --> Semi transparent buffer
+    vim.api.nvim_win_set_option(M.notepad_win, "winblend", 30) --> Semi transparent buffer
 
     -- Keymaps
-    local keymaps_opts = { silent = true, buffer = notepad_buf }
+    local keymaps_opts = { silent = true, buffer = M.notepad_buf }
     vim.keymap.set('n', "<ESC>", function() M.launch_notepad() end, keymaps_opts)
     vim.keymap.set('n', "q", function() M.launch_notepad() end, keymaps_opts)
   else
-    vim.api.nvim_win_hide(notepad_win)
+    vim.api.nvim_win_hide(M.notepad_win)
   end
-  vim.g.notepad_loaded = not vim.g.notepad_loaded
+  M.notepad_loaded = not M.notepad_loaded
 end
 
 return M

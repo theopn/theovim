@@ -14,59 +14,46 @@
 --   - For some plug-ins, install external dependencies
 --]]
 
--- {{{ Plugin list
+-- Plug-in list
 local plugins = {
-  -- {{{ Dependencies
-  { "nvim-lua/plenary.nvim" },       --> Lua function library for Neovim (used by Telescope)
-  { "nvim-tree/nvim-web-devicons" }, --> Icons for barbar, Telescope, and more
-  -- }}}
+  -- dependencies
+  { "nvim-lua/plenary.nvim", },       --> Lua function library for Neovim (used by Telescope)
+  { "nvim-tree/nvim-web-devicons", }, --> Icons for barbar, Telescope, and more
 
-  -- {{{ Look and feel
+  -- UI
   {
     "folke/tokyonight.nvim", --> colorscheme
     config = function()
-      vim.cmd("colorscheme tokyonight-moon")
-    end
+      vim.cmd([[
+      try
+        colo tokyonight-night
+      catch
+        colo slate
+      endtry
+      ]])
+    end,
   },
   {
-    "akinsho/bufferline.nvim", --> Vim's built-in "tab" is more like desktop workspace in tiling WM. Let's fix that
-    version = "*",
-    dependencies = "nvim-tree/nvim-web-devicons",
-    config = function()
-      require("bufferline").setup({
-        options = {
-          diagnostics = "nvim_lsp",
-          offsets = {
-            {
-              filetype = "NvimTree",
-              text = "File Tree",
-              highlight = "Directory",
-              separator = true
-            },
-          }
-        },
-      })
-    end
+    "rcarriga/nvim-notify", --> Prettier notification
+    config = function() vim.notify = require("notify") end,
   },
-  {
-    "rcarriga/nvim-notify",                                      --> Prettier notification
-    config = function()
-      require("notify").setup({ background_colour = "#282A35" }) --> The variable is needed if theme is transparent
-      vim.notify = require("notify")
-    end
-  },
-  -- }}}
 
-  -- {{{ File and search
-  { "nvim-treesitter/nvim-treesitter" }, --> Incremental highlighting
+  -- Syntax, file, search
+  { "nvim-treesitter/nvim-treesitter", }, --> Incremental highlighting
   {
-    "nvim-telescope/telescope.nvim",
-    version = "0.1.1"
-  },                                                --> Expendable fuzzy finder
-  { "nvim-telescope/telescope-file-browser.nvim" }, --> File browser extension for Telescope
+    "nvim-telescope/telescope.nvim",      --> Expandable fuzzy finer
+    -- ! Latest version to support Neovim 0.8
+    -- Will be updated in the future Theovim release
+    version = "0.1.1",
+  },
+  { "nvim-telescope/telescope-file-browser.nvim", }, --> File browser extension for Telescope
   {
-    "kyazdani42/nvim-tree.lua",                     --> File tree
+    "kyazdani42/nvim-tree.lua",                      --> File tree
     config = function()
+      -- Keymap to toggle
+      vim.keymap.set('n', "<leader>n", "<CMD>NvimTreeToggle<CR>",
+        { noremap = true, silent = true, desc = "[n]vim tree/[n]etrw: toggle file tree" })
+
       -- Disable netrw
       vim.g.loaded_netrw = 1
       vim.g.loaded_netrwPlugin = 1
@@ -81,65 +68,61 @@ local plugins = {
         require("nvim-tree.api").tree.open() --> open the tree
       end
       vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
-    end
+    end,
+  },
+  {
+    "stevearc/oil.nvim", --> Manage files like Vim buffer; currently testing!
+    config = function() require("oil").setup() end,
   },
   {
     "lewis6991/gitsigns.nvim", --> Git information
-    config = function() require("gitsigns").setup() end
-  },
-  {
-    "lukas-reineke/indent-blankline.nvim", --> Indentation guide
-    config = function() require("indent_blankline").setup() end
+    config = function() require("gitsigns").setup() end,
   },
   {
     "windwp/nvim-autopairs", --> Autopair
-    config = function() require("nvim-autopairs").setup() end
+    config = function() require("nvim-autopairs").setup() end,
   },
   {
     "terrortylor/nvim-comment", --> Commenting region
-    config = function() require("nvim_comment").setup() end
+    config = function() require("nvim_comment").setup() end,
   },
   {
     "norcalli/nvim-colorizer.lua", --> Color highlighter
-    config = function() require("colorizer").setup() end
+    config = function() require("colorizer").setup() end,
   },
-  -- }}}
 
-  -- {{{ LSP
-  { "neovim/nvim-lspconfig" }, --> Neovim defult LSP engine
+  -- LSP
+  { "neovim/nvim-lspconfig", }, --> Neovim defult LSP engine
   {
-    "williamboman/mason.nvim", --> LSP Manager
-    config = function() require("mason").setup() end
+    "williamboman/mason.nvim",  --> LSP Manager
+    config = function() require("mason").setup() end,
   },
-  { "williamboman/mason-lspconfig.nvim", },                                    --> Bridge between Mason and lspconfig
-  { "theopn/friendly-snippets" },                                              --> VS Code style snippet collection
+  { "williamboman/mason-lspconfig.nvim", },                                     --> Bridge between Mason and lspconfig
+  { "theopn/friendly-snippets", },                                              --> VS Code style snippet collection
   {
-    "L3MON4D3/LuaSnip",                                                        --> Snippet engine that accepts VS Code style snippets
-    config = function() require("luasnip.loaders.from_vscode").lazy_load() end --> Load snippets from friendly snippets
+    "L3MON4D3/LuaSnip",                                                         --> Snippet engine that accepts VS Code style snippets
+    config = function() require("luasnip.loaders.from_vscode").lazy_load() end, --> Load snippets from friendly snippets
   },
-  { "saadparwaiz1/cmp_luasnip" },                                              --> nvim_cmp and LuaSnip bridge
-  { "hrsh7th/cmp-nvim-lsp" },                                                  --> nvim-cmp source for LSP engine
-  { "hrsh7th/cmp-buffer" },                                                    --> nvim-cmp source for buffer words
-  { "hrsh7th/cmp-path" },                                                      --> nvim-cmp source for file path
-  { "hrsh7th/cmp-cmdline" },                                                   --> nvim-cmp source for :commands
-  { "hrsh7th/nvim-cmp" },                                                      --> Completion Engine
+  { "saadparwaiz1/cmp_luasnip", },                                              --> nvim_cmp and LuaSnip bridge
+  { "hrsh7th/cmp-nvim-lsp", },                                                  --> nvim-cmp source for LSP engine
+  { "hrsh7th/cmp-buffer", },                                                    --> nvim-cmp source for buffer words
+  { "hrsh7th/cmp-path", },                                                      --> nvim-cmp source for file path
+  { "hrsh7th/cmp-cmdline", },                                                   --> nvim-cmp source for :commands
+  { "hrsh7th/cmp-nvim-lua" },                                                   --> nvim-cmp source for Neovim API
+  { "hrsh7th/nvim-cmp", },                                                      --> Completion Engine
 
-  -- {{{ Language specific
+  -- Text editing
   {
     "iamcco/markdown-preview.nvim",                       --> MarkdownPreview to toggle
     build = function() vim.fn["mkdp#util#install"]() end, --> Binary installation for markdown-preview
-    ft = { "markdown" }
+    ft = { "markdown" },
   },
   {
     "lervag/vimtex", --> LaTeX integration
-    config = function()
-      vim.g.tex_flavor = "latex"
-    end,
-    ft = { "plaintex", "tex" }
+    config = function() vim.g.tex_flavor = "latex" end,
+    ft = { "plaintex", "tex" },
   }
-  -- }}}
 }
--- }}}
 
 --- {{{ Lazy.nvim installation
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
