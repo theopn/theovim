@@ -4,6 +4,11 @@
 
 ![theovim-banner](./assets/theovim-banner.jpg)
 
+<details>
+    <summary>
+    <b>TOC</b>
+    </summary>
+
 - [Theovim](#theovim)
   * [Overview](#overview)
   * [Dependencies](#dependencies)
@@ -23,6 +28,8 @@
 
 [comment]: # (https://ecotrust-canada.github.io/markdown-toc/)
 
+</details>
+
 ## Overview
 
 Theovim is my Neovim configuration, geared toward my work as a CS student (C, Python, Java, LaTeX, LaTeX, and LaTeX).
@@ -41,7 +48,7 @@ I don't advise using this repository as your personal config because it contains
 
 Instead, you are welcome to fork the repository or read/copy the source code. It contains some of my proud and interesting work, such as:
 
-- [clever keybindings](./lua/core.lua)
+- [Memorable keybindings](./lua/core.lua)
 - [TabLine](./lua/ui/tabline.lua)
 - [Startup Dashboard](./lua/ui/dashboard.lua)
 - [Notepad, floating term, and using vim.ui.select()](./lua/util.lua)
