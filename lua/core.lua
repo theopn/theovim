@@ -61,9 +61,16 @@ do
   for _, v in ipairs(edit_opt) do
     opt[v[1]] = v[2]
   end
-  -- Trimming extra whitespaces --
-  -- \s: white space char, \+ :one or more, $: end of the line, e: suppresses warning, no need for <CR> for usercmd
-  vim.api.nvim_create_user_command("TrimWhitespace", ":let save=@/<BAR>:%s/\\s\\+$//e<BAR>:let @/=save<BAR>",
+  --[[ trim_whitespace()
+  -- Vimscript-based function to trim trailing whitespaces
+  -- \s: white space char, \+ :one or more, $: end of the line, e: suppresses warning when no match found, c: confirm
+  --]]
+  local function trim_whitespace()
+    local win_save = vim.fn.winsaveview()
+    vim.cmd("keeppatterns %s/\\s\\+$//ec")
+    vim.fn.winrestview(win_save)
+  end
+  vim.api.nvim_create_user_command("TrimWhitespace", trim_whitespace,
     { nargs = 0 })
   -- Show the changes made since the last write
   vim.api.nvim_create_user_command("ShowChanges", ":w !diff % -",
