@@ -186,17 +186,17 @@ end
 -- {{{ Keybinding table
 local key_opt = {
   -- Convenience --
-  { 'i', "jk",        "<ESC>",              "[j]o[k]er: Better ESC" },
-  { 'n', "<leader>a", "gg<S-v>G",           "[a]ll: select all" },
-  { 'n', "gx",        url_handler,          "Open URL under the cursor using shell open command" },
+  { 'i', "jk",        "<ESC>",        "[j]o[k]er: Better ESC" },
+  { 'n', "<leader>a", "gg<S-v>G",     "[a]ll: select all" },
+  { 'n', "gx",        url_handler,    "Open URL under the cursor using shell open command" },
 
   -- Search --
-  { 'n', "n",         "nzz",                "Highlight next search and center the screen" },
-  { 'n', "N",         "Nzz",                "Highlight prev search and center the screen" },
-  { 'n', "<leader>/", "<CMD>let @/=''<CR>", "[/]: clear search" }, --> @/ is the macro for the last search
+  { 'n', "n",         "nzz",          "Highlight next search and center the screen" },
+  { 'n', "N",         "Nzz",          "Highlight prev search and center the screen" },
+  { 'n', "<leader>/", "<CMD>noh<CR>", "[/]: clear search" }, --> @/ is the macro for the last search
 
   -- Copy and paste --
-  { 'x', "<leader>y", '"+y',                "[y]ank: yank to the system clipboard (+)" },
+  { 'x', "<leader>y", '"+y',          "[y]ank: yank to the system clipboard (+)" },
   {
     'n',
     "<leader>p",
