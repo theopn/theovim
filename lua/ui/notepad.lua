@@ -33,13 +33,15 @@ function M.toggle_notepad()
       vim.api.nvim_buf_set_option(M.notepad_buf, "bufhidden", "hide")
       vim.api.nvim_buf_set_option(M.notepad_buf, "filetype", "markdown")
       vim.api.nvim_buf_set_lines(M.notepad_buf, 0, 1, false,
-        { "# Theovim Notepad",
+        { "# Warning",
           "",
           "> Notepad clears when the current Neovim session closes",
         })
     end
     -- Create a window
     M.notepad_win = vim.api.nvim_open_win(M.notepad_buf, true, {
+      title = "Theovim Notepad",
+      title_pos = "center",
       border = "rounded",
       relative = "editor",
       style = "minimal",
