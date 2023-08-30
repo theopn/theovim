@@ -172,12 +172,23 @@ vim.g.mapleader = " "                                            --> Space as th
 
 --[[ url_handler()
 -- Find the URL in the current line and open it in a browser if possible
+-- @requires macOS open command or Linux xdg-open
 --]]
 local function url_handler()
-  -- <something>://<something that aren't >,;)>
-  local url = string.match(vim.fn.getline("."), "[a-z]*://[^ >,;)]*")
+  -- <something>://<something that aren't >,;")>
+  local url = string.match(vim.fn.getline("."), "[a-z]*://[^ >,;)\"']*")
   if url ~= nil then
-    vim.cmd("silent exec '!open " .. url .. "'")
+    -- If URL is found, determine the open command to use
+    local cmd = nil
+    if vim.fn.has("mac") then
+      cmd = "open"
+    elseif vim.fn.has("linux") then
+      cmd = "xdg-open"
+    end
+    -- Open the URL using exec
+    if cmd then
+      vim.cmd('exec "!' .. cmd .. " '" .. url .. "'" .. '"') --> exec "!open 'foo://bar baz'"
+    end
   else
     vim.notify("No URI found in the current line")
   end
