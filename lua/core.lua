@@ -180,9 +180,10 @@ local function url_handler()
   if url ~= nil then
     -- If URL is found, determine the open command to use
     local cmd = nil
-    if vim.fn.has("mac") then
+    local sysname = vim.loop.os_uname().sysname
+    if sysname == "Darwin" then --> or use vim.fn.has("mac" or "linux", etc.)
       cmd = "open"
-    elseif vim.fn.has("linux") then
+    elseif sysname == "Linux" then
       cmd = "xdg-open"
     end
     -- Open the URL using exec
