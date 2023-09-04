@@ -29,6 +29,9 @@ local function safe_require(module)
   return nil
 end
 
+-- User configuration
+safe_require("config")
+
 -- Core config modules
 safe_require("core")
 safe_require("plugins")
@@ -59,6 +62,3 @@ safe_require("config.treesitter")
 
 -- Other Theovim features
 safe_require("misc")
-
--- User configuration
-safe_require("config")

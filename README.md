@@ -15,6 +15,7 @@
     + [Core Keybindings](#core-keybindings)
     + [Core Commands](#core-commands)
     + [Core Options](#core-options)
+    + [Appearance](#appearance)
     + [Spell Check](#spell-check)
     + [Terminal Emulator](#terminal-emulator)
     + [LSP](#lsp)
@@ -187,6 +188,16 @@ Many of these commands are accessible through `[LDR] m` keybinding (reference "M
     vim.opt.scrolloff = 10 --> show at least 10 lines above/below from the current cursor, which is 7 lines by default
     vim.opt.confirm = false --> turn off confirm prompt when quitting with unsaved buffer, which is on by default
     ```
+
+### Appearance
+
+Theovim uses `tokyonight-night` from [tokyonight.nvim](https://github.com/folke/tokyonight.nvim) as a default theme.
+You can toggle transparency in `config.lua`.
+This requires you to configure transparency in your choice of terminal emulator or use Neovide.
+
+```lua
+vim.g.transparency = true
+```
 
 ### Spell Check
 
@@ -384,6 +395,7 @@ StatusLine components:
 ### nvim-tree and Oil
 
 - `[LDR] n`: Toggle `nvim-tree`
+- `:Oil`: Toggle [`oil.nvim`](https://github.com/stevearc/oil.nvim)
 
 ### Miscellaneous Theovim Features
 

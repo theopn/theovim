@@ -24,13 +24,14 @@ local plugins = {
   {
     "folke/tokyonight.nvim", --> colorscheme
     config = function()
-      vim.cmd([[
-      try
-        colo tokyonight-night
-      catch
-        colo slate
-      endtry
-      ]])
+      require("tokyonight").setup({
+        transparent = vim.g.transparency or false,
+        styles = {
+          sidebars = vim.g.transparency and "transparent" or "dark",
+          floats = vim.g.transparency and "transparent" or "dark",
+        },
+      })
+      vim.cmd("colo tokyonight-night")
     end,
   },
   {
