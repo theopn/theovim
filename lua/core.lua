@@ -198,14 +198,14 @@ end
 -- {{{ Keybinding table
 local key_opt = {
   -- Convenience --
-  { 'i', "jk",        "<ESC>",        "[j]o[k]er: Better ESC" },
+  { 'i', "jk",        "<ESC>",        "Better ESC" },
   { 'n', "<leader>a", "gg<S-v>G",     "[a]ll: select all" },
   { 'n', "gx",        url_handler,    "Open URL under the cursor using shell open command" },
 
   -- Search --
   { 'n', "n",         "nzz",          "Highlight next search and center the screen" },
   { 'n', "N",         "Nzz",          "Highlight prev search and center the screen" },
-  { 'n', "<leader>/", "<CMD>noh<CR>", "[/]: clear search" }, --> @/ is the macro for the last search
+  { 'n', "<leader>/", "<CMD>noh<CR>", "[/]: clear search" },
 
   -- Copy and paste --
   { 'x', "<leader>y", '"+y',          "[y]ank: yank to the system clipboard (+)" },
@@ -313,11 +313,11 @@ local key_opt = {
     "<CMD>tabclose<CR>",
     "[q]uit: close current tab",
   },
-  { 'n', "<leader>1", "1gt", }, --> Go to 1st tab
-  { 'n', "<leader>2", "2gt", },
-  { 'n', "<leader>3", "3gt", },
-  { 'n', "<leader>4", "4gt", },
-  { 'n', "<leader>5", "5gt", },
+  { 'n', "<leader>1", "1gt", "Go to tab 1" },
+  { 'n', "<leader>2", "2gt", "Go to tab 2" },
+  { 'n', "<leader>3", "3gt", "Go to tab 3" },
+  { 'n', "<leader>4", "4gt", "Go to tab 4" },
+  { 'n', "<leader>5", "5gt", "Go to tab 5" },
 
   -- LSP --
   {
