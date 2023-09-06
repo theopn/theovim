@@ -157,6 +157,7 @@ vim.api.nvim_create_autocmd("TermClose", {
   callback = function()
     if vim.v.event.status == 0 then
       vim.api.nvim_buf_delete(0, {})
+      vim.notify_once("Previous terminal job was successful!")
     else
       vim.notify_once("Error code detected in the current terminal job!")
     end
