@@ -13,6 +13,9 @@
 vim.g.vimtex_view_method = "skim"
 --vim.g.vimtex_view_method = "zathura"
 
+-- Toggle transparency -- requires you to have a transparent terminal or Neovide
+vim.g.transparency = false
+
 -- Theo's Neovide settings
 if vim.g.neovide then
   local padding = 10
@@ -23,4 +26,6 @@ if vim.g.neovide then
 
   vim.g.neovide_hide_mouse_when_typing = true
   vim.g.neovide_cursor_vfx_mode = "railgun"
+
+  vim.g.neovide_transparency = 0.69
 end

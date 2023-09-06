@@ -61,9 +61,16 @@ do
   for _, v in ipairs(edit_opt) do
     opt[v[1]] = v[2]
   end
-  -- Trimming extra whitespaces --
-  -- \s: white space char, \+ :one or more, $: end of the line, e: suppresses warning, no need for <CR> for usercmd
-  vim.api.nvim_create_user_command("TrimWhitespace", ":let save=@/<BAR>:%s/\\s\\+$//e<BAR>:let @/=save<BAR>",
+  --[[ trim_whitespace()
+  -- Vimscript-based function to trim trailing whitespaces
+  -- \s: white space char, \+ :one or more, $: end of the line, e: suppresses warning when no match found, c: confirm
+  --]]
+  local function trim_whitespace()
+    local win_save = vim.fn.winsaveview()
+    vim.cmd("keeppatterns %s/\\s\\+$//ec")
+    vim.fn.winrestview(win_save)
+  end
+  vim.api.nvim_create_user_command("TrimWhitespace", trim_whitespace,
     { nargs = 0 })
   -- Show the changes made since the last write
   vim.api.nvim_create_user_command("ShowChanges", ":w !diff % -",
@@ -150,6 +157,7 @@ vim.api.nvim_create_autocmd("TermClose", {
   callback = function()
     if vim.v.event.status == 0 then
       vim.api.nvim_buf_delete(0, {})
+      vim.notify_once("Previous terminal job was successful!")
     else
       vim.notify_once("Error code detected in the current terminal job!")
     end
@@ -165,31 +173,67 @@ vim.g.mapleader = " "                                            --> Space as th
 
 --[[ url_handler()
 -- Find the URL in the current line and open it in a browser if possible
+-- @requires macOS open command or Linux xdg-open
 --]]
 local function url_handler()
-  -- <something>://<something that aren't >,;)>
-  local url = string.match(vim.fn.getline("."), "[a-z]*://[^ >,;)]*")
+  -- <something>://<something that aren't >,;")>
+  local url = string.match(vim.fn.getline("."), "[a-z]*://[^ >,;)\"']*")
   if url ~= nil then
-    vim.cmd("silent exec '!open " .. url .. "'")
+    -- If URL is found, determine the open command to use
+    local cmd = nil
+    local sysname = vim.loop.os_uname().sysname
+    if sysname == "Darwin" then --> or use vim.fn.has("mac" or "linux", etc.)
+      cmd = "open"
+    elseif sysname == "Linux" then
+      cmd = "xdg-open"
+    end
+    -- Open the URL using exec
+    if cmd then
+      vim.cmd('exec "!' .. cmd .. " '" .. url .. "'" .. '"') --> exec "!open 'foo://bar baz'"
+    end
   else
     vim.notify("No URI found in the current line")
+  end
+end
+
+--[[ move_or_create_win()
+-- Move to a window (one of hjkl) or create a split if a window does not exist in the direction
+-- Vimscript translation of:
+-- https://www.reddit.com/r/vim/comments/166a3ij/comment/jyivcnl/?utm_source=share&utm_medium=web2x&context=3
+-- Usage: vim.keymap("n", "<C-h>", function() move_or_create_win("h") end, {})
+--
+-- @arg key: One of h, j, k, l, a direction to move or create a split
+--]]
+local function move_or_create_win(key)
+  local fn = vim.fn
+  local curr_win = fn.winnr()
+  vim.cmd("wincmd " .. key)        --> attempt to move
+
+  if (curr_win == fn.winnr()) then --> didn't move, so create a split
+    if key == "h" or key == "l" then
+      vim.cmd("wincmd v")
+    else
+      vim.cmd("wincmd s")
+    end
+
+    vim.cmd("wincmd " .. key)
   end
 end
 
 -- {{{ Keybinding table
 local key_opt = {
   -- Convenience --
-  { 'i', "jk",        "<ESC>",              "[j]o[k]er: Better ESC" },
-  { 'n', "<leader>a", "gg<S-v>G",           "[a]ll: select all" },
-  { 'n', "gx",        url_handler,          "Open URL under the cursor using shell open command" },
+  { 'i', "jk",        "<ESC>",        "Better ESC" },
+  { 'n', "<leader>a", "gg<S-v>G",     "[a]ll: select all" },
+  { 'n', "gx",        url_handler,    "Open URL under the cursor using shell open command" },
 
   -- Search --
-  { 'n', "n",         "nzz",                "Highlight next search and center the screen" },
-  { 'n', "N",         "Nzz",                "Highlight prev search and center the screen" },
-  { 'n', "<leader>/", "<CMD>let @/=''<CR>", "[/]: clear search" }, --> @/ is the macro for the last search
+  { 'n', "n",         "nzz",          "Highlight next search and center the screen" },
+  { 'n', "N",         "Nzz",          "Highlight prev search and center the screen" },
+  { 'n', "<leader>/", "<CMD>noh<CR>", "[/]: clear search" },
 
   -- Copy and paste --
-  { 'x', "<leader>y", '"+y',                "[y]ank: yank to the system clipboard (+)" },
+  { 'x', "<leader>y", '"+y',          "[y]ank: yank to the system clipboard (+)" },
   {
     'n',
     "<leader>p",
@@ -251,6 +295,10 @@ local key_opt = {
   },
 
   -- Window --
+  { "n", "<C-h>", function() move_or_create_win("h") end, "[h]: Move to window on the left or create a split", },
+  { "n", "<C-j>", function() move_or_create_win("j") end, "[j]: Move to window below or create a vertical split", },
+  { "n", "<C-k>", function() move_or_create_win("k") end, "[k]: Move to window above or create a vertical split", },
+  { "n", "<C-l>", function() move_or_create_win("l") end, "[l]: Move to window on the right or create a split", },
   {
     'n',
     "<leader>+",
@@ -294,11 +342,11 @@ local key_opt = {
     "<CMD>tabclose<CR>",
     "[q]uit: close current tab",
   },
-  { 'n', "<leader>1", "1gt", }, --> Go to 1st tab
-  { 'n', "<leader>2", "2gt", },
-  { 'n', "<leader>3", "3gt", },
-  { 'n', "<leader>4", "4gt", },
-  { 'n', "<leader>5", "5gt", },
+  { 'n', "<leader>1", "1gt", "Go to tab 1" },
+  { 'n', "<leader>2", "2gt", "Go to tab 2" },
+  { 'n', "<leader>3", "3gt", "Go to tab 3" },
+  { 'n', "<leader>4", "4gt", "Go to tab 4" },
+  { 'n', "<leader>5", "5gt", "Go to tab 5" },
 
   -- LSP --
   {

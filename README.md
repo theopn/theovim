@@ -15,6 +15,7 @@
     + [Core Keybindings](#core-keybindings)
     + [Core Commands](#core-commands)
     + [Core Options](#core-options)
+    + [Appearance](#appearance)
     + [Spell Check](#spell-check)
     + [Terminal Emulator](#terminal-emulator)
     + [LSP](#lsp)
@@ -146,8 +147,9 @@ git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim
     - `[LDR] [`/`]`: Navigate to prev/next buffers
     - `[LDR] k`: **[k]ill buffer**. Delete a buffer. Hit enter to kill the current buffer or type buffer numbers
         ![ldr-k-demo](./assets/ldr-k-demo.gif)
-- Window resizing: Theovim does not offer many window resizing/navigation bindings since Vim already has `C-w` keybindings.
-    Familiarize yourself with `C-hjkl`, `C-w` (for navigating to floating windows), `C-w =`, `C-w |`, etc.
+- Window navigation and resizing
+    Familiarize yourself with `C-w` (for navigating to floating windows), `C-w =`, `C-w |`, etc.
+    - `C-hjkl`: Move to window in each direction (left, below, above, right) or create a split if a window doesn't exist in the direction
     - `[LDR] +`/`-`: Increase/decrease the current window height by one-third
     - `[LDR] >`/`<`: Increase/decrease the current window width by one-third
 - Tab navigation:
@@ -187,6 +189,16 @@ Many of these commands are accessible through `[LDR] m` keybinding (reference "M
     vim.opt.scrolloff = 10 --> show at least 10 lines above/below from the current cursor, which is 7 lines by default
     vim.opt.confirm = false --> turn off confirm prompt when quitting with unsaved buffer, which is on by default
     ```
+
+### Appearance
+
+Theovim uses `tokyonight-night` from [tokyonight.nvim](https://github.com/folke/tokyonight.nvim) as a default theme.
+You can toggle transparency in `config.lua`.
+This requires you to configure transparency in your choice of terminal emulator or use Neovide.
+
+```lua
+vim.g.transparency = true
+```
 
 ### Spell Check
 
@@ -384,6 +396,7 @@ StatusLine components:
 ### nvim-tree and Oil
 
 - `[LDR] n`: Toggle `nvim-tree`
+- `:Oil`: Toggle [`oil.nvim`](https://github.com/stevearc/oil.nvim)
 
 ### Miscellaneous Theovim Features
 

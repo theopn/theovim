@@ -42,10 +42,6 @@ do
   vim.api.nvim_create_user_command("TheovimChangelogHistory", changelog_hist_func, { nargs = 0 })
 end
 
-do
-  vim.api.nvim_create_user_command("Notepad", util.launch_notepad, { nargs = 0 })
-end
-
 -- {{{ Git menu
 local git_options = {
   ["0. Diff Current Buffer"] = "Git diffthis",
