@@ -147,8 +147,9 @@ git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim
     - `[LDR] [`/`]`: Navigate to prev/next buffers
     - `[LDR] k`: **[k]ill buffer**. Delete a buffer. Hit enter to kill the current buffer or type buffer numbers
         ![ldr-k-demo](./assets/ldr-k-demo.gif)
-- Window resizing: Theovim does not offer many window resizing/navigation bindings since Vim already has `C-w` keybindings.
-    Familiarize yourself with `C-hjkl`, `C-w` (for navigating to floating windows), `C-w =`, `C-w |`, etc.
+- Window navigation and resizing
+    Familiarize yourself with `C-w` (for navigating to floating windows), `C-w =`, `C-w |`, etc.
+    - `C-hjkl`: Move to window in each direction (left, below, above, right) or create a split if a window doesn't exist in the direction
     - `[LDR] +`/`-`: Increase/decrease the current window height by one-third
     - `[LDR] >`/`<`: Increase/decrease the current window width by one-third
 - Tab navigation:

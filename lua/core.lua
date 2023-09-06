@@ -195,6 +195,30 @@ local function url_handler()
   end
 end
 
+--[[ move_or_create_win()
+-- Move to a window (one of hjkl) or create a split if a window does not exist in the direction
+-- Vimscript translation of:
+-- https://www.reddit.com/r/vim/comments/166a3ij/comment/jyivcnl/?utm_source=share&utm_medium=web2x&context=3
+-- Usage: vim.keymap("n", "<C-h>", function() move_or_create_win("h") end, {})
+--
+-- @arg key: One of h, j, k, l, a direction to move or create a split
+--]]
+local function move_or_create_win(key)
+  local fn = vim.fn
+  local curr_win = fn.winnr()
+  vim.cmd("wincmd " .. key)        --> attempt to move
+
+  if (curr_win == fn.winnr()) then --> didn't move, so create a split
+    if key == "h" or key == "l" then
+      vim.cmd("wincmd v")
+    else
+      vim.cmd("wincmd s")
+    end
+
+    vim.cmd("wincmd " .. key)
+  end
+end
+
 -- {{{ Keybinding table
 local key_opt = {
   -- Convenience --
@@ -270,6 +294,10 @@ local key_opt = {
   },
 
   -- Window --
+  { "n", "<C-h>", function() move_or_create_win("h") end, "[h]: Move to window on the left or create a split", },
+  { "n", "<C-j>", function() move_or_create_win("j") end, "[j]: Move to window below or create a vertical split", },
+  { "n", "<C-k>", function() move_or_create_win("k") end, "[k]: Move to window above or create a vertical split", },
+  { "n", "<C-l>", function() move_or_create_win("l") end, "[l]: Move to window on the right or create a split", },
   {
     'n',
     "<leader>+",
