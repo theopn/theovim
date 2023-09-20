@@ -11,13 +11,13 @@
 --]]
 local M = {}
 
---[[ create_highlights_nvim_api()
--- Create highlights using
+--[[ create_highlight()
+-- Create a highlight using vim.api.nvim_set_hl
 --
 -- @arg group String for the highlight group, i.e. "name" of the highlight
 -- @arg properties Lua table containing fg, bg, font information
 --]]
-local create_highlight_nvim_api = function(group, properties)
+local create_highlight = function(group, properties)
   vim.api.nvim_set_hl(0, group, properties)
 end
 
@@ -40,25 +40,20 @@ end
 --[[ get_hl_component()
 -- Wrapper around nvim_get_hl() to extract the value of specified attribute
 --
--- @arg name Name of the highlight group
--- @arg attribute Attribute user wants to know the value of
---]]
-local function get_hl_component_nvim_api(name, attribute)
-  local group = vim.api.nvim_get_hl(0, { name = name })
-  return group[attribute]
-end
-
---[[ get_hl_component_vimscript()
--- Extract a specific highlight value using Vimscript function
--- This is worse version of get_hl_component_nvim_api()
--- If you are using Neovim >= 0.9, use vim.api.nvim_get_hl() like in get_hl_component_nvim_api()
+-- If the client is nvim >= 0.9, vim.api.nvim_get_hl is used
+-- Else, series of vim.fn is used
 --
 -- @arg name Name of the highlight group
 -- @arg attribute Attribute user wants to know the value of
 --]]
-local function get_hl_component_vimscript(name, attribute)
-  local fn = vim.fn
-  return fn.synIDattr(fn.synIDtrans(fn.hlID(name)), attribute)
+local function get_hl_component(name, attribute)
+  if vim.api.nvim_get_hl then
+    local group = vim.api.nvim_get_hl(0, { name = name })
+    return group[attribute]
+  else
+    local fn = vim.fn
+    return fn.synIDattr(fn.synIDtrans(fn.hlID(name)), attribute)
+  end
 end
 
 --[[
@@ -68,8 +63,8 @@ M.highlights = {
   -- Invert current tabline color for cleaner look
   TabLineSel = {
     -- For Theovim's Neovim 0.8 compatibility as of V.2023.08.17, we cannot use vim.api.nvim_get_hl()
-    fg = get_hl_component_vimscript("TabLineSel", "bg"),
-    bg = get_hl_component_vimscript("TabLineSel", "fg"),
+    fg = get_hl_component("TabLineSel", "bg"),
+    bg = get_hl_component("TabLineSel", "fg"),
     italic = true,
   },
 
@@ -89,7 +84,7 @@ M.highlights = {
 --]]
 M.setup = function()
   for group, properties in pairs(M.highlights) do
-    create_highlight_nvim_api(group, properties)
+    create_highlight(group, properties)
   end
 end
 
