@@ -1,0 +1,47 @@
+*Theovim*                   Theo's Neovim Configuration
+
+                                  \/       \/         ~
+                                  /\_______/\         ~
+                                 /   o   o   \        ~
+                                (  ==  ^  ==  )       ~
+                                 )           (        ~
+                                (             )       ~
+                                ( (  )   (  ) )       ~
+                               (__(__)___(__)__)      ~
+                              ___                     ~
+                               | |_  _  _     o __    ~
+                               | | |(/_(_)\_/ | |||   ~
+
+================================================================================
+
+Welcome back Theo, what did you forget this time?
+
+================================================================================
+                                                      *theovim-core.lua-options*
+
+Tab defaults:
+- `tabstop` (how many char Vim renders <Tab> as) = 4
+- `softtabstop` (how many char the cursor moves in respect to <Tab>) = 0
+  - This disables `softtabstop`
+- `extandtab` (uses spaces instead of <Tab> when on) = true
+- `shiftwidth` (number of spaces used for indentation) = 2
+- Read `listchars` section for how <Tab> and indentation spaces are rendered
+
+Character rendering:
+>
+  function example()
+  ┊ ┊ str = "Line indented with four spaces"
+  ⇥   str = "Line followed by <Tab> (tabstop=4)"
+  ┊ str = "Line followed by two training whitespaces"␣␣
+  showbreak      = "↪", --> Render beginning of wrapped lines
+  end
+<
+
+================================================================================
+                                                        *theovim-documentations*
+
+- `:h help-writing` 
+- `:helptags .` to generate `helptags` for the files in the current directory
+
+
+ vim:tw=78:ts=8:ft=help:norl:
