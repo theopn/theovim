@@ -1,17 +1,15 @@
---[[ treesitter.lua
+--[[ ts.lua
 -- $ figlet -f threepoint theovim
 -- _|_|_  _  _   . _ _
 --  | | |(/_(_)\/|| | |
 --
--- Configuration for the Neovim's built-in tree-sitter highlight
+-- Configuration for the Neovim's built-in treesitter highlight
 --]]
-local treesitter = require("nvim-treesitter.configs")
 
-treesitter.setup({
+require("nvim-treesitter.configs").setup {
   ensure_installed = { "bash", "c", "lua", "markdown", "python", "vim" },
-  sync_install = false,
-  auto_install = true,
-  ignore_install = {},
+  auto_install = false,
+
   highlight = {
     enable = true,
     disable = function(lang, buf)
@@ -21,5 +19,6 @@ treesitter.setup({
         return true
       end
     end,
-  }
-})
+  },
+  indent = { enable = true },
+}
