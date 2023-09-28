@@ -8,8 +8,6 @@
 -- Core configuration for Theovim, written only using stock Neovim features and Lua without external plugins or moduels
 -- This file alone should provide a sane default Neovim experience (you can rename it as init.lua to use it standalone)
 --]]
-local opt = vim.opt
-local keymap = vim.keymap
 
 --------------------------------------------------------- OPT: ---------------------------------------------------------
 
@@ -22,51 +20,58 @@ local keymap = vim.keymap
 
 local my_opt = {
   -- Tab
-  { "tabstop",        2 },    --> How many characters Vim /treats/renders/ <TAB> as
-  { "softtabstop",    0 },    --> How many chracters the /cursor moves/ with <TAB> and <BS> -- 0 to disable
-  { "expandtab",      true }, --> Use space instead of tab
-  { "shiftwidth",     2 },    --> Number of spaces to use for auto-indentation, <<, >>, etc.
-
-  -- Others
-  { "mouse",          "a" },  --> Enable mouse
-  { "confirm",        true }, --> Confirm before exiting with unsaved bufffer(s)
-  -- { "autochdir",   true },     --> Change the CWD whenever you open a file, switch buffers ,etc.
+  tabstop        = 4,    --> How many characters Vim /treats/renders/ <TAB> as
+  softtabstop    = 0,    --> How many chracters the /cursor moves/ with <TAB> and <BS> -- 0 to disable
+  expandtab      = true, --> Use space instead of tab
+  shiftwidth     = 2,    --> Number of spaces to use for auto-indentation, <<, >>, etc.
 
   -- Location in the buffer
-  { "relativenumber", true },
-  { "cursorline",     true },
-  { "cursorcolumn",   true },
-  -- UI
-  { "signcolumn",     "yes" }, --> Render signcolumn
-  { "scrolloff",      7 }, --> Keep minimum x number of screen lines above and below the cursor
-  { "termguicolors",  true }, --> Enables 24-bit RGB color in the TUI
-  { "showtabline",    2 }, --> 0: never, 1: >= 2 tabs, 2: always
-  { "laststatus",     3 }, --> 0: never, 1: >= 2 windows, 2: always, 3: always and have one global statusline
+  number         = true,
+  relativenumber = true,
+  cursorline     = true,
+  cursorcolumn   = true,
+
   -- Search
-  { "ignorecase",     true }, --> Ignore case in search
-  { "smartcase",      true }, --> /smartcase -> apply ignorecase | /sMartcase -> do not apply ignorecase
+  ignorecase     = true, --> Ignore case in search
+  smartcase      = true, --> /smartcase -> apply ignorecase | /sMartcase -> do not apply ignorecase
+
   -- Split
-  { "splitright",     true }, --> Vertical split created right
-  { "splitbelow",     true }, --> Horizontal split created below
+  splitright     = true, --> Vertical split created right
+  splitbelow     = true, --> Horizontal split created below
+
+  -- UI
+  signcolumn     = "yes", --> Render signcolumn
+  scrolloff      = 7,     --> Keep minimum x number of screen lines above and below the cursor
+  termguicolors  = true,  --> Enables 24-bit RGB color in the TUI
+  showtabline    = 2,     --> 0: never, 1: >= 2 tabs, 2: always
+  laststatus     = 3,     --> 0: never, 1: >= 2 windows, 2: always, 3: always and have one global statusline
+
   -- Char rendering
-  { "list",           true }, --> Needed for listchars
-  { "listchars", --> Listing special chars
-    { tab = "⇥ ", leadmultispace = "┊ ", trail = "␣", nbsp = "⍽" } },
-  { "showbreak", "↪" }, --> Beginning of wrapped lines
-  { "breakindent", true }, --> Wrapped line will have the same indentation level as the beginning of the line
+  list           = true, --> Render special char in listchars
+  listchars      = { tab = "⇥ ", leadmultispace = "┊ ", trail = "␣", nbsp = "⍽" },
+  showbreak      = "↪", --> Render beginning of wrapped lines
+  breakindent    = true, --> Wrapped line will have the same indentation level as the beginning of the line
+
   -- Spell
-  { "spelllang", "en" }, --> Engrish
-  { "spellsuggest", "best,8" }, --> Suggest 8 words for spell suggestion
-  { "spell", false }, --> autocmd will enable spellcheck in Tex or markdown
+  spelllang      = "en",
+  spellsuggest   = "best,8", --> Suggest 8 words for spell suggestion
+  spell          = false,    --> autocmd will enable spellcheck in Tex or markdown
+
   -- Fold
-  { "foldmethod", "expr" }, --> Use `foldexpr` function for folding
-  { "foldexpr", "nvim_treesitter#foldexpr()" }, --> Treesitter folding
-  --{ "foldlevel", 1 }, --> Ignored when expr, but when folding by "marker", it only folds folds w/in a fold only
-  --{ "foldenable", false }, --> True for "marker" + level = 1, false for TS folding
+  foldmethod     = "expr",                       --> Use `foldexpr` function for folding
+  foldexpr       = "nvim_treesitter#foldexpr()", --> Treesitter folding
+  --foldlevel      = 1,                         --> Ignored when expr, but when folding by "marker", it only folds folds w/in a fold only
+  --foldenable     = false,                     --> True for "marker" + level = 1, false for TS folding
+
+  -- Others
+  mouse          = "a",
+  confirm        = true, --> Confirm before exiting with unsaved bufffer(s)
+  --autochdir      = true, --> Change the CWD whenever you open a file, switch buffers ,etc.
 }
 
-for _, v in ipairs(my_opt) do
-  opt[v[1]] = v[2]
+local opt = vim.opt
+for key, val in pairs(my_opt) do
+  opt[key] = val
 end
 
 --------------------------------------------------------- CMD  ---------------------------------------------------------
@@ -164,7 +169,7 @@ vim.api.nvim_create_autocmd("TermClose", {
 -------------------------------------------------------- KEYMAP --------------------------------------------------------
 
 -- Space as the leader --
-keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true, noremap = true }) --> Unbind space
+vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true, noremap = true }) --> Unbind space
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
@@ -356,6 +361,7 @@ local key_opt = {
 -- }}}
 
 -- Set keybindings
+local keymap = vim.keymap
 for _, v in ipairs(key_opt) do
   -- non-recursive mapping, call commands silently
   local opts = { noremap = true, silent = true }
