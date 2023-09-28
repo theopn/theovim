@@ -36,6 +36,10 @@ safe_require("config")
 safe_require("core")
 safe_require("plugins")
 
+-- Telescope and Treesitter
+safe_require("tele")
+safe_require("ts")
+
 -- Theovim built-in UI elements
 local highlights = safe_require("ui.highlights")
 if highlights then highlights.setup() end
@@ -55,10 +59,6 @@ if notepad then notepad.setup() end
 -- LSP configurations
 safe_require("lsp.lsp")
 safe_require("lsp.completion")
-
--- Plugin configurations
-safe_require("config.fuzzy")
-safe_require("config.treesitter")
 
 -- Other Theovim features
 safe_require("misc")
