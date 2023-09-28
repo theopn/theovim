@@ -58,10 +58,10 @@ local my_opt = {
   spell          = false,    --> autocmd will enable spellcheck in Tex or markdown
 
   -- Fold
+  foldenable     = false,                        --> Open all folds until I close them using zc/zC or update using zx
   foldmethod     = "expr",                       --> Use `foldexpr` function for folding
   foldexpr       = "nvim_treesitter#foldexpr()", --> Treesitter folding
-  --foldlevel      = 1,                         --> Ignored when expr, but when folding by "marker", it only folds folds w/in a fold only
-  --foldenable     = false,                     --> True for "marker" + level = 1, false for TS folding
+  --foldlevel      = 2,                            --> Ignore n - 1 level fold
 
   -- Others
   mouse          = "a",
