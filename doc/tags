@@ -1,3 +1,15 @@
 Theovim	theovim.txt	/*Theovim*
-theovim-core.lua-options	theovim.txt	/*theovim-core.lua-options*
+n_<Leader>_n	theovim.txt	/*n_<Leader>_n*
+theovim-completion	theovim.txt	/*theovim-completion*
+theovim-core-autocmds	theovim.txt	/*theovim-core-autocmds*
+theovim-core-commands	theovim.txt	/*theovim-core-commands*
+theovim-core-keybindings	theovim.txt	/*theovim-core-keybindings*
+theovim-core-netrw	theovim.txt	/*theovim-core-netrw*
+theovim-core-options	theovim.txt	/*theovim-core-options*
+theovim-diagnostics	theovim.txt	/*theovim-diagnostics*
 theovim-documentations	theovim.txt	/*theovim-documentations*
+theovim-lsp	theovim.txt	/*theovim-lsp*
+theovim-plugins	theovim.txt	/*theovim-plugins*
+theovim-telescope	theovim.txt	/*theovim-telescope*
+theovim-treesitter	theovim.txt	/*theovim-treesitter*
+theovim-ui	theovim.txt	/*theovim-ui*
