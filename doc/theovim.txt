@@ -1,41 +1,113 @@
 *Theovim*                   Theo's Neovim Configuration
 
-                                  \/       \/         ~
-                                  /\_______/\         ~
-                                 /   o   o   \        ~
-                                (  ==  ^  ==  )       ~
-                                 )           (        ~
-                                (             )       ~
-                                ( (  )   (  ) )       ~
-                               (__(__)___(__)__)      ~
-                              ___                     ~
-                               | |_  _  _     o __    ~
-                               | | |(/_(_)\_/ | |||   ~
+                                  \/       \/          ~
+                                  /\_______/\          ~
+                                 /   o   o   \         ~
+                                (  ==  ^  ==  )        ~
+                                 )           (         ~
+                                (             )        ~
+                                ( (  )   (  ) )        ~
+                               (__(__)___(__)__)       ~
+                              ___                      ~
+                               | |_  _  _     o __     ~
+                               | | |(/_(_)\_/ | |||    ~
 
 ================================================================================
 
+Theovim //TODO
 Welcome back Theo, what did you forget this time?
 
 ================================================================================
-                                                      *theovim-core.lua-options*
+                                                          *theovim-core-options*
+This portion //TODO
 
 Tab defaults:
-- `tabstop` (how many char Vim renders <Tab> as) = 4
-- `softtabstop` (how many char the cursor moves in respect to <Tab>) = 0
-  - This disables `softtabstop`
-- `extandtab` (uses spaces instead of <Tab> when on) = true
-- `shiftwidth` (number of spaces used for indentation) = 2
-- Read `listchars` section for how <Tab> and indentation spaces are rendered
+- 'tabstop' (how many char Vim renders <Tab> as) = 4
+- 'softtabstop' (how many char the cursor moves in respect to <Tab>) = 0
+  - 0 disables 'softtabstop'
+- 'extandtab' (uses spaces instead of <Tab> when on) = true
+- 'shiftwidth' (number of spaces used for indentation) = 2
+- Read the below section for how <Tab> and indentation spaces are rendered
 
 Character rendering:
 >
   function example()
-  ┊ ┊ str = "Line indented with four spaces"
-  ⇥   str = "Line followed by <Tab> (tabstop=4)"
-  ┊ str = "Line followed by two training whitespaces"␣␣
-  showbreak      = "↪", --> Render beginning of wrapped lines
+  ┊ ┊ str = "A line indented with four spaces"
+  ⇥   str = "A line followed by <Tab> (tabstop=4)"
+
+  ┊ str = "A line followed by two trailing whitespaces"␣␣
+
+  ┊ str = "Pretend that this line is really really really long and is
+    ↪ wrapped. Notice how a wrapped line is indented (`:h showbreak`)"
+
+  ┊ str = "without 'showbreak', a really really long line would look like
+  ↪this"
   end
 <
+
+Spell check:
+
+Fold:
+
+Read |theovim-treesitter| section for more information (use <C-]> motion to
+jump).
+
+================================================================================
+                                                         *theovim-core-commands*
+- `:TrimWhitespace`
+- `:ShowChanges`
+- `:CD`
+
+================================================================================
+                                                         *theovim-core-autocmds*
+- Yank on highlight
+
+================================================================================
+                                                      *theovim-core-keybindings*
+Keybindings //TODO
+
+================================================================================
+                                                            *theovim-core-netrw*
+Netrw is a built-in file manager for Vim and Neovim.
+
+char		action
+----------------------------------------------------------------------
+                                                        *n_<Leader>_n*
+<leader>n       Toggle Netrw by calling  //TODO
+                The function relies
+
+================================================================================
+                                                               *theovim-plugins*
+This section //TODO
+
+Tokyonight Transparency:
+
+Oil.nvim:
+
+Gitsigns.nvim:
+
+MarkdownPreview:
+
+Vimtex:
+
+================================================================================
+                                                             *theovim-telescope*
+
+================================================================================
+                                                            *theovim-treesitter*
+Install TS using //TODO
+
+================================================================================
+                                                           *theovim-diagnostics*
+
+================================================================================
+                                                                   *theovim-lsp*
+
+================================================================================
+                                                            *theovim-completion*
+
+================================================================================
+                                                                    *theovim-ui*
 
 ================================================================================
                                                         *theovim-documentations*
