@@ -1,4 +1,4 @@
-*Theovim*                   Theo's Neovim Configuration
+*theovim*                   Theo's Neovim Configuration
 
                                   \/       \/          ~
                                   /\_______/\          ~
@@ -17,8 +17,23 @@
 Theovim //TODO
 Welcome back Theo, what did you forget this time?
 
+- Type |gO| to see the table of contents
+- Use |CTRL-]| to jump to the tag under cursor, |CTRL-T| to comeback
+
+Credits:
+The settings and keymaps for Telescope are heavily inspried by Kickstart.nvim
+(https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua).
+Kickstart is developed by TJ DeVries, the developer of Telescope,
+and I trust their decisions. I will try to reflect changes in the mainstream
+Kickstart repository.
+
+- Kickstart.nvim
+  (https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua)
+- 
+
 ================================================================================
-                                                          *theovim-core-options*
+Core - Options                                            *theovim-core-options*
+
 This portion //TODO
 
 Tab defaults:
@@ -33,15 +48,15 @@ Character rendering:
 >
   function example()
   ┊ ┊ str = "A line indented with four spaces"
-  ⇥   str = "A line followed by <Tab> (tabstop=4)"
+  ⇥   str = "A line followed by <Tab> ('tabstop=4')"
 
   ┊ str = "A line followed by two trailing whitespaces"␣␣
 
-  ┊ str = "Pretend that this line is really really really long and is
-    ↪ wrapped. Notice how a wrapped line is indented (`:h showbreak`)"
+  ┊ str = "Pretend that this line is really really really long and is wrap
+    ↪ped. Notice how a wrapped line is also indented (`:h showbreak`)"
 
-  ┊ str = "without 'showbreak', a really really long line would look like
-  ↪this"
+  ┊ str = "If you don't have 'showbreak' enabled, wrapped lines would look
+  ↪ like this"
   end
 <
 
@@ -49,40 +64,51 @@ Spell check:
 
 Fold:
 
-Read |theovim-treesitter| section for more information (use <C-]> motion to
-jump).
+For more information:
+- |theovim-treesitter|
 
 ================================================================================
-                                                         *theovim-core-commands*
-- `:TrimWhitespace`
-- `:ShowChanges`
-- `:CD`
+Core - User Commands                                     *theovim-core-commands*
+
+:TrimWhitespace Shows
+              dads
+:ShowChanges
+:CD
 
 ================================================================================
-                                                         *theovim-core-autocmds*
+Core - Autocmds                                          *theovim-core-autocmds*
+
 - Yank on highlight
 
 ================================================================================
-                                                      *theovim-core-keybindings*
+Core - Keymaps                                        *theovim-core-keybindings*
+
 Keybindings //TODO
 
 ================================================================================
-                                                            *theovim-core-netrw*
+Core - Netrw                                                *theovim-core-netrw*
+
 Netrw is a built-in file manager for Vim and Neovim.
 
-char		action
+char            action
 ----------------------------------------------------------------------
-                                                        *n_<Leader>_n*
+                                                          *<Leader>_n*
 <leader>n       Toggle Netrw by calling  //TODO
                 The function relies
 
+For more information:
+- |netrw|
+
 ================================================================================
-                                                               *theovim-plugins*
+Plugins                                                        *theovim-plugins*
+
 This section //TODO
 
 Tokyonight Transparency:
 
 Oil.nvim:
+
+Whichkey
 
 Gitsigns.nvim:
 
@@ -91,26 +117,143 @@ MarkdownPreview:
 Vimtex:
 
 ================================================================================
-                                                             *theovim-telescope*
+Telescope                                                    *theovim-telescope*
+
+Telescope is a fuzzy finder for Neovim.
+It allows you to find anything you want in just a few keystrokes.
+
+char            action
+----------------------------------------------------------------------
+
+<Leader>gf      Search [G]it [F]iles.
+                Calls |telescope.builtin.find_files()|.
+
+<Leader>gc      [G]it [C]ommits.
+                Calls |telescope.builtin.git_commits()|.
+
+<Leader>gs      [G]it [S]tatus.
+                Calls |telescope.builtin.git_status()|.
+
+<Leader>?       Find recently opened files.
+                Calls |telescope.builtin.oldfiles()|.
+
+<Leader><space> Find open buffers.
+                Calls |telescope.builtin.buffers()|.
+
+<Leader>ss      [S]earch for [S]earch.
+                Search all Telescope builtin functions.
+                Calls |telescope.builtin.builtin()|.
+
+<Leader>ss      [S]earch [F]iles.
+                Search files in the current and children directories.
+                Respects .gitignore if one exists.
+                Calls |telescope.builtin.find_files()|.
+
+<Leader>fb      [S]earch [B]rowser.
+                Calls |telescope.file-browser.finders|
+
+
+Within the Telescope window, following keybindings are available:
+
+char            action
+----------------------------------------------------------------------
+
+<CTRL>j         Scroll down
+<CTRL>n         Scroll down
+
+<CTRL>k         Scroll up
+<CTRL>p         Scroll up
+
+<CTRL>d         Scroll down in the preview window
+<CTRL>u         Scroll up in the preview window
+
+<CTRL>c         Close Telescope window
+
+<RET>           Confirm the selection
+
+
+For more information:
+- |telescope.nvim|: About the fuzzy finder itself
+- |telescope.builtin|: Builtin modules of Telescope
+- |telescope.file-browser.nvim|: File browser extension
 
 ================================================================================
-                                                            *theovim-treesitter*
-Install TS using //TODO
+Treesitter                                                  *theovim-treesitter*
+
+Treesitter (TS) is an incremental parser generator for more accurate syntax
+highlighting compared to the default regex-based highlighting.
+
+Theovim installs following TS servers by default:
+
+- C
+- TODO
+
+Following keybindings are provided when TS is 
+
+char            action
+----------------------------------------------------------------------
+                                                           *<C-Space>*
+K               Open hover doc //TODO
+
+Below are frequently used commands provided by nvim-treesitter plugin:
+
+- :TSInstall {language} ...
+- :TSInstallInfo
+- :TSUpdate {language} ...
+- :TSDisable {module} [{language}]
+  - A list of modules can be found at |:TSModuleInfo|
+  - A list of languages can be found at |:TSInstallInfo|
+- :TSToggle {module} [{language}]
+  - A list of modules can be found at |:TSModuleInfo|
+  - A list of languages can be found at |:TSInstallInfo|
+- :TSModuleInfo [{module}]
+
+For more information:
+- |nvim-treesitter|: Configuration and abstract layer
+- |treesitter|: Neovim built-in treesitter library
 
 ================================================================================
-                                                           *theovim-diagnostics*
+Diagnostic                                                  *theovim-diagnostic*
+
+For more information: `:h diagnostic.txt`.
 
 ================================================================================
-                                                                   *theovim-lsp*
+LSP                                                                *theovim-lsp*
+
+The settings and keymaps for LSP are heavily inspried by Kickstart.nvim
+(https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua).
+Kickstart is developed by TJ DeVries, one of the core maintainers for Neovim,
+and I trust their decisions. I will try to reflect changes in the mainstream
+Kickstart repository.
+
+When LSP server(s) is active in the buffer, following keybindings are available:
+
+char            action
+----------------------------------------------------------------------
+                                                                   *K*
+K               Open hover doc //TODO
+
+
+For more information:
+- |lsp|: Built-in LSP framework
 
 ================================================================================
-                                                            *theovim-completion*
+Completion                                                  *theovim-completion*
+
+For more information:
+- |nvim-cmp|: Completion plugin for LSP and snippet integration
+- |ins-completion|: Default Vim completion library
 
 ================================================================================
-                                                                    *theovim-ui*
+UI Components                                                       *theovim-ui*
+
+For more information:
+- |setting-tabline|: Guide on configuring Tabline
+- |'statusline'|: 
+- |'winbar'|: 
 
 ================================================================================
-                                                        *theovim-documentations*
+Documentation                                            *theovim-documentation*
 
 - `:h help-writing` 
 - `:helptags .` to generate `helptags` for the files in the current directory
