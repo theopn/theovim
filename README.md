@@ -1,89 +1,39 @@
 # Theovim
 
-> If you are reading this document using `:TheovimReadme`, use `:MarkdownPreviewToggle` to render the contents in your browser.
-
-<details>
-    <summary>
-    <b>TOC</b>
-    </summary>
-
-- [Theovim](#theovim)
-  * [Overview](#overview)
-  * [Dependencies](#dependencies)
-  * [Installation](#installation)
-  * [Features and Usage](#features-and-usage)
-    + [Core Keybindings](#core-keybindings)
-    + [Core Commands](#core-commands)
-    + [Core Options](#core-options)
-    + [Appearance](#appearance)
-    + [Spell Check](#spell-check)
-    + [Terminal Emulator](#terminal-emulator)
-    + [LSP](#lsp)
-      - [Diagnostics](#diagnostics)
-      - [Completion](#completion)
-      - [Linter (Code Formatting)](#linter--code-formatting-)
-      - [Adding a New LSP Server](#adding-a-new-lsp-server)
-    + [Telescope](#telescope)
-    + [Markdown and LaTeX](#markdown-and-latex)
-    + [Built-in UI Elements](#built-in-ui-elements)
-      - [Notepad](#notepad)
-      - [Startup Dashboard](#startup-dashboard)
-      - [TabLine](#tabline)
-      - [Winbar and StatusLine](#winbar-and-statusline)
-    + [Miscellaneous Theovim Features](#miscellaneous-theovim-features)
-
-[comment]: # (https://ecotrust-canada.github.io/markdown-toc/)
-
-</details>
-
 ![theovim-banner](./assets/theovim-banner.jpg)
 
 ## Overview
 
-Theovim is my Neovim configuration, geared toward my CS studies (C, Python, Java, LaTeX, LaTeX, and LaTeX).
-It features opinionated base Vim settings and keybindings, ~30 carefully selected plug-ins, and custom UI components written 100% in Lua.
+Theovim is my personal Neovim configuration, featuring built-in Neovim options and LSP setup, ~30 carefully selected plugins, and custom UI components written in Lua.
 
-The philosophies I stick to when I configure Neovim are:
+Theovim:
 
-1. Prefer Neovim API and Lua over plug-ins
-1. When you use a plug-in, keep the stock configuration as much as possible. The author knows more about the plug-in than you do
-1. Always comment on the code!
-1. Avoid duplicate keybindings and features
-1. 10 keybindings you can memorize are better than 50 complicated keybindings
-1. Keep things minimal
+0. prioritizes built-in Neovim features and Lua over plugins to avoid duplicate keybindings and features
+0. keeps the stock configuration as much as possible when using external plugins -- the plugin author knows more about the plugin than I do
+0. takes the modular approach to organize configuration files
 
-I don't advise using this repository as your personal config because it contains some opinionated features, and you can learn much about (neo)vim when you configure it yourself.
+**For more information, read the [Highlights](#highlights) section and the built-in [help documentation](./doc/theovim.txt) using `:help theovim`.**
 
-Instead, you are welcome to fork the repository or read/copy the source code. It contains some of my proud and interesting work, such as:
+## Prerequisites
 
-- [No-plug-in core config with memorable keybindings](./lua/core.lua)
-- [TabLine](./lua/ui/tabline.lua)
-- [Startup Dashboard](./lua/ui/dashboard.lua)
-- [StatusLine](./lua/ui/statusline.lua) and [Winbar](./lua/ui/winbar.lua) [components](./lua/ui/components.lua)
-- [Notepad, floating term, and custom menu using `vim.ui.select()`](./lua/util.lua)
-
-I also wrote articles about some of my Neovim config components in my blog.
-
-- [Using vim.ui.select to Group Features and Fix Keybinding Problems](https://theopark.me/writing/2023-07-22-vim-ui-select/)
-
-**If you found Theovim helpful, please leave a star!**
-
-## Dependencies
-
-- **A terminal emulator with true color support**
-    - [Wezterm](https://wezfurlong.org/wezterm/index.html) is my choice of terminal emulator.
-    	It's fast, feature-rich, and configured in Lua
-    - [Kitty](https://sw.kovidgoyal.net/kitty/), [Alacritty](https://alacritty.org/), and [iTerm 2 for MacOS](https://iterm2.com/) are great options
+- A terminal emulator with true color support. A few recommendations:
+    - [Wezterm](https://wezfurlong.org/wezterm/index.html) (my personal choice)
+    - [Kitty](https://sw.kovidgoyal.net/kitty/)
+    - [Alacritty](https://alacritty.org/)
+    - [iTerm 2 for MacOS](https://iterm2.com/)
     - Alternatively, you can use a GUI Neovim client like [Neovide](https://neovide.dev/)
 - **Neovim version > 0.8.3**
     - Unfortunately, my school's Debian server uses outdated Neovim, forcing me to use some deprecated APIs and older versions of plug-ins
     - These will be indicated in code comments and will be fixed as soon as possible
     - Thanks to my friend Shriansh for at least making them upgrade from 0.5 to 0.8
 - **[NerdFonts](https://www.nerdfonts.com/font-downloads) to render glyphs**
-- `npm`, `g++` (`gcc-c++`), and `unzip` for `bashls` and `clangd` language server
+- `npm`, `g++` (`gcc-c++`), and `unzip`
 - `git` to update Theovim
 
 ## Installation
+
+> [!NOTE]
+> I highly recommend you to fork this repository and tweak settings on your own.
 
 ```bash
 # Optional backup
@@ -92,40 +42,52 @@ I also wrote articles about some of my Neovim config components in my blog.
 git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim
 ```
 
+## Highlights
+
+### TODO Core
+
+### TODO Plugins
+
+### Telescope
+
+[Telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) is a fuzzy finder for Neovim.
+It allows you to jump between files/buffers/and anything you could think of in a matter of a few keystrokes.
+
+My Telescope configuration is heavily inspired by [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim),
+a configuration template written by TJ DeVries who is the author of Telescope.nvim as well as the core maintainer of Neovim.
+
+A few of my favorite Telescope features:
+
+- `:Telescope oldfile` (`<leader>?`): find recently opened files
+- `:Telescope buffers` (`<leader><space>`): lists all open buffers
+- `:Telescope` (`<leader>ss`): executes Telescope features using Telescope
+- `:Telescope find_files` (`<leader>sf`): searches files in the current and children directories
+- `:Telescope git_commits` (`<leader>gc`): searches for Git commits
+
+For the complete list of keybindings and features, see `:help theovim-telescope`
+
+### Treesitter
+
+//TODO w v.s. w/o treesitter
+
+Treesitter (TS) is an incremental parser generator for more accurate syntax highlighting compared to the default regex-based highlighting.
+It also integrates with Vim's folding and selection mechanism to provide a more efficient navigation and editing experience.
+
+For more information:
+
+- `:help theovim-treesitter`
+
+### TODO LSP
+
+### TODO UI
+
+---
+
+# Theovim -- Old README
+
+
+
 ## Features and Usage
-
-<details>
-    <summary>
-    <b>File structure</b>
-    </summary>
-
-```
-├── init.lua                        --> Module initializations
-└── lua
-    │
-    ├── config.lua                  --> User configuration
-    ├── core.lua                    --> Core functions (opt and keymaps)
-    ├── misc.lua                    --> Miscellaneous Theovim features
-    ├── plugins.lua                 --> Plug-in table, simple setup(), and Lazy bootstrap
-    ├── util.lua                    --> Utilities for float win, vim.ui.select, etc.
-    │
-    ├── config
-    │   └── ...                     --> Long plug-in setup() functions
-    │
-    ├── lsp
-    │   ├── completion.lua          --> nvim-cmp and snippet init
-    │   └── lsp.lua                 --> Neovim built-in LSP config and other LSP-related features
-    │
-    └── ui                          --> Handmade Theovim UI elements
-        ├── components.lua          --> Statusline and Winbar modules
-        ├── dashboard.lua           --> Cute startup Dashboard
-        ├── highlights.lua          --> Custom highlights used by UI components
-        ├── statusline.lua          --> Simple global Statusline
-        ├── tabline.lua             --> Clean tabline with buffer and tab info
-        └── winbar.lua              --> Simple Winbar to complement global Statusline
-```
-
-</details>
 
 ### Core Keybindings
 
@@ -134,7 +96,7 @@ git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim
 - `j k` (insert): ESC
 
 - `[LDR] a`: **Select [a]ll**
-- `[LDR] /`: Clear the last search and search highlights
+- `[LDR] /`: Clear the search highlights
 
 - Yank and paste:
     - `[LDR] y` (visual): Yank to the system clipboard
@@ -192,7 +154,7 @@ Many of these commands are accessible through `[LDR] m` keybinding (reference "M
 
 ### Appearance
 
-Theovim uses `tokyonight-night` from [tokyonight.nvim](https://github.com/folke/tokyonight.nvim) as a default theme.
+Theovim uses `tokyonight-night` from [tokyonight.nvim](https://github.com/folke/tokyonight.nvim) as the default theme.
 You can toggle transparency in `config.lua`.
 This requires you to configure transparency in your choice of terminal emulator or use Neovide.
 
