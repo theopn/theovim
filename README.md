@@ -27,6 +27,7 @@ Theovim:
     - These will be indicated in code comments and will be fixed as soon as possible
     - Thanks to my friend Shriansh for at least making them upgrade from 0.5 to 0.8
 - **[NerdFonts](https://www.nerdfonts.com/font-downloads) to render glyphs**
+- `make` and some C compiler to compile `telescope-fzf-native.nvim`
 - `npm`, `g++` (`gcc-c++`), and `unzip`
 - `git` to update Theovim
 
@@ -71,13 +72,30 @@ For the complete list of keybindings and features, see `:help theovim-telescope`
 //TODO w v.s. w/o treesitter
 
 Treesitter (TS) is an incremental parser generator for more accurate syntax highlighting compared to the default regex-based highlighting.
-It also integrates with Vim's folding and selection mechanism to provide a more efficient navigation and editing experience.
+TS also integrates with Vim's folding and selection mechanism to provide a more efficient navigation and editing experience.
 
 For more information:
 
 - `:help theovim-treesitter`
 
-### TODO LSP
+### LSP
+
+// TODO: LSP functionalities screenshot
+
+Neovim's built-in LSP offers modern IDE features for any language you want (assuming one of the 350+ Neovim LSP servers supports the language you use) with flexible customizability and low resource usage.
+Like Telescope, my LSP configuration is heavily inspired by TJ's Kickstart.nvim.
+
+There are three main parts of LSP:
+
+- Diagnostics: project-level error diagnostics and quick fix suggestions
+- LSP: project-level hover documentation, formatting, refactoring, and much more
+- Completion: Completion for LSP keywords and user-defined variables, LuaSnip snippets, buffer words, and path completion
+
+For more information:
+
+- `:help theovim-diagnostic`
+- `:help theovim-lsp`
+- `:help theovim-completion`
 
 ### TODO UI
 
