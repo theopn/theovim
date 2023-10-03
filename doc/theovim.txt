@@ -62,6 +62,9 @@ Character rendering:
 
 Spell check:
 
+- z=
+- `:set spell!`
+
 Fold:
 
 For more information:
@@ -125,31 +128,31 @@ It allows you to find anything you want in just a few keystrokes.
 char            action
 ----------------------------------------------------------------------
 
-<Leader>gf      Search [G]it [F]iles.
+<leader>gf      Search [G]it [F]iles.
                 Calls |telescope.builtin.find_files()|.
 
-<Leader>gc      [G]it [C]ommits.
+<leader>gc      [G]it [C]ommits.
                 Calls |telescope.builtin.git_commits()|.
 
-<Leader>gs      [G]it [S]tatus.
+<leader>gs      [G]it [S]tatus.
                 Calls |telescope.builtin.git_status()|.
 
-<Leader>?       Find recently opened files.
+<leader>?       Find recently opened files.
                 Calls |telescope.builtin.oldfiles()|.
 
-<Leader><space> Find open buffers.
+<leader><space> Find open buffers.
                 Calls |telescope.builtin.buffers()|.
 
-<Leader>ss      [S]earch for [S]earch.
+<leader>ss      [S]earch for [S]earch.
                 Search all Telescope builtin functions.
                 Calls |telescope.builtin.builtin()|.
 
-<Leader>ss      [S]earch [F]iles.
+<leader>ss      [S]earch [F]iles.
                 Search files in the current and children directories.
                 Respects .gitignore if one exists.
                 Calls |telescope.builtin.find_files()|.
 
-<Leader>fb      [S]earch [B]rowser.
+<leader>sb      [S]earch [B]rowser.
                 Calls |telescope.file-browser.finders|
 
 
@@ -158,18 +161,18 @@ Within the Telescope window, following keybindings are available:
 char            action
 ----------------------------------------------------------------------
 
-<CTRL>j         Scroll down
-<CTRL>n         Scroll down
+<C-j>           Scroll down
+<C-n>           Scroll down
 
-<CTRL>k         Scroll up
-<CTRL>p         Scroll up
+<C-k>           Scroll up
+<C-p>           Scroll up
 
-<CTRL>d         Scroll down in the preview window
-<CTRL>u         Scroll up in the preview window
+<C-d>           Scroll down in the preview window
+<C-u>           Scroll up in the preview window
 
-<CTRL>c         Close Telescope window
+<C-c>           Close Telescope window
 
-<RET>           Confirm the selection
+<CR>            Confirm the selection
 
 
 For more information:
@@ -182,23 +185,27 @@ Treesitter                                                  *theovim-treesitter*
 
 Treesitter (TS) is an incremental parser generator for more accurate syntax
 highlighting compared to the default regex-based highlighting.
+TS also integrates with Vim's folding and selection mechanism to provide a
+more efficient navigation and editing experience.
 
-Theovim installs following TS servers by default:
+Theovim installs the following TS servers out of the box:
 
+- Bash
 - C
-- TODO
+- C++
+- LaTeX
+- Lua
+- Markdown
+- Python
 
-Following keybindings are provided when TS is 
+In these filetypes, TS highlight (|nvim-treesitter-highlight-mod|), incremental
+selection (|nvim-treesitter-incremental-selection-mod|), and indentation
+(|nvim-treesitter-indentation-mod|) will be enabled.
 
-char            action
-----------------------------------------------------------------------
-                                                           *<C-Space>*
-K               Open hover doc //TODO
-
-Below are frequently used commands provided by nvim-treesitter plugin:
+To disable TS or add other parsers, use the following frequently used commands
+provided by the nvim-treesitter plugin:
 
 - :TSInstall {language} ...
-- :TSInstallInfo
 - :TSUpdate {language} ...
 - :TSDisable {module} [{language}]
   - A list of modules can be found at |:TSModuleInfo|
@@ -206,10 +213,41 @@ Below are frequently used commands provided by nvim-treesitter plugin:
 - :TSToggle {module} [{language}]
   - A list of modules can be found at |:TSModuleInfo|
   - A list of languages can be found at |:TSInstallInfo|
-- :TSModuleInfo [{module}]
+
+The following keybindings are provided when a TS parser is enabled:
+
+char            action
+----------------------------------------------------------------------
+
+<C-space>       Start incremental selection
+<C-space>       (in visual mode) Perform node incremental selection
+<C-s>           (in visual mode) Perform scope incremental selection
+<M-space>       (in visual mode) Perform node decremental selection
+
+Incremental selection example:
+
+>
+  local function treesitter-incremental-example()
+    local sysname = vim.loop.os_uname().sysname
+    if sysname == "Linux" then
+      vim.notify("You are using Linux!")
+    else
+      vim.notify("Ew")
+    end
+  end
+<
+
+- When you start node incremental selection at the "vim" keyword (<C-space>),
+  it will incrementally select:
+  - "vim" -> "vim.notify" -> "vim.notify(...)" -> if statement
+    -> function body -> function
+- When you start scope incremental selection at the "vim" keyword
+  (<C-space> to initialize then <C-s>), it will incrementally select:
+  - "vim" -> if statement -> function
+- You should try it out with the language of your choice to see how it behaves
 
 For more information:
-- |nvim-treesitter|: Configuration and abstract layer
+- |nvim-treesitter|: Configuration and abstract layer for the built-in TS
 - |treesitter|: Neovim built-in treesitter library
 
 ================================================================================
@@ -220,11 +258,13 @@ For more information: `:h diagnostic.txt`.
 ================================================================================
 LSP                                                                *theovim-lsp*
 
-The settings and keymaps for LSP are heavily inspried by Kickstart.nvim
-(https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua).
-Kickstart is developed by TJ DeVries, one of the core maintainers for Neovim,
-and I trust their decisions. I will try to reflect changes in the mainstream
-Kickstart repository.
+Following LSP servers are installed by default:
+
+- Bash (`bashls`)
+- C/C++ (`clangd`)
+- LaTeX (`texlab`)
+- Lua (`lua_ls`)
+- Python (`pylsp`)
 
 When LSP server(s) is active in the buffer, following keybindings are available:
 
