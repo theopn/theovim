@@ -10,5 +10,6 @@ theovim-documentation	theovim.txt	/*theovim-documentation*
 theovim-lsp	theovim.txt	/*theovim-lsp*
 theovim-plugins	theovim.txt	/*theovim-plugins*
 theovim-telescope	theovim.txt	/*theovim-telescope*
+theovim-tldr	theovim.txt	/*theovim-tldr*
 theovim-treesitter	theovim.txt	/*theovim-treesitter*
 theovim-ui	theovim.txt	/*theovim-ui*
