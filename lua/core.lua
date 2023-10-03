@@ -173,31 +173,6 @@ vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true, noremap = true
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
---[[ url_handler()
--- Find the URL in the current line and open it in a browser if possible
--- @requires macOS open command or Linux xdg-open
---]]
-local function url_handler()
-  -- <something>://<something that aren't >,;")>
-  local url = string.match(vim.fn.getline("."), "[a-z]*://[^ >,;)\"']*")
-  if url ~= nil then
-    -- If URL is found, determine the open command to use
-    local cmd = nil
-    local sysname = vim.loop.os_uname().sysname
-    if sysname == "Darwin" then --> or use vim.fn.has("mac" or "linux", etc.)
-      cmd = "open"
-    elseif sysname == "Linux" then
-      cmd = "xdg-open"
-    end
-    -- Open the URL using exec
-    if cmd then
-      vim.cmd('exec "!' .. cmd .. " '" .. url .. "'" .. '"') --> exec "!open 'foo://bar baz'"
-    end
-  else
-    vim.notify("No URI found in the current line")
-  end
-end
-
 --[[ smarter_win_nav()
 -- Move to a window (one of hjkl) or create a split if a window does not exist in the direction
 -- Lua translation of:
@@ -227,7 +202,6 @@ local key_opt = {
   -- Convenience --
   { "i", "jk",        "<ESC>",        "Better ESC" },
   { "n", "<leader>a", "gg<S-v>G",     "[a]ll: select all" },
-  { "n", "gx",        url_handler,    "Open URL under the cursor using shell open command" },
 
   -- Search --
   { "n", "n",         "nzz",          "Highlight next search and center the screen" },
@@ -239,7 +213,7 @@ local key_opt = {
   {
     "n",
     "<leader>p",
-    "<CMD>reg", --> will be overriden in Telescope config
+    "<CMD>reg<CR>", --> will be overriden in Telescope config
     "[p]aste: choose from a register",
   },
   {
@@ -266,18 +240,6 @@ local key_opt = {
     "<C-s>",
     "<C-g>u<ESC>[s1z=`]a<C-g>u",
     "[s]pell: fix nearest spelling error and put the cursor back",
-  },
-  {
-    "n",
-    "<C-s>",
-    "z=",
-    "[s]pell: toggle spell suggestion window for the word under the cursor",
-  },
-  {
-    "n",
-    "<leader>st",
-    "<CMD>set spell!<CR>",
-    "[s]pell [t]oggle: turn spell check on/off for the current buffer",
   },
 
   -- Buffer --
@@ -349,24 +311,38 @@ local key_opt = {
   { "n", "<leader>3", "3gt", "Go to tab 3" },
   { "n", "<leader>4", "4gt", "Go to tab 4" },
   { "n", "<leader>5", "5gt", "Go to tab 5" },
-
-  -- LSP --
-  {
-    "n",
-    "<leader>ca",
-    function() vim.notify_once("This keybinding requires lsp.lua module") end,
-    "[c]ode [a]ction: open the menu to perform LSP features",
-  },
 }
 -- }}}
 
 -- Set keybindings
-local keymap = vim.keymap
 for _, v in ipairs(key_opt) do
   -- non-recursive mapping, call commands silently
   local opts = { noremap = true, silent = true }
   -- Add optional description to the table if provided
   if v[4] then opts.desc = v[4] end
   -- Set keybinding
-  keymap.set(v[1], v[2], v[3], opts)
+  vim.keymap.set(v[1], v[2], v[3], opts)
 end
+
+-------------------------------------------------------- NETRW ---------------------------------------------------------
+vim.g.netrw_banner = 0
+vim.g.netrw_liststyle = 0    --> 0: Simple, 1: Detailed, 2: Thick, 3: Tree
+vim.g.netrw_browse_split = 3 --> Open file in 0: Reuse the same win, 1: Horizontal split, 2: Vertical split, 3: New tab
+vim.g.netrw_winsize = 25     --> seems to be in percentage
+
+vim.g.netrw_is_open = false
+local function toggle_netrw()
+  local fn = vim.fn
+  if vim.g.netrw_is_open then
+    for i = 1, fn.bufnr("$") do
+      if fn.getbufvar(i, "&filetype") == "netrw" then
+        vim.cmd("bwipeout " .. i)
+      end
+    end
+    vim.g.netrw_is_open = false
+  else
+    vim.cmd("Lex")
+    vim.g.netrw_is_open = true
+  end
+end
+keymap.set("n", "<leader>n", toggle_netrw, { noremap = true, silent = true })
