@@ -1,5 +1,3 @@
-<Leader>_n	theovim.txt	/*<Leader>_n*
-K	theovim.txt	/*K*
 theovim	theovim.txt	/*theovim*
 theovim-completion	theovim.txt	/*theovim-completion*
 theovim-core-autocmds	theovim.txt	/*theovim-core-autocmds*
