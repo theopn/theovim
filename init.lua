@@ -40,21 +40,11 @@ safe_require("plugins")
 safe_require("tele")
 safe_require("ts")
 
+-- LSP
+safe_require("lsp")
+
 -- Theovim built-in UI elements
-local highlights = safe_require("ui.highlights")
-if highlights then highlights.setup() end
-
-local statusline = safe_require("ui.statusline")
-if statusline then statusline.setup() end
-local tabline = safe_require("ui.tabline")
-if tabline then tabline.setup() end
-local winbar = safe_require("ui.winbar")
-if winbar then winbar.setup() end
-local dashboard = safe_require("ui.dashboard")
-if dashboard then dashboard.setup() end
-
-local notepad = safe_require("ui.notepad")
-if notepad then notepad.setup() end
+safe_require("ui")
 
 -- LSP configurations
 safe_require("lsp.lsp")
