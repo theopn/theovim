@@ -18,7 +18,8 @@ Theovim //TODO
 Welcome back Theo, what did you forget this time?
 
 - Type |gO| to see the table of contents
-- Use |CTRL-]| to jump to the tag under cursor, |CTRL-T| to comeback
+- Use |K| (or |CTRL-]|) to jump to the tag under cursor, |CTRL-T| to comeback
+- If you see a hyperlink, use |gx| to open it in your default browser
 
 Credits:
 The settings and keymaps for Telescope are heavily inspried by Kickstart.nvim
@@ -29,7 +30,8 @@ Kickstart repository.
 
 - Kickstart.nvim
   (https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua)
-- 
+
+// TODO: Something about `:checkhealth`
 
 ================================================================================
 Core - Options                                            *theovim-core-options*
@@ -92,12 +94,15 @@ Keybindings //TODO
 Core - Netrw                                                *theovim-core-netrw*
 
 Netrw is a built-in file manager for Vim and Neovim.
+Netrw is intended to be used for visualizing file 
 
 char            action
 ----------------------------------------------------------------------
-                                                          *<Leader>_n*
-<leader>n       Toggle Netrw by calling  //TODO
-                The function relies
+
+<leader>n       Toggle Netrw by calling a custom toggle function.
+                The function uses `vim.g.netrw_is_open` global variable,
+                meaning if you enable Netrw through other mechanism,
+                it will effectively break the keybinding.
 
 For more information:
 - |netrw|
@@ -107,13 +112,20 @@ Plugins                                                        *theovim-plugins*
 
 This section //TODO
 
-Tokyonight Transparency:
+|tokyonight.nvim| is the default theme for Theovim.
 
 Oil.nvim:
 
 Whichkey
 
-Gitsigns.nvim:
+|gitsigns.nvim| provides Git signs in the gutter (+, -, ~, etc.) as well as
+other useful Git functionalities.
+Following keybinding is enabled for Git buffers:
+
+char            action
+----------------------------------------------------------------------
+
+<leader>gd      [G]it [D]iff current buffer
 
 MarkdownPreview:
 
@@ -124,6 +136,12 @@ Telescope                                                    *theovim-telescope*
 
 Telescope is a fuzzy finder for Neovim.
 It allows you to find anything you want in just a few keystrokes.
+
+Telescope works out of the box, but for faster search and live grep features,
+following dependencies are needed:
+- CMake, make, and GCC or Clang to compiler |telescope-fzf-native.nvim|
+- ripgrep: https://github.com/BurntSushi/ripgrep
+- fd: https://github.com/sharkdp/fd
 
 char            action
 ----------------------------------------------------------------------
@@ -150,7 +168,15 @@ char            action
 <leader>ss      [S]earch [F]iles.
                 Search files in the current and children directories.
                 Respects .gitignore if one exists.
+                `fd` is not required but recommended for faster search.
                 Calls |telescope.builtin.find_files()|.
+
+<leader>sg      [S]earch [G]rep.
+                Search words in the current and children directories.
+                Respects .gitignore if one exists.
+                `ripgrep` is required for faster search.
+                Calls |telescope.builtin.fd()|
+                (alias for |telescope.builtin.find_files()|).
 
 <leader>sb      [S]earch [B]rowser.
                 Calls |telescope.file-browser.finders|
@@ -253,6 +279,42 @@ For more information:
 ================================================================================
 Diagnostic                                                  *theovim-diagnostic*
 
+Neovim has a built-in diagnostic framework to display errors or warning
+messages from external tools like LSP or linters.
+Unless you configure an external tool, it will most likely be from LSP.
+
+For example, here is how diagnostic float (<leader>e) displays errors for the
+following diastrous Lua code.
+>
+  H  1 local function func()     ■■ Unused local `func`.
+  I  2 ┊ lowercase = ""     ■ Global variable in lowercase initial, Did you
+  W  3 ┊ undefined_func(syntax, err,)     ■■■■ Undefined global `err`.
+     4 end
+  ╭────────────────────────────────────────────────────────────────────────╮
+  │Buffer Diagnostics                                                      │
+  │1. ERROR (line 3): <exp> expected. [miss-exp]                           │
+  │2. INFO (line 2): Global variable in lowercase initial, Did you miss `lo│
+  │↪cal` or misspell it? [lowercase-global]                                │
+  │3. HINT (line 1): Unused functions. [unused-function]                   │
+  │4. HINT (line 1): Unused local `func`. [unused-local]                   │
+  │5. WARN (line 3): Undefined global `undefined_func`. [undefined-global] │
+  │6. WARN (line 3): Undefined global `syntax`. [undefined-global]         │
+  ╰────────────────────────────────────────────────────────────────────────╯
+<
+
+The following keybindings are available for buffer with diagnostic information:
+
+char            action
+----------------------------------------------------------------------
+
+[d              Go to the previous diagnostic message
+]d              Go to the next diagnostic message
+<leader>e       Open floating diagnostic message in the buffer scope.
+                Calls |vim.diagnostic.open_float()|.
+                Custom formatting defined in the `lsp.lua` is applied.
+<leader>q       Open diagnostic list in |location-list|.
+                Calls |vim.diagnostic.setloclist()|.
+
 For more information: `:h diagnostic.txt`.
 
 ================================================================================
@@ -266,15 +328,24 @@ Following LSP servers are installed by default:
 - Lua (`lua_ls`)
 - Python (`pylsp`)
 
+When LSP server(s) is active in the buffer, it will be displayed in the
+statusline:
+
+>
+   󰄛 N   nvim  doc/theovim.txt[+]  dev +60 ~2      HELP ...
+<
+
 When LSP server(s) is active in the buffer, following keybindings are available:
 
 char            action
 ----------------------------------------------------------------------
-                                                                   *K*
+
 K               Open hover doc //TODO
 
 
 For more information:
+- |mason.nvim|: LSP server manager
+- |lspconfig|
 - |lsp|: Built-in LSP framework
 
 ================================================================================
@@ -295,7 +366,8 @@ For more information:
 ================================================================================
 Documentation                                            *theovim-documentation*
 
-- `:h help-writing` 
+For more information:
+- |help-writing|: Guide
 - `:helptags .` to generate `helptags` for the files in the current directory
 
 
