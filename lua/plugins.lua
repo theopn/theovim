@@ -5,127 +5,161 @@
 -- |  _|   | -_| . | | | |     |
 -- |_| |_|_|___|___|\_/|_|_|_|_|
 --
--- This file does:
---   - Initialize the list of plug-ins to be installed
---   - Bootstrap Lazy plugin manager and install plug-ins
---   - Initialize plug-ins using eacch setup() function
---   - For some plug-ins, provide a small configuration work in `config`
---     This is limited to basic config, and extensive config for some plug-ins will be done elsewhere
---   - For some plug-ins, install external dependencies
+-- This file:
+-- - bootstraps Lazy.nvim
+-- - installs plugins
+-- - initialize plugins if setup() is provided
+-- - provide a small configuration work in config field for some plugins
+--   - Extensive config for some plugins (e.g., LSP, Telescope) will be done in separate modules
+-- - installs external dependencies for some plugins
 --]]
 
--- Plug-in list
 local plugins = {
-  -- dependencies
-  { "nvim-lua/plenary.nvim", },       --> Lua function library for Neovim (used by Telescope)
-  { "nvim-tree/nvim-web-devicons", }, --> Icons for barbar, Telescope, and more
+  -- Telescope
+  {
+    "nvim-telescope/telescope.nvim", --> Expandable fuzzy finer
+    -- ! Latest version to support Neovim 0.8
+    -- Will be updated in the future Theovim release
+    --version = "0.1.1",
+    branch = "0.1.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",                      --> Lua function library for Neovim
+      {
+        "nvim-telescope/telescope-fzf-native.nvim", --> Natively compiled C version of FZF for better sorting perf
+        build = "make",
+        cond = function()
+          return vim.fn.executable("make") == 1 --> only build when `make` is available
+        end,
+      },
+      "nvim-telescope/telescope-file-browser.nvim", --> File browser extension for Telescope
+    },
+  },
 
-  -- UI
+  -- Oil.nvim file browser
+  {
+    "stevearc/oil.nvim",
+    opts = {
+      default_file_explorer = false, --> Do not hijack Netrw
+    },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons", --> Icons
+    }
+  },
+
+  -- LSP
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      -- LSP server manager
+      {
+        "williamboman/mason.nvim",
+        config = true,
+      },
+      -- Bridge between lspconfig and mason
+      "williamboman/mason-lspconfig.nvim",
+      -- LSP status indicator
+      { "j-hui/fidget.nvim", tag = "legacy", opts = {} },
+    }
+  },
+
+  -- Auto completion
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "L3MON4D3/LuaSnip",             --> VS Code style snippet enginew
+      "saadparwaiz1/cmp_luasnip",     --> Providing Luasnip as one of nvim-cmp source
+      "hrsh7th/cmp-nvim-lsp",         --> nvim-cmp source for LSP engine
+      "hrsh7th/cmp-buffer",           --> nvim-cmp source for buffer words
+      "hrsh7th/cmp-path",             --> nvim-cmp source for file path
+      "hrsh7th/cmp-cmdline",          --> nvim-cmp source for :commands
+      "hrsh7th/cmp-nvim-lua",         --> nvim-cmp source for Neovim API
+      "rafamadriz/friendly-snippets", --> Snippet collections
+    },
+  },
+
+  -- Git information
+  {
+    "lewis6991/gitsigns.nvim",
+    opts = {
+      signs = {
+        add = { text = "+" },
+        change = { text = "~" },
+        delete = { text = "_" },
+        topdelete = { text = "‾" },
+        changedelete = { text = "~" },
+      },
+      on_attach = function(bufnr)
+        vim.keymap.set("n", "<leader>gd", "<CMD>Gitsigns diffthis<CR>",
+          { buffer = bufnr, desc = "[G]it [D]iff current buffer" })
+      end
+    },
+  },
+
+  -- Treesitter
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+  },
+
+  -- Autopair
+  {
+    "windwp/nvim-autopairs",
+    opts = {},
+  },
+
+  -- Keybinding guide
+  {
+    "folke/which-key.nvim",
+    opts = {},
+  },
+
+  -- Color highlighter
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = function() require("colorizer").setup() end, --> `opts` works iff module name == plugin name
+  },
+
+  -- Prettier notification
+  {
+    "rcarriga/nvim-notify",
+    config = function() vim.notify = require("notify") end,
+  },
+
+  -- Colorscheme
   {
     "folke/tokyonight.nvim", --> colorscheme
     config = function()
       require("tokyonight").setup({
-        transparent = vim.g.transparency or false,
+        transparent = true,
         styles = {
-          sidebars = vim.g.transparency and "transparent" or "dark",
-          floats = vim.g.transparency and "transparent" or "dark",
+          sidebars = "transparent", --> default "dark"
+          floats = "transparent",   --> default "dark"
         },
       })
-      vim.cmd("colo tokyonight-night")
+      vim.cmd.colorscheme("tokyonight-night")
     end,
   },
-  {
-    "rcarriga/nvim-notify", --> Prettier notification
-    config = function() vim.notify = require("notify") end,
-  },
 
-  -- Syntax, file, search
-  { "nvim-treesitter/nvim-treesitter", }, --> Incremental highlighting
+  -- Markdown preview
   {
-    "nvim-telescope/telescope.nvim",      --> Expandable fuzzy finer
-    -- ! Latest version to support Neovim 0.8
-    -- Will be updated in the future Theovim release
-    version = "0.1.1",
-  },
-  { "nvim-telescope/telescope-file-browser.nvim", }, --> File browser extension for Telescope
-  {
-    "kyazdani42/nvim-tree.lua",                      --> File tree
-    config = function()
-      -- Keymap to toggle
-      vim.keymap.set('n', "<leader>n", "<CMD>NvimTreeToggle<CR>",
-        { noremap = true, silent = true, desc = "[n]vim tree/[n]etrw: toggle file tree" })
-
-      -- Disable netrw
-      vim.g.loaded_netrw = 1
-      vim.g.loaded_netrwPlugin = 1
-
-      require("nvim-tree").setup()
-
-      -- Automatically open Nvimtree if directory is open
-      local open_nvim_tree = function(data)
-        -- buffer is a directory
-        if vim.fn.isdirectory(data.file) ~= 1 then return end
-        vim.cmd.cd(data.file)                --> change to the directory
-        require("nvim-tree.api").tree.open() --> open the tree
-      end
-      vim.api.nvim_create_autocmd({ "VimEnter" }, { callback = open_nvim_tree })
-    end,
-  },
-  {
-    "stevearc/oil.nvim", --> Manage files like Vim buffer; currently testing!
-    config = function() require("oil").setup() end,
-  },
-  {
-    "lewis6991/gitsigns.nvim", --> Git information
-    config = function() require("gitsigns").setup() end,
-  },
-  {
-    "windwp/nvim-autopairs", --> Autopair
-    config = function() require("nvim-autopairs").setup() end,
-  },
-  {
-    "terrortylor/nvim-comment", --> Commenting region
-    config = function() require("nvim_comment").setup() end,
-  },
-  {
-    "norcalli/nvim-colorizer.lua", --> Color highlighter
-    config = function() require("colorizer").setup() end,
-  },
-
-  -- LSP
-  { "neovim/nvim-lspconfig", }, --> Neovim defult LSP engine
-  {
-    "williamboman/mason.nvim",  --> LSP Manager
-    config = function() require("mason").setup() end,
-  },
-  { "williamboman/mason-lspconfig.nvim", },                                     --> Bridge between Mason and lspconfig
-  { "theopn/friendly-snippets", },                                              --> VS Code style snippet collection
-  {
-    "L3MON4D3/LuaSnip",                                                         --> Snippet engine that accepts VS Code style snippets
-    config = function() require("luasnip.loaders.from_vscode").lazy_load() end, --> Load snippets from friendly snippets
-  },
-  { "saadparwaiz1/cmp_luasnip", },                                              --> nvim_cmp and LuaSnip bridge
-  { "hrsh7th/cmp-nvim-lsp", },                                                  --> nvim-cmp source for LSP engine
-  { "hrsh7th/cmp-buffer", },                                                    --> nvim-cmp source for buffer words
-  { "hrsh7th/cmp-path", },                                                      --> nvim-cmp source for file path
-  { "hrsh7th/cmp-cmdline", },                                                   --> nvim-cmp source for :commands
-  { "hrsh7th/cmp-nvim-lua" },                                                   --> nvim-cmp source for Neovim API
-  { "hrsh7th/nvim-cmp", },                                                      --> Completion Engine
-
-  -- Text editing
-  {
-    "iamcco/markdown-preview.nvim",                       --> MarkdownPreview to toggle
-    build = function() vim.fn["mkdp#util#install"]() end, --> Binary installation for markdown-preview
+    "iamcco/markdown-preview.nvim",
+    build = function() vim.fn["mkdp#util#install"]() end,
     ft = { "markdown" },
   },
+
+  -- LaTeX integration
   {
-    "lervag/vimtex", --> LaTeX integration
-    config = function() vim.g.tex_flavor = "latex" end,
+    "lervag/vimtex",
+    config = function()
+      vim.g.tex_flavor = "latex"
+      vim.g.vimtex_view_method = "skim" --> macOS
+      --vim.g.vimtex_view_method = "zathura" --> Linux
+    end,
     ft = { "plaintex", "tex" },
   }
 }
 
---- {{{ Lazy.nvim installation
+-- Lazy.nvim installation
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -139,5 +173,4 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require("lazy").setup(plugins)
---- }}}
+require("lazy").setup(plugins, {})
