@@ -63,10 +63,14 @@ local my_opt = {
   foldexpr       = "nvim_treesitter#foldexpr()", --> Treesitter folding
   --foldlevel      = 2,                            --> Ignore n - 1 level fold
 
+  -- Update time
+  updatetime     = 250,
+  timeoutlen     = 300,
+
   -- Others
   mouse          = "a",
   confirm        = true, --> Confirm before exiting with unsaved bufffer(s)
-  --autochdir      = true, --> Change the CWD whenever you open a file, switch buffers ,etc.
+  autochdir      = true, --> Change the CWD to the parent of each buffer (same as invoking :lcd %:h)
 }
 
 local opt = vim.opt
@@ -87,17 +91,6 @@ local function trim_whitespace()
 end
 vim.api.nvim_create_user_command("TrimWhitespace", trim_whitespace,
   { nargs = 0 })
-
--- Show the changes made since the last write
-vim.api.nvim_create_user_command("ShowChanges", ":w !diff % -",
-  { nargs = 0 })
-
--- Change curr window local dir to the parent dir of curr file
-vim.api.nvim_create_user_command("CD", ":lcd %:h",
-  { nargs = 0 })
-
-
-------------------------------------------------------- AUTOCMD --------------------------------------------------------
 
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -141,7 +134,6 @@ vim.api.nvim_create_autocmd("FileType", {
 })
 -- }}}
 
--- {{{ Terminal autocmd
 -- Switch to insert mode when terminal is open
 local term_augroup = vim.api.nvim_create_augroup("Terminal", { clear = true })
 vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
@@ -164,7 +156,6 @@ vim.api.nvim_create_autocmd("TermClose", {
     end
   end
 })
--- }}}
 
 -------------------------------------------------------- KEYMAP --------------------------------------------------------
 
@@ -345,4 +336,5 @@ local function toggle_netrw()
     vim.g.netrw_is_open = true
   end
 end
-keymap.set("n", "<leader>n", toggle_netrw, { noremap = true, silent = true })
+vim.keymap.set("n", "<leader>n", toggle_netrw,
+  { noremap = true, silent = true, desc = "Toggle [N]etrw" })
