@@ -45,10 +45,3 @@ safe_require("lsp")
 
 -- Theovim built-in UI elements
 safe_require("ui")
-
--- LSP configurations
-safe_require("lsp.lsp")
-safe_require("lsp.completion")
-
--- Other Theovim features
-safe_require("misc")
