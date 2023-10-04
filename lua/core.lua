@@ -204,7 +204,7 @@ local key_opt = {
   {
     "n",
     "<leader>p",
-    "<CMD>reg<CR>", --> will be overriden in Telescope config
+    ":echo '[Theovim] Do not forget to add p in the end!'<CR>" .. ':reg<CR>:normal "',
     "[p]aste: choose from a register",
   },
   {
@@ -237,7 +237,7 @@ local key_opt = {
   {
     "n",
     "<leader>b",
-    ":ls<CR>:b<SPACE>", --> will be overriden in Telescope config
+    ":echo '[Theovim] Choose a buffer'<CR>" .. ":ls<CR>" .. ":b<SPACE>",
     "[b]uffer: open the buffer list",
   },
   { "n", "<leader>[", "<CMD>bprevious<CR>", "[[]: navigate to prev buffer" },
@@ -245,7 +245,8 @@ local key_opt = {
   {
     "n",
     "<leader>k",
-    ":ls<CR>:echo '[Theovim] Choose a buf to delete (blank: choose curr buf, RET: confirm, ESC: cancel)'<CR>:bdelete<SPACE>",
+    ":echo '[Theovim] Choose a buf to delete (blank to choose curr)'<CR>"
+    .. ":ls<CR>" .. ":bdelete<SPACE>",
     "[k]ill : Choose a buffer to kill",
   },
 
@@ -289,13 +290,9 @@ local key_opt = {
   {
     "n",
     "<leader>t",
-    ":ls<CR>:echo '[Theovim] Choose a buf to create a new tab w/ (blank: choose curr buf, RET: confirm, ESC: cancel)'<CR>:tab sb<SPACE>",
+    ":echo '[Theovim] Choose a buf to create a new tab w/ (blank to choose curr)'<CR>"
+    .. ":ls<CR>" .. ":tab sb<SPACE>",
     "[t]ab: create a new tab",
-  },
-  { "n",
-    "<leader>q",
-    "<CMD>tabclose<CR>",
-    "[q]uit: close current tab",
   },
   { "n", "<leader>1", "1gt", "Go to tab 1" },
   { "n", "<leader>2", "2gt", "Go to tab 2" },
