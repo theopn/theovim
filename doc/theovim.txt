@@ -40,10 +40,10 @@ Housekeeping:
 - Run `:MasonUpdate` to update LSP servers
 
 Options:
-- Spaces > tabs, but you do you and change them
+- Spaces over tabs, but you do you and change them
 - Use `<C-s>` in the insert mode to quickly fix spelling mistakes
 - `zR` to close all folds and `zM` to open all folds, `zx` if fold glitches
-  - `zo` and `zc` to open and close the fold under the cursor
+  - `zA` to toggle folds recursively under the cursor
 
 Keybindings:
 - Telescope keybindings are prefixed by `<leader>f`
@@ -70,13 +70,16 @@ Core - Options                                            *theovim-core-options*
 This portion //TODO
 
 Tab defaults (I know this will make tab users mad):
-- 'tabstop' (how many char Vim renders <Tab> as) = 4
-- 'softtabstop' (how many char the cursor moves in respect to <Tab>) = 0
+
+- |'tabstop'| (how many char Vim renders <Tab> as) = 4
+  - The help documentation outlines four main ways to configure tab in Vim.
+    Theovim uses number 2. Tab lovers will like number 1.
+- |'softtabstop'| (how many char the cursor moves with <Tab> and <BS>) = 0
   - 0 disables 'softtabstop'
-- 'extandtab' (uses spaces instead of <Tab> when on) = true
+- |'extandtab'| (uses spaces instead of <Tab> when on) = true
   - To insert <Tab> with with 'expandtab' on, use |i_CTRL-v| followed by <Tab>
   - To change the type of indentations in an existing file, use |:retab|
-- 'shiftwidth' (number of spaces used for indentation) = 2
+- |'shiftwidth'| (number of spaces used for indentation) = 2
 - Read the below section for how <Tab> and indentation spaces are rendered
 
 Character rendering:
@@ -94,15 +97,39 @@ Character rendering:
   ↪ like this"
   end
 <
-
 Spell check:
 
-- z=
-- `:set spell!`
+- Spell check is enabled in markdown, TeX, and plain text buffers
+- Words unrecognized by the spell checker will be underlined
+- |z=| gives the suggestions for the word under the cursor
+- `<C-s>` in insert mode fixes the closest error and put the cursor back
+- `:set spell!` toggles spell check
+- See |spell| for more information
 
 Fold:
 
+There are several 
+
+char            action
+----------------------------------------------------------------------
+
+|za|            Toggle one fold
+|zA|            Toggle all folds under the cursor recursively
+|zo|            Open one fold
+|zO|            Open all folds under the cursor recursively
+|zc|            Close one fold
+|zC|            Close all folds under the cursor recursively
+
+|zM|            Close all folds
+|zR|            Open all folds
+
+|zx|            Update fold. Given the nature of fold as an experimental
+              treesitter feature, fold might work unexpectedly. Use this
+              keybinding to fix any issue
+
 For more information:
+- |folding|
+- |nvim_treesitter#foldexpr()|
 - |theovim-treesitter|
 
 ================================================================================
@@ -266,7 +293,6 @@ the following dependencies are needed:
 - ripgrep: https://github.com/BurntSushi/ripgrep
 - fd: https://github.com/sharkdp/fd
 
-//TODO: Fix to F bindings
 char            action
 ----------------------------------------------------------------------
 
@@ -285,24 +311,36 @@ char            action
 <leader><space> Find open buffers.
                 Calls |telescope.builtin.buffers()|.
 
-<leader>ss      [S]earch for [S]earch.
-                Search all Telescope builtin functions.
+<leader>ft      [F]ind [T]elescope.
+                Search all Telescope built-in functions.
                 Calls |telescope.builtin.builtin()|.
 
-<leader>ss      [S]earch [F]iles.
+<leader>ff      [F]ind [F]iles.
                 Search files in the current and children directories.
                 Respect .gitignore if one exists.
                 `fd` is not required but recommended for faster search.
                 Calls |telescope.builtin.find_files()|.
 
-<leader>sg      [S]earch [G]rep.
-                Search words in the current and children directories.
+<leader>fg      [F]ind by rip[G]rep.
+                Search words in the files in the current and children
+                directories.
                 Respect .gitignore if one exists.
-                `ripgrep` is required for faster search.
-                Calls |telescope.builtin.fd()|
-                (alias for |telescope.builtin.find_files()|).
+                `ripgrep` is required for the search.
+                Calls |telescope.builtin.live_grep()|.
 
-<leader>sb      [S]earch [B]rowser.
+<leader>fh      [F]ind [H]elp.
+                Calls |telescope.builtin.help_tags()|.
+
+<leader>fd      [F]ind [D]iagnostics.
+                Calls |telescope.builtin.diagnostics()|.
+
+<leader>f/      Open fuzzy finder for the current buffer words.
+                The previewer is disabled to minimize distractions.
+                Calls |telescope.builtin.current_buffer_fuzzy_find()|
+                with a parameter to disable the previewer
+                (see |telescope.themes.get_dropdown()|).
+
+<leader>fb      [F]ind [B]rowser.
                 Calls |telescope.file-browser.finders|
 
 
@@ -452,6 +490,7 @@ Following LSP servers are installed by default:
 - Lua (`lua_ls`)
 - Python (`pylsp`)
 
+//TODO
 When LSP server(s) is active in the buffer, it will be displayed in the
 statusline:
 
@@ -559,6 +598,7 @@ For more information:
 ================================================================================
 UI Components                                                       *theovim-ui*
 
+//TODO
 For more information:
 - |setting-tabline|: Guide on configuring Tabline
 - |'statusline'|: 
@@ -567,6 +607,7 @@ For more information:
 ================================================================================
 Documentation                                            *theovim-documentation*
 
+//TODO
 For more information:
 - |help-writing|: Guide
 - `:helptags .` to generate `helptags` for the files in the current directory
