@@ -59,6 +59,8 @@ local plugins = {
       "williamboman/mason-lspconfig.nvim",
       -- LSP status indicator
       { "j-hui/fidget.nvim", tag = "legacy", opts = {} },
+      -- Neovim dev environment
+      "folke/neodev.nvim",
     }
   },
 
@@ -72,7 +74,6 @@ local plugins = {
       "hrsh7th/cmp-buffer",           --> nvim-cmp source for buffer words
       "hrsh7th/cmp-path",             --> nvim-cmp source for file path
       "hrsh7th/cmp-cmdline",          --> nvim-cmp source for :commands
-      "hrsh7th/cmp-nvim-lua",         --> nvim-cmp source for Neovim API
       "rafamadriz/friendly-snippets", --> Snippet collections
     },
   },
@@ -89,7 +90,7 @@ local plugins = {
         changedelete = { text = "~" },
       },
       on_attach = function(bufnr)
-        vim.keymap.set("n", "<leader>gd", "<CMD>Gitsigns diffthis<CR>",
+        vim.keymap.set("n", "<leader>gd", require("gitsigns").diffthis,
           { buffer = bufnr, desc = "[G]it [D]iff current buffer" })
       end
     },
@@ -127,13 +128,14 @@ local plugins = {
 
   -- Colorscheme
   {
-    "folke/tokyonight.nvim", --> colorscheme
+    "folke/tokyonight.nvim",      --> colorscheme
     config = function()
+      local is_transparent = true --> To disable transparency, set this to false
       require("tokyonight").setup({
-        transparent = true,
+        transparent = is_transparent,
         styles = {
-          sidebars = "transparent", --> default "dark"
-          floats = "transparent",   --> default "dark"
+          sidebars = is_transparent and "transparent" or "dark",
+          floats = is_transparent and "transparent" or "dark",
         },
       })
       vim.cmd.colorscheme("tokyonight-night")
