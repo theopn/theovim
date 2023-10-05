@@ -19,7 +19,8 @@
 --   - Luasnip
 --]]
 
--- [[ Diagnostic ]]
+------------------------------------------------------ DIAGNOSTIC ------------------------------------------------------
+
 -- Diagnostic formatting and look
 vim.diagnostic.config({
   float = {
@@ -47,7 +48,8 @@ vim.keymap.set("n", "<leader>e", function()
   { desc = "Open floating diagnostic message" })
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, { desc = "Open diagnostics list" })
 
--- [[ LSP ]]
+--------------------------------------------------------- LSP  ---------------------------------------------------------
+
 -- Setting LSP look
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
   vim.lsp.handlers.hover, {
@@ -69,6 +71,11 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
 -- @arg bufnr: buffer number
 --]]
 local on_attach = function(_, bufnr)
+  -- Format command
+  vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
+    vim.lsp.buf.format()
+  end, { desc = "Format current buffer with LSP" })
+
   --[[ nmap()
   -- @brief Inline helper for defining a buffer-scope LSP keymap with a description
   --]]
@@ -86,18 +93,20 @@ local on_attach = function(_, bufnr)
   nmap("K", vim.lsp.buf.hover, "Hover Documentation")
   nmap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
 
-  -- Navigation
-  nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-  nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
-
   -- Listing features w Telescope counterparts
   local status, builtin = pcall(require, "telescope.builtin")
   if status then
+    -- Navigation
+    nmap("gd", builtin.lsp_definitions, "[G]oto [D]efinition")
+    nmap("<leader>D", builtin.lsp_type_definitions, "Type [D]efinition")
     nmap("gr", builtin.lsp_references, "[G]oto [R]eferences")
     nmap("gI", builtin.lsp_implementations, "[G]oto [I]mplementation")
+    -- Symbols
     nmap("<leader>ds", builtin.lsp_document_symbols, "[D]ocument [S]ymbols")
     nmap("<leader>ws", builtin.lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
   else
+    nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
+    nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
     nmap("gr", vim.lsp.buf.references, "[G]oto [R]eferences")
     nmap("gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
     nmap("<leader>ds", vim.lsp.buf.document_symbol, "[D]ocument [S]ymbols")
@@ -105,14 +114,9 @@ local on_attach = function(_, bufnr)
   end
 
   -- Lesser used features
-  nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
   nmap("<leader>wl", function()
     print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end, "[W]orkspace [L]ist Folders")
-
-  vim.api.nvim_buf_create_user_command(bufnr, "Format", function(_)
-    vim.lsp.buf.format()
-  end, { desc = "Format current buffer with LSP" })
 end
 
 -- Define servers and server-specific config
@@ -159,7 +163,8 @@ mason_lspconfig.setup_handlers {
 -- Neovim dev environment
 require("neodev").setup()
 
--- [[ Completion ]]
+------------------------------------------------------ COMPLETION ------------------------------------------------------
+
 local cmp = require("cmp")
 local luasnip = require("luasnip")
 
