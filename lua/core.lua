@@ -160,9 +160,23 @@ vim.api.nvim_create_autocmd("TermClose", {
 -------------------------------------------------------- KEYMAP --------------------------------------------------------
 
 -- Space as the leader --
-vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true, noremap = true }) --> Unbind space
+vim.keymap.set({ "n", "v" }, "<Space>", "<Nop>", { silent = true, noremap = true })
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
+
+-- Default overrides
+vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, noremap = true })
+vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, noremap = true })
+
+vim.keymap.set("n", "n", "nzz", { silent = true, noremap = true })
+vim.keymap.set("n", "N", "Nzz", { silent = true, noremap = true })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { silent = true, noremap = true })
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { silent = true, noremap = true })
+
+vim.keymap.set("n", "<C-w>+", "<C-w>+<CMD>call feedkeys('<C-w>')<CR>", { silent = true, noremap = true })
+vim.keymap.set("n", "<C-w>-", "<C-w>-<CMD>call feedkeys('<C-w>')<CR>", { silent = true, noremap = true })
+vim.keymap.set("n", "<C-w><", "<C-w><<CMD>call feedkeys('<C-w>')<CR>", { silent = true, noremap = true })
+vim.keymap.set("n", "<C-w>>", "<C-w>><CMD>call feedkeys('<C-w>')<CR>", { silent = true, noremap = true })
 
 --[[ smarter_win_nav()
 -- Move to a window (one of hjkl) or create a split if a window does not exist in the direction
@@ -188,41 +202,37 @@ local function smarter_win_nav(key)
   end
 end
 
--- {{{ Keybinding table
+-- Custom keymaps
 local key_opt = {
   -- Convenience --
   { "i", "jk",        "<ESC>",        "Better ESC" },
-  { "n", "<leader>a", "gg<S-v>G",     "[a]ll: select all" },
-
-  -- Search --
-  { "n", "n",         "nzz",          "Highlight next search and center the screen" },
-  { "n", "N",         "Nzz",          "Highlight prev search and center the screen" },
-  { "n", "<leader>/", "<CMD>noh<CR>", "[/]: clear search" },
+  { "n", "<leader>a", "gg<S-v>G",     "Select [A]ll" },
+  { "n", "<leader>/", "<CMD>noh<CR>", "[/] Clear search highlights" },
 
   -- Copy and paste --
-  { "x", "<leader>y", '"+y',          "[y]ank: yank to the system clipboard (+)" },
+  { "x", "<leader>y", '"+y',          "[Y]ank to the system clipboard (+)" },
   {
     "n",
     "<leader>p",
     ":echo '[Theovim] Do not forget to add p in the end!'<CR>" .. ':reg<CR>:normal "',
-    "[p]aste: choose from a register",
+    "[P]aste from one of the registers",
   },
   {
     "x",
     "<leader>p",
     '"_dP', --> First, [d]elete the selection and send content to _ void reg then [P]aste (b4 cursor unlike small p)
-    "[p]aste: paste the current selection without overriding the reg",
+    "[P]aste the current selection without overriding the register",
   },
 
   -- Terminal --
-  { "t", "<ESC>",     "<C-\\><C-n>",        "[ESC]: exit insert mode for the terminal" },
+  { "t", "<ESC>", "<C-\\><C-n>",        "[ESC]: exit insert mode for the terminal" },
   {
     "n",
-    "<leader>z",
+    "<leader>t",
     function() --> will be overriden in misc.lua terminal location picker
       vim.cmd("botright " .. math.ceil(vim.fn.winheight(0) * (1 / 3)) .. "sp | term")
     end,
-    "[z]sh: Launch a terminal below",
+    "Launch a [t]erminal",
   },
 
   -- Spell check --
@@ -230,82 +240,37 @@ local key_opt = {
     "i",
     "<C-s>",
     "<C-g>u<ESC>[s1z=`]a<C-g>u",
-    "[s]pell: fix nearest spelling error and put the cursor back",
+    "Fix nearest [S]pelling error and put the cursor back",
   },
 
   -- Buffer --
+  { "n", "[b",    "<CMD>bprevious<CR>", "Previous buffer" },
+  { "n", "]b",    "<CMD>bnext<CR>",     "Next buffer" },
   {
     "n",
     "<leader>b",
     ":echo '[Theovim] Choose a buffer'<CR>" .. ":ls<CR>" .. ":b<SPACE>",
-    "[b]uffer: open the buffer list",
+    "Open [B]uffer list",
   },
-  { "n", "<leader>[", "<CMD>bprevious<CR>", "[[]: navigate to prev buffer" },
-  { "n", "<leader>]", "<CMD>bnext<CR>",     "[]]: navigate to next buffer" },
   {
     "n",
     "<leader>k",
     ":echo '[Theovim] Choose a buf to delete (blank to choose curr)'<CR>"
     .. ":ls<CR>" .. ":bdelete<SPACE>",
-    "[k]ill : Choose a buffer to kill",
+    "[K]ill a buffer",
   },
 
   -- Window --
-  { "n", "<C-h>", function() smarter_win_nav("h") end, "[h]: Move to window on the left or create a split", },
-  { "n", "<C-j>", function() smarter_win_nav("j") end, "[j]: Move to window below or create a vertical split", },
-  { "n", "<C-k>", function() smarter_win_nav("k") end, "[k]: Move to window above or create a vertical split", },
-  { "n", "<C-l>", function() smarter_win_nav("l") end, "[l]: Move to window on the right or create a split", },
-  {
-    "n",
-    "<leader>+",
-    "<CMD>exe 'resize ' . (winheight(0) * 3/2)<CR>",
-    "[+]: Increase the current window height by one-third",
-  },
-  {
-    "n",
-    "<leader>-",
-    "<CMD>exe 'resize ' . (winheight(0) * 2/3)<CR>",
-    "[-]: Decrease the current window height by one-third",
-  },
-  {
-    "n",
-    "<leader>>",
-    function()
-      local width = math.ceil(vim.api.nvim_win_get_width(0) * 3 / 2)
-      vim.cmd("vertical resize " .. width)
-    end,
-    "[>]: Increase the current window width by one-third",
-  },
-  {
-    "n",
-    "<leader><",
-    function()
-      local width = math.ceil(vim.api.nvim_win_get_width(0) * 2 / 3)
-      vim.cmd("vertical resize " .. width)
-    end,
-    "[<]: Decrease the current window width by one-third",
-  },
-
-  -- Tab --
-  {
-    "n",
-    "<leader>t",
-    ":echo '[Theovim] Choose a buf to create a new tab w/ (blank to choose curr)'<CR>"
-    .. ":ls<CR>" .. ":tab sb<SPACE>",
-    "[t]ab: create a new tab",
-  },
-  { "n", "<leader>1", "1gt", "Go to tab 1" },
-  { "n", "<leader>2", "2gt", "Go to tab 2" },
-  { "n", "<leader>3", "3gt", "Go to tab 3" },
-  { "n", "<leader>4", "4gt", "Go to tab 4" },
-  { "n", "<leader>5", "5gt", "Go to tab 5" },
+  { "n", "<C-h>", function() smarter_win_nav("h") end, "Move to window on the left or create a split", },
+  { "n", "<C-j>", function() smarter_win_nav("j") end, "Move to window below or create a vertical split", },
+  { "n", "<C-k>", function() smarter_win_nav("k") end, "Move to window above or create a vertical split", },
+  { "n", "<C-l>", function() smarter_win_nav("l") end, "Move to window on the right or create a split", },
 }
--- }}}
 
 -- Set keybindings
 for _, v in ipairs(key_opt) do
   -- non-recursive mapping, call commands silently
-  local opts = { noremap = true, silent = true }
+  local opts = { silent = true, noremap = true }
   -- Add optional description to the table if provided
   if v[4] then opts.desc = v[4] end
   -- Set keybinding
@@ -334,4 +299,4 @@ local function toggle_netrw()
   end
 end
 vim.keymap.set("n", "<leader>n", toggle_netrw,
-  { noremap = true, silent = true, desc = "Toggle [N]etrw" })
+  { silent = true, noremap = true, desc = "Toggle [N]etrw" })
