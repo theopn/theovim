@@ -19,7 +19,7 @@ Winbar = {}
 Winbar.excluded_ft = {
   "help",
   "theovimdashboard",
-  "nvimtree",
+  "netrw",
 }
 
 --[[ is_excluded_buf()
@@ -29,7 +29,6 @@ Winbar.excluded_ft = {
 --]]
 local is_excluded_buf = function()
   if vim.tbl_contains(Winbar.excluded_ft, string.lower(vim.bo.filetype)) then
-    vim.opt_local.winbar = nil --> On a second thought, isn't this useless bc setup() sets it to "" regardless
     return true
   end
   return false
@@ -46,15 +45,17 @@ function Winbar.build()
   end
 
   local winbar = table.concat({
+    " ",
     "%#Winbar#",
-    " ",
+    "| ",
 
     components.file_icon(Winbar.has_devicons, Winbar.devicons, vim.fn.bufname("%")),
     "%<", --> Truncation starts here so the icon will be visible at all time
+    " ",
 
     -- File info
     "%#Winbar#",
-    " %t",
+    "%t",
     "%m",
     "%r ",
 
@@ -64,7 +65,7 @@ function Winbar.build()
     components.lsp_status(),
 
     "%#Winbar#",
-    "",
+    "|",
 
     "%#Normal#"
   })

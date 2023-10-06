@@ -32,8 +32,8 @@ Statusline.build = function()
     -- File info
     "  ",
     "%f", --> Current file/path relative to the current folder
-    "%m", --> [-] for read only, [+] for modified buffer
-    "%r", --> [RO] for read only, I know it's redundant
+    "%m", --> [-] for non-modifiable buffer, [+] for modified buffer
+    "%r", --> [RO] for read only
     "%<", --> Truncation starts here (and to the left) if file is too logn
 
     -- Git
@@ -43,9 +43,6 @@ Statusline.build = function()
     -- Spacer
     "%#Normal#",
     "%=",
-
-    -- Global linter statsu
-    components.linter_status(),
 
     -- File information
     "%#PastelculaPurpleAccent#",
