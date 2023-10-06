@@ -92,8 +92,8 @@ Tab defaults (I know this will make tab users mad):
 - |'shiftwidth'| (number of spaces used for indentation) = 2
 - Read the below section for how <Tab> and indentation spaces are rendered
 
-//TODO autocmds for adjusting tab
-//TODO editorconfig
+//TODO: Autocommands for adjusting tab settings automatically as well as
+//EditorConfig support are coming soon!
 
 Character rendering:
 >
@@ -120,8 +120,8 @@ Spell check:
 - See |spell| for more information
 
 Fold:
-Folds are provided through tree-sitter.
-It can 
+the tree-sitter fold can neatly organize not only programming language
+components (functions, loops, etc.) but also markdown and LaTeX sections.
 
 char            action
 ----------------------------------------------------------------------
@@ -149,11 +149,9 @@ For more information:
 Core - User Commands                                     *theovim-core-commands*
 
 
-//TODO
-//
-:TrimWhitespace Shows
-              dads
-:CD
+- `:TrimWhitespace`: Trim trailing whitespaces. It will prompts you with
+  confirmations for each whitespace.
+- `:TrimWhitespaceNoConfirm`: //TODO: Coming soon!
 
 ================================================================================
 Core - Autocmds                                          *theovim-core-autocmds*
@@ -165,7 +163,8 @@ Core - Autocmds                                          *theovim-core-autocmds*
 Core - Keymaps                                        *theovim-core-keybindings*
 
 Theovim overrides the following default keybindings.
-They do not change the way you interact with Vim, but they are //TODO
+They do not change the way you interact with Vim (which is the opposite of what
+Theovim tries to achieve) but provide nice quality-of-life improvements.
 
 char            action
 ----------------------------------------------------------------------
@@ -185,11 +184,13 @@ N               Highlight the prev search result (|N|) and center the
 <C-d>           Scroll down by half a page (|CTRL-U|, or by the value
                 of |scroll|) and center the screen (|zz|).
 
+                For the following window adjustment keybindings,
+                you have to be quite rapid about the repeating keys
+                due to the default |'timeoutlen'|.
+
 <C-w>+          Increase the current window height by 1 (|CTRL-W_+|)
                 and feed `<C-w>` again so that you can repeatedly
                 type +, -, <, or > to resize the window.
-                (you have to be quite rapid about the repeating key
-                due to the default |'timeoutlen'|.
 <C-w>-          Decrease the current window height by 1 (|CTRL-W_-|)
                 and feed `<C-w>` again so that you can repeatedly
                 type +, -, <, or > to resize the window.
@@ -200,16 +201,17 @@ N               Highlight the prev search result (|N|) and center the
                 and feed `<C-w>` again so that you can repeatedly
                 type +, -, <, or > to resize the window.
 
+
 Theovim defines keybindings for frequently used actions that require more than
-three keystrokes (e.g., there is no keybinding to go to a tab since
-{count}|gt| is two keystrokes away).
+three keystrokes. For example, there is no keybinding to go to a tab since
+{count}|gt| is a two-keystrokes away.
+Following is the complete list of custom keybindings defined in `core.lua`:
 
 char            action
 ----------------------------------------------------------------------
 
 jk              (insert mode) ESC.
 <leader>a       Select all.
-
 <leader>/       Clear search highlight (|nohlsearch|).
 
 <leader>y       (visual mode) Copy to the system clipboard (+).
@@ -221,10 +223,10 @@ jk              (insert mode) ESC.
                 paste the contents of register + at the cursor.
 <leader>p       (visual mode) Paste the current selection without
                 overriding the register.
-                //TODO
+                For example, if you have 
 
 <ESC>           (terminal mode) Exit insert mode in terminal buffers
-<leader>z       Trigger //TODO
+<leader>t       Launch a terminal
 
 <C-s>           (insert mode) Fix the nearest spelling error and put
                 the cursor back.
@@ -244,13 +246,14 @@ jk              (insert mode) ESC.
                 kill buffer 69.
                 Type `<CR>` without a number to kill the curr buf.
 
-<C-h>           Navigate //TODO
-
-<leader>t       List open buffers (|ls|) and fill the command line
-                with |:tab sb| followed by `<Space>`.
-                From there, you can type the buffer number to create
-                a new tab with.
-                See the `<leader>k` section for how the picker works.
+<C-h>           If there is a window to the left: navigate to the window
+                Else: Create a window to the left and navigate to it
+<C-j>           If there is a window below: navigate to the window
+                Else: Create a window below and navigate to it
+<C-k>           If there is a window above: navigate to the window
+                Else: Create a window above and navigate to it
+<C-k>           If there is a window to the right: navigate to the window
+                Else: Create a window to the right and navigate to it
 
 ================================================================================
 Core - Netrw                                                *theovim-core-netrw*
@@ -288,7 +291,7 @@ This section highlights some of the commonly used plugins.
   - Creating split windows can be helpful
 - `:w` prompts for your confirmation of the changes you made
 
-|nvim-autopairs| automatically matches parentheses, quotes, etc.
+|nvim-autopairs| automatically insert matching parentheses, quotes, etc.
 
 |which-key.nvim| displays a popup with possible keybindings.
 The delay for WhichKey is controlled by 'timeoutlen' set in core.lua (300ms).
