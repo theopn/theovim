@@ -143,24 +143,12 @@ M.lsp_status = function()
 
   local errors = (count["errors"] > 0) and (" E:" .. count["errors"]) or ("")
   local warnings = (count["warnings"] > 0) and (" W:" .. count["warnings"]) or ("")
-  local hints = (count["hints"] > 0) and (" HINT:" .. count["hints"]) or ("")
-  local info = (count["info"] > 0) and (" INFO:" .. count["info"]) or ("")
+  local hints = (count["hints"] > 0) and (" H:" .. count["hints"]) or ("")
+  local info = (count["info"] > 0) and (" I:" .. count["info"]) or ("")
 
   return string.format("%s%s%s%s ",
     ("%#DiagnosticError#" .. errors), ("%#DiagnosticWarn#" .. warnings),
     ("%#DiagnosticHint#" .. hints), ("%#DiagnosticInfo#" .. info))
-end
-
---[[ linter_status()
--- Format a string on whether Linter toggle variable in Theovim is on or off
--- @return a string indicating whether Linter is on or off (if LSP server is not attached, Linter is considered off)
--- @requires vim.g.linter_status variable created in Theovim's LSP settings
---]]
-M.linter_status = function()
-  if #(vim.lsp.get_active_clients({ bufnr = 0 })) == 0 then
-    return ""
-  end
-  return (vim.g.linter_status) and ("%#PastelculaYellowAccent#󰃢 Linter ON") or ("%#PastelculaRedAccent#󰃢 Linter OFF")
 end
 
 --[[ ff_and_enc()
