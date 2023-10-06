@@ -1,4 +1,5 @@
-*theovim*                   Theo's Neovim Configuration
+*theovim.txt*               Theo's Neovim Configuration
+*theovim*
 
                                   \/       \/          ~
                                   /\_______/\          ~
@@ -18,6 +19,7 @@ Welcome back Theo, what did you forget this time?
 
 - Type |gO| to see the table of contents
 - Use |K| (or |CTRL-]|) to jump to the tag under cursor, |CTRL-T| to comeback
+- If you see a path to another file, use |gd| to open the file
 - If you see a hyperlink, use |gx| to open it in your default browser
 
 Credits:
@@ -56,6 +58,14 @@ Netrw:
 
 //TODO
 
+LSP: //TODO
+- Most used keybindigns and commands are:
+  - `K` for hover doc
+  - `:Format`
+  - `gr` for the list of references
+  - `<leader>rn` to rename
+  - `<leader>ca` for code actions
+
 Markup language:
 - Use `:MarkdownPreviewToggle` and `:VimtexCompile`
 
@@ -82,6 +92,9 @@ Tab defaults (I know this will make tab users mad):
 - |'shiftwidth'| (number of spaces used for indentation) = 2
 - Read the below section for how <Tab> and indentation spaces are rendered
 
+//TODO autocmds for adjusting tab
+//TODO editorconfig
+
 Character rendering:
 >
   function example()
@@ -107,8 +120,8 @@ Spell check:
 - See |spell| for more information
 
 Fold:
-
-There are several 
+Folds are provided through tree-sitter.
+It can 
 
 char            action
 ----------------------------------------------------------------------
@@ -151,7 +164,41 @@ Core - Autocmds                                          *theovim-core-autocmds*
 ================================================================================
 Core - Keymaps                                        *theovim-core-keybindings*
 
-//TODO
+Theovim overrides the following default keybindings.
+They do not change the way you interact with Vim, but they are //TODO
+
+char            action
+----------------------------------------------------------------------
+
+j               If the line at the cursor is not wrapped, perform |j|.
+                If the line is wrapped, perform |gj|.
+k               If the line at the cursor is not wrapped, perform |k|.
+                If the line is wrapped, perform |gk|.
+
+n               Highlight the next search result (|n|) and center the
+                screen (|zz|).
+N               Highlight the prev search result (|N|) and center the
+                screen (|zz|).
+
+<C-u>           Scroll up by half a page (|CTRL-U|, or by the value
+                of |scroll|) and center the screen (|zz|).
+<C-d>           Scroll down by half a page (|CTRL-U|, or by the value
+                of |scroll|) and center the screen (|zz|).
+
+<C-w>+          Increase the current window height by 1 (|CTRL-W_+|)
+                and feed `<C-w>` again so that you can repeatedly
+                type +, -, <, or > to resize the window.
+                (you have to be quite rapid about the repeating key
+                due to the default |'timeoutlen'|.
+<C-w>-          Decrease the current window height by 1 (|CTRL-W_-|)
+                and feed `<C-w>` again so that you can repeatedly
+                type +, -, <, or > to resize the window.
+<C-w><          Decrease the current window width by 1 (|CTRL-W_<|)
+                and feed `<C-w>` again so that you can repeatedly
+                type +, -, <, or > to resize the window.
+<C-w><          Increase the current window width by 1 (|CTRL-W_>|)
+                and feed `<C-w>` again so that you can repeatedly
+                type +, -, <, or > to resize the window.
 
 Theovim defines keybindings for frequently used actions that require more than
 three keystrokes (e.g., there is no keybinding to go to a tab since
@@ -182,13 +229,13 @@ jk              (insert mode) ESC.
 <C-s>           (insert mode) Fix the nearest spelling error and put
                 the cursor back.
 
+[b              Navigate to the previous buffer (|bprev|).
+]b              Navigate to the next buffer (|bnext|).
 <leader>b       List open buffers (|ls|) and fill the command line
                 with |:b| followed by `<Space>`.
                 From there, you can type bthe uffer number to navigate
                 to a buffer.
                 See the `<leader>k` section for how the picker works.
-<leader>[       Navigate to the previous buffer (|bprev|).
-<leader>]       Navigate to the next buffer (|bnext|).
 <leader>k       List open buffers (|ls|) and fill the command line
                 with |:bdelete| followed by `<Space>`.
                 From there, you can type a buffer number to create
@@ -246,7 +293,8 @@ This section highlights some of the commonly used plugins.
 |which-key.nvim| displays a popup with possible keybindings.
 The delay for WhichKey is controlled by 'timeoutlen' set in core.lua (300ms).
 WhichKey also includes other features:
-- ' in normal mode displays marks
+- ' in normal mode displays marks.
+  Set a marker with |m|{char}!
 - " in normal mode or `<C-r>` insert mode displays register contents
 - WhichKey displays help for built-in motions such as |z| and |g|
   - You can list all one-key-stroke keybindings using `:WhichKey`
@@ -483,35 +531,113 @@ For more information: `:h diagnostic.txt`.
 LSP                                                                *theovim-lsp*
 
 Following LSP servers are installed by default:
-
 - Bash (`bashls`)
 - C/C++ (`clangd`)
 - LaTeX (`texlab`)
 - Lua (`lua_ls`)
-- Python (`pylsp`)
+- Python (`pyright`)
 
-//TODO
+|mason.nvim| lets you install and manage LSP servers within Neovim.
+- |:Mason| opens the graphical manager for available LSP servers
+- |:MasonUpdate| updates all LSP servers
+- |:MasonInstall| {LSP} ... installs LSP server(s)
+- |:MasonUnInstall| {LSP} ... uninstalls LSP server(s)
+- There are also |:LspInstall| and |:LspUninstall| provided by
+  |mason-lspconfig|, which are "more or less an alias of the :MasonInstall
+  command."
+
 When LSP server(s) is active in the buffer, it will be displayed in the
-statusline:
+statusline: //TODO
 
 >
    󰄛 N   nvim  doc/theovim.txt[+]  dev +60 ~2      HELP ...
 <
 
-When LSP server(s) is active in the buffer, following keybindings are available:
+You can also use follwing commands to control the LSP servers:
+- `:LspStop` //TODO
+- `:LspStop`
+
+When LSP server(s) is active in the buffer, following are available locally:
+
+Commands:
+- `:Format`: Formats the buffer by calling |vim.lsp.buf.format()|.
+
+Keybindings:
 
 char            action
 ----------------------------------------------------------------------
 
-K               Open hover doc for the symbol under the cursor.
+<leader>F       Format the buffer (same as `:Format`).
+
+<leader>rn      Rename the symbol (e.g., variable, function) under
+                the cursor and refactor all the references.
+                Calls |vim.lsp.buf.rename()|.
+
+<leader>ca      Select a code action available under the cursor.
+                the cursor and refactor the workspace.
+                Calls |vim.lsp.buf.code_action()|.
+
+K               Open a floating doc for the info of the symbol under
+                the cursor.
                 If hover doc is already open, jump into the hover doc.
                 Calls |vim.lsp.buf.hover()|.
 
+<C-k>           Open a floating doc for the signature of the symbol
+                (e.g., function prototype) under the cursor.
+                If hover doc is already open, jump into the hover doc.
+                Calls |vim.lsp.buf.signature_help()|.
+
+gd              Go to the definition of the symbol under the cursor.
+                Lists all definitions if there is a multiple.
+                When Telescope is available:
+                - calls |telescope.builtin.lsp_definitions()|
+                When Telescope is not available:
+                - calls |vim.lsp.buf.definition()|
+
+<leader>D       Go to the definition of the type of the symbol under
+                the cursor.
+                Lists all type definitions if there is a multiple.
+                When Telescope is available:
+                - calls |telescope.builtin.lsp_type_definitions()|
+                When Telescope is not available:
+                - calls |vim.lsp.buf.type_definition()|
+
+gr              List references of the symbol under the cursor.
+                When Telescope is available:
+                - calls |telescope.builtin.lsp_references()|
+                When Telescope is not available:
+                - calls |vim.lsp.buf.references()|
+
+gI              List implementations of the symbol under the cursor.
+                When Telescope is available:
+                - calls |telescope.builtin.lsp_implementations()|
+                When Telescope is not available:
+                - calls |vim.lsp.buf.implementations()|
+
+<leader>ds      List all symbols in the current buffer.
+                When Telescope is available:
+                - calls |telescope.builtin.lsp_document_symbols()|
+                When Telescope is not available:
+                - calls |vim.lsp.buf.document_symbols()|
+
+<leader>ws      List all symbols in the current workspace (project).
+                When Telescope is available:
+                - calls |telescope.builtin.lsp_workspace_symbols()|
+                When Telescope is not available:
+                - calls |vim.lsp.buf.workspace_symbols()|
+
+<leader>wl      Print the workspace folders.
+                Calls |vim.lsp.buf.list_workspace_folders()| with
+                wrappers to unpack the table and print.
+
 
 For more information:
-- |mason.nvim|: LSP server manager
-- |lspconfig|
 - |lsp|: Built-in LSP framework
+- |mason.nvim|: LSP server manager
+- |lspconfig|: LSP configuration mechanism, provider of `:LspInfo`,
+  `:LspStart`, `:LspStop`, etc.
+- |mason-lspconfig.nvim|: Bridge between Mason and lspconfig, mostly a backend
+  work that you do not have to worry about
 
 ================================================================================
 Completion                                                  *theovim-completion*
@@ -607,7 +733,13 @@ For more information:
 ================================================================================
 Documentation                                            *theovim-documentation*
 
-//TODO
+This file (|theovim.txt|) 
+
+- README.md: Outlines a brief overview for each Theovim module.
+  It is more of a sales pitch than a serious documentation.
+- CHANGELOG.md: 
+- LICENSE.md
+
 For more information:
 - |help-writing|: Guide
 - `:helptags .` to generate `helptags` for the files in the current directory
