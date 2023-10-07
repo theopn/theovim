@@ -7,10 +7,12 @@ theovim-core-netrw	theovim.txt	/*theovim-core-netrw*
 theovim-core-options	theovim.txt	/*theovim-core-options*
 theovim-diagnostic	theovim.txt	/*theovim-diagnostic*
 theovim-documentation	theovim.txt	/*theovim-documentation*
+theovim-init	theovim.txt	/*theovim-init*
 theovim-lsp	theovim.txt	/*theovim-lsp*
 theovim-plugins	theovim.txt	/*theovim-plugins*
 theovim-telescope	theovim.txt	/*theovim-telescope*
 theovim-tldr	theovim.txt	/*theovim-tldr*
+theovim-tools	theovim.txt	/*theovim-tools*
 theovim-treesitter	theovim.txt	/*theovim-treesitter*
 theovim-ui	theovim.txt	/*theovim-ui*
 theovim.txt	theovim.txt	/*theovim.txt*
