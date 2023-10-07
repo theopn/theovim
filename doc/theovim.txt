@@ -1,19 +1,19 @@
-*theovim.txt*               Theo's Neovim Configuration
+*theovim.txt*             Theo's Neovim Configuration
 *theovim*
 
-                                  \/       \/          ~
-                                  /\_______/\          ~
-                                 /   o   o   \         ~
-                                (  ==  ^  ==  )        ~
-                                 )           (         ~
-                                (             )        ~
-                                ( (  )   (  ) )        ~
-                               (__(__)___(__)__)       ~
-                              ___                      ~
-                               | |_  _  _     o __     ~
-                               | | |(/_(_)\_/ | |||    ~
+                                \/       \/          ~
+                                /\_______/\          ~
+                               /   o   o   \         ~
+                              (  ==  ^  ==  )        ~
+                               )           (         ~
+                              (             )        ~
+                              ( (  )   (  ) )        ~
+                             (__(__)___(__)__)       ~
+                            ___                      ~
+                             | |_  _  _     o __     ~
+                             | | |(/_(_)\_/ | |||    ~
 
-================================================================================
+==============================================================================
 
 Welcome back Theo, what did you forget this time?
 
@@ -32,8 +32,8 @@ I will try to reflect changes in the mainstream Kickstart repository.
 - Kickstart.nvim
   (https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua)
 
-================================================================================
-Tl;dr                                                             *theovim-tldr*
+==============================================================================
+Tl;dr                                                           *theovim-tldr*
 
 Housekeeping:
 - `:checkhealth` to see if you are missing any runtime files
@@ -74,8 +74,8 @@ Learning a new programming language?:
 - Use :TSInstall {language}
 - Use :MasonInstall {LSP}
 
-================================================================================
-Core - Options                                            *theovim-core-options*
+==============================================================================
+Core - Options                                          *theovim-core-options*
 
 This portion //TODO
 
@@ -145,26 +145,26 @@ For more information:
 - |nvim_treesitter#foldexpr()|
 - |theovim-treesitter|
 
-================================================================================
-Core - User Commands                                     *theovim-core-commands*
+==============================================================================
+Core - User Commands                                   *theovim-core-commands*
 
 
 - `:TrimWhitespace`: Trim trailing whitespaces. It will prompts you with
   confirmations for each whitespace.
 - `:TrimWhitespaceNoConfirm`: //TODO: Coming soon!
 
-================================================================================
-Core - Autocmds                                          *theovim-core-autocmds*
+==============================================================================
+Core - Autocmds                                        *theovim-core-autocmds*
 
 //TODO
 - Yank on highlight
 
-================================================================================
-Core - Keymaps                                        *theovim-core-keybindings*
+==============================================================================
+Core - Keymaps                                      *theovim-core-keybindings*
 
 Theovim overrides the following default keybindings.
-They do not change the way you interact with Vim (which is the opposite of what
-Theovim tries to achieve) but provide nice quality-of-life improvements.
+They do not change the way you interact with Vim (which is the opposite of
+what Theovim tries to achieve) but provide nice quality-of-life improvements.
 
 char            action
 ----------------------------------------------------------------------
@@ -255,26 +255,29 @@ jk              (insert mode) ESC.
 <C-k>           If there is a window to the right: navigate to the window
                 Else: Create a window to the right and navigate to it
 
-================================================================================
-Core - Netrw                                                *theovim-core-netrw*
+==============================================================================
+Core - Netrw                                              *theovim-core-netrw*
 
-//TODO
 Netrw is a built-in file manager for Vim and Neovim.
-Netrw is intended to be used for visualizing file 
+Netrw is intended to be used for visualizing directories and centering the
+buffer.
+For actual file management, use |oil.nvim| explained in the |theovim-plugins|
+section.
 
 char            action
 ----------------------------------------------------------------------
 
 <leader>n       Toggle Netrw by calling a custom toggle function.
                 The function uses `vim.g.netrw_is_open` global variable,
-                meaning if you enable Netrw through other mechanism,
-                it will effectively break the keybinding.
+                meaning if you enable Netrw through another way
+                (e.g., |:Sexplore| command) it will effectively break
+                this keybinding.
 
 For more information:
 - |netrw|
 
-================================================================================
-Plugins                                                        *theovim-plugins*
+==============================================================================
+Plugins                                                      *theovim-plugins*
 
 This section highlights some of the commonly used plugins.
 
@@ -332,8 +335,8 @@ real-time compilation.
   - Change the `vim.g.vimtex_view_method` in the plugins.lua
 - `:VimtexCompile` starts a real-time compilation process
 
-================================================================================
-Telescope                                                    *theovim-telescope*
+==============================================================================
+Telescope                                                  *theovim-telescope*
 
 Telescope is a fuzzy finder for Neovim.
 It allows you to find anything you want in just a few keystrokes.
@@ -419,8 +422,8 @@ For more information:
 - |telescope.builtin|: Builtin modules of Telescope
 - |telescope.file-browser.nvim|: File browser extension
 
-================================================================================
-Treesitter                                                  *theovim-treesitter*
+==============================================================================
+Treesitter                                                *theovim-treesitter*
 
 Treesitter (TS) is an incremental parser generator for more accurate syntax
 highlighting compared to the default regex-based highlighting.
@@ -489,8 +492,8 @@ For more information:
 - |nvim-treesitter|: Configuration and abstract layer for the built-in TS
 - |treesitter|: Neovim built-in treesitter library
 
-================================================================================
-Diagnostic                                                  *theovim-diagnostic*
+==============================================================================
+Diagnostic                                                *theovim-diagnostic*
 
 Neovim has a built-in diagnostic framework to display errors or warning
 messages from external tools like LSP or linters.
@@ -515,7 +518,8 @@ following diastrous Lua code.
   ╰────────────────────────────────────────────────────────────────────────╯
 <
 
-The following keybindings are available for buffer with diagnostic information:
+The following keybindings are available for buffer with
+diagnostic information:
 
 char            action
 ----------------------------------------------------------------------
@@ -530,8 +534,8 @@ char            action
 
 For more information: `:h diagnostic.txt`.
 
-================================================================================
-LSP                                                                *theovim-lsp*
+==============================================================================
+LSP                                                              *theovim-lsp*
 
 Following LSP servers are installed by default:
 - Bash (`bashls`)
@@ -550,14 +554,16 @@ Following LSP servers are installed by default:
   command."
 
 When LSP server(s) is active in the buffer, it will be displayed in the
-statusline: //TODO
+statusline:
 
 >
-   󰄛 N   nvim  doc/theovim.txt[+]  dev +60 ~2      HELP ...
+  Code with one error and one warning from the Lua LSP server...
+  ---
+  N   git_branch +69 ~420  E1 W1  luafile.lua[+]
 <
 
 You can also use follwing commands to control the LSP servers:
-- `:LspStop` //TODO
+- `:LspInfo` //TODO
 - `:LspStop`
 
 When LSP server(s) is active in the buffer, following are available locally:
@@ -642,8 +648,8 @@ For more information:
 - |mason-lspconfig.nvim|: Bridge between Mason and lspconfig, mostly a backend
   work that you do not have to worry about
 
-================================================================================
-Completion                                                  *theovim-completion*
+==============================================================================
+Completion                                                *theovim-completion*
 
 Auto-completion is available in any buffer, and they work like any other
 modern IDEs.
@@ -724,28 +730,54 @@ For more information:
 - |cmp-cmdline-setup|: How to set the command line and search completion
 - |ins-completion|: Default Vim completion library
 
-================================================================================
-UI Components                                                       *theovim-ui*
+==============================================================================
+UI Components                                                     *theovim-ui*
 
-//TODO
+Theovim features unique UI components written in Lua.
+
+- Tabline: A simple and unique Tabline with buffer information to keep track
+  of open buffers without sacrificing Vim's built-in tab system
+- Statusline: A simple and informative Statusline inspired by Mini.nvim
+  (https://github.com/echasnovski/mini.nvim), featuring Git and LSP
+  information
+- Dashboard: Startup dashboard with a random ASCII art that resemble my
+  chunky cat Oliver
+
 For more information:
 - |setting-tabline|: Guide on configuring Tabline
-- |'statusline'|: 
-- |'winbar'|: 
+- |'statusline'|: Information about Vim Statusline and built-in items
+- |'winbar'|: Neovim window bar, currently not in use
 
-================================================================================
-Documentation                                            *theovim-documentation*
+==============================================================================
+Tools                                                          *theovim-tools*
 
-This file (|theovim.txt|) 
+//TODO: This is a module in process
+
+- Notepad
+- Terminal
+
+==============================================================================
+Initializatio                                                   *theovim-init*
+
+`init.lua` initializes all the modules by calling |lua-require| with safe
+guards (|lua_pcall()|).
+It also includes some miscellaneous configurations, such as Theo's personal
+Neovide config.
+
+==============================================================================
+Documentation                                          *theovim-documentation*
+
+This file (|theovim.txt|) contains the complete list of all Theovim features.
 
 - README.md: Outlines a brief overview for each Theovim module.
   It is more of a sales pitch than a serious documentation.
-- CHANGELOG.md: 
-- LICENSE.md
+- CHANGELOG.md: Lists all the changes made in the changes merged to the main
+  branch (a.k.a. "versions")
+- LICENSE.md: MIT license
 
 For more information:
-- |help-writing|: Guide
-- `:helptags .` to generate `helptags` for the files in the current directory
+- |help-writing|: Guide on Vim help syntax
+- |:helptags|: Generating help tags files
 
 
  vim:tw=78:ts=8:ft=help:norl:
