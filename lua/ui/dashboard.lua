@@ -1,18 +1,21 @@
---[[ dashboard.lua
--- $ figlet -f mini theovim
--- _|_|_  _  _   o._ _
---  |_| |(/_(_)\/|| | |
---
--- Provide a framework to open a dashboard on the Neovim startup when there is no buffer opened (only the empty buf)
---
--- Requires highlights.lua for highlight components
---]]
+--- *dashboard.lua* Startup Dashboard
+---
+--- $ figlet -f mini theovim
+--- _|_|_  _  _   o._ _
+---  |_| |(/_(_)\/|| | |
+---
+--- Provide a framework to open a dashboard on the Neovim startup when there is no buffer opened (only the empty buf)
+---
+--- Suggested dependencies:
+--- - Nerd font
+--- - MiniStarter* highlights from your choice of colorscheme
+---
+
 local Dashboard = {}
 
--- {{{ Variables
--- ASCII arts of
+-- ASCII arts of my chunky cat Oliver
 -- Mostly from: https://www.asciiart.eu/animals/cats
--- Make sure the length of each string is consistent, since the
+-- Make sure the length of each string is consistent! Hard coding much...
 local olivers = {
   {
     [[          \/   \/              ]],
@@ -65,11 +68,9 @@ local logo = {
 }
 -- Hard code button spacing here
 local buttons = {
-  { "󰥨  Find File      SPC f f", cmd = "Telescope find_files" },
-  { "󰈙  Recent Files   SPC f r", cmd = "Telescope oldfiles" },
-  { "  File Browser   SPC f b", cmd = "Telescope file_browser" },
-  { "  Config Theovim        ", cmd = "e ~/.config/nvim/lua/config.lua" },
-  { "  Exit Theovim        ZZ", cmd = "quit" },
+  { "󰥨  Find File      SPC f f", cmd = function() require("telescope.builtin").find_files() end, },
+  { "󰈙  Recent Files   SPC   ?", cmd = function() require("telescope.builtin").oldfiles() end, },
+  { "  Exit Theovim        ZZ", cmd = "quit", },
 }
 
 -- Calculating max width and make an empty length of the max width
@@ -81,18 +82,17 @@ header[#header + 1] = empty_line
 logo[#logo + 1] = empty_line
 -- max height = empty line + #header + #logo + #buttons + empty lines after each button + empty line + 1 safety net
 local max_height = 1 + #header + #logo + (#buttons * 2) + 1 + 1
--- }}}
 
 
---[[ render()
--- When the buffer does not have a name, replace the buffer with the formated Dashboard contents
--- Inspired from: https://github.com/chadcat7/kodo/blob/main/lua/ui/dash/init.lua
---                https://github.com/NvChad/ui/blob/dev/lua/nvchad_ui/nvdash/init.lua
--- 0 will be used instead of nvim_get_current_buf() or nvim_get_current_win() unless win/buf handle needs to be saved
---]]
+--- render()
+--- If the buffer does not have a name, replace the buffer with the formated Dashboard contents
+--- Inspired by : https://github.com/chadcat7/kodo/blob/main/lua/ui/dash/init.lua
+---               https://github.com/NvChad/ui/blob/dev/lua/nvchad_ui/nvdash/init.lua
+---
 local render = function()
   local win_width = vim.api.nvim_win_get_width(0)
   local win_height = vim.api.nvim_win_get_height(0)
+
   -----------------------------------
   -- Condition check --
 
@@ -173,14 +173,14 @@ local render = function()
   ---------------------------
   -- Setting highlights --
 
-  for i = hdr_start_idx, hdr_start_idx + #header - 2 do                         --> Ignore last two empty lines
-    vim.api.nvim_buf_add_highlight(buf, -1, "PastelculaOrangeAccent", i, 0, -1) --> -1 for no namespace
+  for i = hdr_start_idx, hdr_start_idx + #header - 2 do                       --> Ignore last two empty lines
+    vim.api.nvim_buf_add_highlight(buf, -1, "MiniStarterFooter", i, 0, -1)    --> -1 for no namespace
   end
-  for i = hdr_start_idx + #header - 2, hdr_start_idx + #header + #logo - 2 do   --> Again, -2 because of empty lines
-    vim.api.nvim_buf_add_highlight(buf, -1, "PastelculaPurpleAccent", i, 0, -1)
+  for i = hdr_start_idx + #header - 2, hdr_start_idx + #header + #logo - 2 do --> Again, -2 because of empty lines
+    vim.api.nvim_buf_add_highlight(buf, -1, "MiniStarterHeader", i, 0, -1)
   end
   for i = hdr_start_idx + #header + #logo - 2, hdr_start_idx + #header + #logo - 2 + (#buttons * 2) do --> Reach ends
-    vim.api.nvim_buf_add_highlight(buf, -1, "PastelculaLightGreyAccent", i, 0, -1)
+    vim.api.nvim_buf_add_highlight(buf, -1, "MiniStarterItemBullet", i, 0, -1)
   end
 
   -----------------------
@@ -235,19 +235,19 @@ local render = function()
   vim.opt_local.modifiable = false
 end
 
---[[ opener()
--- Wrap Dashboard.render() with schedule().
--- schedule_wrap({cb}) "Defers callback `cb` until the Nvim API is safe to call," and schedule() calls wrapped func
--- Let's say the user is resizing the terminal window. Without deferring, render() will jump ahead and start rendering,
--- which casues breakage in calculations and rendering. This allows render() to wait until Neovim says it's safe
---]]
+--- opener()
+--- Wrap Dashboard.render() with schedule().
+--- schedule_wrap({cb}) "Defers callback `cb` until the Nvim API is safe to call," and schedule() calls wrapped func
+--- Let's say the user is resizing the terminal window. Without deferring, render() will jump ahead and start rendering,
+--- which casues breakage in calculations and rendering. This allows render() to wait until Neovim says it's safe
+---
 Dashboard.opener = function()
   vim.schedule(render)
 end
 
---[[ setup()
--- Call opener in the startup and make autocmd for resizing
---]]
+--- setup()
+--- Call opener in the startup and make autocmd for resizing
+---
 Dashboard.setup = function()
   Dashboard.opener()
 
