@@ -17,7 +17,10 @@ local components = require("ui.components")
 
 Statusline = {} --> global so that luaeval can keep calling build() function
 
--- [[ Mode ]]
+--- Helper determining whether the buftype is normal
+--- For more information see ":h buftype"
+---@return boolean is_normal_buf
+Statusline.isnt_normal_buffer = function() return vim.bo.buftype ~= "" end
 
 -- Metatable containing shorthand notation of the mode and hilight group to be used
 local CTRL_S = vim.api.nvim_replace_termcodes("<C-S>", true, true, true)
@@ -44,7 +47,6 @@ Statusline.modes = setmetatable({
     end,
   })
 
--- [[ Modules -- from Mini.statusline ]]
 
 --- Get filetype icon using devicons
 ---@return ... __statusline_section
@@ -57,6 +59,7 @@ Statusline.get_filetype_icon = function()
   return devicons.get_icon(file_name, file_ext, { default = true })
 end
 
+
 --- Section for Git information
 ---
 --- Normal output contains name of `HEAD` (via |b:gitsigns_head|) and chunk
@@ -68,6 +71,7 @@ end
 ---@return __statusline_section
 Statusline.section_git = function()
   --if H.isnt_normal_buffer() then return '' end
+  if Statusline.isnt_normal_buffer() then return "" end
 
   local head = vim.b.gitsigns_head or '-'
   --local signs = MiniStatusline.is_truncated(args.trunc_width) and '' or (vim.b.gitsigns_status or '')
@@ -113,8 +117,11 @@ Statusline.diagnostics = function()
 end
 
 
-function test()
-  local size = vim.fn.getfsize(vim.fn.getreg('%'))
+---
+---
+---@return __statusline_section
+Statusline.filzesize = function()
+  local size = vim.fn.getfsize(vim.fn.getreg("%"))
   if size < 1024 then
     return string.format('%dB', size)
   elseif size < 1048576 then
@@ -124,12 +131,42 @@ function test()
   end
 end
 
---[[ build()
--- Build a table with statusline components
--- @return Lua table of Vim statusline components
---]]
-Statusline.build = function()
+
+---
+---
+---@return __statusline_section
+Statusline.ff_and_enc = function()
+  local ff = vim.bo.fileformat
+  if ff == "unix" then
+    ff = ""
+  elseif ff == "dos" then
+    ff = ""
+  end
+  -- If new file does not have encoding, display global encoding
+  local enc = (vim.bo.fileencoding == "") and (vim.o.encoding) or (vim.bo.fileencoding)
+  return string.format("%s :%s", ff, enc):upper()
+end
+
+
+--- Build a Statusline for active section.
+---
+--- If current window is smaller than 100 columns, output the following Statusline:
+--- [Mode] filename_tail[mod][RO] diagit        line : column
+---
+--- Else, output the following Statusline:
+--- [Mode] CWD filepath[mod][RO] diagit        file_size filetype file_format:enc line/total_line : col/total_col
+---
+---@return string Statusline appropriately sized statusline
+Statusline.active = function()
+  local cur_width = vim.o.laststatus == 3 and vim.o.columns or vim.api.nvim_win_get_width(0)
+  local is_short = (cur_width < 100)
   local mode_info = Statusline.modes[vim.fn.mode()]
+
+  -- Filepath/filename
+  -- If short Statusline: Tail of the filename (filename.ext)
+  -- Else: CWD + filepath relative to the CWD
+  local path = is_short and string.format(" %s %%t%%m%%r ", Statusline.get_filetype_icon())
+      or string.format("  %s %s %%f%%m%%r ", vim.fn.fnamemodify(vim.fn.getcwd(), ":t"), Statusline.get_filetype_icon())
 
   -- Combine Diagnostics and Git info
   local diagnostics_info = Statusline.diagnostics()
@@ -141,54 +178,87 @@ Statusline.build = function()
     diagit = git_info
   end
 
-  local cur_width = vim.o.laststatus == 3 and vim.o.columns or vim.api.nvim_win_get_width(0)
-  if cur_width < 80 then
+  -- Location
+  -- If short Statusline: line : col
+  -- Else: line/total_line : col/total_col
+  local location = is_short and string.format("%s %s:%s ", mode_info.hl, "%l", "%2v")
+      or string.format("%s %s/%s:%s/%s ", mode_info.hl, "%l", "%L", "%2v", '%-2{virtcol("$") - 1}')
+
+  if cur_width < 100 then
     -- Short statusline
-    -- [Mode] filename_tail[mod][RO] diagit        line : column
     return table.concat({
-      -- Mode
-      mode_info.hl, " ", mode_info.name, " ",
-      -- File info
-      "%#MiniStatuslineFilename# ",
-      Statusline.get_filetype_icon(), " ",
-      "%t%m%r ", --> filename tail
+      string.format("%s %s ", mode_info.hl, mode_info.name),
+      "%#MiniStatuslineFilename#",
+      path,
       -- Make above modules the last to be truncated
       "%<",
-      -- Extra information
-      "%#MiniStatuslineFileinfo# ", diagit,
+
+      -- LSP and Git
+      "%#MiniStatuslineFileinfo# ",
+      diagit,
+
       -- Spacer
       "%=",
-      -- Location
-      mode_info.hl, ' %l : %v ',
+
+      location,
     })
   else
     -- Long Statusline
-    -- [Mode] CWD filepath[mod][RO] diagit        filetype fileformat:enc file_size line/total_line : col/total_col
     return table.concat({
-      -- Mode
-      mode_info.hl, " ", mode_info.name, " ",
-      -- CWD + File info
-      "%#MiniStatuslineFilename# ",
-      " ", vim.fn.fnamemodify(vim.fn.getcwd(), ":t"),
-      " ", Statusline.get_filetype_icon(), " ",
-      "%f%m%r ", --> filepath relative to CWD
+      string.format("%s %s ", mode_info.hl, mode_info.name),
+      "%#MiniStatuslineFilename#",
+      path,
       -- Make above modules the last to be truncated
       "%<",
-      -- Extra information
-      "%#MiniStatuslineFileinfo# ", diagit,
+
+      -- LSP and Git
+      "%#MiniStatuslineDevinfo# ",
+      diagit,
       -- Spacer
       "%=",
-      -- Location in the file: line/total_line : column/total_column
-      mode_info.hl, ' %l/%L:%2v/%-2{virtcol("$") - 1} ',
+      -- Extra file information
+      "%#MiniStatuslineFilename#",
+      string.format(" %s | %s | %s ", Statusline.filzesize(), "%Y", Statusline.ff_and_enc()),
+      location,
     })
   end
 end
 
---[[ setup()
--- Set vim.o.statusline to luaeval of the build function
---]]
+--- Build a simple Statusline for inactive windows
+--- Requires no external functions other than built-in Vim Statusline fields
+---@return string Statusline
+Statusline.inactive = function()
+  return "%#MiniStatuslineFilename# %t%m%r %#MiniStatuslineInactive#%=%< %#MiniStatuslineFilename# %l:%v "
+end
+
+--- Set the global statusline (safeguard)
+--- Make an autocmd to automatically set up active and inactive Statusline
+---
 Statusline.setup = function()
-  vim.opt.statusline = "%{%v:lua.Statusline.build()%}"
+  -- Safeguard
+  vim.opt.statusline = "%{%v:lua.Statusline.active()%}"
+  -- Autocmd
+  local statusline_augroup = vim.api.nvim_create_augroup("Statusline", {})
+  vim.api.nvim_create_autocmd(
+    { "WinEnter", "BufEnter", },
+    {
+      group = statusline_augroup,
+      pattern = "*",
+      callback = function()
+        vim.wo.statusline = "%!v:lua.Statusline.active()"
+      end,
+      desc = "Set active Statusline"
+    })
+  vim.api.nvim_create_autocmd(
+    { "WinLeave", "BufLeave", },
+    {
+      group = statusline_augroup,
+      pattern = "*",
+      callback = function()
+        vim.wo.statusline = "%!v:lua.Statusline.inactive()"
+      end,
+      desc = "Set inactive Statusline"
+    })
 end
 
 return Statusline
