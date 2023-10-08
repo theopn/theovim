@@ -93,7 +93,7 @@ Tab defaults (I know this will make tab users mad):
 - Read the below section for how <Tab> and indentation spaces are rendered
 
 //TODO: Autocommands for adjusting tab settings automatically as well as
-//EditorConfig support are coming soon!
+//EditorConfig support are coming in the next update!
 
 Character rendering:
 >
@@ -148,10 +148,8 @@ For more information:
 ==============================================================================
 Core - User Commands                                   *theovim-core-commands*
 
-
 - `:TrimWhitespace`: Trim trailing whitespaces. It will prompts you with
   confirmations for each whitespace.
-- `:TrimWhitespaceNoConfirm`: //TODO: Coming soon!
 
 ==============================================================================
 Core - Autocmds                                        *theovim-core-autocmds*
@@ -168,6 +166,9 @@ what Theovim tries to achieve) but provide nice quality-of-life improvements.
 
 char            action
 ----------------------------------------------------------------------
+
+<ESC>           (terminal mode) Go to the normal mode in terminal
+                See |CTRL-\_CTRL-N|.
 
 j               If the line at the cursor is not wrapped, perform |j|.
                 If the line is wrapped, perform |gj|.
@@ -211,8 +212,11 @@ char            action
 ----------------------------------------------------------------------
 
 jk              (insert mode) ESC.
+<C-s>           (insert mode) Fix the nearest spelling error and put
+                the cursor back.
 <leader>a       Select all.
 <leader>/       Clear search highlight (|nohlsearch|).
+<leader>t       Launch a terminal
 
 <leader>y       (visual mode) Copy to the system clipboard (+).
 <leader>p       List register contents (|reg|) and fill the command line
@@ -224,12 +228,6 @@ jk              (insert mode) ESC.
 <leader>p       (visual mode) Paste the current selection without
                 overriding the register.
                 For example, if you have 
-
-<ESC>           (terminal mode) Exit insert mode in terminal buffers
-<leader>t       Launch a terminal
-
-<C-s>           (insert mode) Fix the nearest spelling error and put
-                the cursor back.
 
 [b              Navigate to the previous buffer (|bprev|).
 ]b              Navigate to the next buffer (|bnext|).
@@ -537,13 +535,6 @@ For more information: `:h diagnostic.txt`.
 ==============================================================================
 LSP                                                              *theovim-lsp*
 
-Following LSP servers are installed by default:
-- Bash (`bashls`)
-- C/C++ (`clangd`)
-- LaTeX (`texlab`)
-- Lua (`lua_ls`)
-- Python (`pyright`)
-
 |mason.nvim| lets you install and manage LSP servers within Neovim.
 - |:Mason| opens the graphical manager for available LSP servers
 - |:MasonUpdate| updates all LSP servers
@@ -552,19 +543,27 @@ Following LSP servers are installed by default:
 - There are also |:LspInstall| and |:LspUninstall| provided by
   |mason-lspconfig|, which are "more or less an alias of the :MasonInstall
   command."
+- The following LSP servers are installed by default:
+  - Bash (`bashls`)
+  - C/C++ (`clangd`)
+  - LaTeX (`texlab`)
+  - Lua (`lua_ls`)
+  - Python (`pyright`)
+
 
 When LSP server(s) is active in the buffer, it will be displayed in the
-statusline:
+Statusline:
 
 >
   Code with one error and one warning from the Lua LSP server...
   ---
-  N   git_branch +69 ~420  E1 W1  luafile.lua[+]
+  N   luafile.lua[+]    E1 W1 |  git_branch +69 ~420
 <
 
-You can also use follwing commands to control the LSP servers:
-- `:LspInfo` //TODO
+You can also use the follwing commands to control the LSP servers:
+- `:LspInfo`
 - `:LspStop`
+- `:LspRestart`
 
 When LSP server(s) is active in the buffer, following are available locally:
 
@@ -735,13 +734,17 @@ UI Components                                                     *theovim-ui*
 
 Theovim features unique UI components written in Lua.
 
-- Tabline: A simple and unique Tabline with buffer information to keep track
-  of open buffers without sacrificing Vim's built-in tab system
-- Statusline: A simple and informative Statusline inspired by Mini.nvim
-  (https://github.com/echasnovski/mini.nvim), featuring Git and LSP
-  information
-- Dashboard: Startup dashboard with a random ASCII art that resemble my
-  chunky cat Oliver
+- A simple Tabline to maximize Vim's built |tabpage|, featuring:
+  - Number of windows in the current tab
+  - Modified status of the current window in the tab
+  - Number of buffers and tabs
+- A simple Statusline featuring:
+  - LSP diagnostics & Git information
+  - File size
+  - Dynamic content adjustment based on the current window size
+- Startup Dashboard featuring:
+  - ASCII art of my chunky cat Oliver (randomly selected from the pool)
+  - Buttons to quickly execute Telescope features
 
 For more information:
 - |setting-tabline|: Guide on configuring Tabline
@@ -751,8 +754,7 @@ For more information:
 ==============================================================================
 Tools                                                          *theovim-tools*
 
-//TODO: This is a module in process
-
+//TODO: This module will be completed in the next update, featuring:
 - Notepad
 - Terminal
 
