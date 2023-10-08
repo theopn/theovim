@@ -1,6 +1,7 @@
 require("ui.highlights").setup()
 require("ui.statusline").setup()
+--require("ui.statusline-mini").setup()
 require("ui.tabline").setup()
-require("ui.winbar").setup()
+--require("ui.winbar").setup()
 require("ui.dashboard").setup()
 require("ui.notepad").setup()
