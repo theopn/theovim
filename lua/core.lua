@@ -44,7 +44,7 @@ local my_opt = {
   scrolloff      = 7,     --> Keep minimum x number of screen lines above and below the cursor
   termguicolors  = true,  --> Enables 24-bit RGB color in the TUI
   showtabline    = 2,     --> 0: never, 1: >= 2 tabs, 2: always
-  laststatus     = 3,     --> 0: never, 1: >= 2 windows, 2: always, 3: always and have one global statusline
+  laststatus     = 2,     --> 0: never, 1: >= 2 windows, 2: always, 3: always and have one global statusline
 
   -- Char rendering
   list           = true, --> Render special char in listchars
@@ -53,9 +53,10 @@ local my_opt = {
   breakindent    = true, --> Wrapped line will have the same indentation level as the beginning of the line
 
   -- Spell
+  spell          = false,    --> autocmd will enable spellcheck in Tex or markdown
   spelllang      = "en",
   spellsuggest   = "best,8", --> Suggest 8 words for spell suggestion
-  spell          = false,    --> autocmd will enable spellcheck in Tex or markdown
+  spelloptions   = "camel",  --> Consider CamelCase when checking spelling
 
   -- Fold
   foldenable     = false,                        --> Open all folds until I close them using zc/zC or update using zx
@@ -80,10 +81,8 @@ end
 
 --------------------------------------------------------- CMD  ---------------------------------------------------------
 
---[[ trim_whitespace()
-  -- Vimscript-based function to trim trailing whitespaces
-  -- \s: white space char, \+ :one or more, $: end of the line, e: suppresses warning when no match found, c: confirm
-  --]]
+--- Trims trailing whitespace
+--- \s: white space char, \+ :one or more, $: end of the line, e: suppresses warning when no match found, c: confirm
 local function trim_whitespace()
   local win_save = vim.fn.winsaveview()
   vim.cmd("keeppatterns %s/\\s\\+$//ec")
@@ -106,7 +105,15 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function() vim.opt_local.spell = true end
 })
 
--- {{{ File settings based on ft
+-- Switch to insert mode when terminal is open
+vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
+  -- TermOpen: for when terminal is opened for the first time
+  -- BufEnter: when you navigate to an existing terminal buffer
+  group = vim.api.nvim_create_augroup("Terminal", { clear = true }),
+  pattern = "term://*", --> only applicable for "BufEnter", an ignored Lua table key when evaluating TermOpen
+  callback = function() vim.cmd("startinsert") end
+})
+
 -- Dictionary for supported file type (key) and the table containing values (values)
 local ft_style_vals = {
   ["c"] = { colorcolumn = "80", tabwidth = 2 },
@@ -132,30 +139,6 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.tabstop = ft_style_vals[vim.bo.filetype].tabwidth
   end
 })
--- }}}
-
--- Switch to insert mode when terminal is open
-local term_augroup = vim.api.nvim_create_augroup("Terminal", { clear = true })
-vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
-  -- TermOpen: for when terminal is opened for the first time
-  -- BufEnter: when you navigate to an existing terminal buffer
-  group = term_augroup,
-  pattern = "term://*", --> only applicable for "BufEnter", an ignored Lua table key when evaluating TermOpen
-  callback = function() vim.cmd("startinsert") end
-})
-
--- Automatically close terminal unless exit code isn't 0
-vim.api.nvim_create_autocmd("TermClose", {
-  group = term_augroup,
-  callback = function()
-    if vim.v.event.status == 0 then
-      vim.api.nvim_buf_delete(0, {})
-      vim.notify_once("Previous terminal job was successful!")
-    else
-      vim.notify_once("Error code detected in the current terminal job!")
-    end
-  end
-})
 
 -------------------------------------------------------- KEYMAP --------------------------------------------------------
 
@@ -165,6 +148,8 @@ vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Default overrides
+vim.keymap.set("t", "<ESC>", "<C-\\><C-n>", { silent = true, noremap = true })
+
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, noremap = true })
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, noremap = true })
 
@@ -178,13 +163,13 @@ vim.keymap.set("n", "<C-w>-", "<C-w>-<CMD>call feedkeys('<C-w>')<CR>", { silent 
 vim.keymap.set("n", "<C-w><", "<C-w><<CMD>call feedkeys('<C-w>')<CR>", { silent = true, noremap = true })
 vim.keymap.set("n", "<C-w>>", "<C-w>><CMD>call feedkeys('<C-w>')<CR>", { silent = true, noremap = true })
 
---[[ smarter_win_nav()
--- Move to a window (one of hjkl) or create a split if a window does not exist in the direction
--- Lua translation of:
--- https://www.reddit.com/r/vim/comments/166a3ij/comment/jyivcnl/?utm_source=share&utm_medium=web2x&context=3
--- Usage: vim.keymap("n", "<C-h>", function() move_or_create_win("h") end, {})
+--- smarter_win_nav()
+--- Move to a window (one of hjkl) or create a split if a window does not exist in the direction
+--- Lua translation of:
+--- https://www.reddit.com/r/vim/comments/166a3ij/comment/jyivcnl/?utm_source=share&utm_medium=web2x&context=3
+--- Usage: vim.keymap("n", "<C-h>", function() move_or_create_win("h") end, {})
 --
--- @arg key: One of h, j, k, l, a direction to move or create a split
+---@param key string One of h, j, k, l, a direction to move or create a split
 --]]
 local function smarter_win_nav(key)
   local fn = vim.fn
@@ -204,28 +189,15 @@ end
 
 -- Custom keymaps
 local key_opt = {
-  -- Convenience --
   { "i", "jk",        "<ESC>",        "Better ESC" },
+  {
+    "i",
+    "<C-s>",
+    "<C-g>u<ESC>[s1z=`]a<C-g>u",
+    "Fix nearest [S]pelling error and put the cursor back",
+  },
   { "n", "<leader>a", "gg<S-v>G",     "Select [A]ll" },
   { "n", "<leader>/", "<CMD>noh<CR>", "[/] Clear search highlights" },
-
-  -- Copy and paste --
-  { "x", "<leader>y", '"+y',          "[Y]ank to the system clipboard (+)" },
-  {
-    "n",
-    "<leader>p",
-    ":echo '[Theovim] Do not forget to add p in the end!'<CR>" .. ':reg<CR>:normal "',
-    "[P]aste from one of the registers",
-  },
-  {
-    "x",
-    "<leader>p",
-    '"_dP', --> First, [d]elete the selection and send content to _ void reg then [P]aste (b4 cursor unlike small p)
-    "[P]aste the current selection without overriding the register",
-  },
-
-  -- Terminal --
-  { "t", "<ESC>", "<C-\\><C-n>",        "[ESC]: exit insert mode for the terminal" },
   {
     "n",
     "<leader>t",
@@ -235,17 +207,24 @@ local key_opt = {
     "Launch a [t]erminal",
   },
 
-  -- Spell check --
+  -- Copy and paste --
+  { "x", "<leader>y", '"+y',                "[Y]ank to the system clipboard (+)" },
   {
-    "i",
-    "<C-s>",
-    "<C-g>u<ESC>[s1z=`]a<C-g>u",
-    "Fix nearest [S]pelling error and put the cursor back",
+    "n",
+    "<leader>p",
+    ":echo '[Theovim] Do not forget to add p in the end!'<CR>" .. ':reg<CR>:normal "',
+    "[P]aste from one of the registers",
+  },
+  {
+    "x",
+    "<leader>p",
+    '"_dP', --> [d]elete the selection and send content to _ void reg then [P]aste (b4 cursor unlike small p)
+    "[P]aste the current selection without overriding the register",
   },
 
   -- Buffer --
-  { "n", "[b",    "<CMD>bprevious<CR>", "Previous buffer" },
-  { "n", "]b",    "<CMD>bnext<CR>",     "Next buffer" },
+  { "n", "[b",        "<CMD>bprevious<CR>", "Previous buffer" },
+  { "n", "]b",        "<CMD>bnext<CR>",     "Next buffer" },
   {
     "n",
     "<leader>b",
