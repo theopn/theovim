@@ -125,7 +125,7 @@ Statusline.diagnostics = function()
   end
 
   --local icon = args.icon or (H.get_config().use_icons and '' or 'LSP')
-  local icon = ''
+  local icon = ' '
   if vim.tbl_count(t) == 0 then return ('%s -'):format(icon) end
   return string.format('%s%s', icon, table.concat(t, ''))
 end
@@ -203,12 +203,10 @@ Statusline.active = function()
     string.format("%s %s ", mode_info.hl, mode_info.name),
     "%#MiniStatuslineFilename#",
     path,
-    -- Make above modules the last to be truncated
-    "%<",
+    "%<", --> Make above modules the last to be truncated
     "%#MiniStatuslineDevinfo# ",
     diagit,
-    -- Spacer
-    "%=",
+    "%=", --> Spacer
     "%#MiniStatuslineFilename#",
     file_info,
     location,
@@ -219,7 +217,7 @@ end
 --- Requires no external functions other than built-in Vim Statusline fields
 ---@return string Statusline
 Statusline.inactive = function()
-  return "%#MiniStatuslineFilename# %t%m%r %#MiniStatuslineInactive#%=%< %#MiniStatuslineFilename# %l:%v "
+  return "%#MiniStatuslineFileinfo# %t%m%r %#MiniStatuslineInactive#%=%< %#MiniStatuslineFileinfo# %l:%v "
 end
 
 --- Set the global statusline (safeguard)
