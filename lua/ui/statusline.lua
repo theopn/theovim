@@ -185,12 +185,14 @@ Statusline.active = function()
       or string.format("  %s %s %%f%%m%%r ", vim.fn.fnamemodify(vim.fn.getcwd(), ":t"), Statusline.get_filetype_icon())
 
   -- Combine Diagnostics and Git info
-  local diagit = " " .. Statusline.diagnostics() .. " "
+  local diagit = Statusline.diagnostics()
   local git_info = Statusline.section_git()
-  if diagit ~= "  " and git_info ~= "" then
+  if diagit ~= "" and git_info ~= "" then
     diagit = string.format(" %s | %s ", diagit, git_info)
-  elseif diagit == "" then
-    diagit = " " .. git_info .. " "
+  elseif diagit == "" and git_info ~= "" then
+    diagit = string.format(" %s ", git_info)
+  elseif diagit ~= "" and git_info == "" then
+    diagit = string.format(" %s ", diagit)
   end
 
   -- Fileinfo
