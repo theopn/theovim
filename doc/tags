@@ -2,7 +2,7 @@ theovim	theovim.txt	/*theovim*
 theovim-completion	theovim.txt	/*theovim-completion*
 theovim-core-autocmds	theovim.txt	/*theovim-core-autocmds*
 theovim-core-commands	theovim.txt	/*theovim-core-commands*
-theovim-core-keybindings	theovim.txt	/*theovim-core-keybindings*
+theovim-core-keymaps	theovim.txt	/*theovim-core-keymaps*
 theovim-core-netrw	theovim.txt	/*theovim-core-netrw*
 theovim-core-options	theovim.txt	/*theovim-core-options*
 theovim-diagnostic	theovim.txt	/*theovim-diagnostic*
