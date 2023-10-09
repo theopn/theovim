@@ -52,11 +52,13 @@ Statusline.modes = setmetatable({
 --- [Credit] Direct port of Mini.Statusline module
 Statusline.get_filetype_icon = function()
   -- Have this `require()` here to not depend on plugin initialization order
-  local has_devicons, devicons = pcall(require, 'nvim-web-devicons')
-  if not has_devicons then return '' end
+  --local has_devicons, devicons = pcall(require, 'nvim-web-devicons')
+  --if not has_devicons then return '' end
+  if not Statusline.has_devicons then return '' end
 
   local file_name, file_ext = vim.fn.expand('%:t'), vim.fn.expand('%:e')
-  return devicons.get_icon(file_name, file_ext, { default = true })
+  --return devicons.get_icon(file_name, file_ext, { default = true })
+  return Statusline.devicons.get_icon(file_name, file_ext, { default = true })
 end
 
 
@@ -135,12 +137,15 @@ end
 ---
 ---@return __statusline_section
 Statusline.file_info = function()
+  if Statusline.isnt_normal_buffer() then return "" end
+
   local ff = vim.bo.fileformat
   if ff == "unix" then
     ff = ""
   elseif ff == "dos" then
     ff = ""
   end
+
   -- If new file does not have encoding, display global encoding
   local enc = (vim.bo.fileencoding == "") and (vim.o.encoding) or (vim.bo.fileencoding)
 
@@ -180,12 +185,12 @@ Statusline.active = function()
       or string.format("  %s %s %%f%%m%%r ", vim.fn.fnamemodify(vim.fn.getcwd(), ":t"), Statusline.get_filetype_icon())
 
   -- Combine Diagnostics and Git info
-  local diagit = Statusline.diagnostics()
+  local diagit = " " .. Statusline.diagnostics() .. " "
   local git_info = Statusline.section_git()
-  if diagit ~= "" and git_info ~= "" then
-    diagit = string.format("%s | %s", diagit, git_info)
+  if diagit ~= "  " and git_info ~= "" then
+    diagit = string.format(" %s | %s ", diagit, git_info)
   elseif diagit == "" then
-    diagit = git_info
+    diagit = " " .. git_info .. " "
   end
 
   -- Fileinfo
@@ -204,8 +209,9 @@ Statusline.active = function()
     "%#MiniStatuslineFilename#",
     path,
     "%<", --> Make above modules the last to be truncated
-    "%#MiniStatuslineDevinfo# ",
+    "%#MiniStatuslineDevinfo#",
     diagit,
+    "%#MiniStatuslineInactive#",
     "%=", --> Spacer
     "%#MiniStatuslineFilename#",
     file_info,
@@ -217,13 +223,15 @@ end
 --- Requires no external functions other than built-in Vim Statusline fields
 ---@return string Statusline
 Statusline.inactive = function()
-  return "%#MiniStatuslineFileinfo# %t%m%r %#MiniStatuslineInactive#%=%< %#MiniStatuslineFileinfo# %l:%v "
+  return "%#MiniStatuslineFilename# %t%m%r %#MiniStatuslineInactive#%=%< %#MiniStatuslineFileinfo# %l:%v "
 end
 
 --- Set the global statusline (safeguard)
 --- Make an autocmd to automatically set up active and inactive Statusline
 ---
 Statusline.setup = function()
+  Statusline.has_devicons, Statusline.devicons = pcall(require, "nvim-web-devicons")
+
   -- Safeguard
   vim.opt.statusline = "%{%v:lua.Statusline.active()%}"
   -- Autocmd
@@ -244,7 +252,8 @@ Statusline.setup = function()
       group = statusline_augroup,
       pattern = "*",
       callback = function()
-        vim.wo.statusline = "%!v:lua.Statusline.inactive()"
+        -- No need for eval since inactive Statusline is a simple string
+        vim.wo.statusline = Statusline.inactive()
       end,
       desc = "Set inactive Statusline"
     })
