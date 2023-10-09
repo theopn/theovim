@@ -143,7 +143,8 @@ For more information:
 - [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim): Telescope, Treesitter, and LSP config
 - [nvim-cmp Wiki](https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#basic-customisations): Completion icon config
 - [nvim-lspconfig Wiki](https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#borders): Hover doc customization
-- [NvChad UI plugin](https://github.com/NvChad/ui/blob/v2.0/lua/nvchad/nvdash/init.lua): Startup dashboard
+- [NvChad UI plugin](https://github.com/NvChad/ui): Startup dashboard
+- [nvim-tabline](https://github.com/crispgm/nvim-tabline): `setup()` function for Tabline
 - [Mini.statusline](https://github.com/echasnovski/mini.statusline): Statusline
 - [Stuff.nvim](https://github.com/tamton-aquib/stuff.nvim): Notepad
 - Built-in insert mode help documentation (`:h insert.txt`): Theovim help formatting
