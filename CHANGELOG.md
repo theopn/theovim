@@ -1,15 +1,19 @@
 # Changelogs
 
-## v.2023.10.xx
+## v.2023.10.09
 
-This version is yet another downsizing, inspired by default options of [Kickstart.nvim](//TODO).
+This version is a heavy refactor of the internal framework to make Theovim more performant and easy to use,
+inspired by the defaults of [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim).
 
+- Treesitter incremental selection feature has been enabled! Try it out with `<C-space>`
 - New built-in help documentation is replacing `:TheovimReadme` command!
     Try it out with `:help theovim`
 - Custom menu for keybindings are removed (e.g., `<leader>ca`, `<leader>fa`, `<leader>ga`, ...).
     Instead, `which-key` plugin has been added back to guide you with keybindings
-- For the complete list of new keybindings, use `:help theovim`
 - Winbar's role has been replaced with Statusline, which received a redesign with simpler look
+- For the complete list of new features, use `:help theovim`
+
+`depr-file-struct` branch has been removed.
 
 ## V.2023.09.06
 
