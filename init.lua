@@ -1,31 +1,29 @@
---[[ init.lua
---
---      \/       \/
---      /\_______/\
---     /   o   o   \
---    (  ==  ^  ==  )
---     )           (
---    (             )
---    ( (  )   (  ) )
---   (__(__)___(__)__)
---  ___
---   | |_  _  _     o __
---   | | |(/_(_)\_/ | |||
---
--- Cat : https://www.asciiart.eu/animals/cats
---      My friend added a few layers of belly so it looks more like chunky my cat Oliver
--- Logo: $ figlet -f mini Theovim
---
--- Initialize all configuration files
---]]
+--- init.lua
+---
+---      \/       \/
+---      /\_______/\
+---     /   o   o   \
+---    (  ==  ^  ==  )
+---     )           (
+---    (             )
+---    ( (  )   (  ) )
+---   (__(__)___(__)__)
+---  ___
+---   | |_  _  _     o __
+---   | | |(/_(_)\_/ | |||
+---
+--- Cat : https://www.asciiart.eu/animals/cats
+---      My friend added a few layers of belly so it looks more like chunky my cat Oliver
+--- Logo: $ figlet -f mini Theovim
+---
+--- Initialize all configuration files
 
---[[ safe_require()
--- Try calling `require` for the given module.
--- If unsuccessful, print the error message using `vim.notify()`
---
--- @arg module: Module to `require`
--- @returns Resultant module from `pcall` if the call was successful, otherwise nil
---]]
+--- safe_require()
+--- Try calling `require` for the given module.
+--- If unsuccessful, print the error message using `vim.notify()`
+---
+---@param module string a name of the module to `require`
+---@return unknown module from `pcall` if the call was successful, otherwise nil
 local function safe_require(module)
   local status, loaded_module = pcall(require, module)
   if status then
