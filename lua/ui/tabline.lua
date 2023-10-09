@@ -17,10 +17,8 @@
 local M = {}
 local fn = vim.fn
 
---[[ get_listed_bufs()
--- Returns the Lua list of listed buffers
--- @return list of buffers that are loaded, valid, and listed
---]]
+--- Returns the Lua list of listed buffers
+---@return table listed_buf list of buffers that are loaded, valid, and listed
 local function get_listed_bufs()
   local listed_buf = {}
   local len = 0 --> direct insertion is faster than table.insert
@@ -33,11 +31,9 @@ local function get_listed_bufs()
   return listed_buf
 end
 
---[[ build()
--- Format a string for Vim tabline based on tabs and current buffer information
---
--- @return formatted string to be used as a Vim tabline
---]]
+--- Format a string for Vim tabline based on tabs and current buffer information
+---
+--- @return string s Formatted string to be used as a Vim tabline
 M.build = function()
   -- Init + %< to have truncation start after the logo
   local s = "%#TabLineFill# Theo   %<"
@@ -102,10 +98,8 @@ M.build = function()
   return s
 end
 
---[[ setup()
--- Evaluate user options, devicons presence and assign a newly created global function based on build() to tabline
--- Inspired by https://github.com/crispgm/nvim-tabline
---]]
+--- Evaluate user options, devicons presence and assign a newly created global function based on build() to tabline
+--- Inspired by https://github.com/crispgm/nvim-tabline
 function M.setup()
   M.has_devicons, M.devicons = pcall(require, "nvim-web-devicons")
 
