@@ -21,16 +21,8 @@ Welcome back Theo, what did you forget this time?
 - Use |K| (or |CTRL-]|) to jump to the tag under cursor, |CTRL-T| to comeback
 - If you see a path to another file, use |gd| to open the file
 - If you see a hyperlink, use |gx| to open it in your default browser
-
-Credits:
-The settings and keymaps for Telescope are heavily inspried by Kickstart.nvim
-(https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua).
-Kickstart is developed by TJ DeVries, the developer of Telescope and the core
-maintainer of Neovim, and I trust their decisions.
-I will try to reflect changes in the mainstream Kickstart repository.
-
-- Kickstart.nvim
-  (https://github.com/nvim-lua/kickstart.nvim/blob/master/init.lua)
+  - Try this out with Vim Cheat Sheet website:
+    https://vim.rtorr.com/
 
 ==============================================================================
 Tl;dr                                                           *theovim-tldr*
@@ -41,38 +33,39 @@ Housekeeping:
   - This also runs `:TSUpdate`
 - Run `:MasonUpdate` to update LSP servers
 
-Options:
+Core:
 - Spaces over tabs, but you do you and change them
 - Use `<C-s>` in the insert mode to quickly fix spelling mistakes
 - `zR` to close all folds and `zM` to open all folds, `zx` if fold glitches
   - `zA` to toggle folds recursively under the cursor
-
-Keybindings:
-- Telescope keybindings are prefixed by `<leader>f`
-- Git keybindings are prefixed by `<leader>g`
 - Keymaps for "navigating to prev/next something" are prefixed by `[` and `]`
-- If you forgot a keymap, use `:WhichKey`
 
-Netrw:
+Plugins:
 - Netrw is a decoration, use Oil.nvim to manage files
-
-//TODO
-
-LSP: //TODO
-- Most used keybindigns and commands are:
-  - `K` for hover doc
-  - `:Format`
-  - `gr` for the list of references
-  - `<leader>rn` to rename
-  - `<leader>ca` for code actions
-
-Markup language:
+- `<leader>gd` opens a diff view for a Git file
+- If you forgot a keymap, use `:WhichKey`
 - Use `:MarkdownPreviewToggle` and `:VimtexCompile`
 
-Learning a new programming language?:
-- `K` is a powerful keymap
-- Use :TSInstall {language}
-- Use :MasonInstall {LSP}
+Telescope:
+- `<leader>?`: Recent files
+- `<leader><space>`: Open buffers
+- `<leader>ff`: File files
+- `<leader>fg`: Find a word in files
+- `<leader>f/`: Find a word in the current buffer
+
+Treesitter:
+- `<C-Space>`: Incremental selection
+
+LSP:
+- Install new langauge server using :MasonInstall {LSP}
+- `<leader>F` to format
+- `<leader>rn` to rename
+- `K` for hover doc
+- `gd`, `gr` to get the list of definitions/references
+- `<leader>ds`, `<leader>ws` to get symbols in the buffer/workspace
+
+Documentation:
+- `K` to jump into a tag, `<C-t>` to come back
 
 ==============================================================================
 Core - Options                                          *theovim-core-options*
@@ -158,7 +151,7 @@ Core - Autocmds                                        *theovim-core-autocmds*
 - Yank on highlight
 
 ==============================================================================
-Core - Keymaps                                      *theovim-core-keybindings*
+Core - Keymaps                                          *theovim-core-keymaps*
 
 Theovim overrides the following default keybindings.
 They do not change the way you interact with Vim (which is the opposite of
@@ -759,7 +752,7 @@ Tools                                                          *theovim-tools*
 - Terminal
 
 ==============================================================================
-Initializatio                                                   *theovim-init*
+Initialization                                                  *theovim-init*
 
 `init.lua` initializes all the modules by calling |lua-require| with safe
 guards (|lua_pcall()|).
