@@ -1,202 +1,217 @@
-# Changelogs
+# Changelog that is not actually a Changelog
 
-## v.2023.10.09
+Below is the list of options, keybindings, Lua functions, plugins, and other Neovim features I tried that did not work out for me.
 
-This version is a heavy refactor of the internal framework to make Theovim more performant and easy to use,
-inspired by the defaults of [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim).
+## Options
 
-- Treesitter incremental selection feature has been enabled! Try it out with `<C-space>`
-- New built-in help documentation is replacing `:TheovimReadme` command!
-    Try it out with `:help theovim`
-- Custom menu for keybindings are removed (e.g., `<leader>ca`, `<leader>fa`, `<leader>ga`, ...).
-    Instead, `which-key` plugin has been added back to guide you with keybindings
-- Winbar's role has been replaced with Statusline, which received a redesign with simpler look
-- For the complete list of new features, use `:help theovim`
+- Winbar + `laststatus=3`: I briefly had file name + LSP information in the Winbar.
+    - But Tabline + Winbar + Statusline + `cmdheight=1` meant that 4 lines of the screen was occupied by UI elements.
+    - Also, Winbar, Statusline, and Tabline were all displaying the same file name when only one buffer was open and looked very redundant
+    - `laststatus=2` and making active/inactive Statusline is a better solution.
+- `:ShowChanges` (`vim.api.nvim_create_user_command("ShowChanges", ":w !diff % -", { nargs = 0 })`): Vim has a built-in `:changes`, albeit much harder to use
 
-`depr-file-struct` branch has been removed.
+## Keybindings
 
-## V.2023.09.06
+- `<leader>1-9` to navigate tabs: use `gt`
+- `<leader>t` to create a new tab: Create a new split window and break it out to a new tab using `<C-w>T`
+- `<leader>+-<>` to resize window by 1/3 of the screen size: I just decided to use a built-in resize binding
 
-This version contains minor improvements and bug fixes.
+## Autocmds
 
-- Add `C-hjkl` keybindings
-    - For example, C-h navigates to the left split window if one exists, otherwise it creates one on the left and navigates to it
-- Add transparency variable. In your `config.lua`, set `vim.g.transparency = true` to enable transparency
-- Add Linux `xdg-open` support for URL opener function
-- Add individual confirmation prompt to `:TrimWhiteSpace` command
+- Autocmd to set indentation settings based on filetype: Ftplugin is better!
+    ```lua
+    -- Dictionary for supported file type (key) and the table containing values (values)
+    local ft_style_vals = {
+      ["c"] = { colorcolumn = "80", tabwidth = 2 },
+      ["cpp"] = { colorcolumn = "80", tabwidth = 2 },
+      ["python"] = { colorcolumn = "80", tabwidth = 4 },
+      ["java"] = { colorcolumn = "120", tabwidth = 4 },
+      ["lua"] = { colorcolumn = "120", tabwidth = 2 },
+    }
+    -- Make an array of the supported file type
+    local ft_names = {}
+    local n = 0
+    for i, _ in pairs(ft_style_vals) do
+      n = n + 1
+      ft_names[n] = i
+    end
+    -- Using the array and dictionary, make autocmd for the supported ft
+    vim.api.nvim_create_autocmd("FileType", {
+      group = vim.api.nvim_create_augroup("FileSettings", { clear = true }),
+      pattern = ft_names,
+      callback = function()
+        vim.opt_local.colorcolumn = ft_style_vals[vim.bo.filetype].colorcolumn
+        vim.opt_local.shiftwidth = ft_style_vals[vim.bo.filetype].tabwidth
+        vim.opt_local.tabstop = ft_style_vals[vim.bo.filetype].tabwidth
+      end
+    })
+    ```
+- Autocmd to automatically close a terminal when the exit code is 0.
+    ```lua
+    vim.api.nvim_create_autocmd("TermClose", {
+      group = term_augroup,
+      callback = function()
+        if vim.v.event.status == 0 then
+          vim.api.nvim_buf_delete(0, {})
+          vim.notify_once("Previous terminal job was successful!")
+        else
+          vim.notify_once("Error code detected in the current terminal job!")
+        end
+      end
+    })
+    ```
+    The problem was that even when the exit code is 0, sometimes you want the window to stay persists (e.g., `termopen()`).
+    So I had to implement notifications for both cases, which was no better than having the terminal window open.
+- Autocmd to import file template: It was an okay idea, but I did not want to maintain templates.
+    If you have personal template, use `:read ~/path/to/template`.
 
-## V.2023.08.17
+## Lua functions
 
-This is the final step of the major refactor plan.
-It focuses on removing duplicate keybindings, revising documentation, and adding two new UI components: TabLine and Winbar.
+- `:Weather`: You are so extra, Theo.
+    ```lua
+    -- Simplified version of https://github.com/ellisonleao/weather.nvim
+    local function weather_popup(location)
+      local win_height = math.ceil(vim.o.lines * 0.6 - 20)
+      local win_width = math.ceil(vim.o.columns * 0.3 - 15)
+      local x_pos = 1
+      local y_pos = vim.o.columns - win_width
 
-Removed/changed keybindings and features:
+      local win_opts = {
+        style = "minimal",
+        relative = "editor",
+        width = win_width,
+        height = win_height,
+        row = x_pos,
+        col = y_pos,
+        border = "single",
+      }
 
-- `[LDR] |`: Use `C-w v` instead
-- `[LDR] -`: Use `C-w s` instead
-- `[LDR] q`: Closes *tab* (i.e., it won't close the Vim if there's only one tab) instead of a window
-            Use `C-w q` to close a window instead
-- `[LDR] hjkl`: Use `C-w hjkl` instead
-- `[LDR] <arrow-key>`: Use `C-w 10 <>-+` to resize window (10 can be any number of pixels) instead
-                     Or use new `[LDR] <>-+` binding to resize window by 1/3 of the current size
-- `[LDR] n`: Toggles `nvim-tree` instead of making a new tab. This is a swap with `[LDR] t`
-- `[LDR] x`: Changed to `[LDR] k` ([k]ill buffer)
-- `[LDR] t`: Creates a new tab instead of toggling `nvim-tree`. This is a swap with `[LDR] n`
+      local buf = vim.api.nvim_create_buf(false, true)
+      local win = vim.api.nvim_open_win(buf, true, win_opts)
 
-- `:TheovimHelp` and was replaced by `:TheovimReadme`
+      vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")
+      vim.api.nvim_win_set_option(win, "winblend", 0)
 
-New keybindings and features:
+      local keymaps_opts = { silent = true, buffer = buf }
+      vim.keymap.set('n', "q", "<C-w>q", keymaps_opts)
+      vim.keymap.set('n', "<ESC>", function() vim.api.nvim_win_close(win, true) end, keymaps_opts)
 
-- `[LDR] <>-+`: Resize window by 1/3 of the current size
-- `[LDR] k`: Replaces `[LDR] x` and [k]ills a buffer
-- `[LDR] c e`: Open diagnostics pop-up for the current buffer ([c]ode [e]rror)
-- `[LDR] c p`: Navigate to previous diagnostic ([c]ode [p]rev)
-- `[LDR] c n`: Navigate to next diagnostic ([c]ode [n]ext)
+      local weather_command = "curl 'https://wttr.in/?0T' > /dev/null"
+      if location ~= nil then
+        weather_command = string.format("curl https://wttr.in/%s'?'0T", location.args)
+      end
+      vim.fn.termopen(weather_command)
+    end
+    vim.api.nvim_create_user_command("Weather", weather_popup, { nargs = '?' }) --> ?: 0 or 1, *: > 0, +: > 1 args
+    ```
+- `:TheovimUpdate`: It was a combination of `vim.fn.termopen("cd" .. vim.opt.runtimepath:get()[1] .. " && git pull")`, `:Lazy update`, `:TSUpdate`, and `:MasonUpdate`.
+    The termopen required creating a scratch buffer, and overall, it was too complex.
+- `:TheovimReadme` and other family of displaying markdown file in a floating window: Vim's built-in help is better.
+    ```lua
+    Util.spawn_floting_doc_win = function(file_path)
+      local win_height = vim.api.nvim_win_get_height(0) or vim.o.lines
+      local win_width = vim.api.nvim_win_get_width(0) or vim.o.columns
+      local float_win_height = math.ceil(win_height * 0.8)
+      local float_win_width = math.ceil(win_width * 0.8)
+      local x_pos = math.ceil((win_width - float_win_width) * 0.5)   --> Centering the window
+      local y_pos = math.ceil((win_height - float_win_height) * 0.5) --> Centering the window
 
-- **`README.md` has been rewritten completely. Please read it!**
-- `listchars` (how Vim renders tab, trailing and leading whitespaces, etc.) has changed. Refer to README.md for more information.
-    - `indent-blankline` plug-in has been replaced with `leadmultispace`
-- **New handmade tabline** replaces `bufferline.nvim`!
-- **New handmade Winbar** is included to help you navigate split windows
-    - LSP information has moved to Winbar to give a buffer-specific LSP information and de-clutter Statusline
-- Highlighting and look of UI components has been changed slightly
-- Completion source for Neovim APIs
+      local win_opts = {
+        border = "rounded", --> sigle, double, rounded, solid, shadow
+        relative = "editor",
+        style = "minimal",  --> No number, cursorline, etc.
+        width = float_win_width,
+        height = float_win_height,
+        row = y_pos,
+        col = x_pos,
+      }
 
-## Version 2023.07.29
+      local float_win = function()
+        -- create preview buffer and set local options
+        local buf = vim.api.nvim_create_buf(false, true) --> Not add to buffer list (false), scratch buffer (true)
+        local win = vim.api.nvim_open_win(buf, true, win_opts)
 
-Summary:
+        -- options
+        vim.api.nvim_buf_set_option(buf, "bufhidden", "wipe")    --> Kill the buffer when hidden
+        vim.api.nvim_buf_set_option(buf, "filetype", "markdown") --> Markdown syntax highlighting
+        vim.opt_local.spell = false                              --> Diable spell check, spell is win option
+        vim.api.nvim_win_set_option(win, "winblend", 24)         --> 0 for solid color, 80 for transparent
 
-This version focuses on bug fixes and (more) refactoring after last two refactor update
-**Update command was broken in the last update!** Sorry about this, and use:
+        -- keymaps
+        local keymaps_opts = { silent = true, buffer = buf }
+        vim.keymap.set('n', "q", "<C-w>q", keymaps_opts) --> both C-w q or below function are fine
+        vim.keymap.set('n', "<ESC>", function() vim.api.nvim_win_close(win, true) end, keymaps_opts)
 
-`$ cd ~/.config/nvim && git pull && cd -`
+        -- Reading the file
+        vim.api.nvim_buf_set_option(0, "modifiable", true)
+        vim.cmd("silent 0r" .. file_path)
+        vim.api.nvim_buf_set_option(0, "modifiable", false)
+      end
+      return float_win
+    end
 
-to manually update Theovim. Afterwards, you can use `:TheovimUpdate`
+    local readme_path = vim.api.nvim_get_runtime_file("README.md", false)[1]
+    local helpdoc_func = Util.spawn_floting_doc_win(readme_path)
+    vim.api.nvim_create_user_command("TheovimReadme", helpdoc_func, { nargs = 0 })
+    ```
+- Simulating `gx` keybinding: It was useful when Netrw was disabled in place of NvimTree.
+    ```lua
+    local function url_handler()
+      -- <something>://<something that aren't >,;")>
+      local url = string.match(vim.fn.getline("."), "[a-z]*://[^ >,;)\"']*")
+      if url ~= nil then
+        -- If URL is found, determine the open command to use
+        local cmd = nil
+        local sysname = vim.loop.os_uname().sysname
+        if sysname == "Darwin" then --> or use vim.fn.has("mac" or "linux", etc.)
+          cmd = "open"
+        elseif sysname == "Linux" then
+          cmd = "xdg-open"
+        end
+        -- Open the URL using exec
+        if cmd then
+          vim.cmd('exec "!' .. cmd .. " '" .. url .. "'" .. '"') --> exec "!open 'foo://bar baz'"
+        end
+      else
+        vim.notify("No URI found in the current line")
+      end
+    end
+    ```
 
-Details:
+## Plugins
 
-- Add a new changelog style
-- Add autocmd to close terminal window when exit code is 0
-- Add `gx` binding to open URL in the current line (provided by netrw in "stock" Vim, but NvimTree disables netrw)
-- Add LSP symbol and server information shortcut to [c]ode [a]tion keybinding
-- Fix broken update and help doc commands
+UI:
 
-## V. 2023.07.19
+- **nvim-tree/nvim-tree.lua**:
+    - Its role as a file organization has been replaced by Oil.nvim
+    - Its role as to center text has been replaced by Netrw
+- **lukas-reineke/indent-blankline.nvim**: Vim 9 introduced |lcs-leadmultispace|
+- **romgrk/barbar.nvim** / **akinsho/bufferline.nvim**: I wrote my own Tabline that also displays number of open buffers.
+    That way, I remember the fact that I opened a file before and use Telescope to switch buffers.
+- **folke/zen-mode.nvim**: I appreciate this plugin and miss it somewhat, but most of the time, I just need the text to be in the center of the screen when I am using a wide monitor.
+- **nvimdev/dashboard-nvim**: The author made a [breaking change](https://github.com/nvimdev/dashboard-nvim/commit/12383a503e961d3a9fecc6f21c972322db794962) without backward compatibility.
+    There is nothing wrong with it, but the Dashboard looked uglier after the update.
+    It also cached the Dashboard string as a text file to advertise low memory usage, which I thought was very unnecessary.
+    I wrote my own startup Dashboard.
 
-This update is the second part of the refactoring project + improvement in built-in dashboard.
-**Starting this update, users are to directly clone the repository to `~/.config` directory**.
-You have two choices on using Theovim after this update:
+LSP:
 
-1. **Migrate to the new file structure and continue getting the update (recommended)**:
-    The command to migrate to the new structure is:
-    $ cd ~/.theovim && git pull && cd -
-    $ rm ~/.config/nvim && mv ~/.theovim ~/.config/nvim
+- **nvimdev/lspsaga.nvim**: It is an LSP UI wrapper + collection of LSP tools, and I did not like having one plugin that tried to do everything.
+    "Breadcrumbs" (Winbar symbol feature) feature actually broke once when I changed a colorscheme and highlight groups reset, and I had a hard time debugging where the source of errors was because I did not even know that the feature was added to the plugin.
+    It was a wake up call for me to prefer one plugin that does one thing and one thing well.
+    Features I occasionally miss are:
+    - "Breadcrumbs": Symbols in the Winbar
+    - "Outline": IDE like symbol outline
+    I solved the problem by simply launching nvim-tree and adjusting its size until the main window is roughly centered.
+- **hrsh7th/cmp-nvim-lua**: Completion source for Neovim API, replaced by neodev plugin.
 
-    Or re-install Theovim using the following command:
-    $ rm -rf ~/.config/nvim && git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim && rm -rf ~/.theovim
+Others:
+- **wbthomason/packer.nvim**: I just migrated to lazy.nvim because everyone did.
+    Joking, but I migrated to lazy.nvim because of the syntax.
+    Passing a Lua table as an argument is clearly better than repeating `use` multiple times.
+    I could care less about lazy-loading though, I think it is an overblown concept.
 
-2. Continue using Theovim as-is by switching to `depr-file-struct` branch and do not receive future updates:
-    Execute the following commands:
-    $ cd ~/.theovim && git pull && cd -
-    $ cd ~/.theovim && git fetch && git checkout depr-file-struct && cd -
+## File Organization
 
-Thank you for using Theovim! I hope this update to be the new starting point to further improve the experience.
-
-## V. 2023.07.16.a
-
-> This is a bug fix as the latest Telescope requires Neovim version 0.9.0 or above
-
-- Removed LspSaga plug-in
-- Downgrade Telescope version to 0.1.1
-
-## V. 2023.07.16
-
-This version is a part 1 of the major refactor project to make Theovim utilize more stock Neovim APIs and sustainable to maintain.
-Many unused features are retiring and replaced.
-Please refer to the list of commits for all the changes took place in this update.
-
-- ADD descriptions for some keybindings (which is accessible through `[LDR]?`)
-- ADD new changelog style with list of commits
-- MODIFY statusline and Dashboard to be Lua module instead of direct execution
-- MODIFY file structure and add extensive comments to the code
-- REPLACE LSPSaga features in favor of stock Neovim `vim.lsp.buf` functions
-- REPLACE OneDark/Pastelcula colorscheme with Tokyonight
-- REPLACE tabby.nvim with bufferline.nvim
-- REMOVE template features for C header and TeX
-- REMOVE <CR> after termclose
-
-## Version 2023.04.24
-
-- Dashboard bug fix
-- [TEMP] Manual support for semantic highlighting has been added - temporary until the colorscheme officially supports one
-
-## Version 2023.04.08
-
-- Current working directory in the StatusLine
-- Dashboard revision (code base inspired by NvChad): Better error handling and faster startup
-- Prettier help and changelog window
-
-## Version 2023.03.18
-
-- :TheovimUpdate is now executed in a floating, transparent terminal
-- :Notepad is also semi-transparent
-- Colorcolumn and tab configurations are adjusted based on file types
-- Smaller Dashboard is launched if the window size is too small - removed in V. 2023.04.08
-
-## Version 2023.03.14
-
-- Statusline is totally redesigned!! One less plugin...
-- :ZenModeIsh - Spawn a large NvimTree to center the text - removed in V. 2023.03.18
-
-## Version 2023.03.07
-
-- Improved new tab/kill buffer buffer selector (vim.ui.select())
-- Terminal on the left option added
-- :ShowChanges command
-- Global StatusLine, StatusLine disabled in Dashboard
-- Confirm option (ask for confirmation before closing unwritten buffer)
-- Git menu ([LDR] g)
-
-## Version 2023.02.27
-
-- Neovim appimage installer removed as Purdue Linux server updated the Neovim package (Thanks Shriansh for submitting the request)
-- Major file structure organization
-- New built-in Dashboard in place of Dashboard.nvim
-- BufferLine plugin (Barbar) replaced by UI wrapper for traditional Vim tab (Tabby)
-- Tab-related keybindings:
-  - [LDR] 1-9
-  - [LDR] n prompts the user with a buffer to create a new tab with
-  - [LDR] x prompts the user with a buffer to delete
-- New keybinding for recently used files ([LDR] f r)
-
-## Version 2023.02.23
-
-**Installation method has changed. Please run `:TheovimUpdate` after restarting Neovim**
-
-- Source code diet
-- User configuration support
-- You can now move to the next selected region in the auto-completed snippet using TAB
-
-## Version 2023.02.18
-
-- Terminal selection menu ([LDR] z)
-- :TrimWhitespace command
-- :Notepad command
-- Misc feature selection menu ([LDR] m)
-
-## Version 2023.02.12
-
-- Default colorscheme changed from OneDark to Pastelcula
-- C header file (*.h) template
-
-## Version 2023.02.07
-
-- LaTeX support through VimTex
-- LaTeX templates
-
-## Version 2023.02.03
-
-- Weather command - removed in V. 2023.02.23
-- Installation script major revision
-- LSP/Telescope feature selection menu ([LDR] ca, [LDR] fa)
+- Cloning config as `~/.theovim` and creating symlink at `~/.config/nvim`: It was as stupid as it sounds
 
