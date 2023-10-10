@@ -4,9 +4,9 @@ Below is the list of options, keybindings, Lua functions, plugins, and other Neo
 
 ## Options
 
-- Winbar + `laststatus=3`: I briefly had file name + LSP information in the Winbar.
+- Winbar + `laststatus=3`: I briefly had the file name + LSP information in the Winbar.
     - But Tabline + Winbar + Statusline + `cmdheight=1` meant that 4 lines of the screen was occupied by UI elements.
-    - Also, Winbar, Statusline, and Tabline were all displaying the same file name when only one buffer was open and looked very redundant
+    - Also, Winbar, Statusline, and Tabline were all displaying the same file name when only one buffer was open and looked very redundant.
     - `laststatus=2` and making active/inactive Statusline is a better solution.
 - `:ShowChanges` (`vim.api.nvim_create_user_command("ShowChanges", ":w !diff % -", { nargs = 0 })`): Vim has a built-in `:changes`, albeit much harder to use
 
@@ -18,14 +18,12 @@ Below is the list of options, keybindings, Lua functions, plugins, and other Neo
 
 ## Autocmds
 
-- Autocmd to set indentation settings based on filetype: Ftplugin is better!
+- Autocmd to set indentation settings based on filetype: ftplugin is better!
     ```lua
     -- Dictionary for supported file type (key) and the table containing values (values)
     local ft_style_vals = {
-      ["c"] = { colorcolumn = "80", tabwidth = 2 },
       ["cpp"] = { colorcolumn = "80", tabwidth = 2 },
       ["python"] = { colorcolumn = "80", tabwidth = 4 },
-      ["java"] = { colorcolumn = "120", tabwidth = 4 },
       ["lua"] = { colorcolumn = "120", tabwidth = 2 },
     }
     -- Make an array of the supported file type
@@ -60,10 +58,10 @@ Below is the list of options, keybindings, Lua functions, plugins, and other Neo
       end
     })
     ```
-    The problem was that even when the exit code is 0, sometimes you want the window to stay persists (e.g., `termopen()`).
+    The problem was that sometimes you want the window to persist (e.g., `termopen()`) even when the exit code is 0.
     So I had to implement notifications for both cases, which was no better than having the terminal window open.
-- Autocmd to import file template: It was an okay idea, but I did not want to maintain templates.
-    If you have personal template, use `:read ~/path/to/template`.
+- Autocmd to import a file template: It was an okay idea, but I did not want to maintain templates.
+    If you want to use a template, use `:read /path/to/template`.
 
 ## Lua functions
 
@@ -105,8 +103,8 @@ Below is the list of options, keybindings, Lua functions, plugins, and other Neo
     vim.api.nvim_create_user_command("Weather", weather_popup, { nargs = '?' }) --> ?: 0 or 1, *: > 0, +: > 1 args
     ```
 - `:TheovimUpdate`: It was a combination of `vim.fn.termopen("cd" .. vim.opt.runtimepath:get()[1] .. " && git pull")`, `:Lazy update`, `:TSUpdate`, and `:MasonUpdate`.
-    The termopen required creating a scratch buffer, and overall, it was too complex.
-- `:TheovimReadme` and other family of displaying markdown file in a floating window: Vim's built-in help is better.
+    It was too complex.
+- `:TheovimReadme` and other family of displaying a markdown file in a floating window: I wrote 800 lines of help document in Vim's built-in help syntax.
     ```lua
     Util.spawn_floting_doc_win = function(file_path)
       local win_height = vim.api.nvim_win_get_height(0) or vim.o.lines
@@ -154,7 +152,7 @@ Below is the list of options, keybindings, Lua functions, plugins, and other Neo
     local helpdoc_func = Util.spawn_floting_doc_win(readme_path)
     vim.api.nvim_create_user_command("TheovimReadme", helpdoc_func, { nargs = 0 })
     ```
-- Simulating `gx` keybinding: It was useful when Netrw was disabled in place of NvimTree.
+- Simulating `gx` keybinding: It was useful when Netrw was disabled for nvim-tree.
     ```lua
     local function url_handler()
       -- <something>://<something that aren't >,;")>
@@ -183,16 +181,17 @@ Below is the list of options, keybindings, Lua functions, plugins, and other Neo
 UI:
 
 - **nvim-tree/nvim-tree.lua**:
-    - Its role as a file organization has been replaced by Oil.nvim
-    - Its role as to center text has been replaced by Netrw
+    - Its role to organize files has been replaced by Oil.nvim
+    - Its role to center the text has been replaced by Netrw
 - **lukas-reineke/indent-blankline.nvim**: Vim 9 introduced |lcs-leadmultispace|
 - **romgrk/barbar.nvim** / **akinsho/bufferline.nvim**: I wrote my own Tabline that also displays number of open buffers.
-    That way, I remember the fact that I opened a file before and use Telescope to switch buffers.
-- **folke/zen-mode.nvim**: I appreciate this plugin and miss it somewhat, but most of the time, I just need the text to be in the center of the screen when I am using a wide monitor.
-- **nvimdev/dashboard-nvim**: The author made a [breaking change](https://github.com/nvimdev/dashboard-nvim/commit/12383a503e961d3a9fecc6f21c972322db794962) without backward compatibility.
+    That way, I can remember the fact that I opened a file before and use Telescope to switch buffers.
+- **folke/zen-mode.nvim**: I appreciate this plugin and somewhat miss it, but most of the time, I just need the text to be in the center of the screen when I am using a wide monitor.
+    I solved the problem by simply launching nvim-tree and adjusting its size until the main window is roughly centered.
+- **nvimdev/dashboard-nvim**: The author made a [breaking change](https://github.com/nvimdev/dashboard-nvim/commit/12383a503e961d3a9fecc6f21c972322db794962) without a backward compatibility.
     There is nothing wrong with it, but the Dashboard looked uglier after the update.
-    It also cached the Dashboard string as a text file to advertise low memory usage, which I thought was very unnecessary.
-    I wrote my own startup Dashboard.
+    It also cached the Dashboard string as a text file to advertise the low memory usage, which I thought was very unnecessary.
+    Instead, I wrote my own startup Dashboard.
 
 LSP:
 
@@ -202,7 +201,6 @@ LSP:
     Features I occasionally miss are:
     - "Breadcrumbs": Symbols in the Winbar
     - "Outline": IDE like symbol outline
-    I solved the problem by simply launching nvim-tree and adjusting its size until the main window is roughly centered.
 - **hrsh7th/cmp-nvim-lua**: Completion source for Neovim API, replaced by neodev plugin.
 
 Others:
@@ -214,4 +212,7 @@ Others:
 ## File Organization
 
 - Cloning config as `~/.theovim` and creating symlink at `~/.config/nvim`: It was as stupid as it sounds
+- Uploading binary files (images) to the repository: Git is a **version control system**!!
+    At one point, my repository grew up to 14MB when it is just ~2000 lines of Lua code and plain text files.
+    Follow GitHub guide on [Removing sensitive data from a repository](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository) to remove large files.
 
