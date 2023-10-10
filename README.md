@@ -4,13 +4,13 @@
 
 ## Overview
 
-Theovim is my personal Neovim configuration, featuring built-in Neovim options and LSP setup, ~30 carefully selected plugins, and custom UI components written in Lua.
+Theovim is my personal Neovim configuration, featuring a complete Telescope, Treesitter, and LSP setup, ~30 carefully selected plugins, and custom UI components in Lua.
 
 Theovim:
 
 0. prioritizes built-in Neovim features and Lua over plugins to avoid duplicate keybindings and features
 0. keeps the stock configuration as much as possible when using external plugins -- the plugin author knows more about the plugin than I do
-0. follows [Open-closed Principle](https://en.wikipedia.org/wiki/Open-closed_principle) for organizing Lua configuration modules
+0. follows the [Open-closed Principle](https://en.wikipedia.org/wiki/Open-closed_principle) when organizing Lua configuration modules
 
 **For more information, read the [Highlights](#highlights) section and the built-in [help documentation](./doc/theovim.txt) using `:help theovim`.**
 
@@ -45,17 +45,30 @@ git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim
 
 ## Highlights
 
-### TODO Core
+- `:help theovim-tldr`: Summary of the Theovim help documentation
+
+### Core
+
+Theovim creates a solid base Neovim experience by maximizing built-in features.
+The core module initializes sensible default options, autocmds, and keybindings without external plugins or modules.
+
+- Automatically adjust indentation settings using [ftplugin](./after/ftplugin/)
+- Spell check in relevant buffers
+- Fold using Tree-sitter
+- Smarter window navigation
 
 For more information:
 
 - `:help theovim-core-options`
 - `:help theovim-core-keymaps`
+- `:help theovim-core-commands`
 - `:help theovim-core-autocmds`
+- `:help theovim-core-netrw`
 
 ### Plugins
 
-Theovim provides ~30 carefully selected plugins managed by [Lazy.nvim]. Here are some of the plugins that will make sure life easier.
+Theovim provides ~30 carefully selected plugins managed by [lazy.nvim](https://github.com/folke/lazy.nvim).
+Here are some of the plugins that will make your life easier.
 
 - [oil.nvim](https://github.com/stevearc/oil.nvim) is a file manager that lets you manage files like a Vim buffer
 - [nvim-autopairs](https://github.com/windwp/nvim-autopairs) automatically insert matching parentheses, quotes, etc.
@@ -93,8 +106,6 @@ For more information:
 
 ### Treesitter
 
-//TODO w v.s. w/o treesitter
-
 Treesitter (TS) is an incremental parser generator for more accurate syntax highlighting compared to the default regex-based highlighting.
 TS also integrates with Vim's folding and selection mechanism to provide a more efficient navigation and editing experience.
 
@@ -103,8 +114,6 @@ For more information:
 - `:help theovim-treesitter`
 
 ### LSP
-
-// TODO: LSP functionalities screenshot
 
 Neovim's built-in LSP offers modern IDE features for any language you want (assuming one of the 350+ Neovim LSP servers supports the language you use) with flexible customizability and low resource usage.
 Like Telescope, my LSP configuration is heavily inspired by TJ's Kickstart.nvim.
@@ -121,7 +130,7 @@ For more information:
 - `:help theovim-lsp`
 - `:help theovim-completion`
 
-### TODO UI
+### UI
 
 Theovim features unique UI components written in Lua.
 
@@ -140,12 +149,19 @@ For more information:
 
 ### References
 
-- [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim): Telescope, Treesitter, and LSP config
-- [nvim-cmp Wiki](https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#basic-customisations): Completion icon config
-- [nvim-lspconfig Wiki](https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#borders): Hover doc customization
-- [NvChad UI plugin](https://github.com/NvChad/ui): Startup dashboard
-- [nvim-tabline](https://github.com/crispgm/nvim-tabline): `setup()` function for Tabline
-- [Mini.statusline](https://github.com/echasnovski/mini.statusline): Statusline
-- [Stuff.nvim](https://github.com/tamton-aquib/stuff.nvim): Notepad
-- Built-in insert mode help documentation (`:h insert.txt`): Theovim help formatting
+- Core:
+    - [Neovim source code repository](https://github.com/neovim/neovim/tree/master/runtime/ftplugin): Ftplugin examples
+    - [A Reddit comment on "Share your favorite .vimrc lines..."](https://www.reddit.com/r/vim/comments/166a3ij/comment/jyivcnl/?utm_source=share&utm_medium=web2x&context=3): `SmarterWinMove` function
+- Telescope, Treesitter, and LSP:
+    - [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim): Telescope, Treesitter, and LSP config
+    - [nvim-cmp Wiki](https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#basic-customisations): Completion icon config
+    - [nvim-lspconfig Wiki](https://github.com/neovim/nvim-lspconfig/wiki/UI-Customization#borders): Hover doc customization
+- UI:
+    - [NvChad UI plugin](https://github.com/NvChad/ui) and [Kodo](https://github.com/chadcat7/kodo/blob/4513340fb87146a3ed5fde55075b991b6eb550b5/lua/ui/dash/init.lua): Startup dashboard
+    - [nvim-tabline](https://github.com/crispgm/nvim-tabline): `setup()` function for Tabline
+    - [Mini.statusline](https://github.com/echasnovski/mini.statusline): Statusline
+- Tools:
+    - [Stuff.nvim](https://github.com/tamton-aquib/stuff.nvim): Notepad
+- Documentation:
+    - Built-in insert mode help documentation (`:h insert.txt`): Theovim help formatting
 
