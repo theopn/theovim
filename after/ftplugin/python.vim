@@ -5,5 +5,7 @@
 
 " As suggested by PEP8.
 setlocal expandtab tabstop=4 softtabstop=4 shiftwidth=4
-" Bar at 80th column
+" Bar at the 80th column
 setlocal colorcolumn=80
+" Break line at the 79th char
+setlocal textwidth=79
