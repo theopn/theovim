@@ -34,7 +34,7 @@ Housekeeping:
 - Run `:MasonUpdate` to update LSP servers
 
 Core:
-- Spaces over tabs, but you do you and change them
+- Spaces over tabs, but you can change it in `~/.config/nvim/after/ftplugin/`
 - Use `<C-s>` in the insert mode to quickly fix spelling mistakes
 - `zR` to close all folds and `zM` to open all folds, `zx` if fold glitches
   - `zA` to toggle folds recursively under the cursor
@@ -72,11 +72,9 @@ Core - Options                                          *theovim-core-options*
 
 This portion //TODO
 
-Tab defaults (I know this will make tab users mad):
+Tab/Indentation:
 
 - |'tabstop'| (how many char Vim renders <Tab> as) = 4
-  - The help documentation outlines four main ways to configure tab in Vim.
-    Theovim uses number 2. Tab lovers will like number 1.
 - |'softtabstop'| (how many char the cursor moves with <Tab> and <BS>) = 0
   - 0 disables 'softtabstop'
 - |'extandtab'| (uses spaces instead of <Tab> when on) = true
@@ -85,8 +83,26 @@ Tab defaults (I know this will make tab users mad):
 - |'shiftwidth'| (number of spaces used for indentation) = 2
 - Read the below section for how <Tab> and indentation spaces are rendered
 
-//TODO: Autocommands for adjusting tab settings automatically as well as
-//EditorConfig support are coming in the next update!
+For certain filetypes (e.g., markdown, Python, ones with definitive style
+guidelines), Theovim or Neovim changes tab settings through |ftplugin|.
+These files are located in `~/.config/nvim/after/ftplugin/filetype.vim`.
+For example, the following is the content of `python.vim`:
+>
+  " As suggested by PEP8.
+  setlocal expandtab tabstop=4 softtabstop=4 shiftwidth=4
+  " Bar at 80th column
+  setlocal colorcolumn=80
+<
+You may change this to your preferred indentation settings.
+
+Neovim also supports |editorconfig| out of the box. These are project-specific
+coding style files.
+
+See also:
+- |'tabstop'| documentation outlines four main ways to configure tab in Vim.
+  Theovim uses the number 2. Tab lovers will like number 1.
+- Built-in Neovim ftplugin:
+  https://github.com/neovim/neovim/tree/master/runtime/ftplugin
 
 Character rendering:
 >
@@ -133,7 +149,7 @@ char            action
               treesitter feature, fold might work unexpectedly. Use this
               keybinding to fix any issue
 
-For more information:
+See also:
 - |folding|
 - |nvim_treesitter#foldexpr()|
 - |theovim-treesitter|
@@ -147,8 +163,10 @@ Core - User Commands                                   *theovim-core-commands*
 ==============================================================================
 Core - Autocmds                                        *theovim-core-autocmds*
 
-//TODO
-- Yank on highlight
+- `YankHighlight`: Highlight the yanked text. See |TextYankPost|
+- `SpellCheck`: Spell check is turned on in Markdown, TeX, and text filetypes
+- `Terminal`: When you open or navigate to a terminal buffer, automatically
+  starts the insert mode
 
 ==============================================================================
 Core - Keymaps                                          *theovim-core-keymaps*
@@ -264,7 +282,7 @@ char            action
                 (e.g., |:Sexplore| command) it will effectively break
                 this keybinding.
 
-For more information:
+See also:
 - |netrw|
 
 ==============================================================================
@@ -408,7 +426,7 @@ char            action
 <CR>            Confirm the selection
 
 
-For more information:
+See also:
 - |telescope.nvim|: About the fuzzy finder itself
 - |telescope.builtin|: Builtin modules of Telescope
 - |telescope.file-browser.nvim|: File browser extension
@@ -479,7 +497,7 @@ Incremental selection example:
   - "vim" -> if statement -> function
 - You should try it out with the language of your choice to see how it behaves
 
-For more information:
+See also:
 - |nvim-treesitter|: Configuration and abstract layer for the built-in TS
 - |treesitter|: Neovim built-in treesitter library
 
@@ -523,7 +541,8 @@ char            action
 <leader>q       Open diagnostic list in |location-list|.
                 Calls |vim.diagnostic.setloclist()|.
 
-For more information: `:h diagnostic.txt`.
+See also:
+- |diagnostic.txt|
 
 ==============================================================================
 LSP                                                              *theovim-lsp*
@@ -632,7 +651,7 @@ gI              List implementations of the symbol under the cursor.
                 wrappers to unpack the table and print.
 
 
-For more information:
+See also:
 - |lsp|: Built-in LSP framework
 - |mason.nvim|: LSP server manager
 - |lspconfig|: LSP configuration mechanism, provider of `:LspInfo`,
@@ -717,7 +736,7 @@ char            action
                   sends <S-Tab>
 
 
-For more information:
+See also:
 - |nvim-cmp|: Completion plugin for LSP and snippet integration
 - |cmp-cmdline-setup|: How to set the command line and search completion
 - |ins-completion|: Default Vim completion library
@@ -739,7 +758,7 @@ Theovim features unique UI components written in Lua.
   - ASCII art of my chunky cat Oliver (randomly selected from the pool)
   - Buttons to quickly execute Telescope features
 
-For more information:
+See also:
 - |setting-tabline|: Guide on configuring Tabline
 - |'statusline'|: Information about Vim Statusline and built-in items
 - |'winbar'|: Neovim window bar, currently not in use
@@ -766,11 +785,11 @@ This file (|theovim.txt|) contains the complete list of all Theovim features.
 
 - README.md: Outlines a brief overview for each Theovim module.
   It is more of a sales pitch than a serious documentation.
-- CHANGELOG.md: Lists all the changes made in the changes merged to the main
-  branch (a.k.a. "versions")
+- CHANGELOG.md: has the list of options, keybindings, Lua functions, plugins,
+  and other Neovim features I tried that did not work out for me.
 - LICENSE.md: MIT license
 
-For more information:
+See also:
 - |help-writing|: Guide on Vim help syntax
 - |:helptags|: Generating help tags files
 
