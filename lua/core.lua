@@ -130,15 +130,15 @@ for i, _ in pairs(ft_style_vals) do
   ft_names[n] = i
 end
 -- Using the array and dictionary, make autocmd for the supported ft
-vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("FileSettings", { clear = true }),
-  pattern = ft_names,
-  callback = function()
-    vim.opt_local.colorcolumn = ft_style_vals[vim.bo.filetype].colorcolumn
-    vim.opt_local.shiftwidth = ft_style_vals[vim.bo.filetype].tabwidth
-    vim.opt_local.tabstop = ft_style_vals[vim.bo.filetype].tabwidth
-  end
-})
+--vim.api.nvim_create_autocmd("FileType", {
+--  group = vim.api.nvim_create_augroup("FileSettings", { clear = true }),
+--  pattern = ft_names,
+--  callback = function()
+--    vim.opt_local.colorcolumn = ft_style_vals[vim.bo.filetype].colorcolumn
+--    vim.opt_local.shiftwidth = ft_style_vals[vim.bo.filetype].tabwidth
+--    vim.opt_local.tabstop = ft_style_vals[vim.bo.filetype].tabwidth
+--  end
+--})
 
 -------------------------------------------------------- KEYMAP --------------------------------------------------------
 
