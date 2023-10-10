@@ -15,7 +15,7 @@
 -- filetype syntax on
 -- set autoindent autoread background=dark backspace=indent,eol,start nocompatible display=lastline encoding=utf-8
 -- set hidden history=10000 nojoinspaces incsearch laststatus=2 ruler showcmd nostartofline tabpagemax=50 timeoutlen=50
--- set ttyfast smarttab wildmenu
+-- set ttyfast smarttab wildmenu wildoptions=pum,tagfile
 -- https://neovim.io/doc/user/vim_diff.html#nvim-defaults
 
 local my_opt = {
@@ -98,13 +98,6 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function() vim.highlight.on_yank() end,
 })
 
--- Spell check in relevant buffer filetypes
-vim.api.nvim_create_autocmd("FileType", {
-  group = vim.api.nvim_create_augroup("SpellCheck", { clear = true }),
-  pattern = { "markdown", "tex", "text" },
-  callback = function() vim.opt_local.spell = true end
-})
-
 -- Switch to insert mode when terminal is open
 vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
   -- TermOpen: for when terminal is opened for the first time
@@ -113,32 +106,6 @@ vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
   pattern = "term://*", --> only applicable for "BufEnter", an ignored Lua table key when evaluating TermOpen
   callback = function() vim.cmd("startinsert") end
 })
-
--- Dictionary for supported file type (key) and the table containing values (values)
-local ft_style_vals = {
-  ["c"] = { colorcolumn = "80", tabwidth = 2 },
-  ["cpp"] = { colorcolumn = "80", tabwidth = 2 },
-  ["python"] = { colorcolumn = "80", tabwidth = 4 },
-  ["java"] = { colorcolumn = "120", tabwidth = 4 },
-  ["lua"] = { colorcolumn = "120", tabwidth = 2 },
-}
--- Make an array of the supported file type
-local ft_names = {}
-local n = 0
-for i, _ in pairs(ft_style_vals) do
-  n = n + 1
-  ft_names[n] = i
-end
--- Using the array and dictionary, make autocmd for the supported ft
---vim.api.nvim_create_autocmd("FileType", {
---  group = vim.api.nvim_create_augroup("FileSettings", { clear = true }),
---  pattern = ft_names,
---  callback = function()
---    vim.opt_local.colorcolumn = ft_style_vals[vim.bo.filetype].colorcolumn
---    vim.opt_local.shiftwidth = ft_style_vals[vim.bo.filetype].tabwidth
---    vim.opt_local.tabstop = ft_style_vals[vim.bo.filetype].tabwidth
---  end
---})
 
 -------------------------------------------------------- KEYMAP --------------------------------------------------------
 
@@ -163,14 +130,12 @@ vim.keymap.set("n", "<C-w>-", "<C-w>-<CMD>call feedkeys('<C-w>')<CR>", { silent 
 vim.keymap.set("n", "<C-w><", "<C-w><<CMD>call feedkeys('<C-w>')<CR>", { silent = true, noremap = true })
 vim.keymap.set("n", "<C-w>>", "<C-w>><CMD>call feedkeys('<C-w>')<CR>", { silent = true, noremap = true })
 
---- smarter_win_nav()
 --- Move to a window (one of hjkl) or create a split if a window does not exist in the direction
 --- Lua translation of:
 --- https://www.reddit.com/r/vim/comments/166a3ij/comment/jyivcnl/?utm_source=share&utm_medium=web2x&context=3
 --- Usage: vim.keymap("n", "<C-h>", function() move_or_create_win("h") end, {})
 --
 ---@param key string One of h, j, k, l, a direction to move or create a split
---]]
 local function smarter_win_nav(key)
   local fn = vim.fn
   local curr_win = fn.winnr()
@@ -183,7 +148,7 @@ local function smarter_win_nav(key)
       vim.cmd("wincmd s")
     end
 
-    vim.cmd("wincmd " .. key)
+    vim.cmd("wincmd " .. key) --> move again
   end
 end
 
@@ -257,6 +222,7 @@ for _, v in ipairs(key_opt) do
 end
 
 -------------------------------------------------------- NETRW ---------------------------------------------------------
+
 vim.g.netrw_banner = 0
 vim.g.netrw_liststyle = 0    --> 0: Simple, 1: Detailed, 2: Thick, 3: Tree
 vim.g.netrw_browse_split = 3 --> Open file in 0: Reuse the same win, 1: Horizontal split, 2: Vertical split, 3: New tab
