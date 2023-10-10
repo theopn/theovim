@@ -70,10 +70,13 @@ Documentation:
 ==============================================================================
 Core - Options                                          *theovim-core-options*
 
-This portion //TODO
+Theovim 
+This section discusses some of the notable Neovim settings in Theovim.
+Read `core.lua` for the complete list of options.
 
 Tab/Indentation:
 
+By default,
 - |'tabstop'| (how many char Vim renders <Tab> as) = 4
 - |'softtabstop'| (how many char the cursor moves with <Tab> and <BS>) = 0
   - 0 disables 'softtabstop'
@@ -83,26 +86,12 @@ Tab/Indentation:
 - |'shiftwidth'| (number of spaces used for indentation) = 2
 - Read the below section for how <Tab> and indentation spaces are rendered
 
-For certain filetypes (e.g., markdown, Python, ones with definitive style
-guidelines), Theovim or Neovim changes tab settings through |ftplugin|.
-These files are located in `~/.config/nvim/after/ftplugin/filetype.vim`.
-For example, the following is the content of `python.vim`:
->
-  " As suggested by PEP8.
-  setlocal expandtab tabstop=4 softtabstop=4 shiftwidth=4
-  " Bar at 80th column
-  setlocal colorcolumn=80
-<
-You may change this to your preferred indentation settings.
-
-Neovim also supports |editorconfig| out of the box. These are project-specific
-coding style files.
+For certain filetypes, indentation settings are handled by |ftplugin|.
+See |theovim-ftplugin| for more information.
 
 See also:
 - |'tabstop'| documentation outlines four main ways to configure tab in Vim.
   Theovim uses the number 2. Tab lovers will like number 1.
-- Built-in Neovim ftplugin:
-  https://github.com/neovim/neovim/tree/master/runtime/ftplugin
 
 Character rendering:
 >
@@ -121,15 +110,20 @@ Character rendering:
 <
 Spell check:
 
-- Spell check is enabled in markdown, TeX, and plain text buffers
+Similarly to indentation settings, spell check is enabled in markdown, TeX,
+and plain text buffers using |ftplugin|.
+See |theovim-ftplugin| for more information.
+
 - Words unrecognized by the spell checker will be underlined
 - |z=| gives the suggestions for the word under the cursor
 - `<C-s>` in insert mode fixes the closest error and put the cursor back
 - `:set spell!` toggles spell check
-- See |spell| for more information
+
+See also:
+- |spell|
 
 Fold:
-the tree-sitter fold can neatly organize not only programming language
+The tree-sitter fold can neatly organize not only programming language
 components (functions, loops, etc.) but also markdown and LaTeX sections.
 
 char            action
@@ -153,6 +147,35 @@ See also:
 - |folding|
 - |nvim_treesitter#foldexpr()|
 - |theovim-treesitter|
+
+==============================================================================
+Core - Ftplugins                                      *theovim-core-ftplugins*
+
+|ftplugin| provides options and keymaps specific to certain filetypes.
+Theovim uses them to control:
+- Indentation settings
+- Coding style settings (|'colorcolumn'|, |textwidth|)
+- Spell check
+
+These files are located in `~/.config/nvim/after/ftplugin/filetype.vim`.
+
+For example, the following is the content of `python.vim`:
+>
+  " As suggested by PEP8.
+  setlocal expandtab tabstop=4 softtabstop=4 shiftwidth=4
+  " Bar at the 80th column
+  setlocal colorcolumn=80
+  " Break line at the 79th char
+  setlocal textwidth=79
+<
+You may change this to your preferred indentation settings.
+
+Neovim also supports |editorconfig| out of the box. These are project-specific
+coding style files.
+
+See also:
+- Built-in Neovim ftplugins:
+  https://github.com/neovim/neovim/tree/master/runtime/ftplugin
 
 ==============================================================================
 Core - User Commands                                   *theovim-core-commands*
