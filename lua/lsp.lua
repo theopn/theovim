@@ -134,14 +134,14 @@ local servers = {
 
   lua_ls = {
     Lua = {
-      diagnostics = {
-        globals = { "vim" } --> Make diagnostics tolerate vim.fun.stuff
-      },
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
     },
   },
 }
+
+-- Neovim dev environment
+require("neodev").setup()
 
 -- Get nvim-cmp capabilities
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -164,9 +164,6 @@ mason_lspconfig.setup_handlers {
     }
   end
 }
-
--- Neovim dev environment
-require("neodev").setup()
 
 ------------------------------------------------------ COMPLETION ------------------------------------------------------
 
