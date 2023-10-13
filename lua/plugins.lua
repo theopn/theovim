@@ -51,10 +51,7 @@ local plugins = {
     "neovim/nvim-lspconfig",
     dependencies = {
       -- LSP server manager
-      {
-        "williamboman/mason.nvim",
-        config = true,
-      },
+      "williamboman/mason.nvim",
       -- Bridge between lspconfig and mason
       "williamboman/mason-lspconfig.nvim",
       -- LSP status indicator
@@ -138,9 +135,9 @@ local plugins = {
 
   -- Colorscheme
   {
-    "folke/tokyonight.nvim",      --> colorscheme
+    "folke/tokyonight.nvim",       --> colorscheme
     config = function()
-      local is_transparent = true --> To disable transparency, set this to false
+      local is_transparent = false --> To disable transparency, set this to false
       require("tokyonight").setup({
         transparent = is_transparent,
         styles = {

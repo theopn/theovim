@@ -121,6 +121,9 @@ local on_attach = function(_, bufnr)
   end, "[W]orkspace [L]ist Folders")
 end
 
+-- Let the LSP setup begin
+require("mason").setup()
+
 -- Define servers and server-specific config
 local servers = {
   bashls = {},
