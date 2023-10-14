@@ -29,6 +29,7 @@ local my_opt = {
   number         = true,
   relativenumber = true,
   cursorline     = true,
+  cursorlineopt  = "number",
   cursorcolumn   = true,
 
   -- Search
@@ -71,7 +72,6 @@ local my_opt = {
   -- Others
   mouse          = "a",
   confirm        = true, --> Confirm before exiting with unsaved bufffer(s)
-  autochdir      = true, --> Change the CWD to the parent of each buffer (same as invoking :lcd %:h)
 }
 
 local opt = vim.opt
@@ -88,8 +88,10 @@ local function trim_whitespace()
   vim.cmd("keeppatterns %s/\\s\\+$//ec")
   vim.fn.winrestview(win_save)
 end
-vim.api.nvim_create_user_command("TrimWhitespace", trim_whitespace,
-  { nargs = 0 })
+vim.api.nvim_create_user_command("TrimWhitespace", trim_whitespace, { nargs = 0 })
+
+-- Changing current working directory
+vim.api.nvim_create_user_command("CD", ":lcd %:h", { nargs = 0 })
 
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {

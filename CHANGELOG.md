@@ -4,6 +4,16 @@ Below is the list of options, keybindings, Lua functions, plugins, and other Neo
 
 ## Options
 
+- `autochdir`: I thought it would be helpful when I want to limit the Telescope search scope (file files).
+    For example, if I open a file in some project folder using Telescope Oldfiles, I want the CWD to be the project folder rather than wherever the Neovim started (usually the home directory).
+    1. It limits a Telescope search scope even when I don't want to.
+        For example, if I am in `nvim` directory and open `doc/my_help.txt`, I can only search files in `doc` directory and not all the files in `nvim`.
+        There are cases like this where I want to keep the CWD to be the project directory.
+    2. Assume I have a Python script `~/code/script.py`. The CWD is `code` due to `autochdir`.
+        If I run `:cd ~/other_folder` followed by `:!echo %:p`, the expansion returns `~/other_folder/script.py` for whatever reason...
+        This is obviously problematic when I want to run the script using `:!python` instead of `echo`.
+        I only have to assume that it is either a bug or that CWD changes in the blink of an eye because it is in a command line or something.
+    Overall, I made a user command for `:lcd %:h` when I want to manually limit 
 - Winbar + `laststatus=3`: I briefly had the file name + LSP information in the Winbar.
     - But Tabline + Winbar + Statusline + `cmdheight=1` meant that 4 lines of the screen was occupied by UI elements.
     - Also, Winbar, Statusline, and Tabline were all displaying the same file name when only one buffer was open and looked very redundant.
