@@ -151,10 +151,12 @@ See also:
 ==============================================================================
 Core - Ftplugins                                      *theovim-core-ftplugins*
 
-|ftplugin| provides options and keymaps specific to certain filetypes.
+|ftplugin| provides options and commands specific to certain filetypes.
+
 Theovim uses them to control:
 - Indentation settings
 - Coding style settings (|'colorcolumn'|, |textwidth|)
+- Command to (compile) and execute the current file using a stadard tool
 - Spell check
 
 These files are located in `~/.config/nvim/after/ftplugin/filetype.vim`.
@@ -167,8 +169,10 @@ For example, the following is the content of `python.vim`:
   setlocal colorcolumn=80
   " Break line at the 79th char
   setlocal textwidth=79
+  " Commnd to run the current file
+  command RunPython !python3 %:p
 <
-You may change this to your preferred indentation settings.
+You may change the settings to your preferred settings.
 
 Neovim also supports |editorconfig| out of the box. These are project-specific
 coding style files.
@@ -182,6 +186,10 @@ Core - User Commands                                   *theovim-core-commands*
 
 - `:TrimWhitespace`: Trim trailing whitespaces. It will prompts you with
   confirmations for each whitespace.
+- `:CD`: Change the local directory to the parent directory of the current
+  file. For example, when the current directory is `nvim` and you open
+  `doc/theovim.txt`, invoke the command to change the directory to `doc`.
+  This is useful when narrowing down the scope of a Telescope search.
 
 ==============================================================================
 Core - Autocmds                                        *theovim-core-autocmds*
