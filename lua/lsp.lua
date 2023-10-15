@@ -98,9 +98,10 @@ local on_attach = function(_, bufnr)
   -- Listing features w Telescope counterparts
   local status, builtin = pcall(require, "telescope.builtin")
   if status then
+    local telescope_opt = { jump_type = "tab" }
     -- Navigation
-    nmap("gd", builtin.lsp_definitions, "[G]oto [D]efinition")
-    nmap("<leader>D", builtin.lsp_type_definitions, "Type [D]efinition")
+    nmap("gd", function() builtin.lsp_definitions(telescope_opt) end, "[G]oto [D]efinition")
+    nmap("<leader>D", function() builtin.lsp_type_definitions(telescope_opt) end, "Type [D]efinition")
     nmap("gr", builtin.lsp_references, "[G]oto [R]eferences")
     nmap("gI", builtin.lsp_implementations, "[G]oto [I]mplementation")
     -- Symbols
@@ -128,7 +129,7 @@ require("mason").setup()
 local servers = {
   bashls = {},
   clangd = {},
-  pyright = {},
+  pylsp = {},
   texlab = {},
   -- html = { filetypes = { "html", "twig", "hbs"} },
 
