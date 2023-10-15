@@ -28,9 +28,10 @@ Welcome back Theo, what did you forget this time?
 Tl;dr                                                           *theovim-tldr*
 
 Housekeeping:
-- `:checkhealth` to see if you are missing any runtime files
+- |:checkhealth| to see if you are missing any runtime files
+- |:messages| to check previous error messages and notifications
 - Run `:Lazy sync` to update plugins
-  - This also runs `:TSUpdate`
+  - This runs `:TSUpdate` at the same time
 - Run `:MasonUpdate` to update LSP servers
 
 Core:
@@ -70,7 +71,8 @@ Documentation:
 ==============================================================================
 Core - Options                                          *theovim-core-options*
 
-Theovim 
+Theovim creates a solid base Neovim experience by maximizing built-in
+features.
 This section discusses some of the notable Neovim settings in Theovim.
 Read `core.lua` for the complete list of options.
 
