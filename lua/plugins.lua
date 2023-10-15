@@ -124,13 +124,7 @@ local plugins = {
   -- Color highlighter
   {
     "NvChad/nvim-colorizer.lua",
-    config = function() require("colorizer").setup() end, --> `opts` works iff module name == plugin name
-  },
-
-  -- Prettier notification
-  {
-    "rcarriga/nvim-notify",
-    config = function() vim.notify = require("notify") end,
+    config = function() require("colorizer").setup({}) end, --> `opts` works iff module name == plugin name
   },
 
   -- Colorscheme
@@ -145,7 +139,7 @@ local plugins = {
           floats = is_transparent and "transparent" or "dark",
         },
       })
-      vim.cmd.colorscheme("tokyonight-night")
+      vim.cmd.colorscheme("tokyonight")
     end,
   },
 
