@@ -109,6 +109,16 @@ vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
   callback = function() vim.cmd("startinsert") end
 })
 
+--- Dynamically adjust `leadmultispace` in `listchars` (buffer level) based on `shiftwidth`
+function _G.AdjustListchars()
+  local lead = "┊"
+  for _ = 1, vim.bo.shiftwidth - 1 do
+    lead = lead .. " "
+  end
+  vim.opt_local.listchars:append({ leadmultispace = lead })
+end
+vim.api.nvim_create_user_command("AdjustListchars", AdjustListchars, { nargs = 0 })
+
 -------------------------------------------------------- KEYMAP --------------------------------------------------------
 
 -- Space as the leader --

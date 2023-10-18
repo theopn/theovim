@@ -110,6 +110,10 @@ Character rendering:
   ↪ like this"
   end
 <
+You can change the indentation guide level based on |'shiftwidth'| using
+`:AdjustListchars`.
+See |theovim-core-commands| for more information.
+
 Spell check:
 
 Similarly to indentation settings, spell check is enabled in markdown, TeX,
@@ -192,6 +196,15 @@ Core - User Commands                                   *theovim-core-commands*
   file. For example, when the current directory is `nvim` and you open
   `doc/theovim.txt`, invoke the command to change the directory to `doc`.
   This is useful when narrowing down the scope of a Telescope search.
+- `:AdjustListchars`: Adjust |lcs-leadmultispace| value (i.e., indentation
+  guide) based on the |'shiftwidth'| value.
+
+>
+    ... A Python buffer with shiftwidth set to 4
+    ┊ ┊ str = "Before running AdjustListchars"
+    ...
+    ┊   str = "After running AdjustListchars"
+<
 
 ==============================================================================
 Core - Autocmds                                        *theovim-core-autocmds*
