@@ -144,8 +144,13 @@ For more information:
 
 ### Tools
 
-> [!TODO]
-> Tools is a WIP module. It will contain some of a fun Lua project I did, such as Notepad and a floating terminal utility.
+Unnecessary but fun features I made in Lua.
+
+- `:Notepad`: Transparent floating window with a scratch buffer
+- `:Floatterm`: Floating terminal with customizable size and location
+
+The tools module is disabled by default.
+Follow the comments in `lua/tools/init.lua` file to initialize features and tweak `.setup()` function and customize them.
 
 ### References
 
