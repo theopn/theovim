@@ -180,12 +180,16 @@ For example, the following is the content of `python.vim`:
 <
 You may change the settings to your preferred settings.
 
-Neovim also supports |editorconfig| out of the box. These are project-specific
-coding style files.
+Built-in Neovim ftplugins are located in `$VIMRUNTIME/ftplugin/`.
+To copy your |$VIMRUNTIME| to your system clipboard (|quoteplus|), use
+|:redir| command: `:redir @+> | echo $VIMRUNTIME | redir END`
+
+Alternatively, Neovim supports |editorconfig| out of the box. These are
+projet-specific coding style files.
+They will override `ftplugin` or other Vim settings.
 
 See also:
-- Built-in Neovim ftplugins:
-  https://github.com/neovim/neovim/tree/master/runtime/ftplugin
+- |write-filetype-plugin|
 
 ==============================================================================
 Core - User Commands                                   *theovim-core-commands*
@@ -281,7 +285,8 @@ jk              (insert mode) ESC.
 <leader>/       Clear search highlight (|nohlsearch|).
 <leader>t       Launch a terminal
 
-<leader>y       (visual mode) Copy to the system clipboard (+).
+<leader>y       (visual mode) Copy to the system clipboard
+                (|quoteplus|).
 <leader>p       List register contents (|reg|) and fill the command line
                 with `normal "`.
                 From there, you can type the register to paste from,

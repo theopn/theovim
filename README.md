@@ -155,7 +155,7 @@ Follow the comments in `lua/tools/init.lua` file to initialize features and twea
 ### References
 
 - Core:
-    - [Neovim source code repository](https://github.com/neovim/neovim/tree/master/runtime/ftplugin): Ftplugin examples
+    - [Neovim source code repository](https://github.com/neovim/neovim/tree/master/runtime/ftplugin) or `$VIMRUNTIME/ftplugin/`: Ftplugin examples
     - [A Reddit comment on "Share your favorite .vimrc lines..."](https://www.reddit.com/r/vim/comments/166a3ij/comment/jyivcnl/?utm_source=share&utm_medium=web2x&context=3): `SmarterWinMove` function
     - [How I'm able to take notes in mathematics lectures using LaTeX and Vim](https://castel.dev/post/lecture-notes-1/#correcting-spelling-mistakes-on-the-fly): keybinding to fix the nearest spelling mistake
 - Telescope, Treesitter, and LSP:
