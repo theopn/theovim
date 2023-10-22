@@ -109,15 +109,32 @@ vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
   callback = function() vim.cmd("startinsert") end
 })
 
+-- Update indentation guide dynamically
+local update_leadmultispace_group = vim.api.nvim_create_augroup("UpdateLeadmultispace", { clear = true })
+
 --- Dynamically adjust `leadmultispace` in `listchars` (buffer level) based on `shiftwidth`
-function _G.AdjustListchars()
+local function update_leadmultispace()
   local lead = "┊"
   for _ = 1, vim.bo.shiftwidth - 1 do
     lead = lead .. " "
   end
   vim.opt_local.listchars:append({ leadmultispace = lead })
 end
-vim.api.nvim_create_user_command("AdjustListchars", AdjustListchars, { nargs = 0 })
+
+-- When `shiftwidth` was manually changed
+vim.api.nvim_create_autocmd("OptionSet", {
+  group = update_leadmultispace_group,
+  pattern = { "shiftwidth", "filetype" },
+  callback = update_leadmultispace,
+})
+
+-- WHen shiftwidth has changed by ftplugin
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = update_leadmultispace_group,
+  pattern = "*",
+  callback = update_leadmultispace,
+  --once = true,
+})
 
 -------------------------------------------------------- KEYMAP --------------------------------------------------------
 
