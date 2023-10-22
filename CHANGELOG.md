@@ -4,10 +4,15 @@ Below is the list of options, keybindings, Lua functions, plugins, and other Neo
 
 ## Options
 
-- Winbar + `laststatus=3`: I briefly had the file name + LSP information in the Winbar.
-    - But Tabline + Winbar + Statusline + `cmdheight=1` meant that 4 lines of the screen was occupied by UI elements.
-    - Also, Winbar, Statusline, and Tabline were all displaying the same file name when only one buffer was open and looked very redundant.
-    - `laststatus=2` and making active/inactive Statusline is a better solution.
+- `autochdir`: I thought it would be helpful for narrowing down the Telescope search scope (e.g., opening `~/code/project/code.lua` from the home directory using Telescope Oldfiles).
+    But there were two issues:
+    1. It narrowed the scope down even when I did not want to. For example, if I open `lua/plugins/tokyonight.lua` from `nvim` folder, I want the current working directory (CWD) to stay in `nvim` instead of `plugins`.
+    2. I often execute a single Python script using `:!python3 %:p`, but if I manually change the CWD using `:cd` or `:lcd`, it behaves really weirdly with `autochdir`
+    (`%:p` returns `directory_that_i_manually_cd_to/filename.py` instead of `actual_filepath/filename.py`).
+    Instead of `autochdir`, I create a command for `:lcd %:h` to quickly change the CWD.
+- `laststatus=3` and Winbar: I manage my own Statusline and Tabline, and I tried moving LSP information to Winbar thinking it would de clutter my Statusline.
+    However, I felt like it was taking up one row unnecessarily.
+    I referenced Mini.statusline to create active/inactive Statusline as well as simpler Statusline when the window size is small, and I could not be happier.
 - `:ShowChanges` (`vim.api.nvim_create_user_command("ShowChanges", ":w !diff % -", { nargs = 0 })`): Vim has a built-in `:changes`, albeit much harder to use
 
 ## Keybindings

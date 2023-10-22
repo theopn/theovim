@@ -29,6 +29,7 @@ local my_opt = {
   number         = true,
   relativenumber = true,
   cursorline     = true,
+  cursorlineopt  = "number",
   cursorcolumn   = true,
 
   -- Search
@@ -71,7 +72,6 @@ local my_opt = {
   -- Others
   mouse          = "a",
   confirm        = true, --> Confirm before exiting with unsaved bufffer(s)
-  autochdir      = true, --> Change the CWD to the parent of each buffer (same as invoking :lcd %:h)
 }
 
 local opt = vim.opt
@@ -88,8 +88,10 @@ local function trim_whitespace()
   vim.cmd("keeppatterns %s/\\s\\+$//ec")
   vim.fn.winrestview(win_save)
 end
-vim.api.nvim_create_user_command("TrimWhitespace", trim_whitespace,
-  { nargs = 0 })
+vim.api.nvim_create_user_command("TrimWhitespace", trim_whitespace, { nargs = 0 })
+
+-- Changing current working directory
+vim.api.nvim_create_user_command("CD", ":lcd %:h", { nargs = 0 })
 
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -105,6 +107,33 @@ vim.api.nvim_create_autocmd({ "TermOpen", "BufEnter" }, {
   group = vim.api.nvim_create_augroup("Terminal", { clear = true }),
   pattern = "term://*", --> only applicable for "BufEnter", an ignored Lua table key when evaluating TermOpen
   callback = function() vim.cmd("startinsert") end
+})
+
+-- Update indentation guide dynamically
+local update_leadmultispace_group = vim.api.nvim_create_augroup("UpdateLeadmultispace", { clear = true })
+
+--- Dynamically adjust `leadmultispace` in `listchars` (buffer level) based on `shiftwidth`
+local function update_leadmultispace()
+  local lead = "┊"
+  for _ = 1, vim.bo.shiftwidth - 1 do
+    lead = lead .. " "
+  end
+  vim.opt_local.listchars:append({ leadmultispace = lead })
+end
+
+-- When `shiftwidth` was manually changed
+vim.api.nvim_create_autocmd("OptionSet", {
+  group = update_leadmultispace_group,
+  pattern = { "shiftwidth", "filetype" },
+  callback = update_leadmultispace,
+})
+
+-- WHen shiftwidth has changed by ftplugin
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = update_leadmultispace_group,
+  pattern = "*",
+  callback = update_leadmultispace,
+  --once = true,
 })
 
 -------------------------------------------------------- KEYMAP --------------------------------------------------------

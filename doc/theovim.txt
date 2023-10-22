@@ -28,9 +28,10 @@ Welcome back Theo, what did you forget this time?
 Tl;dr                                                           *theovim-tldr*
 
 Housekeeping:
-- `:checkhealth` to see if you are missing any runtime files
+- |:checkhealth| to see if you are missing any runtime files
+- |:messages| to check previous error messages and notifications
 - Run `:Lazy sync` to update plugins
-  - This also runs `:TSUpdate`
+  - This runs `:TSUpdate` at the same time
 - Run `:MasonUpdate` to update LSP servers
 
 Core:
@@ -70,7 +71,8 @@ Documentation:
 ==============================================================================
 Core - Options                                          *theovim-core-options*
 
-Theovim 
+Theovim creates a solid base Neovim experience by maximizing built-in
+features.
 This section discusses some of the notable Neovim settings in Theovim.
 Read `core.lua` for the complete list of options.
 
@@ -108,6 +110,10 @@ Character rendering:
   ↪ like this"
   end
 <
+Note that |lcs-leadmultispace| (indentation guide for space-base indentations)
+change dynamically based on |'shiftwidth'| value.
+See |theovim-core-autocmds| for more information.
+
 Spell check:
 
 Similarly to indentation settings, spell check is enabled in markdown, TeX,
@@ -151,10 +157,12 @@ See also:
 ==============================================================================
 Core - Ftplugins                                      *theovim-core-ftplugins*
 
-|ftplugin| provides options and keymaps specific to certain filetypes.
+|ftplugin| provides options and commands specific to certain filetypes.
+
 Theovim uses them to control:
 - Indentation settings
 - Coding style settings (|'colorcolumn'|, |textwidth|)
+- Command to (compile) and execute the current file using a stadard tool
 - Spell check
 
 These files are located in `~/.config/nvim/after/ftplugin/filetype.vim`.
@@ -167,29 +175,54 @@ For example, the following is the content of `python.vim`:
   setlocal colorcolumn=80
   " Break line at the 79th char
   setlocal textwidth=79
+  " Commnd to run the current file
+  command RunPython !python3 %:p
 <
-You may change this to your preferred indentation settings.
+You may change the settings to your preferred settings.
 
-Neovim also supports |editorconfig| out of the box. These are project-specific
-coding style files.
+Built-in Neovim ftplugins are located in `$VIMRUNTIME/ftplugin/`.
+To copy your |$VIMRUNTIME| to your system clipboard (|quoteplus|), use
+|:redir| command: `:redir @+> | echo $VIMRUNTIME | redir END`
+
+Alternatively, Neovim supports |editorconfig| out of the box. These are
+projet-specific coding style files.
+They will override `ftplugin` or other Vim settings.
 
 See also:
-- Built-in Neovim ftplugins:
-  https://github.com/neovim/neovim/tree/master/runtime/ftplugin
+- |write-filetype-plugin|
 
 ==============================================================================
 Core - User Commands                                   *theovim-core-commands*
 
 - `:TrimWhitespace`: Trim trailing whitespaces. It will prompts you with
   confirmations for each whitespace.
+- `:CD`: Change the local directory to the parent directory of the current
+  file. For example, when the current directory is `nvim` and you open
+  `doc/theovim.txt`, invoke the command to change the directory to `doc`.
+  This is useful when narrowing down the scope of a Telescope search.
 
 ==============================================================================
 Core - Autocmds                                        *theovim-core-autocmds*
 
+Organized based on |autocmd-groups|.
 - `YankHighlight`: Highlight the yanked text. See |TextYankPost|
 - `SpellCheck`: Spell check is turned on in Markdown, TeX, and text filetypes
 - `Terminal`: When you open or navigate to a terminal buffer, automatically
   starts the insert mode
+- `UpdateLeadmultispace`: Update |lcs-leadmultispace| value (i.e., indentation
+  guide) based on the |'shiftwidth'| value. It is triggered when you manually
+  change the |'shiftwidth'| value or enter the buffer for the first time.
+
+>
+    ... A buffer with shiftwidth set to 2
+    ┊ ┊ str = "A line indented with 4 spaces"
+    ...
+    ... `:set shiftwidth 4`
+    ...
+    ┊   str = "A line indented with 4 spaces"
+<
+  |autocmd-once| is used to make sure that the indentation guide is consistent
+  with indentation settings set by |ftplugin|.
 
 ==============================================================================
 Core - Keymaps                                          *theovim-core-keymaps*
@@ -252,7 +285,8 @@ jk              (insert mode) ESC.
 <leader>/       Clear search highlight (|nohlsearch|).
 <leader>t       Launch a terminal
 
-<leader>y       (visual mode) Copy to the system clipboard (+).
+<leader>y       (visual mode) Copy to the system clipboard
+                (|quoteplus|).
 <leader>p       List register contents (|reg|) and fill the command line
                 with `normal "`.
                 From there, you can type the register to paste from,
@@ -789,9 +823,14 @@ See also:
 ==============================================================================
 Tools                                                          *theovim-tools*
 
-//TODO: This module will be completed in the next update, featuring:
-- Notepad
-- Terminal
+Unnecessary but fun features I made in Lua.
+
+- `:Notepad`: Transparent floating window with a scratch buffer
+- `:Floatterm`: Floating terminal with customizable size and location
+
+The tools module is disabled by default. Follow the comments in
+`lua/tools/init.lua` file to initialize features and tweak `.setup()`
+function and customize them.
 
 ==============================================================================
 Initialization                                                  *theovim-init*

@@ -144,14 +144,20 @@ For more information:
 
 ### Tools
 
-> [!TODO]
-> Tools is a WIP module. It will contain some of a fun Lua project I did, such as Notepad and a floating terminal utility.
+Unnecessary but fun features I made in Lua.
+
+- `:Notepad`: Transparent floating window with a scratch buffer
+- `:Floatterm`: Floating terminal with customizable size and location
+
+The tools module is disabled by default.
+Follow the comments in `lua/tools/init.lua` file to initialize features and tweak `.setup()` function and customize them.
 
 ### References
 
 - Core:
-    - [Neovim source code repository](https://github.com/neovim/neovim/tree/master/runtime/ftplugin): Ftplugin examples
+    - [Neovim source code repository](https://github.com/neovim/neovim/tree/master/runtime/ftplugin) or `$VIMRUNTIME/ftplugin/`: Ftplugin examples
     - [A Reddit comment on "Share your favorite .vimrc lines..."](https://www.reddit.com/r/vim/comments/166a3ij/comment/jyivcnl/?utm_source=share&utm_medium=web2x&context=3): `SmarterWinMove` function
+    - [How I'm able to take notes in mathematics lectures using LaTeX and Vim](https://castel.dev/post/lecture-notes-1/#correcting-spelling-mistakes-on-the-fly): keybinding to fix the nearest spelling mistake
 - Telescope, Treesitter, and LSP:
     - [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim): Telescope, Treesitter, and LSP config
     - [nvim-cmp Wiki](https://github.com/hrsh7th/nvim-cmp/wiki/Menu-Appearance#basic-customisations): Completion icon config
@@ -164,4 +170,6 @@ For more information:
     - [Stuff.nvim](https://github.com/tamton-aquib/stuff.nvim): Notepad
 - Documentation:
     - Built-in insert mode help documentation (`:h insert.txt`): Theovim help formatting
+    - [Tokyo Night Wallpapers](https://github.com/tokyo-night/wallpapers/blob/main/night/minimal/stripes_00_2560x1440.png): Wallpaper in the screenshot
+
 

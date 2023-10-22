@@ -51,10 +51,7 @@ local plugins = {
     "neovim/nvim-lspconfig",
     dependencies = {
       -- LSP server manager
-      {
-        "williamboman/mason.nvim",
-        config = true,
-      },
+      "williamboman/mason.nvim",
       -- Bridge between lspconfig and mason
       "williamboman/mason-lspconfig.nvim",
       -- LSP status indicator
@@ -127,20 +124,14 @@ local plugins = {
   -- Color highlighter
   {
     "NvChad/nvim-colorizer.lua",
-    config = function() require("colorizer").setup() end, --> `opts` works iff module name == plugin name
-  },
-
-  -- Prettier notification
-  {
-    "rcarriga/nvim-notify",
-    config = function() vim.notify = require("notify") end,
+    config = function() require("colorizer").setup({}) end, --> `opts` works iff module name == plugin name
   },
 
   -- Colorscheme
   {
-    "folke/tokyonight.nvim",      --> colorscheme
+    "folke/tokyonight.nvim",       --> colorscheme
     config = function()
-      local is_transparent = true --> To disable transparency, set this to false
+      local is_transparent = false --> To disable transparency, set this to false
       require("tokyonight").setup({
         transparent = is_transparent,
         styles = {
@@ -148,7 +139,7 @@ local plugins = {
           floats = is_transparent and "transparent" or "dark",
         },
       })
-      vim.cmd.colorscheme("tokyonight-night")
+      vim.cmd.colorscheme("tokyonight")
     end,
   },
 

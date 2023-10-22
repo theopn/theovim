@@ -98,9 +98,10 @@ local on_attach = function(_, bufnr)
   -- Listing features w Telescope counterparts
   local status, builtin = pcall(require, "telescope.builtin")
   if status then
+    local telescope_opt = { jump_type = "tab" }
     -- Navigation
-    nmap("gd", builtin.lsp_definitions, "[G]oto [D]efinition")
-    nmap("<leader>D", builtin.lsp_type_definitions, "Type [D]efinition")
+    nmap("gd", function() builtin.lsp_definitions(telescope_opt) end, "[G]oto [D]efinition")
+    nmap("<leader>D", function() builtin.lsp_type_definitions(telescope_opt) end, "Type [D]efinition")
     nmap("gr", builtin.lsp_references, "[G]oto [R]eferences")
     nmap("gI", builtin.lsp_implementations, "[G]oto [I]mplementation")
     -- Symbols
@@ -121,24 +122,27 @@ local on_attach = function(_, bufnr)
   end, "[W]orkspace [L]ist Folders")
 end
 
+-- Let the LSP setup begin
+require("mason").setup()
+
 -- Define servers and server-specific config
 local servers = {
   bashls = {},
   clangd = {},
-  pyright = {},
+  pylsp = {},
   texlab = {},
   -- html = { filetypes = { "html", "twig", "hbs"} },
 
   lua_ls = {
     Lua = {
-      diagnostics = {
-        globals = { "vim" } --> Make diagnostics tolerate vim.fun.stuff
-      },
       workspace = { checkThirdParty = false },
       telemetry = { enable = false },
     },
   },
 }
+
+-- Neovim dev environment
+require("neodev").setup()
 
 -- Get nvim-cmp capabilities
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -161,9 +165,6 @@ mason_lspconfig.setup_handlers {
     }
   end
 }
-
--- Neovim dev environment
-require("neodev").setup()
 
 ------------------------------------------------------ COMPLETION ------------------------------------------------------
 
