@@ -95,9 +95,9 @@ A few of my favorite Telescope features:
 
 - `:Telescope oldfile` (`<leader>?`): finds recently opened files
 - `:Telescope buffers` (`<leader><space>`): lists all open buffers
-- `:Telescope` (`<leader>ft`): searches Telescope functions using Telescope
-- `:Telescope find_files` (`<leader>ff`): searches files in the current and children directories
-- `:Telescope live_grep` (`<leader>fg`): searches for a word in the all the files in the current and children directories
+- `:Telescope` (`<leader>ss`): searches Telescope functions using Telescope
+- `:Telescope find_files` (`<leader>sf`): searches files in the current and children directories
+- `:Telescope live_grep` (`<leader>sg`): searches for a word in the all the files in the current and children directories
 - `:Telescope git_commits` (`<leader>gc`): searches for Git commits
 
 For more information:
