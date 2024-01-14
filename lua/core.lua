@@ -191,7 +191,7 @@ local key_opt = {
     "Fix nearest [S]pelling error and put the cursor back",
   },
   { "n", "<leader>a", "gg<S-v>G",     "Select [A]ll" },
-  { "n", "<leader>/", "<CMD>noh<CR>", "[/] Clear search highlights" },
+  { "n", "<leader><CR>", "<CMD>noh<CR>", "<CleaR> search highlights" },
   {
     "n",
     "<leader>t",
@@ -206,7 +206,7 @@ local key_opt = {
   {
     "n",
     "<leader>p",
-    ":echo '[Theovim] Do not forget to add p in the end!'<CR>" .. ':reg<CR>:normal "',
+    ":echo '[Theovim] e.g.: :normal \"*p<CR>!'<CR>" .. ':reg<CR>:normal "',
     "[P]aste from one of the registers",
   },
   {

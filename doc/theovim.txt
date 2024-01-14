@@ -50,16 +50,17 @@ Plugins:
 Telescope:
 - `<leader>?`: Recent files
 - `<leader><space>`: Open buffers
-- `<leader>ff`: File files
-- `<leader>fg`: Find a word in files
-- `<leader>f/`: Find a word in the current buffer
+- `<leader>/`: Find a word in the current buffer
+- `<leader>sf`: File files
+- `<leader>sg`: Find a word in files
+- `<leader>sG`: Find a word in open files
 
 Treesitter:
 - `<C-Space>`: Incremental selection
 
 LSP:
 - Install new langauge server using :MasonInstall {LSP}
-- `<leader>F` to format
+- `<leader>f` to format
 - `<leader>rn` to rename
 - `K` for hover doc
 - `gd`, `gr` to get the list of definitions/references
@@ -282,7 +283,7 @@ jk              (insert mode) ESC.
 <C-s>           (insert mode) Fix the nearest spelling error and put
                 the cursor back.
 <leader>a       Select all.
-<leader>/       Clear search highlight (|nohlsearch|).
+<leader><CR>    Clear search highlight (|nohlsearch|).
 <leader>t       Launch a terminal
 
 <leader>y       (visual mode) Copy to the system clipboard
@@ -419,11 +420,12 @@ char            action
 <leader>gf      Search [G]it [F]iles.
                 Calls |telescope.builtin.find_files()|.
 
-<leader>gc      [G]it [C]ommits.
+<leader>gc      Search [G]it [C]ommits.
                 Calls |telescope.builtin.git_commits()|.
 
-<leader>gs      [G]it [S]tatus.
+<leader>gs      Search [G]it [S]tatus.
                 Calls |telescope.builtin.git_status()|.
+
 
 <leader>?       Find recently opened files.
                 Calls |telescope.builtin.oldfiles()|.
@@ -431,11 +433,12 @@ char            action
 <leader><space> Find open buffers.
                 Calls |telescope.builtin.buffers()|.
 
-<leader>f/      Open fuzzy finder for the current buffer words.
+<leader>/       Open fuzzy finder for the current buffer words.
                 The previewer is disabled to minimize distractions.
                 Calls |telescope.builtin.current_buffer_fuzzy_find()|
                 with a parameter to disable the previewer
                 (see |telescope.themes.get_dropdown()|).
+
 
 <leader>ss      [S]earch [S]elect Telescope.
                 Search all Telescope built-in functions.
@@ -447,6 +450,9 @@ char            action
                 `fd` is not required but recommended for faster search.
                 Calls |telescope.builtin.find_files()|.
 
+<leader>sh      [S]earch [H]elp.
+                Calls |telescope.builtin.help_tags()|.
+
 <leader>sg      [S]earch by rip[G]rep.
                 Search words in the files in the current and children
                 directories.
@@ -454,11 +460,9 @@ char            action
                 `ripgrep` is required for the search.
                 Calls |telescope.builtin.live_grep()|.
 
-<leader>sh      [S]earch [H]elp.
-                Calls |telescope.builtin.help_tags()|.
-
 <leader>sd      [S]earch [D]iagnostics.
                 Calls |telescope.builtin.diagnostics()|.
+
 
 <leader>sb      [S]earch [B]rowser.
                 Calls |telescope.file-browser.finders|
