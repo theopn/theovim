@@ -431,36 +431,36 @@ char            action
 <leader><space> Find open buffers.
                 Calls |telescope.builtin.buffers()|.
 
-<leader>ft      [F]ind [T]elescope.
-                Search all Telescope built-in functions.
-                Calls |telescope.builtin.builtin()|.
-
-<leader>ff      [F]ind [F]iles.
-                Search files in the current and children directories.
-                Respect .gitignore if one exists.
-                `fd` is not required but recommended for faster search.
-                Calls |telescope.builtin.find_files()|.
-
-<leader>fg      [F]ind by rip[G]rep.
-                Search words in the files in the current and children
-                directories.
-                Respect .gitignore if one exists.
-                `ripgrep` is required for the search.
-                Calls |telescope.builtin.live_grep()|.
-
-<leader>fh      [F]ind [H]elp.
-                Calls |telescope.builtin.help_tags()|.
-
-<leader>fd      [F]ind [D]iagnostics.
-                Calls |telescope.builtin.diagnostics()|.
-
 <leader>f/      Open fuzzy finder for the current buffer words.
                 The previewer is disabled to minimize distractions.
                 Calls |telescope.builtin.current_buffer_fuzzy_find()|
                 with a parameter to disable the previewer
                 (see |telescope.themes.get_dropdown()|).
 
-<leader>fb      [F]ind [B]rowser.
+<leader>ss      [S]earch [S]elect Telescope.
+                Search all Telescope built-in functions.
+                Calls |telescope.builtin.builtin()|.
+
+<leader>sf      [S]earch [F]iles.
+                Search files in the current and children directories.
+                Respect .gitignore if one exists.
+                `fd` is not required but recommended for faster search.
+                Calls |telescope.builtin.find_files()|.
+
+<leader>sg      [S]earch by rip[G]rep.
+                Search words in the files in the current and children
+                directories.
+                Respect .gitignore if one exists.
+                `ripgrep` is required for the search.
+                Calls |telescope.builtin.live_grep()|.
+
+<leader>sh      [S]earch [H]elp.
+                Calls |telescope.builtin.help_tags()|.
+
+<leader>sd      [S]earch [D]iagnostics.
+                Calls |telescope.builtin.diagnostics()|.
+
+<leader>sb      [S]earch [B]rowser.
                 Calls |telescope.file-browser.finders|
 
 
