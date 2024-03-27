@@ -40,7 +40,7 @@ safe_require("core.command")
 safe_require("core.autocmd")
 safe_require("core.netrw")
 
-safe_require("plugins")
+safe_require("core.lazy")
 
 -- Telescope and Treesitter
 safe_require("tele")
