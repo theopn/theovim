@@ -75,7 +75,7 @@ Core - Options                                          *theovim-core-options*
 Theovim creates a solid base Neovim experience by maximizing built-in
 features.
 This section discusses some of the notable Neovim settings in Theovim.
-Read `core.lua` for the complete list of options.
+Read `lua/core/opt.lua` for the complete list of options.
 
 Tab/Indentation:
 
