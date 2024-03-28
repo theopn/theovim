@@ -93,8 +93,8 @@ a configuration template written by TJ DeVries who is the author of Telescope.nv
 
 A few of my favorite Telescope features:
 
-- `:Telescope oldfile` (`<leader>?`): finds recently opened files
-- `:Telescope buffers` (`<leader><space>`): lists all open buffers
+- `:Telescope buffers` (`<leader><leader>`): lists all open buffers
+- `:Telescope oldfile` (`<leader>s.`): finds recently opened files
 - `:Telescope` (`<leader>ss`): searches Telescope functions using Telescope
 - `:Telescope find_files` (`<leader>sf`): searches files in the current and children directories
 - `:Telescope live_grep` (`<leader>sg`): searches for a word in the all the files in the current and children directories

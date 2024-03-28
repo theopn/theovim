@@ -48,12 +48,12 @@ Plugins:
 - Use `:MarkdownPreviewToggle` and `:VimtexCompile`
 
 Telescope:
-- `<leader>?`: Recent files
-- `<leader><space>`: Open buffers
+- `<leader><leader>`: Open buffers
 - `<leader>/`: Find a word in the current buffer
-- `<leader>sf`: File files
-- `<leader>sg`: Find a word in files
-- `<leader>sG`: Find a word in open files
+- `<leader>s.`: Recent files
+- `<leader>sf`: File files in the directory
+- `<leader>sg`: Find a word in all files of the directory (using ripgrep)
+- `<leader>s/`: Find a word in open files (using ripgrep)
 
 Treesitter:
 - `<C-Space>`: Incremental selection
@@ -71,6 +71,8 @@ Documentation:
 
 ==============================================================================
 Core - Options                                          *theovim-core-options*
+
+TODO: Change this to just opt
 
 Theovim creates a solid base Neovim experience by maximizing built-in
 features.
@@ -158,6 +160,8 @@ See also:
 ==============================================================================
 Core - Ftplugins                                      *theovim-core-ftplugins*
 
+TODO: Change this to ftplugins
+
 |ftplugin| provides options and commands specific to certain filetypes.
 
 Theovim uses them to control:
@@ -195,6 +199,8 @@ See also:
 ==============================================================================
 Core - User Commands                                   *theovim-core-commands*
 
+TODO Change this to user commands / commands (w/o core)
+
 - `:TrimWhitespace`: Trim trailing whitespaces. It will prompts you with
   confirmations for each whitespace.
 - `:CD`: Change the local directory to the parent directory of the current
@@ -204,6 +210,8 @@ Core - User Commands                                   *theovim-core-commands*
 
 ==============================================================================
 Core - Autocmds                                        *theovim-core-autocmds*
+
+TODO Change the section name to autocmds
 
 Organized based on |autocmd-groups|.
 - `YankHighlight`: Highlight the yanked text. See |TextYankPost|
@@ -227,6 +235,8 @@ Organized based on |autocmd-groups|.
 
 ==============================================================================
 Core - Keymaps                                          *theovim-core-keymaps*
+
+TODO Change the section name to keymaps
 
 Theovim overrides the following default keybindings.
 They do not change the way you interact with Vim (which is the opposite of
@@ -274,7 +284,7 @@ N               Highlight the prev search result (|N|) and center the
 Theovim defines keybindings for frequently used actions that require more than
 three keystrokes. For example, there is no keybinding to go to a tab since
 {count}|gt| is a two-keystrokes away.
-Following is the complete list of custom keybindings defined in `core.lua`:
+Following is the complete list of custom keybindings defined in `keymap.lua`:
 
 char            action
 ----------------------------------------------------------------------
@@ -325,6 +335,8 @@ jk              (insert mode) ESC.
 ==============================================================================
 Core - Netrw                                              *theovim-core-netrw*
 
+TODO: Remove core in the name
+
 Netrw is a built-in file manager for Vim and Neovim.
 Netrw is intended to be used for visualizing directories and centering the
 buffer.
@@ -345,6 +357,8 @@ See also:
 
 ==============================================================================
 Plugins                                                      *theovim-plugins*
+
+TODO: Add that files are located in plugins directory
 
 This section highlights some of the commonly used plugins.
 
@@ -417,6 +431,65 @@ the following dependencies are needed:
 char            action
 ----------------------------------------------------------------------
 
+<leader>sh      [S]earch [H]elp.
+                Calls |telescope.builtin.help_tags()|.
+
+<leader>sh      [S]earch [K]eymaps.
+                Calls |telescope.builtin.keymaps()|.
+
+<leader>sf      [S]earch [F]iles.
+                Searches files in the current and the child dir.
+                Respects .gitignore if one exists.
+                `fd` is not required but recommended for faster search.
+                Calls |telescope.builtin.find_files()|.
+
+<leader>ss      [S]earch [S]elect Telescope.
+                Searches all the Telescope built-in functions.
+                Calls |telescope.builtin.builtin()|.
+
+<leader>sw      [S]earch current [W]ord.
+                Searches for the string under the cursor in the CWD.
+                `ripgrep` is required for the search.
+                Calls |telescope.builtin.grep_string()|.
+
+<leader>sg      [S]earch by [G]rep.
+                Searches words in the CWD.
+                Respects .gitignore if one exists.
+                `ripgrep` is required for the search.
+                Calls |telescope.builtin.live_grep()|.
+
+<leader>sd      [S]earch [D]iagnostics.
+                Calls |telescope.builtin.diagnostics()|.
+
+<leader>sr      [S]earch [R]esume.
+                Opens the previously used Telescope picker.
+                Calls |telescope.builtin.resume()|.
+
+<leader>s.      [S]earch Recent Files ("." for repeat).
+                Calls |telescope.builtin.oldfiles()|.
+
+<leader><leader>Find open buffers.
+                Calls |telescope.builtin.buffers()|.
+
+<leader>/       Open fuzzy finder for the current buffer words.
+                The previewer is disabled to minimize distractions.
+                Calls |telescope.builtin.current_buffer_fuzzy_find()|
+                with a parameter to disable the previewer
+                (see |telescope.themes.get_dropdown()|).
+
+<leader>s/      Live grep in open files.
+                Searches by grep in open buffers.
+                `ripgrep` is required for the search.
+                Calls |telescope.builtin.live_grep()|
+                with a parameter to restrict the search scope.
+
+<leader>sn      [S]earch [N]eovim files.
+                Calls |telescope.builtin.find_files()|
+                with a parameter to restrict the search scope to
+                the Neovim config directory.
+                (see |stdpath()).
+
+
 <leader>gf      Search [G]it [F]iles.
                 Calls |telescope.builtin.find_files()|.
 
@@ -427,44 +500,7 @@ char            action
                 Calls |telescope.builtin.git_status()|.
 
 
-<leader>?       Find recently opened files.
-                Calls |telescope.builtin.oldfiles()|.
-
-<leader><space> Find open buffers.
-                Calls |telescope.builtin.buffers()|.
-
-<leader>/       Open fuzzy finder for the current buffer words.
-                The previewer is disabled to minimize distractions.
-                Calls |telescope.builtin.current_buffer_fuzzy_find()|
-                with a parameter to disable the previewer
-                (see |telescope.themes.get_dropdown()|).
-
-
-<leader>ss      [S]earch [S]elect Telescope.
-                Search all Telescope built-in functions.
-                Calls |telescope.builtin.builtin()|.
-
-<leader>sf      [S]earch [F]iles.
-                Search files in the current and children directories.
-                Respect .gitignore if one exists.
-                `fd` is not required but recommended for faster search.
-                Calls |telescope.builtin.find_files()|.
-
-<leader>sh      [S]earch [H]elp.
-                Calls |telescope.builtin.help_tags()|.
-
-<leader>sg      [S]earch by rip[G]rep.
-                Search words in the files in the current and children
-                directories.
-                Respect .gitignore if one exists.
-                `ripgrep` is required for the search.
-                Calls |telescope.builtin.live_grep()|.
-
-<leader>sd      [S]earch [D]iagnostics.
-                Calls |telescope.builtin.diagnostics()|.
-
-
-<leader>sb      [S]earch [B]rowser.
+<leader>sb      [F]ile [B]rowser.
                 Calls |telescope.file-browser.finders|
 
 
@@ -843,6 +879,8 @@ Initialization                                                  *theovim-init*
 guards (|lua_pcall()|).
 It also includes some miscellaneous configurations, such as Theo's personal
 Neovide config.
+
+TODO: add calling process
 
 ==============================================================================
 Documentation                                          *theovim-documentation*
