@@ -213,6 +213,7 @@ Others:
     Joking, but I migrated to lazy.nvim because of the syntax.
     Passing a Lua table as an argument is clearly better than repeating `use` multiple times.
     I could care less about lazy-loading though, I think it is an overblown concept.
+- Single-file Lazy config: splitting them into different Lua module in `lua/plugins` directory allows me to have them more organized
 
 ## File Organization
 
