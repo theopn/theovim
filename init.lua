@@ -38,7 +38,7 @@ safe_require("config.opt")
 safe_require("config.keymap")
 safe_require("config.command")
 safe_require("core.autocmd")
-safe_require("core.netrw")
+safe_require("config.netrw")
 
 safe_require("config.diagnostic")
 
