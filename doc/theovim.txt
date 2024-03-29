@@ -792,8 +792,10 @@ char            action
 
 <C-e>           Close the completion menu
                 |cmp.mapping.abort()|
+
 <C-Space>       Open the completion menu if it is not already open
 
+<C-y>           Confirm the selection.
 <CR>            Confirm the selection.
                 - `select = false`: If nothing is selected, close the
                   completion menu. Set true to choose the first item
@@ -815,6 +817,9 @@ char            action
                   If `behavior = cmp.confirmBehavior.Insert`, it
                   would insert "requireuire"
                 See |cmp.confirm|.
+
+<C-l>           Moves to the next available expansion.
+<C-h>           Moves to the previously available expansion.
 
 <Tab>           - When the completion menu is open:
                   select the next item
