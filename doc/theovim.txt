@@ -679,6 +679,9 @@ When LSP server(s) is active in the buffer, following are available locally:
 Commands:
 - `:Format`: Formats the buffer by calling |vim.lsp.buf.format()|.
 
+Autocmd:
+- Symbol under the cursor (i.e., variables, functions, etc.) are highlighted.
+
 Keybindings:
 
 char            action
@@ -686,66 +689,65 @@ char            action
 
 <leader>F       Format the buffer (same as `:Format`).
 
-<leader>rn      Rename the symbol (e.g., variable, function) under
-                the cursor and refactor all the references.
-                Calls |vim.lsp.buf.rename()|.
-
-<leader>ca      Select a code action available under the cursor.
-                the cursor and refactor the workspace.
-                Calls |vim.lsp.buf.code_action()|.
-
-K               Open a floating doc for the info of the symbol under
-                the cursor.
-                If hover doc is already open, jump into the hover doc.
-                Calls |vim.lsp.buf.hover()|.
-
-<C-k>           Open a floating doc for the signature of the symbol
-                (e.g., function prototype) under the cursor.
-                If hover doc is already open, jump into the hover doc.
-                Calls |vim.lsp.buf.signature_help()|.
-
-gd              Go to the definition of the symbol under the cursor.
+gd              Jumps to the definition of the symbol under the
+                cursor.
                 Lists all definitions if there is a multiple.
                 When Telescope is available:
                 - calls |telescope.builtin.lsp_definitions()|
                 When Telescope is not available:
                 - calls |vim.lsp.buf.definition()|
 
-<leader>D       Go to the definition of the type of the symbol under
-                the cursor.
+gr              Lists references of the symbol under the cursor.
+                When Telescope is available:
+                - calls |telescope.builtin.lsp_references()|
+                When Telescope is not available:
+                - calls |vim.lsp.buf.references()|
+
+gI              Lists implementations of the symbol under the cursor.
+                When Telescope is available:
+                - calls |telescope.builtin.lsp_implementations()|
+                When Telescope is not available:
+                - calls |vim.lsp.buf.implementations()|
+
+<leader>D       Jumps to the definition of the type of the symbol
+                under the cursor.
                 Lists all type definitions if there is a multiple.
                 When Telescope is available:
                 - calls |telescope.builtin.lsp_type_definitions()|
                 When Telescope is not available:
                 - calls |vim.lsp.buf.type_definition()|
 
-gr              List references of the symbol under the cursor.
-                When Telescope is available:
-                - calls |telescope.builtin.lsp_references()|
-                When Telescope is not available:
-                - calls |vim.lsp.buf.references()|
-
-gI              List implementations of the symbol under the cursor.
-                When Telescope is available:
-                - calls |telescope.builtin.lsp_implementations()|
-                When Telescope is not available:
-                - calls |vim.lsp.buf.implementations()|
-
-<leader>ds      List all symbols in the current buffer.
+<leader>ds      Lists all symbols in the current buffer.
                 When Telescope is available:
                 - calls |telescope.builtin.lsp_document_symbols()|
                 When Telescope is not available:
                 - calls |vim.lsp.buf.document_symbols()|
 
-<leader>ws      List all symbols in the current workspace (project).
+<leader>ws      Lists all symbols in the current workspace (project).
                 When Telescope is available:
                 - calls |telescope.builtin.lsp_workspace_symbols()|
                 When Telescope is not available:
                 - calls |vim.lsp.buf.workspace_symbols()|
 
-<leader>wl      Print the workspace folders.
-                Calls |vim.lsp.buf.list_workspace_folders()| with
-                wrappers to unpack the table and print.
+<leader>rn      Renames the symbol (e.g., variable, function) under
+                the cursor and refactors all the references.
+                Calls |vim.lsp.buf.rename()|.
+
+<leader>ca      Selects a code action available under the cursor.
+                the cursor and refactor the workspace.
+                Calls |vim.lsp.buf.code_action()|.
+
+K               Opens a floating doc for the info of the symbol under
+                the cursor.
+                If hover doc is already open, jumps into the doc.
+                Calls |vim.lsp.buf.hover()|.
+
+gD              Jumps to the declaration of the symbol under the
+                cursor.
+                For example, the keymap can take you to the C header
+                file where the function is declared.
+                For the most situation, you would want to use `gd`.
+                Calls |vim.lsp.buf.declaration()|.
 
 
 See also:

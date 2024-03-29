@@ -43,11 +43,7 @@ safe_require("core.netrw")
 safe_require("core.lazy")
 
 -- Telescope and Treesitter
-safe_require("tele")
 safe_require("ts")
-
--- LSP
-safe_require("lsp")
 
 -- Theovim built-in UI elements
 safe_require("ui")
