@@ -1,4 +1,4 @@
---- opt.lua
+--- config/opt.lua
 ---
 --- $ figlet -f small theovim
 ---  _   _                _
@@ -28,12 +28,13 @@ opt.shiftwidth     = 2    --> Number of spaces to use for auto-indentation, <<, 
 opt.number         = true
 opt.relativenumber = true
 opt.cursorline     = true
-opt.cursorlineopt  = "number"
+opt.cursorlineopt  = "number" --> line, screenline, both (i.e., "number,line")
 opt.cursorcolumn   = true
 
--- Search
+-- Search and replace
 opt.ignorecase     = true --> Ignore case in search
 opt.smartcase      = true --> /smartcase -> apply ignorecase | /sMartcase -> do not apply ignorecase
+opt.inccommand     = "split" --> show the substitution in a split window
 
 -- Split
 opt.splitright     = true --> Vertical split created right
@@ -48,7 +49,7 @@ opt.laststatus     = 2     --> 0: never, 1: >= 2 windows, 2: always, 3: always a
 
 -- Char rendering
 opt.list           = true --> Render special char in listchars
-opt.listchars      = { tab = "⇥ ", leadmultispace = "┊ ", trail = "␣", nbsp = "⍽" }
+opt.listchars      = { tab = "⇥ ", trail = "␣", nbsp = "⍽", leadmultispace = "┊ ", }
 opt.showbreak      = "↪" --> Render beginning of wrapped lines
 opt.breakindent    = true --> Wrapped line will have the same indentation level as the beginning of the line
 

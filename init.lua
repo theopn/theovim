@@ -19,10 +19,10 @@
 --- Initialize all configuration files
 
 --- safe_require()
---- Try calling `require` for the given module.
---- If unsuccessful, print the error message using `vim.notify()`
+--- Tries calling `require` for the given module.
+--- If unsuccessful, prints the error message using `vim.notify()`
 ---
----@param module string a name of the module to `require`
+---@param module string name of the module to `require`
 ---@return unknown module from `pcall` if the call was successful, otherwise nil
 local function safe_require(module)
   local status, loaded_module = pcall(require, module)
@@ -33,21 +33,26 @@ local function safe_require(module)
   return nil
 end
 
--- Core config modules
+-- Loads core config modules
 safe_require("config.opt")
 safe_require("config.keymap")
 safe_require("config.command")
-safe_require("core.autocmd")
+safe_require("config.autocmd")
 safe_require("config.netrw")
 
+-- Loads a built-in diagnostic config
 safe_require("config.diagnostic")
 
-safe_require("core.lazy")
+-- Loads a config for Lazy.nvim
+-- lazy.lua will then
+-- 1. Combine Lua modules (returned tables) in `lua/plugins` directory
+-- 2. Calls `config` or `setup(opts)` to loads plugins
+safe_require("config.lazy")
 
--- Theovim built-in UI elements
+-- Calls the init.lua of the Theovim built-in UI module package
 safe_require("ui")
 
--- Theo's Neovide settings
+-- Configures Neovide
 if vim.g.neovide then
   local padding = 10
   vim.g.neovide_padding_top = padding
