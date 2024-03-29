@@ -32,8 +32,8 @@ opt.cursorlineopt  = "number" --> line, screenline, both (i.e., "number,line")
 opt.cursorcolumn   = true
 
 -- Search and replace
-opt.ignorecase     = true --> Ignore case in search
-opt.smartcase      = true --> /smartcase -> apply ignorecase | /sMartcase -> do not apply ignorecase
+opt.ignorecase     = true    --> Ignore case in search
+opt.smartcase      = true    --> /smartcase -> apply ignorecase | /sMartcase -> do not apply ignorecase
 opt.inccommand     = "split" --> show the substitution in a split window
 
 -- Split
@@ -55,7 +55,7 @@ opt.breakindent    = true --> Wrapped line will have the same indentation level 
 
 -- Spell
 opt.spell          = false    --> autocmd will enable spellcheck in Tex or markdown
-opt.spelllang      = "en"
+opt.spelllang      = { "en" }
 opt.spellsuggest   = "best,8" --> Suggest 8 words for spell suggestion
 opt.spelloptions   = "camel"  --> Consider CamelCase when checking spelling
 
@@ -68,6 +68,9 @@ opt.foldexpr       = "nvim_treesitter#foldexpr()" --> Treesitter folding
 -- Update time
 opt.updatetime     = 250
 opt.timeoutlen     = 300
+
+-- Window size
+opt.winminwidth    = 5
 
 -- Others
 opt.mouse          = "a"
