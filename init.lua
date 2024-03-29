@@ -35,7 +35,7 @@ end
 
 -- Core config modules
 safe_require("core.opt")
-safe_require("core.keymap")
+safe_require("config.keymap")
 safe_require("core.command")
 safe_require("core.autocmd")
 safe_require("core.netrw")

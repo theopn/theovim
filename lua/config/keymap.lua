@@ -1,4 +1,4 @@
---- keymap.lua
+--- config/keymap.lua
 ---
 --- $ figlet -f small theovim
 ---  _   _                _
@@ -12,12 +12,13 @@
 local set = vim.keymap.set
 
 -- Space as the leader
-set({ "n", "v" }, "<Space>", "<Nop>", { silent = true, noremap = true })
+set({ "n", "v" }, "<Space>", "<Nop>")
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
 -- Default overrides
-set("t", "<ESC>", "<C-\\><C-n>", { silent = true, noremap = true })
+set("n", "<ESC>", "<CMD>nohlsearch<CR>")
+set("t", "<ESC><ESC>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
 set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, noremap = true })
 set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, noremap = true })
