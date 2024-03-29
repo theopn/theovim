@@ -1,6 +1,6 @@
 local M = { "hrsh7th/nvim-cmp" }
 
-M.event = "InsertEnter"
+M.event = { "InsertEnter", "CmdlineEnter", }
 
 M.dependencies = {
   {
