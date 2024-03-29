@@ -40,10 +40,9 @@ safe_require("core.command")
 safe_require("core.autocmd")
 safe_require("core.netrw")
 
-safe_require("core.lazy")
+safe_require("config.diagnostic")
 
--- Telescope and Treesitter
-safe_require("ts")
+safe_require("core.lazy")
 
 -- Theovim built-in UI elements
 safe_require("ui")
