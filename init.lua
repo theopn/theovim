@@ -34,9 +34,9 @@ local function safe_require(module)
 end
 
 -- Core config modules
-safe_require("core.opt")
+safe_require("config.opt")
 safe_require("config.keymap")
-safe_require("core.command")
+safe_require("config.command")
 safe_require("core.autocmd")
 safe_require("core.netrw")
 
