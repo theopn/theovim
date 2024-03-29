@@ -20,67 +20,52 @@ vim.g.maplocalleader = " "
 set("n", "<ESC>", "<CMD>nohlsearch<CR>")
 set("t", "<ESC><ESC>", "<C-\\><C-n>", { desc = "Exit terminal mode" })
 
-set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true, noremap = true })
-set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true, noremap = true })
+set("n", "k", "v:count == 0 ? 'gk' : 'k'", { expr = true })
+set("n", "j", "v:count == 0 ? 'gj' : 'j'", { expr = true })
 
-set("n", "n", "nzz", { silent = true, noremap = true })
-set("n", "N", "Nzz", { silent = true, noremap = true })
-set("n", "<C-u>", "<C-u>zz", { silent = true, noremap = true })
-set("n", "<C-d>", "<C-d>zz", { silent = true, noremap = true })
+set("n", "n", "nzz")
+set("n", "N", "Nzz")
+set("n", "<C-u>", "<C-u>zz")
+set("n", "<C-d>", "<C-d>zz")
 
-set("n", "<C-w>+", "<C-w>+<CMD>call feedkeys('<C-w>')<CR>", { silent = true, noremap = true })
-set("n", "<C-w>-", "<C-w>-<CMD>call feedkeys('<C-w>')<CR>", { silent = true, noremap = true })
-set("n", "<C-w><", "<C-w><<CMD>call feedkeys('<C-w>')<CR>", { silent = true, noremap = true })
-set("n", "<C-w>>", "<C-w>><CMD>call feedkeys('<C-w>')<CR>", { silent = true, noremap = true })
-
---- Wrapper around vim.keymap.set for easily setting the desc
----
----@param mode string|table
----@param lhs string
----@param rhs string|function
----@param desc string|nil
-local map = function(mode, lhs, rhs, desc)
-  local opt = { silent = true, noremap = true, }
-  opt.desc = desc
-  set(mode, lhs, rhs, opt)
-end
+set("n", "<C-w>+", "<C-w>+<CMD>call feedkeys('<C-w>')<CR>", { desc = "Increase the window height (press + to repeat)" })
+set("n", "<C-w>-", "<C-w>-<CMD>call feedkeys('<C-w>')<CR>", { desc = "Decrease the window height (press - to repeat)" })
+set("n", "<C-w>>", "<C-w>><CMD>call feedkeys('<C-w>')<CR>", { desc = "Increase the window width (press > to repeat)" })
+set("n", "<C-w><", "<C-w><<CMD>call feedkeys('<C-w>')<CR>", { desc = "Decrease the window width (press < to repeat)" })
 
 -- Custom keymaps
-map("i", "jk", "<ESC>", "Better ESC")
-map("i", "<C-s>", "<C-g>u<ESC>[s1z=`]a<C-g>u", "Fix nearest [S]pelling error and put the cursor back")
-map({ "n", "x" }, "<leader>a", "gg<S-v>G", "Select [A]ll")
-map("n", "<leader><CR>", "<CMD>noh<CR>", "[CleaR] search highlights")
-map("n",
+set("i", "jk", "<ESC>", { desc = "Better ESC" })
+set("i", "<C-s>", "<C-g>u<ESC>[s1z=`]a<C-g>u", { desc = "Fix nearest [S]pelling error and put the cursor back" })
+set({ "n", "x" }, "<leader>a", "gg<S-v>G", { desc = "Select [A]ll" })
+set("n",
   "<leader>t",
   function()
     vim.cmd("botright " .. math.ceil(vim.fn.winheight(0) * (1 / 3)) .. "sp | term")
   end,
-  "Launch a [t]erminal")
+  { desc = "Launch a [t]erminal" })
 
 -- Copy and paste
-map("x", "<leader>y", '"+y', "[Y]ank to the system clipboard (+)")
-map("n",
+set("x", "<leader>y", '"+y', { desc = "[Y]ank to the system clipboard (+)" })
+set("n",
   "<leader>p",
-  ":echo '[Theovim] e.g.: :normal \"*p<CR>!'<CR>" .. ':reg<CR>:normal "',
-  "[P]aste from one of the registers")
-map("x",
+  ":echo '[Theovim] e.g.: `:normal \"3p` to paste the content of the register 3'<CR>" .. ':reg<CR>:normal "',
+  { silent = true, desc = "[P]aste from one of the registers" })
+set("x",
   "<leader>p",
   '"_dP', --> [d]elete the selection and send content to _ void reg then [P]aste (b4 cursor unlike small p)
-  "[P]aste the current selection without overriding the register")
+  { desc = "[P]aste the current selection without overriding the register" })
 
 -- Buffer
-map("n", "[b", "<CMD>bprevious<CR>", "Previous buffer")
-map("n", "]b", "<CMD>bnext<CR>", "Next buffer")
-map("n",
+set("n", "[b", "<CMD>bprevious<CR>", { desc = "Go to previous [B]uffer" })
+set("n", "]b", "<CMD>bnext<CR>", { desc = "Go to next [B]uffer" })
+set("n",
   "<leader>b",
   ":echo '[Theovim] Choose a buffer'<CR>" .. ":ls<CR>" .. ":b<SPACE>",
-  "Open [B]uffer list")
-map("n",
+  { silent = true, desc = "Open [B]uffer list" })
+set("n",
   "<leader>k",
   ":echo '[Theovim] Choose a buf to delete (blank to choose curr)'<CR>" .. ":ls<CR>" .. ":bdelete<SPACE>",
-  "[K]ill a buffer")
-
--- Window
+  { silent = true, desc = "[K]ill a buffer" })
 
 --- Move to a window (one of hjkl) or create a split if a window does not exist in the direction.
 --- Lua translation of:
@@ -104,7 +89,11 @@ local function smarter_win_nav(key)
   end
 end
 
-map("n", "<C-h>", function() smarter_win_nav("h") end, "Move to window on the left or create a split")
-map("n", "<C-j>", function() smarter_win_nav("j") end, "Move to window below or create a vertical split")
-map("n", "<C-k>", function() smarter_win_nav("k") end, "Move to window above or create a vertical split")
-map("n", "<C-l>", function() smarter_win_nav("l") end, "Move to window on the right or create a split")
+set("n", "<C-h>", function() smarter_win_nav("h") end,
+  { desc = "Move focus to the left window or create a horizontal split" })
+set("n", "<C-j>", function() smarter_win_nav("j") end,
+  { desc = "Move focus to the lower window or create a vertical split" })
+set("n", "<C-k>", function() smarter_win_nav("k") end,
+  { desc = "Move focus to the upper window or create a vertical split" })
+set("n", "<C-l>", function() smarter_win_nav("l") end,
+  { desc = "Move focus to the right window or create a horizontal split" })
