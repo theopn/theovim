@@ -36,15 +36,9 @@ set("n", "<C-w><", "<C-w><<CMD>call feedkeys('<C-w>')<CR>", { desc = "Decrease t
 -- Custom keymaps
 set("i", "jk", "<ESC>", { desc = "Better ESC" })
 set("i", "<C-s>", "<C-g>u<ESC>[s1z=`]a<C-g>u", { desc = "Fix nearest [S]pelling error and put the cursor back" })
-set({ "n", "x" }, "<leader>a", "gg<S-v>G", { desc = "Select [A]ll" })
-set("n",
-  "<leader>t",
-  function()
-    vim.cmd("botright " .. math.ceil(vim.fn.winheight(0) * (1 / 3)) .. "sp | term")
-  end,
-  { desc = "Launch a [t]erminal" })
 
 -- Copy and paste
+set({ "n", "x" }, "<leader>a", "gg<S-v>G", { desc = "Select [A]ll" })
 set("x", "<leader>y", '"+y', { desc = "[Y]ank to the system clipboard (+)" })
 set("n",
   "<leader>p",
@@ -66,6 +60,36 @@ set("n",
   "<leader>k",
   ":echo '[Theovim] Choose a buf to delete (blank to choose curr)'<CR>" .. ":ls<CR>" .. ":bdelete<SPACE>",
   { silent = true, desc = "[K]ill a buffer" })
+
+-- Terminal
+-- [[
+-- https://medium.com/@egzvor/vim-splits-cheat-sheet-2bf84fc99962
+--           | :top sp |
+-- |:top vs| |:abo| cu | |:bot vs |
+-- |       | |:bel| rr | |        |
+--           | :bot sp |
+-- botright == bot
+-- ]]
+set("n",
+  "<leader>tb",
+  function()
+    vim.cmd("botright " .. math.ceil(vim.fn.winheight(0) * (1 / 3)) .. "sp | term")
+  end,
+  { desc = "Launch a [t]erminal in the [B]ottom" })
+
+set("n",
+  "<leader>tr",
+  function()
+    vim.cmd("bot " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term")
+  end,
+  { desc = "Launch a [t]erminal to the [R]ight" })
+
+set("n",
+  "<leader>tt",
+  function()
+    vim.cmd("tabnew | term")
+  end,
+  { desc = "Launch a [t]erminal in a new [T]ab" })
 
 --- Move to a window (one of hjkl) or create a split if a window does not exist in the direction.
 --- Lua translation of:
