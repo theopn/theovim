@@ -60,7 +60,7 @@ Treesitter:
 
 LSP:
 - Install new langauge server using :MasonInstall {LSP}
-- `<leader>f` to format
+- `<leader>F` to format
 - `<leader>rn` to rename
 - `K` for hover doc
 - `gd`, `gr` to get the list of definitions/references
@@ -284,9 +284,8 @@ char            action
 jk              (insert mode) ESC.
 <C-s>           (insert mode) Fix the nearest spelling error and put
                 the cursor back.
-<leader>a       Select all.
-<leader>t       Launch a terminal
 
+<leader>a       Select all.
 <leader>y       (visual mode) Copy to the system clipboard
                 (|quoteplus|).
 <leader>p       List register contents (|reg|) and fill the command line
@@ -297,7 +296,7 @@ jk              (insert mode) ESC.
                 paste the contents of register + at the cursor.
 <leader>p       (visual mode) Paste the current selection without
                 overriding the register.
-                For example, if you have TODO: Finish
+                For example, if you have TODO: Finish the example
 
 [b              Navigate to the previous buffer (|bprev|).
 ]b              Navigate to the next buffer (|bnext|).
@@ -313,6 +312,13 @@ jk              (insert mode) ESC.
                 For example, `<leader>k` followed by `69<CR>` will
                 kill buffer 69.
                 Type `<CR>` without a number to kill the curr buf.
+
+<leader>tb      Launch a terminal in the bottom
+<leader>tr      Launch a terminal to the right
+<leader>tt      Launch a terminal in a new tab
+                See |:terminal| to learn more about Neovim terminal.
+                See |:lefta|, |:rightb|, |:topleft|, and |:bo| to
+                learn more about opening a window.
 
 <C-h>           If there is a window to the left: navigate to the window
                 Else: Create a window to the left and navigate to it
@@ -860,26 +866,12 @@ See also:
 - |'winbar'|: Neovim window bar, currently not in use
 
 ==============================================================================
-Tools                                                          *theovim-tools*
-
-Unnecessary but fun features I made in Lua.
-
-- `:Notepad`: Transparent floating window with a scratch buffer
-- `:Floatterm`: Floating terminal with customizable size and location
-
-The tools module is disabled by default. Follow the comments in
-`lua/tools/init.lua` file to initialize features and tweak `.setup()`
-function and customize them.
-
-==============================================================================
 Initialization                                                  *theovim-init*
 
 `init.lua` initializes all the modules by calling |lua-require| with safe
 guards (|lua_pcall()|).
 It also includes some miscellaneous configurations, such as Theo's personal
 Neovide config.
-
-TODO: add calling process
 
 ==============================================================================
 Documentation                                          *theovim-documentation*
