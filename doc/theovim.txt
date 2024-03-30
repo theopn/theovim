@@ -72,12 +72,10 @@ Documentation:
 ==============================================================================
 Core - Options                                          *theovim-core-options*
 
-TODO: Change this to just opt
-
 Theovim creates a solid base Neovim experience by maximizing built-in
 features.
 This section discusses some of the notable Neovim settings in Theovim.
-Read `lua/core/opt.lua` for the complete list of options.
+Read `lua/config/opt.lua` for the complete list of options.
 
 Tab/Indentation:
 
@@ -160,8 +158,6 @@ See also:
 ==============================================================================
 Core - Ftplugins                                      *theovim-core-ftplugins*
 
-TODO: Change this to ftplugins
-
 |ftplugin| provides options and commands specific to certain filetypes.
 
 Theovim uses them to control:
@@ -170,7 +166,7 @@ Theovim uses them to control:
 - Command to (compile) and execute the current file using a stadard tool
 - Spell check
 
-These files are located in `~/.config/nvim/after/ftplugin/filetype.vim`.
+These files are located in `after/ftplugin/filetype.vim`.
 
 For example, the following is the content of `python.vim`:
 >
@@ -199,8 +195,6 @@ See also:
 ==============================================================================
 Core - User Commands                                   *theovim-core-commands*
 
-TODO Change this to user commands / commands (w/o core)
-
 - `:TrimWhitespace`: Trim trailing whitespaces. It will prompts you with
   confirmations for each whitespace.
 - `:CD`: Change the local directory to the parent directory of the current
@@ -210,8 +204,6 @@ TODO Change this to user commands / commands (w/o core)
 
 ==============================================================================
 Core - Autocmds                                        *theovim-core-autocmds*
-
-TODO Change the section name to autocmds
 
 Organized based on |autocmd-groups|.
 - `YankHighlight`: Highlight the yanked text. See |TextYankPost|
@@ -236,11 +228,9 @@ Organized based on |autocmd-groups|.
 ==============================================================================
 Core - Keymaps                                          *theovim-core-keymaps*
 
-TODO Change the section name to keymaps
-
 Theovim overrides the following default keybindings.
-They do not change the way you interact with Vim (which is the opposite of
-what Theovim tries to achieve) but provide nice quality-of-life improvements.
+They do not change the way you interact with Vim but provides
+quality-of-life improvements.
 
 char            action
 ----------------------------------------------------------------------
@@ -307,7 +297,7 @@ jk              (insert mode) ESC.
                 paste the contents of register + at the cursor.
 <leader>p       (visual mode) Paste the current selection without
                 overriding the register.
-                For example, if you have 
+                For example, if you have TODO: Finish
 
 [b              Navigate to the previous buffer (|bprev|).
 ]b              Navigate to the next buffer (|bnext|).
@@ -336,8 +326,6 @@ jk              (insert mode) ESC.
 ==============================================================================
 Core - Netrw                                              *theovim-core-netrw*
 
-TODO: Remove core in the name
-
 Netrw is a built-in file manager for Vim and Neovim.
 Netrw is intended to be used for visualizing directories and centering the
 buffer.
@@ -359,8 +347,8 @@ See also:
 ==============================================================================
 Plugins                                                      *theovim-plugins*
 
-TODO: Add that files are located in plugins directory
-
+Plugin specs are located in the `lua/plugins` directory
+(see |lazy.nvim-lazy.nvim-plugin-spec| for how they are configured).
 This section highlights some of the commonly used plugins.
 
 |lazy.nvim| is a Neovim plugin manager.
@@ -388,8 +376,11 @@ WhichKey also includes other features:
   - You can list all one-key-stroke keybindings using `:WhichKey`
 - WhichKey hijacks spell suggestions (|z=|) UI
 
-|colorizer.lua| highlight color codes (hex codes, ANSI color name such as
+|colorizer.lua| highlights color codes (hex codes, ANSI color name such as
 "Magenta", CSS functions, etc.). Use `:ColorizerReloadAllBuffers` to reload.
+
+|todo-comments.nvim| highlights keywords such as `TODO`, `WARN`, etc.
+Use `:TodoQuickFix` to see the list of all TODO's in the open files.
 
 |gitsigns.nvim| provides Git signs in the gutter (+, -, ~, etc.) as well as
 other useful Git functionalities.
@@ -501,7 +492,7 @@ char            action
                 Calls |telescope.builtin.git_status()|.
 
 
-<leader>sb      [F]ile [B]rowser.
+<leader>fb      File [B]rowser.
                 Calls |telescope.file-browser.finders|
 
 

@@ -74,6 +74,7 @@ Here are some of the plugins that will make your life easier.
 - [nvim-autopairs](https://github.com/windwp/nvim-autopairs) automatically insert matching parentheses, quotes, etc.
 - [which-key.nvim](https://github.com/folke/which-key.nvim) displays a popup with all possible keybindings
 - [nvim-colorizer.lua](https://github.com/NvChad/nvim-colorizer.lua) highlight color codes (hex codes, ANSI color name such as "Magenta", CSS functions, etc.)
+- [todo-comments.nvim](https://github.com/folke/todo-comments.nvim) highlights keywords such as `TODO`, `WARN`, etc.
 - [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) provides Git signs in the gutter (+, -, ~, etc.) as well as other useful Git functionalities, such as diff, navigating hunks, and blame tool
 - [Tokyo Night](https://github.com/folke/tokyonight.nvim) is a beautiful default theme for Theovim
 - [Markdown Preview](https://github.com/iamcco/markdown-preview.nvim) offers a real-time previewer for markdown files in your browser
