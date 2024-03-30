@@ -17,6 +17,7 @@ Below is the list of options, keybindings, Lua functions, plugins, and other Neo
 
 ## Keybindings
 
+- `{ noremap = true, silent = true }`: noremap = true` is default in `vim.keymap.set`, is `silent` really necessary?
 - `<leader>1-9` to navigate tabs: use `gt`
 - `<leader>t` to create a new tab: Create a new split window and break it out to a new tab using `<C-w>T`
 - `<leader>+-<>` to resize window by 1/3 of the screen size: I just decided to use a built-in resize binding
@@ -183,6 +184,12 @@ Below is the list of options, keybindings, Lua functions, plugins, and other Neo
 
 ## Plugins
 
+- **wbthomason/packer.nvim**: I just migrated to lazy.nvim because everyone did.
+    Joking, but I migrated to lazy.nvim because of the syntax.
+    Passing a Lua table as an argument is clearly better than repeating `use` multiple times.
+    I could care less about lazy-loading though, I think it is an overblown concept.
+- Single-file Lazy config: splitting them into different Lua module in `lua/plugins` directory allows a better organization
+
 UI:
 
 - **nvim-tree/nvim-tree.lua**:
@@ -207,13 +214,6 @@ LSP:
     - "Breadcrumbs": Symbols in the Winbar
     - "Outline": IDE like symbol outline
 - **hrsh7th/cmp-nvim-lua**: Completion source for Neovim API, replaced by neodev plugin.
-
-Others:
-- **wbthomason/packer.nvim**: I just migrated to lazy.nvim because everyone did.
-    Joking, but I migrated to lazy.nvim because of the syntax.
-    Passing a Lua table as an argument is clearly better than repeating `use` multiple times.
-    I could care less about lazy-loading though, I think it is an overblown concept.
-- Single-file Lazy config: splitting them into different Lua module in `lua/plugins` directory allows me to have them more organized
 
 ## File Organization
 
