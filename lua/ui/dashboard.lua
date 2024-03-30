@@ -68,7 +68,7 @@ local logo = {
 }
 -- Hard code button spacing here
 local buttons = {
-  { "󰥨  Find File      SPC f f", cmd = function() require("telescope.builtin").find_files() end, },
+  { "󰥨  Find File      SPC s f", cmd = function() require("telescope.builtin").find_files() end, },
   { "󰈙  Recent Files   SPC   ?", cmd = function() require("telescope.builtin").oldfiles() end, },
   { "  Exit Theovim        ZZ", cmd = "quit", },
 }

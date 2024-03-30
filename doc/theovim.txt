@@ -48,11 +48,12 @@ Plugins:
 - Use `:MarkdownPreviewToggle` and `:VimtexCompile`
 
 Telescope:
-- `<leader>?`: Recent files
-- `<leader><space>`: Open buffers
-- `<leader>ff`: File files
-- `<leader>fg`: Find a word in files
-- `<leader>f/`: Find a word in the current buffer
+- `<leader><leader>`: Open buffers
+- `<leader>/`: Find a word in the current buffer
+- `<leader>s.`: Recent files
+- `<leader>sf`: File files in the directory
+- `<leader>sg`: Find a word in all files of the directory (using ripgrep)
+- `<leader>s/`: Find a word in open files (using ripgrep)
 
 Treesitter:
 - `<C-Space>`: Incremental selection
@@ -74,7 +75,7 @@ Core - Options                                          *theovim-core-options*
 Theovim creates a solid base Neovim experience by maximizing built-in
 features.
 This section discusses some of the notable Neovim settings in Theovim.
-Read `core.lua` for the complete list of options.
+Read `lua/config/opt.lua` for the complete list of options.
 
 Tab/Indentation:
 
@@ -165,7 +166,7 @@ Theovim uses them to control:
 - Command to (compile) and execute the current file using a stadard tool
 - Spell check
 
-These files are located in `~/.config/nvim/after/ftplugin/filetype.vim`.
+These files are located in `after/ftplugin/filetype.vim`.
 
 For example, the following is the content of `python.vim`:
 >
@@ -228,13 +229,15 @@ Organized based on |autocmd-groups|.
 Core - Keymaps                                          *theovim-core-keymaps*
 
 Theovim overrides the following default keybindings.
-They do not change the way you interact with Vim (which is the opposite of
-what Theovim tries to achieve) but provide nice quality-of-life improvements.
+They do not change the way you interact with Vim but provides
+quality-of-life improvements.
 
 char            action
 ----------------------------------------------------------------------
 
-<ESC>           (terminal mode) Go to the normal mode in terminal
+<ESC>           (normal mode) Clears search highlight (|nohlsearch|).
+
+<ESC><ESC>      (terminal mode) Exits the terminal insert mode.
                 See |CTRL-\_CTRL-N|.
 
 j               If the line at the cursor is not wrapped, perform |j|.
@@ -273,7 +276,7 @@ N               Highlight the prev search result (|N|) and center the
 Theovim defines keybindings for frequently used actions that require more than
 three keystrokes. For example, there is no keybinding to go to a tab since
 {count}|gt| is a two-keystrokes away.
-Following is the complete list of custom keybindings defined in `core.lua`:
+Following is the complete list of custom keybindings defined in `keymap.lua`:
 
 char            action
 ----------------------------------------------------------------------
@@ -281,10 +284,8 @@ char            action
 jk              (insert mode) ESC.
 <C-s>           (insert mode) Fix the nearest spelling error and put
                 the cursor back.
-<leader>a       Select all.
-<leader>/       Clear search highlight (|nohlsearch|).
-<leader>t       Launch a terminal
 
+<leader>a       Select all.
 <leader>y       (visual mode) Copy to the system clipboard
                 (|quoteplus|).
 <leader>p       List register contents (|reg|) and fill the command line
@@ -295,7 +296,7 @@ jk              (insert mode) ESC.
                 paste the contents of register + at the cursor.
 <leader>p       (visual mode) Paste the current selection without
                 overriding the register.
-                For example, if you have 
+                For example, if you have TODO: Finish the example
 
 [b              Navigate to the previous buffer (|bprev|).
 ]b              Navigate to the next buffer (|bnext|).
@@ -311,6 +312,13 @@ jk              (insert mode) ESC.
                 For example, `<leader>k` followed by `69<CR>` will
                 kill buffer 69.
                 Type `<CR>` without a number to kill the curr buf.
+
+<leader>tb      Launch a terminal in the bottom
+<leader>tr      Launch a terminal to the right
+<leader>tt      Launch a terminal in a new tab
+                See |:terminal| to learn more about Neovim terminal.
+                See |:lefta|, |:rightb|, |:topleft|, and |:bo| to
+                learn more about opening a window.
 
 <C-h>           If there is a window to the left: navigate to the window
                 Else: Create a window to the left and navigate to it
@@ -345,6 +353,8 @@ See also:
 ==============================================================================
 Plugins                                                      *theovim-plugins*
 
+Plugin specs are located in the `lua/plugins` directory
+(see |lazy.nvim-lazy.nvim-plugin-spec| for how they are configured).
 This section highlights some of the commonly used plugins.
 
 |lazy.nvim| is a Neovim plugin manager.
@@ -372,8 +382,11 @@ WhichKey also includes other features:
   - You can list all one-key-stroke keybindings using `:WhichKey`
 - WhichKey hijacks spell suggestions (|z=|) UI
 
-|colorizer.lua| highlight color codes (hex codes, ANSI color name such as
+|colorizer.lua| highlights color codes (hex codes, ANSI color name such as
 "Magenta", CSS functions, etc.). Use `:ColorizerReloadAllBuffers` to reload.
+
+|todo-comments.nvim| highlights keywords such as `TODO`, `WARN`, etc.
+Use `:TodoQuickFix` to see the list of all TODO's in the open files.
 
 |gitsigns.nvim| provides Git signs in the gutter (+, -, ~, etc.) as well as
 other useful Git functionalities.
@@ -416,51 +429,76 @@ the following dependencies are needed:
 char            action
 ----------------------------------------------------------------------
 
-<leader>gf      Search [G]it [F]iles.
-                Calls |telescope.builtin.find_files()|.
+<leader>sh      [S]earch [H]elp.
+                Calls |telescope.builtin.help_tags()|.
 
-<leader>gc      [G]it [C]ommits.
-                Calls |telescope.builtin.git_commits()|.
+<leader>sh      [S]earch [K]eymaps.
+                Calls |telescope.builtin.keymaps()|.
 
-<leader>gs      [G]it [S]tatus.
-                Calls |telescope.builtin.git_status()|.
-
-<leader>?       Find recently opened files.
-                Calls |telescope.builtin.oldfiles()|.
-
-<leader><space> Find open buffers.
-                Calls |telescope.builtin.buffers()|.
-
-<leader>ft      [F]ind [T]elescope.
-                Search all Telescope built-in functions.
-                Calls |telescope.builtin.builtin()|.
-
-<leader>ff      [F]ind [F]iles.
-                Search files in the current and children directories.
-                Respect .gitignore if one exists.
+<leader>sf      [S]earch [F]iles.
+                Searches files in the current and the child dir.
+                Respects .gitignore if one exists.
                 `fd` is not required but recommended for faster search.
                 Calls |telescope.builtin.find_files()|.
 
-<leader>fg      [F]ind by rip[G]rep.
-                Search words in the files in the current and children
-                directories.
-                Respect .gitignore if one exists.
+<leader>ss      [S]earch [S]elect Telescope.
+                Searches all the Telescope built-in functions.
+                Calls |telescope.builtin.builtin()|.
+
+<leader>sw      [S]earch current [W]ord.
+                Searches for the string under the cursor in the CWD.
+                `ripgrep` is required for the search.
+                Calls |telescope.builtin.grep_string()|.
+
+<leader>sg      [S]earch by [G]rep.
+                Searches words in the CWD.
+                Respects .gitignore if one exists.
                 `ripgrep` is required for the search.
                 Calls |telescope.builtin.live_grep()|.
 
-<leader>fh      [F]ind [H]elp.
-                Calls |telescope.builtin.help_tags()|.
-
-<leader>fd      [F]ind [D]iagnostics.
+<leader>sd      [S]earch [D]iagnostics.
                 Calls |telescope.builtin.diagnostics()|.
 
-<leader>f/      Open fuzzy finder for the current buffer words.
+<leader>sr      [S]earch [R]esume.
+                Opens the previously used Telescope picker.
+                Calls |telescope.builtin.resume()|.
+
+<leader>s.      [S]earch Recent Files ("." for repeat).
+                Calls |telescope.builtin.oldfiles()|.
+
+<leader><leader>Find open buffers.
+                Calls |telescope.builtin.buffers()|.
+
+<leader>/       Open fuzzy finder for the current buffer words.
                 The previewer is disabled to minimize distractions.
                 Calls |telescope.builtin.current_buffer_fuzzy_find()|
                 with a parameter to disable the previewer
                 (see |telescope.themes.get_dropdown()|).
 
-<leader>fb      [F]ind [B]rowser.
+<leader>s/      Live grep in open files.
+                Searches by grep in open buffers.
+                `ripgrep` is required for the search.
+                Calls |telescope.builtin.live_grep()|
+                with a parameter to restrict the search scope.
+
+<leader>sn      [S]earch [N]eovim files.
+                Calls |telescope.builtin.find_files()|
+                with a parameter to restrict the search scope to
+                the Neovim config directory.
+                (see |stdpath()).
+
+
+<leader>gf      Search [G]it [F]iles.
+                Calls |telescope.builtin.find_files()|.
+
+<leader>gc      Search [G]it [C]ommits.
+                Calls |telescope.builtin.git_commits()|.
+
+<leader>gs      Search [G]it [S]tatus.
+                Calls |telescope.builtin.git_status()|.
+
+
+<leader>fb      File [B]rowser.
                 Calls |telescope.file-browser.finders|
 
 
@@ -639,6 +677,9 @@ When LSP server(s) is active in the buffer, following are available locally:
 Commands:
 - `:Format`: Formats the buffer by calling |vim.lsp.buf.format()|.
 
+Autocmd:
+- Symbol under the cursor (i.e., variables, functions, etc.) are highlighted.
+
 Keybindings:
 
 char            action
@@ -646,66 +687,65 @@ char            action
 
 <leader>F       Format the buffer (same as `:Format`).
 
-<leader>rn      Rename the symbol (e.g., variable, function) under
-                the cursor and refactor all the references.
-                Calls |vim.lsp.buf.rename()|.
-
-<leader>ca      Select a code action available under the cursor.
-                the cursor and refactor the workspace.
-                Calls |vim.lsp.buf.code_action()|.
-
-K               Open a floating doc for the info of the symbol under
-                the cursor.
-                If hover doc is already open, jump into the hover doc.
-                Calls |vim.lsp.buf.hover()|.
-
-<C-k>           Open a floating doc for the signature of the symbol
-                (e.g., function prototype) under the cursor.
-                If hover doc is already open, jump into the hover doc.
-                Calls |vim.lsp.buf.signature_help()|.
-
-gd              Go to the definition of the symbol under the cursor.
+gd              Jumps to the definition of the symbol under the
+                cursor.
                 Lists all definitions if there is a multiple.
                 When Telescope is available:
                 - calls |telescope.builtin.lsp_definitions()|
                 When Telescope is not available:
                 - calls |vim.lsp.buf.definition()|
 
-<leader>D       Go to the definition of the type of the symbol under
-                the cursor.
+gr              Lists references of the symbol under the cursor.
+                When Telescope is available:
+                - calls |telescope.builtin.lsp_references()|
+                When Telescope is not available:
+                - calls |vim.lsp.buf.references()|
+
+gI              Lists implementations of the symbol under the cursor.
+                When Telescope is available:
+                - calls |telescope.builtin.lsp_implementations()|
+                When Telescope is not available:
+                - calls |vim.lsp.buf.implementations()|
+
+<leader>D       Jumps to the definition of the type of the symbol
+                under the cursor.
                 Lists all type definitions if there is a multiple.
                 When Telescope is available:
                 - calls |telescope.builtin.lsp_type_definitions()|
                 When Telescope is not available:
                 - calls |vim.lsp.buf.type_definition()|
 
-gr              List references of the symbol under the cursor.
-                When Telescope is available:
-                - calls |telescope.builtin.lsp_references()|
-                When Telescope is not available:
-                - calls |vim.lsp.buf.references()|
-
-gI              List implementations of the symbol under the cursor.
-                When Telescope is available:
-                - calls |telescope.builtin.lsp_implementations()|
-                When Telescope is not available:
-                - calls |vim.lsp.buf.implementations()|
-
-<leader>ds      List all symbols in the current buffer.
+<leader>ds      Lists all symbols in the current buffer.
                 When Telescope is available:
                 - calls |telescope.builtin.lsp_document_symbols()|
                 When Telescope is not available:
                 - calls |vim.lsp.buf.document_symbols()|
 
-<leader>ws      List all symbols in the current workspace (project).
+<leader>ws      Lists all symbols in the current workspace (project).
                 When Telescope is available:
                 - calls |telescope.builtin.lsp_workspace_symbols()|
                 When Telescope is not available:
                 - calls |vim.lsp.buf.workspace_symbols()|
 
-<leader>wl      Print the workspace folders.
-                Calls |vim.lsp.buf.list_workspace_folders()| with
-                wrappers to unpack the table and print.
+<leader>rn      Renames the symbol (e.g., variable, function) under
+                the cursor and refactors all the references.
+                Calls |vim.lsp.buf.rename()|.
+
+<leader>ca      Selects a code action available under the cursor.
+                the cursor and refactor the workspace.
+                Calls |vim.lsp.buf.code_action()|.
+
+K               Opens a floating doc for the info of the symbol under
+                the cursor.
+                If hover doc is already open, jumps into the doc.
+                Calls |vim.lsp.buf.hover()|.
+
+gD              Jumps to the declaration of the symbol under the
+                cursor.
+                For example, the keymap can take you to the C header
+                file where the function is declared.
+                For the most situation, you would want to use `gd`.
+                Calls |vim.lsp.buf.declaration()|.
 
 
 See also:
@@ -752,8 +792,10 @@ char            action
 
 <C-e>           Close the completion menu
                 |cmp.mapping.abort()|
+
 <C-Space>       Open the completion menu if it is not already open
 
+<C-y>           Confirm the selection.
 <CR>            Confirm the selection.
                 - `select = false`: If nothing is selected, close the
                   completion menu. Set true to choose the first item
@@ -775,6 +817,9 @@ char            action
                   If `behavior = cmp.confirmBehavior.Insert`, it
                   would insert "requireuire"
                 See |cmp.confirm|.
+
+<C-l>           Moves to the next available expansion.
+<C-h>           Moves to the previously available expansion.
 
 <Tab>           - When the completion menu is open:
                   select the next item
@@ -819,18 +864,6 @@ See also:
 - |setting-tabline|: Guide on configuring Tabline
 - |'statusline'|: Information about Vim Statusline and built-in items
 - |'winbar'|: Neovim window bar, currently not in use
-
-==============================================================================
-Tools                                                          *theovim-tools*
-
-Unnecessary but fun features I made in Lua.
-
-- `:Notepad`: Transparent floating window with a scratch buffer
-- `:Floatterm`: Floating terminal with customizable size and location
-
-The tools module is disabled by default. Follow the comments in
-`lua/tools/init.lua` file to initialize features and tweak `.setup()`
-function and customize them.
 
 ==============================================================================
 Initialization                                                  *theovim-init*

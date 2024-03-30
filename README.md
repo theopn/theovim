@@ -74,6 +74,7 @@ Here are some of the plugins that will make your life easier.
 - [nvim-autopairs](https://github.com/windwp/nvim-autopairs) automatically insert matching parentheses, quotes, etc.
 - [which-key.nvim](https://github.com/folke/which-key.nvim) displays a popup with all possible keybindings
 - [nvim-colorizer.lua](https://github.com/NvChad/nvim-colorizer.lua) highlight color codes (hex codes, ANSI color name such as "Magenta", CSS functions, etc.)
+- [todo-comments.nvim](https://github.com/folke/todo-comments.nvim) highlights keywords such as `TODO`, `WARN`, etc.
 - [gitsigns.nvim](https://github.com/lewis6991/gitsigns.nvim) provides Git signs in the gutter (+, -, ~, etc.) as well as other useful Git functionalities, such as diff, navigating hunks, and blame tool
 - [Tokyo Night](https://github.com/folke/tokyonight.nvim) is a beautiful default theme for Theovim
 - [Markdown Preview](https://github.com/iamcco/markdown-preview.nvim) offers a real-time previewer for markdown files in your browser
@@ -93,11 +94,11 @@ a configuration template written by TJ DeVries who is the author of Telescope.nv
 
 A few of my favorite Telescope features:
 
-- `:Telescope oldfile` (`<leader>?`): finds recently opened files
-- `:Telescope buffers` (`<leader><space>`): lists all open buffers
-- `:Telescope` (`<leader>ft`): searches Telescope functions using Telescope
-- `:Telescope find_files` (`<leader>ff`): searches files in the current and children directories
-- `:Telescope live_grep` (`<leader>fg`): searches for a word in the all the files in the current and children directories
+- `:Telescope buffers` (`<leader><leader>`): lists all open buffers
+- `:Telescope oldfile` (`<leader>s.`): finds recently opened files
+- `:Telescope` (`<leader>ss`): searches Telescope functions using Telescope
+- `:Telescope find_files` (`<leader>sf`): searches files in the current and children directories
+- `:Telescope live_grep` (`<leader>sg`): searches for a word in the all the files in the current and children directories
 - `:Telescope git_commits` (`<leader>gc`): searches for Git commits
 
 For more information:
@@ -141,16 +142,6 @@ Theovim features unique UI components written in Lua.
 For more information:
 
 - `:help theovim-ui`
-
-### Tools
-
-Unnecessary but fun features I made in Lua.
-
-- `:Notepad`: Transparent floating window with a scratch buffer
-- `:Floatterm`: Floating terminal with customizable size and location
-
-The tools module is disabled by default.
-Follow the comments in `lua/tools/init.lua` file to initialize features and tweak `.setup()` function and customize them.
 
 ### References
 
