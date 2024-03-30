@@ -92,7 +92,7 @@ M.config = function()
   vim.keymap.set("n", "<leader>gs", builtin.git_status, { desc = "Search [G]it [S]tatus" })
 
   -- Make keymap for the file browser extension
-  vim.keymap.set("n", "<leader>fb", telescope.extensions.file_browser.file_browser, { desc = "[S]earch [B]rowser" })
+  vim.keymap.set("n", "<leader>fb", telescope.extensions.file_browser.file_browser, { desc = "[F]ile [B]rowser" })
 end
 
 return M

@@ -79,7 +79,7 @@ M.config = function()
       vim.api.nvim_buf_create_user_command(event.buf, "Format", function(_)
         vim.lsp.buf.format()
       end, { desc = "Format current buffer with LSP" })
-      nmap("<leader>f", vim.lsp.buf.format, "[F]ormat")
+      nmap("<leader>F", vim.lsp.buf.format, "[F]ormat")
     end,
   })
 
