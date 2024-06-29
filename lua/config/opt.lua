@@ -23,6 +23,7 @@ local opt          = vim.opt
 opt.softtabstop    = 0    --> How many chracters the /cursor moves/ with <TAB> and <BS> -- 0 to disable
 opt.expandtab      = true --> Use space instead of tab
 opt.shiftwidth     = 2    --> Number of spaces to use for auto-indentation, <<, >>, etc.
+opt.shiftround     = true --> Make the indentation to a multiple of shiftwidth when using < or >
 
 -- Location in the buffer
 opt.number         = true
@@ -41,7 +42,7 @@ opt.splitright     = true --> Vertical split created right
 opt.splitbelow     = true --> Horizontal split created below
 
 -- UI
-opt.signcolumn     = "yes" --> Render signcolumn
+opt.signcolumn     = "yes" --> Render signcolumn always to prevent text shifting
 opt.scrolloff      = 7     --> Keep minimum x number of screen lines above and below the cursor
 opt.termguicolors  = true  --> Enables 24-bit RGB color in the TUI
 opt.showtabline    = 2     --> 0: never, 1: >= 2 tabs, 2: always
