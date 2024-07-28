@@ -388,6 +388,7 @@ WhichKey also includes other features:
 
 |todo-comments.nvim| highlights keywords such as `TODO`, `WARN`, etc.
 Use `:TodoQuickFix` to see the list of all TODO's in the open files.
+Use `]t` and `[t` to jump between TODO's.
 
 |gitsigns.nvim| provides Git signs in the gutter (+, -, ~, etc.) as well as
 other useful Git functionalities.
