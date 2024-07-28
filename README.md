@@ -47,10 +47,10 @@ git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim
 
 - `:help theovim-tldr`: Summary of the Theovim help documentation
 
-### Core
+### Initialization/Core
 
 Theovim creates a solid base Neovim experience by maximizing built-in features.
-The core module initializes sensible default options, autocmds, and keybindings without external plugins or modules.
+The `init.lua` file initializes sensible default options, autocmds, and keybindings without external plugins or modules.
 
 - Automatically adjust indentation settings using [ftplugin](./after/ftplugin/)
 - Spell check in relevant buffers
@@ -59,11 +59,11 @@ The core module initializes sensible default options, autocmds, and keybindings 
 
 For more information:
 
-- `:help theovim-core-options`
-- `:help theovim-core-keymaps`
-- `:help theovim-core-commands`
-- `:help theovim-core-autocmds`
-- `:help theovim-core-netrw`
+- `:help theovim-init-options`
+- `:help theovim-init-keymaps`
+- `:help theovim-init-commands`
+- `:help theovim-init-autocmds`
+- `:help theovim-init-netrw`
 
 ### Plugins
 
