@@ -1,14 +1,23 @@
 local M = { "neovim/nvim-lspconfig", }
 
 M.dependencies = {
-  "williamboman/mason.nvim",           --> LSP server manager
-  "williamboman/mason-lspconfig.nvim", --> Bridge between lspconfig and mason
-  { "j-hui/fidget.nvim", opts = {}, }, --> LSP status indicator
-  { "folke/neodev.nvim", opts = {}, }  --> Neovim dev environment
+  { "williamboman/mason.nvim", config = true, }, --> LSP server manager
+  "williamboman/mason-lspconfig.nvim",           --> Bridge between lspconfig and mason
+  { "j-hui/fidget.nvim",       opts = {}, },     --> LSP status indicator
+  {
+    "folke/lazydev.nvim",                        --> Neovim dev environment
+    ft = "lua",
+    opts = {
+      library = {
+        { path = "luvit-meta/library", words = { "vim%.uv" }, },
+      },
+    },
+  },
+  { 'Bilal2453/luvit-meta', lazy = true }, --> vim.uv support
 }
 
 M.config = function()
-  -- Setting LSP look
+  -- Sets the LSP UI look
   vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
     vim.lsp.handlers.hover, {
       border = "rounded",
@@ -22,55 +31,49 @@ M.config = function()
     }
   )
 
-  -- Autocmd for LSP functionalities
+  -- Makes autocmd for LSP functionalities
   local theovim_lsp_config_group = vim.api.nvim_create_augroup("TheovimLspConfig", { clear = true, })
+
   vim.api.nvim_create_autocmd("LspAttach", {
     group = theovim_lsp_config_group,
     callback = function(event)
-      --- Inline helper for defining a buffer-scope LSP keymap with a description
       local map = function(keys, func, desc)
         vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
       end
 
-      -- LSP functions with Telescope counterparts
+      -- Sets the default values for LSP functions with Telescope counterparts
       local status, builtin = pcall(require, "telescope.builtin")
-      if status then
-        local telescope_opt = { jump_type = "tab" } --> Spawn selection in a new tab
-        -- Navigation
-        map("gd", function() builtin.lsp_definitions(telescope_opt) end, "[G]oto [D]efinition")
-        map("gr", builtin.lsp_references, "[G]oto [R]eferences")
-        map("gI", builtin.lsp_implementations, "[G]oto [I]mplementation")
-        map("<leader>D", function() builtin.lsp_type_definitions(telescope_opt) end, "Type [D]efinition")
-        -- Symbols
-        map("<leader>ds", builtin.lsp_document_symbols, "[D]ocument [S]ymbols")
-        map("<leader>ws", builtin.lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
-      else
-        map("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-        map("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
-        map("gr", vim.lsp.buf.references, "[G]oto [R]eferences")
-        map("gI", vim.lsp.buf.implementation, "[G]oto [I]mplementation")
-        map("<leader>ds", vim.lsp.buf.document_symbol, "[D]ocument [S]ymbols")
-        map("<leader>ws", vim.lsp.buf.workspace_symbol, "[W]orkspace [S]ymbols")
-      end
+      local telescope_opt = { jump_type = "tab" } --> spawns selection in a new tab
+      -- Sets the navigation keymaps
+      map("gd", status and function() builtin.lsp_definitions(telescope_opt) end or vim.lsp.buf.definition,
+        "[G]oto [D]efinition")
+      map("gr", builtin.lsp_references or vim.lsp.buf.references, "[G]oto [R]eferences")
+      map("gI", builtin.lsp_implementations or vim.lsp.buf.implementation, "[G]oto [I]mplementation")
+      map("<leader>D",
+        status and function() builtin.lsp_type_definitions(telescope_opt) end or vim.lsp.buf.type_definition,
+        "Type [D]efinition")
+      -- Sets the symbol keymaps
+      map("<leader>ds", builtin.lsp_document_symbols or vim.lsp.buf.document_symbol, "[D]ocument [S]ymbols")
+      map("<leader>ws", builtin.lsp_dynamic_workspace_symbols or vim.lsp.buf.workspace_symbol, "[W]orkspace [S]ymbols")
 
-      -- No Telescope counterparts
+      -- Sets the functiosn with no Telescope counterparts
       map("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
       map("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
       map("gD", vim.lsp.buf.declaration, "[G]o [D]eclaration")
 
-      -- Highlight keyword under the cursor
+      -- Creates an autocmd to highlight the symbol under the cursor
       local client = vim.lsp.get_client_by_id(event.data.client_id)
-      if client and client.server_capabilities.documentHighlightProvider then
+      if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_documentHighlight) then
         local theovim_lsp_hl_group = vim.api.nvim_create_augroup("TheovimLspHl", { clear = false, })
         vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-          group = theovim_lsp_hl_group,
           buffer = event.buf,
+          group = theovim_lsp_hl_group,
           callback = vim.lsp.buf.document_highlight,
         })
 
         vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
-          group = theovim_lsp_hl_group,
           buffer = event.buf,
+          group = theovim_lsp_hl_group,
           callback = vim.lsp.buf.clear_references,
         })
 
@@ -84,29 +87,26 @@ M.config = function()
         })
       end
 
-      -- Inlay hints
-      if client and client.server_capabilities.inlayHintProvider and vim.lsp.inlay_hint then
+      -- Creates a keybinding to toggle inlay hints, as hints can displace some of the code
+      if client and client.supports_method(vim.lsp.protocol.Methods.textDocument_inlayHint) then
         map("<leader>th", function()
-          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+          vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
         end, "[T]oggle Inlay [H]ints")
       end
 
-      -- Format command
-      vim.api.nvim_buf_create_user_command(event.buf, "Format", function(_)
-        vim.lsp.buf.format()
-      end, { desc = "Format current buffer with LSP" })
-      map("<leader>F", vim.lsp.buf.format, "[F]ormat")
+      -- Creates a keybinding to format code
+      map("<leader>F", vim.lsp.buf.format, "[F]ormat buffer")
     end,
   })
 
-  -- Call Mason
-  require("mason").setup()
-
-  -- Get nvim-cmp capabilities
+  -- Gets nvim-cmp capabilities
   local capabilities = vim.lsp.protocol.make_client_capabilities()
   capabilities = vim.tbl_deep_extend("force", capabilities, require("cmp_nvim_lsp").default_capabilities())
 
-  -- Define servers and server-specific config
+  -- Calls Mason
+  require("mason").setup()
+
+  -- Defines a list of servers and server-specific config
   local servers = {
     bashls = {},
     clangd = {},
@@ -115,15 +115,15 @@ M.config = function()
     -- html = { filetypes = { "html", "twig", "hbs"} },
 
     lua_ls = {
-      Lua = {
-        workspace = { checkThirdParty = false },
-        telemetry = { enable = false },
-        diagnostics = { disable = { "missing-fields" } },
+      settings = {
+        Lua = {
+          telemetry = { enable = false },
+        },
       },
     },
   }
 
-  -- Call mason-lspconfig to
+  -- Calls mason-lspconfig to
   -- 1. ensure servers are installed
   -- 2. Set up handlers for each server using the `server` table
   require("mason-lspconfig").setup({
@@ -132,10 +132,9 @@ M.config = function()
     -- Read |mason-lspconfig.setup_handlers()| for more information
     handlers = {
       function(server_name)
-        capabilities = capabilities
-
-        -- Use default server config (`{}`) or server-specific config from `server` table
+        -- Uses default server config (`{}`) or server-specific config from `server` table
         local server = servers[server_name] or {}
+        capabilities = capabilities
         require("lspconfig")[server_name].setup(server)
       end
     }
