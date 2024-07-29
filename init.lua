@@ -14,6 +14,8 @@
 ---  Oliver : https://www.asciiart.eu/animals/cats + Jonathan added a few layers of belly because Oliver is a chunky boi
 ---
 
+vim.g.have_nerd_font = true
+
 -- {{{ options
 -- Excludes default Neovim options:
 -- https://neovim.io/doc/user/vim_diff.html#nvim-defaults
