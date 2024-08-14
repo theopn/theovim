@@ -41,6 +41,9 @@ M.config = function()
         vim.keymap.set("n", keys, func, { buffer = event.buf, desc = "LSP: " .. desc })
       end
 
+      -- Creates a keybinding to format code
+      map("<leader>F", vim.lsp.buf.format, "[F]ormat buffer")
+
       -- Sets the default values for LSP functions with Telescope counterparts
       local status, builtin = pcall(require, "telescope.builtin")
       local telescope_opt = { jump_type = "tab" } --> spawns selection in a new tab
@@ -93,9 +96,6 @@ M.config = function()
           vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = event.buf }))
         end, "[T]oggle Inlay [H]ints")
       end
-
-      -- Creates a keybinding to format code
-      map("<leader>F", vim.lsp.buf.format, "[F]ormat buffer")
     end,
   })
 

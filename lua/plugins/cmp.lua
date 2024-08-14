@@ -30,44 +30,18 @@ M.config = function()
   require("luasnip.loaders.from_vscode").lazy_load()
   luasnip.config.setup({})
 
-  -- Completion icons to be used later
-  local kind_icons = {
-    Text = "",
-    Method = "󰆧",
-    Function = "󰊕",
-    Constructor = "",
-    Field = "󰇽",
-    Variable = "󰂡",
-    Class = "󰠱",
-    Interface = "",
-    Module = "",
-    Property = "󰜢",
-    Unit = "",
-    Value = "󰎠",
-    Enum = "",
-    Keyword = "󰌋",
-    Snippet = "",
-    Color = "󰏘",
-    File = "󰈙",
-    Reference = "",
-    Folder = "󰉋",
-    EnumMember = "",
-    Constant = "󰏿",
-    Struct = "",
-    Event = "",
-    Operator = "󰆕",
-    TypeParameter = "󰅲",
-  }
-
   cmp.setup({
     snippet = {
       expand = function(args)
         luasnip.lsp_expand(args.body)
       end,
     },
-    --completion = {
-    --  completeopt = "menu,menuone,noinsert",
-    --},
+
+    -- UI customization
+    window = {
+      completion = cmp.config.window.bordered(),
+      documentation = cmp.config.window.bordered(),
+    },
 
     mapping = cmp.mapping.preset.insert({
       -- Select the [n]ext item
@@ -144,28 +118,6 @@ M.config = function()
       }
     ),
 
-    -- UI customization
-    window = {
-      completion = cmp.config.window.bordered(),
-      documentation = cmp.config.window.bordered(),
-    },
-    -- Completion formatting
-    formatting = {
-      format = function(entry, vim_item)
-        -- Append kind icons
-        vim_item.kind = string.format("%s %s", kind_icons[vim_item.kind], vim_item.kind)
-
-        -- Source
-        vim_item.menu = ({
-          nvim_lsp = "[LSP]",
-          luasnip = "[LuaSnip]",
-          buffer = "[Buffer]",
-          path = "[Path]",
-        })[entry.source.name]
-
-        return vim_item
-      end
-    },
   })
 
   -- cmp-cmdline setup
