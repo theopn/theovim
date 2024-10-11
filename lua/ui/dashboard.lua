@@ -57,6 +57,7 @@ local olivers = {
     [[       '---''(_/--'  `-'\_)    ]]
   },
 }
+math.randomseed(os.time())
 local header = olivers[math.random(#olivers)]
 
 local logo = {
@@ -66,12 +67,6 @@ local logo = {
   "",
   os.date("[ ━━%m-%d━━ ❖ ━━%H:%M━━ ]"),
 }
--- Hard code button spacing here
-local buttons = {
-  { "󰥨  Find File      SPC s f", cmd = function() require("telescope.builtin").find_files() end, },
-  { "󰈙  Recent Files   SPC   ?", cmd = function() require("telescope.builtin").oldfiles() end, },
-  { "  Exit Theovim        ZZ", cmd = "quit", },
-}
 
 -- Calculating max width and make an empty length of the max width
 local max_width = #header[1]
@@ -80,8 +75,8 @@ local empty_line = string.rep(" ", max_width)
 table.insert(header, 1, empty_line)
 header[#header + 1] = empty_line
 logo[#logo + 1] = empty_line
--- max height = empty line + #header + #logo + #buttons + empty lines after each button + empty line + 1 safety net
-local max_height = 1 + #header + #logo + (#buttons * 2) + 1 + 1
+-- max height = empty line + #header + #logo + empty line + 1 safety net
+local max_height = 1 + #header + #logo + 1 + 1
 
 
 --- render()
@@ -106,7 +101,8 @@ local render = function()
   end
 
   -- The default empty buffer will go away when the new Dashboard buffer replaces it
-  vim.api.nvim_buf_set_option(0, "bufhidden", "wipe")
+  --vim.api.nvim_buf_set_option(0, "bufhidden", "wipe")
+  vim.opt_local.bufhidden = "wipe"
 
   -- Create a new buffer and replace the old one
   local buf = vim.api.nvim_create_buf(false, true) --> listed false, scratchbuffer true
@@ -141,11 +137,7 @@ local render = function()
   for _, val in ipairs(logo) do
     table.insert(dashboard, add_padding(val))
   end
-  for _, val in ipairs(buttons) do
-    table.insert(dashboard, add_padding(val[1]))
-    table.insert(dashboard, empty_line)
-  end
-  table.remove(dashboard, #dashboard) --> Remove the extra new line padding from the buttons
+  table.insert(dashboard, empty_line)
 
   --------------------
   -- Setting the dashboard --
@@ -179,57 +171,6 @@ local render = function()
   for i = hdr_start_idx + #header - 2, hdr_start_idx + #header + #logo - 2 do --> Again, -2 because of empty lines
     vim.api.nvim_buf_add_highlight(buf, -1, "MiniStarterHeader", i, 0, -1)
   end
-  for i = hdr_start_idx + #header + #logo - 2, hdr_start_idx + #header + #logo - 2 + (#buttons * 2) do --> Reach ends
-    vim.api.nvim_buf_add_highlight(buf, -1, "MiniStarterItemBullet", i, 0, -1)
-  end
-
-  -----------------------
-  -- Keybindings --
-
-  local curr_btn_line = hdr_start_idx + #header + #logo + 2 --> Line number where the first button is located
-  local btns_line_nums = {}
-
-  -- Make a table of line numbers where buttons exist
-  for _, _ in ipairs(buttons) do
-    table.insert(btns_line_nums, curr_btn_line - 2)
-    curr_btn_line = curr_btn_line + 2
-  end
-
-  -- Setting hjkl and arrow keys movement
-  local up_mvmt = function()
-    local curr = vim.fn.line(".") -- Current line
-    -- Check if the current line number - 2 is button or move to the last element
-    local target_line = vim.tbl_contains(btns_line_nums, curr - 2) and curr - 2 or btns_line_nums[#btns_line_nums]
-    vim.api.nvim_win_set_cursor(0, { target_line, cursor_column_idx })
-  end
-  local down_mvmt = function()
-    local curr = vim.fn.line(".") -- Current line
-    -- Check if the current line number + 2 is button or move to the first element
-    local target_line = vim.tbl_contains(btns_line_nums, curr + 2) and curr + 2 or btns_line_nums[1]
-    vim.api.nvim_win_set_cursor(0, { target_line, cursor_column_idx })
-  end
-  vim.keymap.set("n", "h", "", { buffer = true })
-  vim.keymap.set("n", "j", down_mvmt, { buffer = true })
-  vim.keymap.set("n", "k", up_mvmt, { buffer = true })
-  vim.keymap.set("n", "l", "", { buffer = true })
-  vim.keymap.set("n", "<LEFT>", "", { buffer = true })
-  vim.keymap.set("n", "<DOWN>", down_mvmt, { buffer = true })
-  vim.keymap.set("n", "<UP>", up_mvmt, { buffer = true })
-  vim.keymap.set("n", "<RIGHT>", "", { buffer = true })
-
-  -- Setting return key movement
-  vim.keymap.set("n", "<CR>", function()
-    for i, v in ipairs(btns_line_nums) do
-      if v == vim.fn.line(".") then
-        local action = buttons[i].cmd
-        if type(action) == "string" then
-          vim.cmd(action)
-        elseif type(action) == "function" then
-          action()
-        end
-      end
-    end
-  end, { buffer = true })
 
   -- The end --
   vim.opt_local.modifiable = false
