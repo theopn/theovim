@@ -156,7 +156,8 @@ For more information:
 - UI:
     - [NvChad UI plugin](https://github.com/NvChad/ui) and [Kodo](https://github.com/chadcat7/kodo/blob/4513340fb87146a3ed5fde55075b991b6eb550b5/lua/ui/dash/init.lua): Startup dashboard
     - [nvim-tabline](https://github.com/crispgm/nvim-tabline): `setup()` function for Tabline
-    - [Mini.statusline](https://github.com/echasnovski/mini.statusline): Statusline
+    - [Custom Neovim Statusline by nuxsh](https://nuxsh.is-a.dev/blog/custom-nvim-statusline.html): Overall custom Statusline structure
+    - [Mini.statusline](https://github.com/echasnovski/mini.statusline): Statusline mode and Git functions
 - Tools:
     - [Stuff.nvim](https://github.com/tamton-aquib/stuff.nvim): Notepad
 - Documentation:
