@@ -434,7 +434,7 @@ char            action
 <leader>sh      [S]earch [H]elp.
                 Calls |telescope.builtin.help_tags()|.
 
-<leader>sh      [S]earch [K]eymaps.
+<leader>sk      [S]earch [K]eymaps.
                 Calls |telescope.builtin.keymaps()|.
 
 <leader>sf      [S]earch [F]iles.
@@ -840,12 +840,10 @@ Theovim features unique UI components written in Lua.
   - Modified status of the current window in the tab
   - Number of buffers and tabs
 - A simple Statusline featuring:
-  - LSP diagnostics & Git information
-  - File size
+  - Diagnostics & Git information
   - Dynamic content adjustment based on the current window size
 - Startup Dashboard featuring:
   - ASCII art of my chunky cat Oliver (randomly selected from the pool)
-  - Buttons to quickly execute Telescope features
 
 See also:
 - |setting-tabline|: Guide on configuring Tabline

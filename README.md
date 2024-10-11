@@ -22,10 +22,7 @@ Theovim:
     - [Alacritty](https://alacritty.org/)
     - [iTerm 2 for MacOS](https://iterm2.com/)
     - Alternatively, you can use a GUI Neovim client like [Neovide](https://neovide.dev/)
-- Neovim version > 0.8.3
-    - Unfortunately, my school's Debian server uses outdated Neovim, forcing me to use some deprecated APIs and older versions of plug-ins
-    - These will be indicated in code comments and will be fixed as soon as possible
-    - Thanks to my friend Shriansh for at least making them upgrade from 0.5 to 0.8
+- Preferably the latest Neovim
 - [NerdFonts](https://www.nerdfonts.com/font-downloads) to render glyphs
 - `make` and some C compiler to compile `telescope-fzf-native.nvim`
 - `npm`, `g++` (`gcc-c++`), and `unzip` for some LSP servers
@@ -163,5 +160,4 @@ For more information:
 - Documentation:
     - Built-in insert mode help documentation (`:h insert.txt`): Theovim help formatting
     - [Tokyo Night Wallpapers](https://github.com/tokyo-night/wallpapers/blob/main/night/minimal/stripes_00_2560x1440.png): Wallpaper in the screenshot
-
 
