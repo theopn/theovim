@@ -1,4 +1,4 @@
-local is_transparent = false    --> To disable transparency, set this to false
+local is_transparent = false --> To disable transparency, set this to false
 
 return {
   "folke/tokyonight.nvim",
@@ -10,6 +10,10 @@ return {
       styles = {
         sidebars = is_transparent and "transparent" or "dark",
         floats = is_transparent and "transparent" or "dark",
+      },
+      plugins = {
+        mini_statusline = true,
+        mini_starter = true,
       },
     })
     vim.cmd.colorscheme("tokyonight-night")

@@ -5,6 +5,7 @@
 
 setlocal expandtab tabstop=2 softtabstop=2 shiftwidth=2
 setlocal colorcolumn=80 textwidth=79
+setlocal matchpairs+==:;
 
 " This command is to compile and run a single C++ file using g++.
 " For more complex project (that is, any project with more than one .cc file),

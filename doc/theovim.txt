@@ -34,7 +34,7 @@ Housekeeping:
   - This runs `:TSUpdate` at the same time
 - Run `:MasonUpdate` to update LSP servers
 
-Core:
+Initialization:
 - Spaces over tabs, but you can change it in `~/.config/nvim/after/ftplugin/`
 - Use `<C-s>` in the insert mode to quickly fix spelling mistakes
 - `zR` to close all folds and `zM` to open all folds, `zx` if fold glitches
@@ -70,12 +70,12 @@ Documentation:
 - `K` to jump into a tag, `<C-t>` to come back
 
 ==============================================================================
-Core - Options                                          *theovim-core-options*
+Initialization - Options                                *theovim-init-options*
 
 Theovim creates a solid base Neovim experience by maximizing built-in
 features.
 This section discusses some of the notable Neovim settings in Theovim.
-Read `lua/config/opt.lua` for the complete list of options.
+Read `init.lua` for the complete list of options.
 
 Tab/Indentation:
 
@@ -156,7 +156,7 @@ See also:
 - |theovim-treesitter|
 
 ==============================================================================
-Core - Ftplugins                                      *theovim-core-ftplugins*
+Initialization - ftplugins                            *theovim-init-ftplugins*
 
 |ftplugin| provides options and commands specific to certain filetypes.
 
@@ -193,7 +193,7 @@ See also:
 - |write-filetype-plugin|
 
 ==============================================================================
-Core - User Commands                                   *theovim-core-commands*
+Initialization - User Commands                         *theovim-init-commands*
 
 - `:TrimWhitespace`: Trim trailing whitespaces. It will prompts you with
   confirmations for each whitespace.
@@ -203,7 +203,7 @@ Core - User Commands                                   *theovim-core-commands*
   This is useful when narrowing down the scope of a Telescope search.
 
 ==============================================================================
-Core - Autocmds                                        *theovim-core-autocmds*
+Initialization - autocmds                              *theovim-init-autocmds*
 
 Organized based on |autocmd-groups|.
 - `YankHighlight`: Highlight the yanked text. See |TextYankPost|
@@ -226,7 +226,7 @@ Organized based on |autocmd-groups|.
   with indentation settings set by |ftplugin|.
 
 ==============================================================================
-Core - Keymaps                                          *theovim-core-keymaps*
+Initialization - Keymaps                                *theovim-init-keymaps*
 
 Theovim overrides the following default keybindings.
 They do not change the way you interact with Vim but provides
@@ -276,7 +276,7 @@ N               Highlight the prev search result (|N|) and center the
 Theovim defines keybindings for frequently used actions that require more than
 three keystrokes. For example, there is no keybinding to go to a tab since
 {count}|gt| is a two-keystrokes away.
-Following is the complete list of custom keybindings defined in `keymap.lua`:
+Following is the complete list of custom keybindings defined in `init.lua`:
 
 char            action
 ----------------------------------------------------------------------
@@ -330,7 +330,7 @@ jk              (insert mode) ESC.
                 Else: Create a window to the right and navigate to it
 
 ==============================================================================
-Core - Netrw                                              *theovim-core-netrw*
+Initialization - netrw                                    *theovim-init-netrw*
 
 Netrw is a built-in file manager for Vim and Neovim.
 Netrw is intended to be used for visualizing directories and centering the
@@ -353,13 +353,14 @@ See also:
 ==============================================================================
 Plugins                                                      *theovim-plugins*
 
+|lazy.nvim| is a Neovim plugin manager.
+- Its installation bootstrap is defined in `init.lua`
+- `:Lazy` opens a dashboard for all Lazy functionalities
+- Alternatively, you can specify an action (e.g., `:Lazy sync`) to perform
+
 Plugin specs are located in the `lua/plugins` directory
 (see |lazy.nvim-lazy.nvim-plugin-spec| for how they are configured).
 This section highlights some of the commonly used plugins.
-
-|lazy.nvim| is a Neovim plugin manager.
-- `:Lazy` opens a dashboard for all Lazy functionalities
-- Alternatively, you can specify an action (e.g., `:Lazy sync`) to perform
 
 |oil.nvim| is a file manager that lets you manage files like a Vim buffer.
 - `:Oil` to open Oil in the current working directory
@@ -387,6 +388,7 @@ WhichKey also includes other features:
 
 |todo-comments.nvim| highlights keywords such as `TODO`, `WARN`, etc.
 Use `:TodoQuickFix` to see the list of all TODO's in the open files.
+Use `]t` and `[t` to jump between TODO's.
 
 |gitsigns.nvim| provides Git signs in the gutter (+, -, ~, etc.) as well as
 other useful Git functionalities.
@@ -432,7 +434,7 @@ char            action
 <leader>sh      [S]earch [H]elp.
                 Calls |telescope.builtin.help_tags()|.
 
-<leader>sh      [S]earch [K]eymaps.
+<leader>sk      [S]earch [K]eymaps.
                 Calls |telescope.builtin.keymaps()|.
 
 <leader>sf      [S]earch [F]iles.
@@ -541,7 +543,6 @@ Theovim installs the following TS servers out of the box:
 - C++
 - LaTeX
 - Lua
-- Markdown
 - Python
 
 In these filetypes, TS highlight (|nvim-treesitter-highlight-mod|), incremental
@@ -603,24 +604,20 @@ Neovim has a built-in diagnostic framework to display errors or warning
 messages from external tools like LSP or linters.
 Unless you configure an external tool, it will most likely be from LSP.
 
-For example, here is how diagnostic float (`<leader>e`) displays errors for the
-following diastrous Lua code.
+For example, here is how diagnostic displays errors for the following
+diastrous Lua code.
 >
   H  1 local function func()     ■■ Unused local `func`.
   I  2 ┊ lowercase = ""     ■ Global variable in lowercase initial, Did you
   W  3 ┊ undefined_func(syntax, err,)     ■■■■ Undefined global `err`.
      4 end
-  ╭────────────────────────────────────────────────────────────────────────╮
-  │Buffer Diagnostics                                                      │
-  │1. ERROR (line 3): <exp> expected. [miss-exp]                           │
-  │2. INFO (line 2): Global variable in lowercase initial, Did you miss `lo│
-  │↪cal` or misspell it? [lowercase-global]                                │
-  │3. HINT (line 1): Unused functions. [unused-function]                   │
-  │4. HINT (line 1): Unused local `func`. [unused-local]                   │
-  │5. WARN (line 3): Undefined global `undefined_func`. [undefined-global] │
-  │6. WARN (line 3): Undefined global `syntax`. [undefined-global]         │
-  ╰────────────────────────────────────────────────────────────────────────╯
 <
+
+In Neovim 0.10, Neovim creates some default mappings for diagnostics.
+- |]d-default|
+- |[d-default|
+- |CTRL-W_d-default|
+- For Neovim default mappings, see |default-mappings|
 
 The following keybindings are available for buffer with
 diagnostic information:
@@ -628,11 +625,6 @@ diagnostic information:
 char            action
 ----------------------------------------------------------------------
 
-[d              Go to the previous diagnostic message
-]d              Go to the next diagnostic message
-<leader>e       Open floating diagnostic message in the buffer scope.
-                Calls |vim.diagnostic.open_float()|.
-                Custom formatting defined in the `lsp.lua` is applied.
 <leader>q       Open diagnostic list in |location-list|.
                 Calls |vim.diagnostic.setloclist()|.
 
@@ -672,10 +664,9 @@ You can also use the follwing commands to control the LSP servers:
 - `:LspStop`
 - `:LspRestart`
 
-When LSP server(s) is active in the buffer, following are available locally:
+In Neovim 0.10, `K` is mapped to |vim.lsp.buf.hover()|. See |K-lsp-default|.
 
-Commands:
-- `:Format`: Formats the buffer by calling |vim.lsp.buf.format()|.
+When LSP server(s) is active in the buffer, following are available locally:
 
 Autocmd:
 - Symbol under the cursor (i.e., variables, functions, etc.) are highlighted.
@@ -685,7 +676,8 @@ Keybindings:
 char            action
 ----------------------------------------------------------------------
 
-<leader>F       Format the buffer (same as `:Format`).
+<leader>F       Format the buffer
+                - calls |vim.lsp.buf.format()|
 
 gd              Jumps to the definition of the symbol under the
                 cursor.
@@ -734,11 +726,6 @@ gI              Lists implementations of the symbol under the cursor.
 <leader>ca      Selects a code action available under the cursor.
                 the cursor and refactor the workspace.
                 Calls |vim.lsp.buf.code_action()|.
-
-K               Opens a floating doc for the info of the symbol under
-                the cursor.
-                If hover doc is already open, jumps into the doc.
-                Calls |vim.lsp.buf.hover()|.
 
 gD              Jumps to the declaration of the symbol under the
                 cursor.
@@ -853,25 +840,15 @@ Theovim features unique UI components written in Lua.
   - Modified status of the current window in the tab
   - Number of buffers and tabs
 - A simple Statusline featuring:
-  - LSP diagnostics & Git information
-  - File size
+  - Diagnostics & Git information
   - Dynamic content adjustment based on the current window size
 - Startup Dashboard featuring:
   - ASCII art of my chunky cat Oliver (randomly selected from the pool)
-  - Buttons to quickly execute Telescope features
 
 See also:
 - |setting-tabline|: Guide on configuring Tabline
 - |'statusline'|: Information about Vim Statusline and built-in items
 - |'winbar'|: Neovim window bar, currently not in use
-
-==============================================================================
-Initialization                                                  *theovim-init*
-
-`init.lua` initializes all the modules by calling |lua-require| with safe
-guards (|lua_pcall()|).
-It also includes some miscellaneous configurations, such as Theo's personal
-Neovide config.
 
 ==============================================================================
 Documentation                                          *theovim-documentation*

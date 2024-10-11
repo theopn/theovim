@@ -17,6 +17,8 @@
 local M = {}
 local fn = vim.fn
 
+local theovimlogo = vim.g.have_nerd_font and "Theo  " or "Theovim"
+
 --- Returns the Lua list of listed buffers
 ---@return table listed_buf list of buffers that are loaded, valid, and listed
 local function get_listed_bufs()
@@ -36,7 +38,7 @@ end
 --- @return string s Formatted string to be used as a Vim tabline
 M.build = function()
   -- Init + %< to have truncation start after the logo
-  local s = "%#TabLineFill# Theo   %<"
+  local s = "%#TabLineFill#" .. theovimlogo .. " %<"
 
   local curr_tabnum = fn.tabpagenr()
   for i = 1, fn.tabpagenr("$") do
@@ -49,7 +51,7 @@ M.build = function()
 
     -- Basic setup
     s = s .. ((i == curr_tabnum) and "%#TabLineSel#" or "%#TabLine#") --> diff hl for active and inactive tabs
-    s = s .. " "                                                      --> Left margin/separator " "
+    s = s .. " "                                                      --> Left margin/separator
     s = s .. "%" .. i .. "T"                                          --> make tab clickable (%nT)
     s = s .. i .. " "                                                 --> Tab index
 
@@ -81,7 +83,7 @@ M.build = function()
     local curr_tab_close_btn = "%" .. i .. "X"
     s = s .. curr_tab_close_btn
     -- Functional close button or modified indicator
-    s = s .. ((is_curr_buff_modified == 1) and " " or " ")
+    s = s .. ((is_curr_buff_modified == 1) and " +" or " X")
 
     -- Reset button (%T)
     s = s .. "%T"
@@ -91,9 +93,9 @@ M.build = function()
 
   -- Number of buffer and tab on the far right
   s = s .. "%=" --> spacer
-  s = s .. string.format("   #Tab: %i", fn.tabpagenr("$")) --> Tab num
+  s = s .. string.format("#Tab: %i", fn.tabpagenr("$")) --> Tab num
   s = s .. " |"
-  s = s .. string.format("   #Buf: %i", #get_listed_bufs()) --> Buf num
+  s = s .. string.format(" #Buf: %i", #get_listed_bufs()) --> Buf num
   s = s .. " " --> right margin
   return s
 end
@@ -102,6 +104,10 @@ end
 --- Inspired by https://github.com/crispgm/nvim-tabline
 function M.setup()
   M.has_devicons, M.devicons = pcall(require, "nvim-web-devicons")
+  -- Override
+  if not vim.g.have_nerd_font then
+    M.has_devicons = false
+  end
 
   function _G.nvim_tabline()
     return M.build()

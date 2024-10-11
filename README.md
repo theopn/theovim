@@ -22,10 +22,7 @@ Theovim:
     - [Alacritty](https://alacritty.org/)
     - [iTerm 2 for MacOS](https://iterm2.com/)
     - Alternatively, you can use a GUI Neovim client like [Neovide](https://neovide.dev/)
-- Neovim version > 0.8.3
-    - Unfortunately, my school's Debian server uses outdated Neovim, forcing me to use some deprecated APIs and older versions of plug-ins
-    - These will be indicated in code comments and will be fixed as soon as possible
-    - Thanks to my friend Shriansh for at least making them upgrade from 0.5 to 0.8
+- Preferably the latest Neovim
 - [NerdFonts](https://www.nerdfonts.com/font-downloads) to render glyphs
 - `make` and some C compiler to compile `telescope-fzf-native.nvim`
 - `npm`, `g++` (`gcc-c++`), and `unzip` for some LSP servers
@@ -47,10 +44,10 @@ git clone --depth 1 https://github.com/theopn/theovim.git ~/.config/nvim
 
 - `:help theovim-tldr`: Summary of the Theovim help documentation
 
-### Core
+### Initialization/Core
 
 Theovim creates a solid base Neovim experience by maximizing built-in features.
-The core module initializes sensible default options, autocmds, and keybindings without external plugins or modules.
+The `init.lua` file initializes sensible default options, autocmds, and keybindings without external plugins or modules.
 
 - Automatically adjust indentation settings using [ftplugin](./after/ftplugin/)
 - Spell check in relevant buffers
@@ -59,11 +56,11 @@ The core module initializes sensible default options, autocmds, and keybindings 
 
 For more information:
 
-- `:help theovim-core-options`
-- `:help theovim-core-keymaps`
-- `:help theovim-core-commands`
-- `:help theovim-core-autocmds`
-- `:help theovim-core-netrw`
+- `:help theovim-init-options`
+- `:help theovim-init-keymaps`
+- `:help theovim-init-commands`
+- `:help theovim-init-autocmds`
+- `:help theovim-init-netrw`
 
 ### Plugins
 
@@ -156,11 +153,11 @@ For more information:
 - UI:
     - [NvChad UI plugin](https://github.com/NvChad/ui) and [Kodo](https://github.com/chadcat7/kodo/blob/4513340fb87146a3ed5fde55075b991b6eb550b5/lua/ui/dash/init.lua): Startup dashboard
     - [nvim-tabline](https://github.com/crispgm/nvim-tabline): `setup()` function for Tabline
-    - [Mini.statusline](https://github.com/echasnovski/mini.statusline): Statusline
+    - [Custom Neovim Statusline by nuxsh](https://nuxsh.is-a.dev/blog/custom-nvim-statusline.html): Overall custom Statusline structure
+    - [Mini.statusline](https://github.com/echasnovski/mini.statusline): Statusline mode and Git functions
 - Tools:
     - [Stuff.nvim](https://github.com/tamton-aquib/stuff.nvim): Notepad
 - Documentation:
     - Built-in insert mode help documentation (`:h insert.txt`): Theovim help formatting
     - [Tokyo Night Wallpapers](https://github.com/tokyo-night/wallpapers/blob/main/night/minimal/stripes_00_2560x1440.png): Wallpaper in the screenshot
-
 
