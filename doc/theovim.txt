@@ -77,6 +77,12 @@ features.
 This section discusses some of the notable Neovim settings in Theovim.
 Read `init.lua` for the complete list of options.
 
+Nerd Font:
+
+`vim.g.have_nerd_font` variable located in the very top of the init.lua
+controls the display of Nerd Font in Theovim UI elements. Set it true or false
+based on your preference.
+
 Tab/Indentation:
 
 By default,
@@ -520,7 +526,10 @@ char            action
 
 <C-c>           Close the Telescope window
 
-<CR>            Confirm the selection
+<CR>            Open the selection in the current window
+<C-v>           Open the selection in a vertical split
+<C-x>           Open the selection in a horizontal split
+<C-t>           Open the selection in a new tab
 
 
 See also:
