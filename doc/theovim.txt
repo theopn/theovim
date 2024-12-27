@@ -319,9 +319,9 @@ jk              (insert mode) ESC.
                 kill buffer 69.
                 Type `<CR>` without a number to kill the curr buf.
 
+<leader>tt      Toggle a floating terminal (the terminal state persists)
 <leader>tb      Launch a terminal in the bottom
 <leader>tr      Launch a terminal to the right
-<leader>tt      Launch a terminal in a new tab
                 See |:terminal| to learn more about Neovim terminal.
                 See |:lefta|, |:rightb|, |:topleft|, and |:bo| to
                 learn more about opening a window.

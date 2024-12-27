@@ -52,6 +52,7 @@ The `init.lua` file initializes sensible default options, autocmds, and keybindi
 - Automatically adjust indentation settings using [ftplugin](./after/ftplugin/)
 - Spell check in relevant buffers
 - Fold using Tree-sitter
+- Toggle-able floating terminal
 - Smarter window navigation
 
 For more information:
@@ -145,6 +146,7 @@ For more information:
 - Core:
     - [Neovim source code repository](https://github.com/neovim/neovim/tree/master/runtime/ftplugin) or `$VIMRUNTIME/ftplugin/`: Ftplugin examples
     - [A Reddit comment on "Share your favorite .vimrc lines..."](https://www.reddit.com/r/vim/comments/166a3ij/comment/jyivcnl/?utm_source=share&utm_medium=web2x&context=3): `SmarterWinMove` function
+    - [Floating toggle-able terminal in Neovim in 50 lines of Lua by TJ DeVries](https://www.youtube.com/watch?v=5PIiKDES_wc): toggle-able floating terminal
     - [How I'm able to take notes in mathematics lectures using LaTeX and Vim](https://castel.dev/post/lecture-notes-1/#correcting-spelling-mistakes-on-the-fly): keybinding to fix the nearest spelling mistake
 - Telescope, Treesitter, and LSP:
     - [Kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim): Telescope, Treesitter, and LSP config

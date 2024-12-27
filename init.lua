@@ -19,65 +19,65 @@ vim.g.have_nerd_font = true
 -- {{{ options
 -- Excludes default Neovim options:
 -- https://neovim.io/doc/user/vim_diff.html#nvim-defaults
-local opt          = vim.opt
+local opt            = vim.opt
 
 -- Tab
-opt.softtabstop    = 0    --> How many chracters the /cursor moves/ with <TAB> and <BS> -- 0 to disable
-opt.expandtab      = true --> Use space instead of tab
-opt.shiftwidth     = 2    --> Number of spaces to use for auto-indentation, <<, >>, etc.
-opt.shiftround     = true --> Make the indentation to a multiple of shiftwidth when using < or >
+opt.softtabstop      = 0    --> How many chracters the /cursor moves/ with <TAB> and <BS> -- 0 to disable
+opt.expandtab        = true --> Use space instead of tab
+opt.shiftwidth       = 2    --> Number of spaces to use for auto-indentation, <<, >>, etc.
+opt.shiftround       = true --> Make the indentation to a multiple of shiftwidth when using < or >
 
 -- Location in the buffer
-opt.number         = true
-opt.relativenumber = true
-opt.cursorline     = true
-opt.cursorlineopt  = "number" --> line, screenline, both (i.e., "number,line")
-opt.cursorcolumn   = true
+opt.number           = true
+opt.relativenumber   = true
+opt.cursorline       = true
+opt.cursorlineopt    = "number" --> line, screenline, both (i.e., "number,line")
+opt.cursorcolumn     = true
 
 -- Search and replace
-opt.ignorecase     = true    --> Ignore case in search
-opt.smartcase      = true    --> /smartcase -> apply ignorecase | /sMartcase -> do not apply ignorecase
-opt.inccommand     = "split" --> show the substitution in a split window
+opt.ignorecase       = true    --> Ignore case in search
+opt.smartcase        = true    --> /smartcase -> apply ignorecase | /sMartcase -> do not apply ignorecase
+opt.inccommand       = "split" --> show the substitution in a split window
 
 -- Split
-opt.splitright     = true --> Vertical split created right
-opt.splitbelow     = true --> Horizontal split created below
+opt.splitright       = true --> Vertical split created right
+opt.splitbelow       = true --> Horizontal split created below
 
 -- UI
-opt.signcolumn     = "yes"          --> Render signcolumn always to prevent text shifting
-opt.scrolloff      = 7              --> Keep minimum x number of screen lines above and below the cursor
-opt.termguicolors  = true           --> Enables 24-bit RGB color in the TUI
-opt.showtabline    = 2              --> 0: never, 1: >= 2 tabs, 2: always
-opt.laststatus     = 2              --> 0: never, 1: >= 2 windows, 2: always, 3: always and have one global statusline
+opt.signcolumn       = "yes" --> Render signcolumn always to prevent text shifting
+opt.scrolloff        = 7     --> Keep minimum x number of screen lines above and below the cursor
+opt.termguicolors    = true  --> Enables 24-bit RGB color in the TUI
+opt.showtabline      = 2     --> 0: never, 1: >= 2 tabs, 2: always
+opt.laststatus       = 2     --> 0: never, 1: >= 2 windows, 2: always, 3: always and have one global statusline
 
 -- Char rendering
-opt.list           = true --> Render special char in listchars
-opt.listchars      = { tab = "⇥ ", trail = "␣", nbsp = "⍽", leadmultispace = "┊ ", }
-opt.showbreak      = "↪" --> Render beginning of wrapped lines
-opt.breakindent    = true --> Wrapped line will have the same indentation level as the beginning of the line
+opt.list             = true --> Render special char in listchars
+opt.listchars        = { tab = "⇥ ", trail = "␣", nbsp = "⍽", leadmultispace = "┊ ", }
+opt.showbreak        = "↪" --> Render beginning of wrapped lines
+opt.breakindent      = true --> Wrapped line will have the same indentation level as the beginning of the line
 
 -- Spell
-opt.spell          = false    --> autocmd will enable spellcheck in Tex or markdown
-opt.spelllang      = { "en" }
-opt.spellsuggest   = "best,8" --> Suggest 8 words for spell suggestion
-opt.spelloptions   = "camel"  --> Consider CamelCase when checking spelling
+opt.spell            = false    --> autocmd will enable spellcheck in Tex or markdown
+opt.spelllang        = { "en" }
+opt.spellsuggest     = "best,8" --> Suggest 8 words for spell suggestion
+opt.spelloptions     = "camel"  --> Consider CamelCase when checking spelling
 
 -- Fold
-opt.foldenable     = false                        --> Open all folds until I close them using zc/zC or update using zx
-opt.foldmethod     = "expr"                       --> Use `foldexpr` function for folding
-opt.foldexpr       = "nvim_treesitter#foldexpr()" --> Treesitter folding
+opt.foldenable       = false                        --> Open all folds until I close them using zc/zC or update using zx
+opt.foldmethod       = "expr"                       --> Use `foldexpr` function for folding
+opt.foldexpr         = "nvim_treesitter#foldexpr()" --> Treesitter folding
 --foldlevel      = 2                            --> Ignore n - 1 level fold
 
 -- Update time
-opt.updatetime     = 250
-opt.timeoutlen     = 300
+opt.updatetime       = 250
+opt.timeoutlen       = 300
 
 -- Window size
-opt.winminwidth    = 3
+opt.winminwidth      = 3
 
 -- Others
-opt.mouse          = "a"
-opt.confirm        = true --> Confirm before exiting with unsaved bufffer(s)
+opt.mouse            = "a"
+opt.confirm          = true --> Confirm before exiting with unsaved bufffer(s)
 -- }}}
 
 
@@ -135,7 +135,57 @@ set("n",
   { silent = true, desc = "[K]ill a buffer" })
 
 -- Terminal
--- https://medium.com/@egzvor/vim-splits-cheat-sheet-2bf84fc99962
+-- Toggle-able floating terminal based on TJ DeVries's video
+local state = {
+  floating = {
+    buf = -1,
+    win = -1,
+  }
+}
+
+local function create_floating_window(opts)
+  opts = opts or {}
+  local width = opts.width or math.floor(vim.o.columns * 0.8)
+  local height = opts.height or math.floor(vim.o.lines * 0.8)
+  -- Calculate the position to center the window
+  local col = math.floor((vim.o.columns - width) / 2)
+  local row = math.floor((vim.o.lines - height) / 2)
+  -- Create a buffer
+  local buf = nil
+  if vim.api.nvim_buf_is_valid(opts.buf) then
+    buf = opts.buf
+  else
+    buf = vim.api.nvim_create_buf(false, true) -- No file, scratch buffer
+  end
+  -- Create the floating window
+  local win_config = {
+    relative = "editor",
+    width = width,
+    height = height,
+    col = col,
+    row = row,
+    style = "minimal",
+    border = "rounded",
+  }
+  local win = vim.api.nvim_open_win(buf, true, win_config)
+
+  return { buf = buf, win = win }
+end
+
+local toggle_terminal = function()
+  if not vim.api.nvim_win_is_valid(state.floating.win) then
+    state.floating = create_floating_window { buf = state.floating.buf }
+    if vim.bo[state.floating.buf].buftype ~= "terminal" then
+      vim.cmd.terminal()
+    end
+  else
+    vim.api.nvim_win_hide(state.floating.win)
+  end
+end
+
+vim.api.nvim_create_user_command("Floaterminal", toggle_terminal, {})
+set({ "n", "t" }, "<leader>tt", toggle_terminal, { desc = "[T]oggle floating [T]erminal" })
+
 --           | :top sp |
 -- |:top vs| |:abo| cu | |:bot vs |
 -- |       | |:bel| rr | |        |
@@ -146,21 +196,14 @@ set("n",
   function()
     vim.cmd("botright " .. math.ceil(vim.fn.winheight(0) * (1 / 3)) .. "sp | term")
   end,
-  { desc = "Launch a [t]erminal in the [B]ottom" })
+  { desc = "Launch a [T]erminal in the [B]ottom" })
 
 set("n",
   "<leader>tr",
   function()
     vim.cmd("bot " .. math.ceil(vim.fn.winwidth(0) * 0.3) .. "vs | term")
   end,
-  { desc = "Launch a [t]erminal to the [R]ight" })
-
-set("n",
-  "<leader>tt",
-  function()
-    vim.cmd("tabnew | term")
-  end,
-  { desc = "Launch a [t]erminal in a new [T]ab" })
+  { desc = "Launch a [T]erminal to the [R]ight" })
 
 --- Move to a window (one of hjkl) or create a split if a window does not exist in the direction.
 --- Lua translation of:
